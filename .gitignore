@@ -33,5 +33,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Source video files (originals kept locally, not in repo)
+assets/*.mp4
+
 # Misc
 *.tsbuildinfo
