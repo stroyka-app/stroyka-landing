@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stroyka Brand Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root { --c1:#cad2c5; --c2:#84a98c; --c3:#52796f; --c4:#354f52; --c5:#2f3e46; }
+body { font-family:'Inter',sans-serif; background:#e8ebe5; color:#1a1a1a; }
+.page { max-width:1060px; margin:0 auto; padding:72px 40px; }
+
+.hdr { margin-bottom:64px; }
+.hdr-tag { font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:var(--c3); margin-bottom:10px; }
+.hdr h1 { font-family:'Space Grotesk',sans-serif; font-size:40px; font-weight:700; color:var(--c5); margin-bottom:10px; }
+.hdr p { font-size:14px; color:#777; max-width:480px; line-height:1.7; }
+
+.sec-label { font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--c3); margin-bottom:20px; }
+
+/* ─ panels ─ */
+.panel { background:#fff; border-radius:20px; padding:40px; margin-bottom:28px; box-shadow:0 1px 3px rgba(0,0,0,.05),0 4px 20px rgba(0,0,0,.05); }
+.panel-dark { background:var(--c5); border-radius:20px; padding:40px; margin-bottom:28px; box-shadow:0 1px 3px rgba(0,0,0,.1),0 4px 20px rgba(0,0,0,.12); }
+.panel-split { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:28px; }
+
+/* ─ palette ─ */
+.palette-row { display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; }
+.sw { display:flex; flex-direction:column; align-items:center; gap:8px; }
+.sw-block { width:80px; border-radius:14px; border:1px solid rgba(0,0,0,.06); }
+.sw-hex { font-size:11px; color:#888; font-family:'Space Grotesk',sans-serif; letter-spacing:.03em; }
+.sw-name { font-size:10px; color:#bbb; }
+.sw-role { font-size:10px; color:var(--c3); font-weight:600; }
+
+/* ─ logo grid ─ */
+.logo-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; margin-bottom:28px; }
+.logo-cell { border-radius:16px; overflow:hidden; }
+.lc-top { padding:36px 28px; display:flex; align-items:center; justify-content:center; min-height:110px; }
+.lc-bot { padding:12px 16px; }
+.lc-name { font-size:11px; font-weight:600; color:#aaa; font-family:'Space Grotesk',sans-serif; letter-spacing:.05em; }
+.lc-use { font-size:11px; color:#bbb; margin-top:2px; }
+
+/* ─ combo mark ─ */
+.combo { display:flex; align-items:center; gap:14px; }
+.dv { width:1px; }
+
+/* ─ wordmark styles ─ */
+.wm { font-family:'Space Grotesk',sans-serif; font-weight:700; letter-spacing:.09em; text-transform:uppercase; }
+
+/* ─ favicon row ─ */
+.fav-row { display:flex; align-items:flex-end; gap:20px; flex-wrap:wrap; }
+.fav-item { display:flex; flex-direction:column; align-items:center; gap:8px; }
+.fav-sz { font-size:10px; color:#bbb; font-family:'Space Grotesk',sans-serif; }
+.fav-bg { display:flex; align-items:center; justify-content:center; border-radius:6px; }
+
+/* ─ type ─ */
+.type-row { margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid #f0f0f0; }
+.type-row:last-child { border:none; margin-bottom:0; padding-bottom:0; }
+.type-label { font-size:11px; color:#aaa; font-family:'Space Grotesk',sans-serif; letter-spacing:.08em; margin-bottom:6px; }
+.type-meta { font-size:11px; color:#ccc; margin-top:6px; }
+
+/* ─ spacing ─ */
+.usage-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.usage-item { background:#f8faf7; border-radius:12px; padding:16px 20px; }
+.usage-context { font-size:11px; font-weight:600; color:var(--c3); font-family:'Space Grotesk',sans-serif; letter-spacing:.1em; text-transform:uppercase; margin-bottom:6px; }
+.usage-desc { font-size:12px; color:#888; line-height:1.6; }
+
+/* ─ do/dont ─ */
+.do-dont { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:24px; }
+.do-box { background:#f0f7f4; border-radius:12px; padding:16px 20px; border-left:3px solid var(--c3); }
+.dont-box { background:#fff5f5; border-radius:12px; padding:16px 20px; border-left:3px solid #e57373; }
+.dd-label { font-size:10px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; margin-bottom:8px; }
+.do-label { color:var(--c3); }
+.dont-label { color:#e57373; }
+.dd-text { font-size:12px; color:#666; line-height:1.6; }
+
+/* ─ file list ─ */
+.file-list { display:flex; flex-direction:column; gap:10px; }
+.file-item { display:flex; align-items:center; gap:14px; padding:14px 18px; background:#f8faf7; border-radius:10px; }
+.file-icon { font-size:18px; flex-shrink:0; }
+.file-name { font-size:13px; font-weight:600; color:var(--c5); font-family:'Space Grotesk',sans-serif; }
+.file-desc { font-size:11px; color:#aaa; margin-top:2px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-tag">Brand Kit · v1.0 · 2025</div>
+  <h1>Stroyka Brand Kit</h1>
+  <p>Reference guide for all brand assets: logos, colors, typography, and usage rules. Keep this file alongside the SVG assets in the same folder.</p>
+</div>
+
+<!-- ══ COLOR PALETTE ══ -->
+<div class="sec-label">01 — Color Palette</div>
+<div class="panel" style="margin-bottom:12px;">
+  <div class="palette-row">
+    <div class="sw">
+      <div class="sw-block" style="height:48px;background:#cad2c5;"></div>
+      <div class="sw-hex">#cad2c5</div>
+      <div class="sw-name">Sage Mist</div>
+      <div class="sw-role">Tertiary text</div>
+    </div>
+    <div class="sw">
+      <div class="sw-block" style="height:58px;background:#84a98c;"></div>
+      <div class="sw-hex">#84a98c</div>
+      <div class="sw-name">Sage Green</div>
+      <div class="sw-role">Secondary text</div>
+    </div>
+    <div class="sw">
+      <div class="sw-block" style="height:68px;background:#52796f;"></div>
+      <div class="sw-hex">#52796f</div>
+      <div class="sw-name">Forest Teal</div>
+      <div class="sw-role">Primary accent / CTAs</div>
+    </div>
+    <div class="sw">
+      <div class="sw-block" style="height:78px;background:#354f52;"></div>
+      <div class="sw-hex">#354f52</div>
+      <div class="sw-name">Deep Teal</div>
+      <div class="sw-role">Card backgrounds</div>
+    </div>
+    <div class="sw">
+      <div class="sw-block" style="height:88px;background:#2f3e46;"></div>
+      <div class="sw-hex">#2f3e46</div>
+      <div class="sw-name">Midnight Teal</div>
+      <div class="sw-role">Page background</div>
+    </div>
+    <div style="margin-left:32px; align-self:center; font-size:13px; color:#999; line-height:1.8; max-width:200px;">
+      <strong style="color:#555;">Tailwind token:</strong><br>
+      <code style="font-size:11px;background:#f4f4f4;padding:2px 6px;border-radius:4px;">brand.sage-mist</code><br>
+      <code style="font-size:11px;background:#f4f4f4;padding:2px 6px;border-radius:4px;">brand.sage</code><br>
+      <code style="font-size:11px;background:#f4f4f4;padding:2px 6px;border-radius:4px;">brand.forest</code><br>
+      <code style="font-size:11px;background:#f4f4f4;padding:2px 6px;border-radius:4px;">brand.deep</code><br>
+      <code style="font-size:11px;background:#f4f4f4;padding:2px 6px;border-radius:4px;">brand.midnight</code>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LOGO MARKS ══ -->
+<div class="sec-label" style="margin-top:44px;">02 — Logo Marks</div>
+
+<div class="logo-grid">
+  <!-- Primary: Cornerstone on dark -->
+  <div class="logo-cell" style="background:var(--c5);">
+    <div class="lc-top">
+      <div class="combo">
+        <svg width="40" height="40" viewBox="0 0 56 56" fill="none">
+          <path d="M6 28 L6 6 L28 6" stroke="#cad2c5" stroke-width="7" fill="none" stroke-linecap="square" stroke-linejoin="miter"/>
+          <path d="M50 28 L50 50 L28 50" stroke="#52796f" stroke-width="7" fill="none" stroke-linecap="square" stroke-linejoin="miter"/>
+          <circle cx="6" cy="6" r="4" fill="#84a98c"/>
+          <circle cx="50" cy="50" r="4" fill="#52796f"/>
+        </svg>
+        <div class="dv" style="width:1px;height:36px;background:rgba(255,255,255,.18);"></div>
+        <span class="wm" style="font-size:20px;color:#fff;">Stroyka</span>
+      </div>
+    </div>
+    <div class="lc-bot" style="background:rgba(255,255,255,.06);">
+      <div class="lc-name" style="color:rgba(255,255,255,.5);">Primary (dark bg)</div>
+      <div class="lc-use" style="color:rgba(255,255,255,.3);">Website navbar · Email header</div>
+    </div>
+  </div>
+
+  <!-- Cornerstone on light -->
+  <div class="logo-cell" style="background:#f5f7f4; border:1px solid #e8ebe5;">
+    <div class="lc-top">
+      <div class="combo">
+        <svg width="40" height="40" viewBox="0 0 56 56" fill="none">
+          <path d="M6 28 L6 6 L28 6" stroke="#2f3e46" stroke-width="7" fill="none" stroke-linecap="square" stroke-linejoin="miter"/>
+          <path d="M50 28 L50 50 L28 50" stroke="#52796f" stroke-width="7" fill="none" stroke-linecap="square" stroke-linejoin="miter"/>
+          <circle cx="6" cy="6" r="4" fill="#354f52"/>
+          <circle cx="50" cy="50" r="4" fill="#84a98c"/>
+        </svg>
+        <div class="dv" style="width:1px;height:36px;background:rgba(47,62,70,.2);"></div>
+        <span class="wm" style="font-size:20px;color:#2f3e46;">Stroyka</span>
+      </div>
+    </div>
+    <div class="lc-bot" style="border-top:1px solid #eee;">
+      <div class="lc-name">Light background</div>
+      <div class="lc-use">Printed materials · Light-mode surfaces</div>
+    </div>
+  </div>
+
+  <!-- Mark only -->
+  <div class="logo-cell" style="background:var(--c4);">
+    <div class="lc-top" style="flex-direction:column; gap:20px;">
+      <svg width="52" height="52" viewBox="0 0 56 56" fill="none">
+        <path d="M6 28 L6 6 L28 6" stroke="#cad2c5" stroke-width="7" fill="none" stroke-linecap="square" stroke-linejoin="miter"/>
+        <path d="M50 28 L50 50 L28 50" stroke="#52796f" stroke-width="7" fill="none" stroke-linecap="square" stroke-linejoin="miter"/>
+        <circle cx="6" cy="6" r="4" fill="#84a98c"/>
+        <circle cx="50" cy="50" r="4" fill="#52796f"/>
+      </svg>
+      <span class="wm" style="font-size:13px;color:rgba(255,255,255,.35);letter-spacing:.2em;">STROYKA</span>
+    </div>
+    <div class="lc-bot" style="background:rgba(255,255,255,.06);">
+      <div class="lc-name" style="color:rgba(255,255,255,.5);">Mark only + wordmark</div>
+      <div class="lc-use" style="color:rgba(255,255,255,.3);">Stacked layout option</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FAVICON / APP ICON ══ -->
+<div class="sec-label" style="margin-top:44px;">03 — Favicon & App Icon (Strata Mark)</div>
+<div class="panel">
+  <p style="font-size:13px;color:#888;margin-bottom:24px;line-height:1.7;">The Strata mark is used everywhere the full Cornerstone mark doesn't fit: browser tab favicon, iOS home screen icon, Android launcher icon, social media avatar. Three bars remain legible at 16×16px.</p>
+
+  <div class="fav-row">
+    <!-- App icon mockups -->
+    <div class="fav-item">
+      <div style="width:96px;height:96px;background:var(--c5);border-radius:22px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.2);">
+        <svg width="60" height="53" viewBox="0 0 52 46" fill="none">
+          <rect x="0" y="0" width="26" height="11" rx="2" fill="#52796f"/>
+          <rect x="0" y="17.5" width="39" height="11" rx="2" fill="#84a98c"/>
+          <rect x="0" y="35" width="52" height="11" rx="2" fill="#cad2c5"/>
+        </svg>
+      </div>
+      <div class="fav-sz">App icon 96px</div>
+    </div>
+
+    <div class="fav-item">
+      <div style="width:60px;height:60px;background:var(--c5);border-radius:14px;display:flex;align-items:center;justify-content:center;">
+        <svg width="38" height="34" viewBox="0 0 52 46" fill="none">
+          <rect x="0" y="0" width="26" height="11" rx="2" fill="#52796f"/>
+          <rect x="0" y="17.5" width="39" height="11" rx="2" fill="#84a98c"/>
+          <rect x="0" y="35" width="52" height="11" rx="2" fill="#cad2c5"/>
+        </svg>
+      </div>
+      <div class="fav-sz">60px</div>
+    </div>
+
+    <div class="fav-item">
+      <div class="fav-bg" style="width:40px;height:40px;background:var(--c5);border-radius:9px;">
+        <svg width="25" height="22" viewBox="0 0 52 46" fill="none">
+          <rect x="0" y="0" width="26" height="11" rx="2" fill="#52796f"/>
+          <rect x="0" y="17.5" width="39" height="11" rx="2" fill="#84a98c"/>
+          <rect x="0" y="35" width="52" height="11" rx="2" fill="#cad2c5"/>
+        </svg>
+      </div>
+      <div class="fav-sz">36px</div>
+    </div>
+
+    <div class="fav-item">
+      <div class="fav-bg" style="width:34px;height:34px;background:var(--c5);border-radius:8px;">
+        <svg width="20" height="18" viewBox="0 0 52 46" fill="none">
+          <rect x="0" y="0" width="26" height="11" rx="2" fill="#52796f"/>
+          <rect x="0" y="17.5" width="39" height="11" rx="2" fill="#84a98c"/>
+          <rect x="0" y="35" width="52" height="11" rx="2" fill="#cad2c5"/>
+        </svg>
+      </div>
+      <div class="fav-sz">32px</div>
+    </div>
+
+    <div class="fav-item">
+      <div class="fav-bg" style="width:22px;height:22px;background:var(--c5);border-radius:4px;">
+        <svg width="14" height="12" viewBox="0 0 52 46" fill="none">
+          <rect x="0" y="0" width="26" height="11" rx="1" fill="#52796f"/>
+          <rect x="0" y="17.5" width="39" height="11" rx="1" fill="#84a98c"/>
+          <rect x="0" y="35" width="52" height="11" rx="1" fill="#cad2c5"/>
+        </svg>
+      </div>
+      <div class="fav-sz">16px</div>
+    </div>
+
+    <div style="width:1px;height:80px;background:#eee;margin:0 8px;align-self:center;"></div>
+
+    <!-- Light bg version -->
+    <div class="fav-item">
+      <div style="width:60px;height:60px;background:#f5f7f4;border:1px solid #e0e4de;border-radius:14px;display:flex;align-items:center;justify-content:center;">
+        <svg width="38" height="34" viewBox="0 0 52 46" fill="none">
+          <rect x="0" y="0" width="26" height="11" rx="2" fill="#52796f"/>
+          <rect x="0" y="17.5" width="39" height="11" rx="2" fill="#354f52"/>
+          <rect x="0" y="35" width="52" height="11" rx="2" fill="#2f3e46"/>
+        </svg>
+      </div>
+      <div class="fav-sz">Light bg version</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TYPOGRAPHY ══ -->
+<div class="sec-label" style="margin-top:44px;">04 — Typography</div>
+<div class="panel-split">
+  <div class="panel" style="margin-bottom:0;">
+    <div class="type-row">
+      <div class="type-label">Display / Hero Heading</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;color:var(--c5);line-height:1.1;">Build smarter,<br>earn more.</div>
+      <div class="type-meta">Space Grotesk · Bold 700 · 52–72px on web</div>
+    </div>
+    <div class="type-row">
+      <div class="type-label">Section Heading</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:var(--c5);">Everything you need.</div>
+      <div class="type-meta">Space Grotesk · Bold 700 · 36–48px on web</div>
+    </div>
+    <div class="type-row">
+      <div class="type-label">Card Heading</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;color:var(--c5);">Offline-First Sync</div>
+      <div class="type-meta">Space Grotesk · SemiBold 600 · 20px</div>
+    </div>
+    <div class="type-row">
+      <div class="type-label">Section Eyebrow</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--c3);">Features</div>
+      <div class="type-meta">Space Grotesk · Bold 700 · 11px · 0.2em tracking · uppercase</div>
+    </div>
+  </div>
+  <div class="panel" style="margin-bottom:0;">
+    <div class="type-row">
+      <div class="type-label">Body — Large</div>
+      <div style="font-family:'Inter',sans-serif;font-size:16px;font-weight:400;color:#444;line-height:1.7;">Stop cobbling together spreadsheets, group chats, and gut feelings to run your jobsites.</div>
+      <div class="type-meta">Inter · Regular 400 · 16–18px · 1.7 line height</div>
+    </div>
+    <div class="type-row">
+      <div class="type-label">Body — Small</div>
+      <div style="font-family:'Inter',sans-serif;font-size:14px;color:#666;line-height:1.65;">Every purchase, timesheet entry, and fuel trip rolls up automatically into a project P&L.</div>
+      <div class="type-meta">Inter · Regular 400 · 13–14px · card body</div>
+    </div>
+    <div class="type-row">
+      <div class="type-label">Wordmark</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--c5);">STROYKA</div>
+      <div class="type-meta">Space Grotesk · Bold 700 · all caps · 0.1em tracking</div>
+    </div>
+    <div class="type-row">
+      <div class="type-label">Caption / Meta</div>
+      <div style="font-family:'Inter',sans-serif;font-size:11px;color:#aaa;letter-spacing:.04em;">Last synced 2 minutes ago</div>
+      <div class="type-meta">Inter · Regular · 11px · timestamps, metadata</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ USAGE RULES ══ -->
+<div class="sec-label" style="margin-top:44px;">05 — Logo Usage</div>
+<div class="panel">
+  <div class="usage-grid">
+    <div class="usage-item">
+      <div class="usage-context">Website Navbar</div>
+      <div class="usage-desc">Full combination mark (Cornerstone + STROYKA), dark variant. Height: 32–36px. On brand-midnight background.</div>
+    </div>
+    <div class="usage-item">
+      <div class="usage-context">Website Footer</div>
+      <div class="usage-desc">Full combination mark, dark variant. Slightly smaller: 28px height. Same midnight background.</div>
+    </div>
+    <div class="usage-item">
+      <div class="usage-context">Browser Favicon</div>
+      <div class="usage-desc">Strata mark on brand-midnight square background. Export as PNG: 16×16, 32×32, 64×64. Use 32px for favicon.ico.</div>
+    </div>
+    <div class="usage-item">
+      <div class="usage-context">iOS / Android App Icon</div>
+      <div class="usage-desc">Strata mark centered on brand-midnight square. Export at 512×512 PNG. flutter_launcher_icons handles all sizes.</div>
+    </div>
+    <div class="usage-item">
+      <div class="usage-context">Social Media Avatar</div>
+      <div class="usage-desc">Strata mark on brand-midnight circle (or square with rounded corners). 400×400px minimum.</div>
+    </div>
+    <div class="usage-item">
+      <div class="usage-context">OG / Share Image</div>
+      <div class="usage-desc">1200×630px. Brand-midnight background. Cornerstone + STROYKA left-aligned. Tagline in brand-sage. Keep it minimal.</div>
+    </div>
+  </div>
+
+  <div class="do-dont">
+    <div class="do-box">
+      <div class="dd-label do-label">✓ Do</div>
+      <div class="dd-text">Use the dark variant on dark/midnight backgrounds. Use the light variant on white/light backgrounds. Maintain clear space equal to the mark height on all sides. Scale proportionally.</div>
+    </div>
+    <div class="dont-box">
+      <div class="dd-label dont-label">✗ Don't</div>
+      <div class="dd-text">Don't place the dark variant on white (low contrast). Don't stretch or distort the mark. Don't change the bracket colors or angles. Don't add drop shadows or effects to the mark. Don't place on busy photographic backgrounds.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FILE INDEX ══ -->
+<div class="sec-label" style="margin-top:44px;">06 — Asset Files in This Folder</div>
+<div class="panel">
+  <div class="file-list">
+    <div class="file-item">
+      <div class="file-icon">📐</div>
+      <div>
+        <div class="file-name">logo-cornerstone-dark.svg</div>
+        <div class="file-desc">Cornerstone mark only — dark background variant (light bracket colors). Use in navbar, dark surfaces.</div>
+      </div>
+    </div>
+    <div class="file-item">
+      <div class="file-icon">📐</div>
+      <div>
+        <div class="file-name">logo-cornerstone-light.svg</div>
+        <div class="file-desc">Cornerstone mark only — light background variant (dark bracket colors). Use on white/light surfaces.</div>
+      </div>
+    </div>
+    <div class="file-item">
+      <div class="file-icon">📄</div>
+      <div>
+        <div class="file-name">logo-full-dark.svg</div>
+        <div class="file-desc">Cornerstone mark + STROYKA wordmark — dark background variant. Primary full logo.</div>
+      </div>
+    </div>
+    <div class="file-item">
+      <div class="file-icon">📄</div>
+      <div>
+        <div class="file-name">logo-full-light.svg</div>
+        <div class="file-desc">Cornerstone mark + STROYKA wordmark — light background variant.</div>
+      </div>
+    </div>
+    <div class="file-item">
+      <div class="file-icon">🟢</div>
+      <div>
+        <div class="file-name">favicon-strata-dark.svg</div>
+        <div class="file-desc">Strata mark (3 bars, light colors) — for use on dark backgrounds. Primary favicon mark.</div>
+      </div>
+    </div>
+    <div class="file-item">
+      <div class="file-icon">🟢</div>
+      <div>
+        <div class="file-name">favicon-strata-light.svg</div>
+        <div class="file-desc">Strata mark (3 bars, dark colors) — for use on light backgrounds.</div>
+      </div>
+    </div>
+    <div class="file-item">
+      <div class="file-icon">📱</div>
+      <div>
+        <div class="file-name">app-icon-512.svg</div>
+        <div class="file-desc">Strata mark on midnight-teal square, 512×512. Use as source to export PNG app icons for iOS and Android.</div>
+      </div>
+    </div>
+    <div class="file-item">
+      <div class="file-icon">📖</div>
+      <div>
+        <div class="file-name">Stroyka_Brand_Kit.html</div>
+        <div class="file-desc">This file — full brand reference with palette, typography, and usage rules.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ NEXT STEPS ══ -->
+<div class="sec-label" style="margin-top:44px;">07 — Next Steps</div>
+<div class="panel">
+  <div style="display:flex;flex-direction:column;gap:14px;">
+    <div style="display:flex;gap:14px;align-items:flex-start;">
+      <div style="background:#edf4f1;border-radius:8px;padding:4px 10px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:var(--c3);flex-shrink:0;">01</div>
+      <div style="font-size:13px;color:#666;line-height:1.65;"><strong style="color:#444;">Export PNG favicons</strong> — Open <code>favicon-strata-dark.svg</code> in a browser, then use a tool like <a href="https://svgtopng.com" style="color:var(--c3);">svgtopng.com</a> or Figma to export at 16, 32, 64, and 180px. Place in <code>stroyka-landing/public/</code>.</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start;">
+      <div style="background:#edf4f1;border-radius:8px;padding:4px 10px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:var(--c3);flex-shrink:0;">02</div>
+      <div style="font-size:13px;color:#666;line-height:1.65;"><strong style="color:#444;">Export app icon PNG</strong> — Open <code>app-icon-512.svg</code> in a browser, export as 512×512 PNG. Add to the Flutter project's assets and configure <code>flutter_launcher_icons</code> in <code>pubspec.yaml</code>.</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start;">
+      <div style="background:#edf4f1;border-radius:8px;padding:4px 10px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:var(--c3);flex-shrink:0;">03</div>
+      <div style="font-size:13px;color:#666;line-height:1.65;"><strong style="color:#444;">Create OG image</strong> — 1200×630px. Background: #2f3e46. Place the Cornerstone mark left-of-center + STROYKA wordmark. Add tagline "Construction Management for Real Crews" in #84a98c below. Export as PNG → <code>public/og-image.png</code>.</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start;">
+      <div style="background:#edf4f1;border-radius:8px;padding:4px 10px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:var(--c3);flex-shrink:0;">04</div>
+      <div style="font-size:13px;color:#666;line-height:1.65;"><strong style="color:#444;">Use Logo.tsx component</strong> — The landing page prompt includes a complete <code>Logo.tsx</code> React component that renders the Cornerstone mark as inline SVG. No image files needed for the web logo — it's all code.</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start;">
+      <div style="background:#edf4f1;border-radius:8px;padding:4px 10px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:var(--c3);flex-shrink:0;">05</div>
+      <div style="font-size:13px;color:#666;line-height:1.65;"><strong style="color:#444;">Store originals in Google Drive</strong> — Upload the entire <code>brand/</code> folder to your Google Drive under <code>Stroyka / Brand & Marketing / Brand Identity</code>. These SVGs are your master files.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end page -->
+</body>
+</html>
