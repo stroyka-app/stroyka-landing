@@ -32,10 +32,10 @@ function FloatingShapes() {
         style={{ y: y2 }}
         className="absolute bottom-[15%] right-[12%] w-16 h-16 border-r-[3px] border-b-[3px] border-brand-forest/15 rounded-br-sm"
       />
-      {/* Floating dot */}
+      {/* Subtle line accent */}
       <motion.div
         style={{ y: y3 }}
-        className="absolute top-[30%] right-[20%] w-3 h-3 rounded-full bg-brand-sage/15"
+        className="absolute top-[30%] right-[20%] w-12 h-px bg-brand-sage/10 rounded-full"
       />
       {/* Horizontal bar */}
       <motion.div

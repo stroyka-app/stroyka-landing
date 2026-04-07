@@ -27,7 +27,7 @@ const PAIN_CARDS = [
   {
     icon: Building2,
     title: "Tools built for enterprise",
-    body: "Procore costs $500+/month and requires an onboarding team. You need something that works on day one.",
+    body: "Traditional construction software costs $500+/month and requires an onboarding team. You need something that works on day one.",
     back: "Stroyka is built for crews of 5\u201325. One flat price, no per-seat fees, works the day you sign up.",
     stat: "$500+",
     statLabel: "per month for enterprise tools",

@@ -4,7 +4,7 @@ import Button from "@/components/ui/Button";
 
 export default function CTABanner() {
   return (
-    <section id="cta" className="py-16 lg:py-20 relative">
+    <section id="cta" className="py-16 lg:py-20 relative bg-brand-deep">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{

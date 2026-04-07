@@ -6,8 +6,8 @@ import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 
 export const metadata: Metadata = {
-  title: "Request a Demo — Stroyka",
-  description: "Book a personalized 20-minute demo of Stroyka for your construction crew.",
+  title: "Request a Demo",
+  description: "See Stroyka in action. Book a 20-minute demo with the founder.",
 };
 
 export default function DemoPage() {

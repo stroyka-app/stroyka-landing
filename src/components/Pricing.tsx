@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ShieldCheck } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
@@ -92,8 +93,9 @@ export default function Pricing() {
 
         <FadeIn delay={0.2}>
           <div className="max-w-3xl mx-auto border border-dashed border-brand-sage/30 bg-brand-deep/30 rounded-2xl p-8 text-center mb-10">
-            <p className="text-lg font-heading font-semibold mb-2">
-              🔒 Founding Member Rate — $99/month, locked forever
+            <p className="text-lg font-heading font-semibold mb-2 flex items-center justify-center gap-2">
+              <ShieldCheck size={20} className="text-brand-forest" />
+              Founding Member Rate — $99/month, locked forever
             </p>
             <p className="text-sm text-brand-sage-mist/70 mb-6">
               The first 20 companies to sign up lock in $99/month for life. Price never increases, no matter what the public rate becomes.

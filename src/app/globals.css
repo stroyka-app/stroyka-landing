@@ -27,6 +27,26 @@
   }
 }
 
+/* Legal page content styles */
+.legal-content p {
+  @apply text-sm text-brand-sage-mist/75 leading-relaxed mb-4;
+}
+.legal-content ul {
+  @apply mb-4 space-y-2;
+}
+.legal-content li {
+  @apply text-sm text-brand-sage-mist/75 leading-relaxed ml-4 list-disc;
+}
+.legal-content strong {
+  @apply text-brand-sage-mist/90;
+}
+.legal-content a {
+  @apply underline text-brand-forest hover:text-brand-sage transition-colors;
+}
+.legal-content h3 {
+  @apply text-base font-heading font-semibold text-brand-sage-mist/90 mt-6 mb-3;
+}
+
 .shimmer-streak {
   position: absolute;
   top: -50%;
