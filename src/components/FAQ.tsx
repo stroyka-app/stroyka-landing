@@ -28,8 +28,8 @@ const QUESTIONS = [
     a: "Yes. Every project, timesheet, and cost record can be exported as CSV or PDF at any time. If you ever cancel, you have 30 days to export everything.",
   },
   {
-    q: "How is Stroyka different from Procore or Buildertrend?",
-    a: "Those tools are built for large general contractors and cost $500–$1,000+/month with complex onboarding. Stroyka is built specifically for small crews (5–25 workers) who need job costing and crew coordination — not enterprise project management. Flat pricing from $149/month, no per-seat fees, works on day one.",
+    q: "Why not just use enterprise construction software?",
+    a: "Most construction platforms are designed for large general contractors with dedicated office staff and IT teams. They cost $500–$1,000+/month, take weeks to onboard, and charge per seat. Stroyka is purpose-built for small crews of 5–25 workers — the people who actually swing hammers. Flat pricing, no per-seat fees, no training required. Your crew can be up and running the same day.",
   },
   {
     q: "Is there a free trial?",
