@@ -56,20 +56,9 @@ export default function Hero() {
     <section id="hero" className="relative overflow-hidden">
       {/* ── Video background ── */}
       <div className="absolute inset-0 z-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="/videos/hero-construction.mp4" type="video/mp4" />
-        </video>
-        {/* Dark overlay on video */}
-        <div className="absolute inset-0 bg-brand-midnight/75" />
-        {/* Gradient fallback when no video */}
+        {/* Gradient base (behind video, visible as fallback) */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 z-0"
           style={{
             background: [
               "radial-gradient(ellipse 80% 60% at 70% 40%, rgba(82,121,111,0.18) 0%, transparent 60%)",
@@ -78,6 +67,18 @@ export default function Hero() {
             ].join(", "),
           }}
         />
+        {/* Video layer */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover z-[1]"
+        >
+          <source src="/videos/hero-construction.mp4" type="video/mp4" />
+        </video>
+        {/* Dark overlay on top of video */}
+        <div className="absolute inset-0 bg-brand-midnight/70 z-[2]" />
       </div>
 
       {/* Geometric shapes */}
