@@ -1,44 +1,51 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import FadeIn from "@/components/ui/FadeIn";
-import SectionLabel from "@/components/ui/SectionLabel";
 import Button from "@/components/ui/Button";
 
-function GeometricOverlay() {
+function FloatingShapes() {
   const ref = useRef(null);
+  const prefersReduced = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
 
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, -60]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, -30]);
-  const y3 = useTransform(scrollYProgress, [0, 1], [0, -90]);
-  const rotate1 = useTransform(scrollYProgress, [0, 1], [0, 15]);
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, -40]);
+  const y3 = useTransform(scrollYProgress, [0, 1], [0, -120]);
+  const rotate1 = useTransform(scrollYProgress, [0, 1], [0, 20]);
+
+  if (prefersReduced) return null;
 
   return (
-    <div ref={ref} className="absolute inset-0 z-10 overflow-hidden pointer-events-none">
+    <div ref={ref} className="absolute inset-0 z-[2] overflow-hidden pointer-events-none">
+      {/* Top-left bracket — echoes Cornerstone mark */}
       <motion.div
         style={{ y: y1, rotate: rotate1 }}
-        className="absolute top-[15%] right-[10%] w-24 h-24 border-l-4 border-t-4 border-brand-sage-mist/20 rounded-tl-md"
+        className="absolute top-[12%] left-[8%] w-20 h-20 border-l-[3px] border-t-[3px] border-brand-sage-mist/10 rounded-tl-sm"
       />
+      {/* Bottom-right bracket */}
       <motion.div
         style={{ y: y2 }}
-        className="absolute top-[40%] right-[25%] w-16 h-10 bg-brand-forest/15 rounded-lg"
+        className="absolute bottom-[15%] right-[12%] w-16 h-16 border-r-[3px] border-b-[3px] border-brand-forest/15 rounded-br-sm"
       />
+      {/* Floating dot */}
       <motion.div
         style={{ y: y3 }}
-        className="absolute top-[25%] right-[5%] w-4 h-4 rounded-full bg-brand-sage/20"
+        className="absolute top-[30%] right-[20%] w-3 h-3 rounded-full bg-brand-sage/15"
       />
-      <motion.div
-        style={{ y: y2 }}
-        className="absolute bottom-[20%] right-[15%] w-20 h-20 border-r-4 border-b-4 border-brand-forest/20 rounded-br-md"
-      />
+      {/* Horizontal bar */}
       <motion.div
         style={{ y: y1 }}
-        className="absolute top-[60%] right-[8%] w-32 h-2 bg-brand-deep/40 rounded-full"
+        className="absolute bottom-[30%] left-[15%] w-24 h-1 bg-brand-forest/10 rounded-full"
+      />
+      {/* Small square */}
+      <motion.div
+        style={{ y: y2 }}
+        className="absolute top-[55%] right-[8%] w-8 h-8 bg-brand-deep/30 rounded-md rotate-12"
       />
     </div>
   );
@@ -46,85 +53,112 @@ function GeometricOverlay() {
 
 export default function Hero() {
   return (
-    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden pt-20 pb-8">
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 60% 60% at 75% 50%, rgba(82,121,111,0.15) 0%, transparent 70%)",
-        }}
-      />
+    <section id="hero" className="relative overflow-hidden">
+      {/* ── Video background ── */}
+      <div className="absolute inset-0 z-0">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/videos/hero-construction.mp4" type="video/mp4" />
+        </video>
+        {/* Dark overlay on video */}
+        <div className="absolute inset-0 bg-brand-midnight/75" />
+        {/* Gradient fallback when no video */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: [
+              "radial-gradient(ellipse 80% 60% at 70% 40%, rgba(82,121,111,0.18) 0%, transparent 60%)",
+              "radial-gradient(ellipse 50% 50% at 20% 80%, rgba(53,79,82,0.15) 0%, transparent 50%)",
+              "linear-gradient(180deg, #2f3e46 0%, #2b3940 50%, #2f3e46 100%)",
+            ].join(", "),
+          }}
+        />
+      </div>
 
-      <div className="max-w-6xl mx-auto px-6 w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-20">
-        <div>
-          <FadeIn delay={0}>
-            <SectionLabel>Built for Small Crews</SectionLabel>
-          </FadeIn>
+      {/* Geometric shapes */}
+      <FloatingShapes />
 
-          <FadeIn delay={0.1}>
-            <h1 className="text-5xl lg:text-7xl font-heading font-bold leading-[1.05] text-balance mb-6">
-              Construction<br />
-              Management<br />
-              <span className="text-brand-sage">for Real Crews</span>
-            </h1>
-          </FadeIn>
+      {/* Bottom gradient fade into next section */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-brand-midnight to-transparent z-[3]" />
 
-          <FadeIn delay={0.2}>
-            <p className="text-lg text-brand-sage-mist/75 leading-relaxed mb-8 max-w-lg">
-              Stop cobbling together spreadsheets, text messages, and gut feelings
-              to run your jobsites. Stroyka gives your whole crew — boss and
-              workers — one simple tool that works even without cell service.
-            </p>
-          </FadeIn>
+      {/* ── Content ── */}
+      <div className="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24 lg:pt-40 lg:pb-32 text-center">
+        {/* Announcement pill */}
+        <FadeIn delay={0}>
+          <div className="inline-flex items-center gap-2 bg-brand-forest/15 border border-brand-forest/30 rounded-full px-4 py-1.5 mb-8">
+            <span className="w-2 h-2 rounded-full bg-brand-forest animate-pulse" />
+            <span className="font-heading text-xs font-medium tracking-wide text-brand-sage">
+              Now accepting founding members — $99/mo locked forever
+            </span>
+          </div>
+        </FadeIn>
 
-          <FadeIn delay={0.3}>
-            <div className="flex flex-wrap gap-4 mb-8">
-              <Button variant="primary" size="lg" href="/demo">
-                Request a Demo
-              </Button>
-              <Button variant="ghost" size="lg" href="#how-it-works">
-                See How It Works
-              </Button>
-            </div>
-          </FadeIn>
-
-          <FadeIn delay={0.4}>
-            <div className="flex flex-wrap gap-6 text-sm text-brand-sage-mist/60">
-              <span>⚡ Offline-first</span>
-              <span>👷 Built for crews of 5–20</span>
-              <span>💳 Flat monthly pricing</span>
-            </div>
-          </FadeIn>
-        </div>
-
-        <FadeIn direction="right" delay={0.2} className="relative">
-          <div className="relative rounded-2xl overflow-hidden bg-brand-deep ring-1 ring-brand-forest/30 rotate-1 shadow-2xl">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-[400px] lg:h-[500px] object-cover opacity-40 blur-[1px]"
-              poster=""
+        {/* Headline */}
+        <FadeIn delay={0.1}>
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold leading-[1.05] tracking-tight mb-6">
+            Construction
+            <br />
+            Management
+            <br />
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                backgroundImage:
+                  "linear-gradient(135deg, #84a98c 0%, #52796f 50%, #cad2c5 100%)",
+              }}
             >
-              <source src="/videos/hero-construction.mp4" type="video/mp4" />
-            </video>
+              for Real Crews
+            </span>
+          </h1>
+        </FadeIn>
 
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-midnight via-brand-deep to-brand-forest/30" />
+        {/* Subtext */}
+        <FadeIn delay={0.2}>
+          <p className="text-base md:text-lg text-brand-sage-mist/70 leading-relaxed max-w-xl mx-auto mb-10">
+            Stop cobbling together spreadsheets, text messages, and gut feelings
+            to run your jobsites. One simple tool for your whole crew — boss and
+            workers — that works even without cell service.
+          </p>
+        </FadeIn>
 
-            <GeometricOverlay />
+        {/* CTAs */}
+        <FadeIn delay={0.3}>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
+            <Button variant="primary" size="lg" href="/demo">
+              Request a Demo
+            </Button>
+            <Button variant="ghost" size="lg" href="/#how-it-works">
+              See How It Works
+            </Button>
+          </div>
+        </FadeIn>
 
-            <div className="absolute inset-0 flex items-center justify-center z-20">
-              <div className="bg-brand-midnight/80 backdrop-blur-sm rounded-2xl p-8 text-center">
-                <svg width="48" height="48" viewBox="0 0 56 56" fill="none" className="mx-auto mb-4">
-                  <path d="M6 28 L6 6 L28 6" stroke="#cad2c5" strokeWidth="7" strokeLinecap="square" strokeLinejoin="miter"/>
-                  <path d="M50 28 L50 50 L28 50" stroke="#52796f" strokeWidth="7" strokeLinecap="square" strokeLinejoin="miter"/>
-                  <circle cx="6" cy="6" r="4" fill="#84a98c"/>
-                  <circle cx="50" cy="50" r="4" fill="#52796f"/>
-                </svg>
-                <p className="font-heading text-sm text-brand-sage tracking-wider uppercase">Coming Soon</p>
-              </div>
-            </div>
+        {/* Trust signals */}
+        <FadeIn delay={0.4}>
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-brand-sage-mist/50">
+            <span className="flex items-center gap-2">
+              <svg className="w-4 h-4 text-brand-forest" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              Offline-first
+            </span>
+            <span className="flex items-center gap-2">
+              <svg className="w-4 h-4 text-brand-forest" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Built for crews of 5–20
+            </span>
+            <span className="flex items-center gap-2">
+              <svg className="w-4 h-4 text-brand-forest" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Flat monthly pricing
+            </span>
           </div>
         </FadeIn>
       </div>
