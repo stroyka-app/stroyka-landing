@@ -9,3 +9,4 @@
 {"source":"user-event","type":"click","text":"G\n    \n      Lenis Smooth Scroll\n      Replace native scroll with Lenis for buttery-smooth, inertia-based scrolling. This is the foundation that makes ALL other scroll effects feel premium. Used by side-kick.se and paysages.studio.","choice":"smooth-scroll","id":null,"timestamp":1775528690251}
 {"source":"user-event","type":"click","text":"H\n    \n      Section Color Transitions\n      Background color subtly shifts between sections as you scroll — from midnight to slightly lighter deep teal and back. Creates a sense of progression through the page without harsh section breaks.","choice":"section-transitions","id":null,"timestamp":1775528697633}
 {"type":"screen-added","file":"/Users/maks_teal_meridian/dev/stroyka-landing/.superpowers/brainstorm/57639-1775528605/content/waiting.html"}
+{"type":"server-stopped","reason":"idle timeout"}

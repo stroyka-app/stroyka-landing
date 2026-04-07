@@ -51,7 +51,7 @@ export default function Button({
   };
 
   const base =
-    "inline-flex items-center justify-center font-heading font-semibold tracking-wide rounded-xl transition-colors duration-200 cursor-pointer";
+    "relative inline-flex items-center justify-center font-heading font-semibold tracking-wide rounded-xl transition-colors duration-200 cursor-pointer";
   const variants = {
     primary:
       "bg-brand-forest text-white hover:bg-brand-deep active:scale-95 shadow-lg shadow-brand-forest/20",
@@ -69,10 +69,20 @@ export default function Button({
 
   const inner = href ? (
     <a href={href} className={cls}>
+      {variant === "primary" && (
+        <span className="absolute inset-0 overflow-hidden rounded-xl">
+          <span className="shimmer-streak" />
+        </span>
+      )}
       {children}
     </a>
   ) : (
     <button className={cls} {...props}>
+      {variant === "primary" && (
+        <span className="absolute inset-0 overflow-hidden rounded-xl">
+          <span className="shimmer-streak" />
+        </span>
+      )}
       {children}
     </button>
   );
