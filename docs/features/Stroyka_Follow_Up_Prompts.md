@@ -165,6 +165,7 @@ Audit every environment variable in the project. Verify:
 - `UPSTASH_REDIS_REST_URL` — server-only ✓
 - `UPSTASH_REDIS_REST_TOKEN` — server-only ✓
 - `NEXT_PUBLIC_APP_URL` — client-safe (only the app URL, not a secret) ✓
+persoanl note not sure what are those last 3 are about!!!
 
 If any secret accidentally has `NEXT_PUBLIC_` prefix, remove it and update all references.
 

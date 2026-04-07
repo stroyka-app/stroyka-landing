@@ -92,36 +92,28 @@ function FlipperCard({ feature, isActive, onActivate }: FlipperCardProps) {
         {feature.icon}
       </div>
 
-      {/* Title + description — shown when active */}
+      {/* Title — always visible */}
+      <h3
+        className={[
+          "font-heading font-semibold leading-snug mt-4 min-w-0",
+          isActive ? "text-xl mb-3" : "text-sm mb-0 text-brand-sage-mist/70",
+        ].join(" ")}
+      >
+        {feature.title}
+      </h3>
+
+      {/* Description — only shown when active */}
       <AnimatePresence initial={false}>
         {isActive && (
-          <motion.div
-            key="content"
+          <motion.p
+            key="body"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { delay: 0.12, duration: 0.25 } }}
             exit={{ opacity: 0, transition: { duration: 0.1 } }}
-            className="mt-5 min-w-0"
+            className="text-brand-sage-mist/65 text-sm leading-relaxed min-w-0"
           >
-            <h3 className="text-xl font-heading font-semibold mb-3 leading-snug">
-              {feature.title}
-            </h3>
-            <p className="text-brand-sage-mist/65 text-sm leading-relaxed">
-              {feature.body}
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Collapsed label — index dot so user can see something */}
-      <AnimatePresence initial={false}>
-        {!isActive && (
-          <motion.div
-            key="dot"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, transition: { delay: 0.1, duration: 0.2 } }}
-            exit={{ opacity: 0, transition: { duration: 0.08 } }}
-            className="absolute bottom-4 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-brand-sage/30"
-          />
+            {feature.body}
+          </motion.p>
         )}
       </AnimatePresence>
     </motion.div>

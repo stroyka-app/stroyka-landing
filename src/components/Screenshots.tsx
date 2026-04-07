@@ -108,14 +108,9 @@ export default function Screenshots() {
                     transition={{ duration: 0.4, ease: "easeInOut" }}
                   >
                     <div className="w-full aspect-[16/10] rounded-xl bg-brand-midnight flex items-center justify-center">
-                      <div className="text-center">
-                        <span className="text-3xl mb-2 block">
-                          {activeScreenshot.emoji}
-                        </span>
-                        <p className="text-sm text-brand-sage-mist/50">
-                          {activeScreenshot.label}
-                        </p>
-                      </div>
+                      <p className="text-sm text-brand-sage-mist/50">
+                        {activeScreenshot.label}
+                      </p>
                     </div>
                   </motion.div>
                 </AnimatePresence>
