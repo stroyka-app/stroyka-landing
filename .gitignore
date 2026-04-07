@@ -36,5 +36,8 @@ yarn-error.log*
 # Source video files (originals kept locally, not in repo)
 assets/*.mp4
 
+# Superpowers brainstorm sessions (local dev only)
+.superpowers/
+
 # Misc
 *.tsbuildinfo
