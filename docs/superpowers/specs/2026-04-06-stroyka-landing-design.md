@@ -267,7 +267,11 @@ All 8 effects are included. These layer on top of the base section specs from th
 
 - Clean, focused single-column form centered on the page.
 - Fields: Name, Company name, Crew size (dropdown: 1-5, 5-10, 10-25, 25+), Email, Phone (optional), "What's your biggest challenge?" (textarea).
-- Submit: Next.js API route sends email via Resend to `hello@getstroyka.com`.
+- Submit: Next.js API route does two things in parallel:
+  1. Sends email via Resend to `hello@getstroyka.com`.
+  2. POSTs to Telegram Bot API to send an instant notification to the founder's chat (includes name, company, crew size, email).
+- Env vars: `RESEND_API_KEY`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`.
+- Both calls are fire-and-forget in parallel (`Promise.allSettled`) — form succeeds even if one fails.
 - Success state: friendly confirmation message with animation.
 - The page has the Navbar and Footer for consistency.
 - Same dark theme, same brand styling.
