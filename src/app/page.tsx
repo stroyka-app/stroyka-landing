@@ -8,6 +8,7 @@ import Features from "@/components/Features";
 import HowItWorks from "@/components/HowItWorks";
 import Screenshots from "@/components/Screenshots";
 import Pricing from "@/components/Pricing";
+// import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import CTABanner from "@/components/CTABanner";
 import Footer from "@/components/Footer";
@@ -35,6 +36,7 @@ export default function Home() {
       <HowItWorks />
       <Screenshots />
       <Pricing />
+      {/* <Testimonials /> */}
       <FAQ />
       <CTABanner />
       <Footer />
