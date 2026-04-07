@@ -39,5 +39,9 @@ assets/*.mp4
 # Superpowers brainstorm sessions (local dev only)
 .superpowers/
 
+# Local-only docs (personal reference, not for repo)
+docs/reference/what-we-added-explained.md
+docs/reference/infrastructure-and-security.md
+
 # Misc
 *.tsbuildinfo
