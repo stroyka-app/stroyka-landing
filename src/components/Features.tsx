@@ -89,7 +89,7 @@ function FeatureCard({ feature, index }: { feature: (typeof FEATURES)[0]; index:
 
 export default function Features() {
   return (
-    <section id="features" className="py-24 lg:py-32">
+    <section id="features" className="py-16 lg:py-20">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-16">
           <FadeIn>

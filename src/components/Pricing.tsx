@@ -27,7 +27,7 @@ const PRO_FEATURES = [
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="py-24 lg:py-32">
+    <section id="pricing" className="py-16 lg:py-20">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-16">
           <FadeIn>
@@ -101,7 +101,7 @@ export default function Pricing() {
             <Button variant="primary" href="/demo" className="mb-6">Claim a Founding Spot →</Button>
             <div className="max-w-xs mx-auto">
               <div className="h-2 bg-brand-deep rounded-full overflow-hidden">
-                <div className="h-full bg-brand-forest rounded-full" style={{ width: "40%" }} />
+                <div className="h-full rounded-full" style={{ width: "40%", backgroundColor: "#d97706" }} />
               </div>
               <p className="text-xs text-brand-sage-mist/50 mt-2">12 of 20 spots remaining</p>
             </div>

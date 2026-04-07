@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import FadeIn from "@/components/ui/FadeIn";
-import FallingLetter from "@/components/ui/FallingLetter";
 import SectionLabel from "@/components/ui/SectionLabel";
 import Button from "@/components/ui/Button";
 
@@ -47,7 +46,7 @@ function GeometricOverlay() {
 
 export default function Hero() {
   return (
-    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden pt-16">
+    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden pt-20 pb-8">
       <div
         className="absolute inset-0 z-0"
         style={{
@@ -59,13 +58,14 @@ export default function Hero() {
       <div className="max-w-6xl mx-auto px-6 w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-20">
         <div>
           <FadeIn delay={0}>
-            <SectionLabel>Construction Management</SectionLabel>
+            <SectionLabel>Built for Small Crews</SectionLabel>
           </FadeIn>
 
           <FadeIn delay={0.1}>
             <h1 className="text-5xl lg:text-7xl font-heading font-bold leading-[1.05] text-balance mb-6">
-              for Real{" "}
-              <FallingLetter text="Crews" fallingIndex={0} />
+              Construction<br />
+              Management<br />
+              <span className="text-brand-sage">for Real Crews</span>
             </h1>
           </FadeIn>
 

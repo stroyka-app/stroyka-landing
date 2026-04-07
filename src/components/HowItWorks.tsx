@@ -31,7 +31,7 @@ export default function HowItWorks() {
   const [activeTab, setActiveTab] = useState<TabKey>("boss");
 
   return (
-    <section id="how-it-works" className="py-24 lg:py-32">
+    <section id="how-it-works" className="py-16 lg:py-20">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-12">
           <FadeIn>
