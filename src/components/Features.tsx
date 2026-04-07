@@ -1,13 +1,18 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion } from "framer-motion";
-import { useParallax } from "@/lib/hooks/useParallax";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
 
-const FEATURES = [
+interface Feature {
+  icon: React.ReactNode;
+  title: string;
+  body: string;
+}
+
+const FEATURES: Feature[] = [
   {
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -47,50 +52,89 @@ const FEATURES = [
   },
 ];
 
-function FeatureCard({ feature, index }: { feature: (typeof FEATURES)[0]; index: number }) {
-  const { ref: parallaxRef, y } = useParallax(index % 2 === 0 ? 20 : -20);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+interface FlipperCardProps {
+  feature: Feature;
+  isActive: boolean;
+  onActivate: () => void;
+}
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ x: y * -4, y: x * 4 });
-  };
-
-  const handleMouseLeave = () => setTilt({ x: 0, y: 0 });
-
+function FlipperCard({ feature, isActive, onActivate }: FlipperCardProps) {
   return (
-    <FadeIn delay={0.1 * index}>
-      <motion.div ref={parallaxRef} style={{ y }}>
-        <div
-          ref={cardRef}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          className="bg-brand-deep/40 border border-brand-deep hover:border-brand-forest rounded-2xl p-8 transition-colors duration-200 h-full"
-          style={{
-            perspective: "1000px",
-            transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-            transition: "transform 0.2s ease-out",
-          }}
-        >
-          <div className="w-12 h-12 bg-brand-forest/15 rounded-xl flex items-center justify-center text-brand-sage mb-5">
-            {feature.icon}
-          </div>
-          <h3 className="text-xl font-heading font-semibold mb-3">{feature.title}</h3>
-          <p className="text-brand-sage-mist/65 text-sm leading-relaxed">{feature.body}</p>
-        </div>
-      </motion.div>
-    </FadeIn>
+    <motion.div
+      layout
+      onClick={onActivate}
+      onMouseEnter={onActivate}
+      animate={{
+        flexGrow: isActive ? 3 : 1,
+      }}
+      transition={{
+        layout: { type: "spring", stiffness: 300, damping: 35 },
+        flexGrow: { type: "spring", stiffness: 300, damping: 35 },
+      }}
+      className={[
+        "relative cursor-pointer rounded-2xl border overflow-hidden",
+        "flex-shrink-0 min-w-0",
+        isActive
+          ? "border-brand-forest bg-brand-deep/60 shadow-lg shadow-brand-forest/10 p-8"
+          : "border-brand-deep bg-brand-deep/30 p-6",
+      ].join(" ")}
+      style={{ flexBasis: 0 }}
+    >
+      {/* Icon — always visible */}
+      <div
+        className={[
+          "w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0",
+          isActive
+            ? "bg-brand-forest/20 text-brand-sage"
+            : "bg-brand-forest/10 text-brand-sage/50",
+        ].join(" ")}
+      >
+        {feature.icon}
+      </div>
+
+      {/* Title + description — shown when active */}
+      <AnimatePresence initial={false}>
+        {isActive && (
+          <motion.div
+            key="content"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { delay: 0.12, duration: 0.25 } }}
+            exit={{ opacity: 0, transition: { duration: 0.1 } }}
+            className="mt-5 min-w-0"
+          >
+            <h3 className="text-xl font-heading font-semibold mb-3 leading-snug">
+              {feature.title}
+            </h3>
+            <p className="text-brand-sage-mist/65 text-sm leading-relaxed">
+              {feature.body}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Collapsed label — index dot so user can see something */}
+      <AnimatePresence initial={false}>
+        {!isActive && (
+          <motion.div
+            key="dot"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { delay: 0.1, duration: 0.2 } }}
+            exit={{ opacity: 0, transition: { duration: 0.08 } }}
+            className="absolute bottom-4 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-brand-sage/30"
+          />
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 }
 
 export default function Features() {
+  const [activeIndex, setActiveIndex] = useState(0);
+
   return (
     <section id="features" className="py-16 lg:py-20">
       <div className="max-w-6xl mx-auto px-6">
+        {/* Header */}
         <div className="text-center mb-16">
           <FadeIn>
             <SectionLabel>Features</SectionLabel>
@@ -99,9 +143,37 @@ export default function Features() {
             Everything your crew needs. Nothing they don&apos;t.
           </TextReveal>
         </div>
-        <div className="grid md:grid-cols-2 gap-6">
+
+        {/* Desktop: horizontal flipper row */}
+        <FadeIn delay={0.1}>
+          <div className="hidden md:flex gap-4 h-64">
+            {FEATURES.map((feature, i) => (
+              <FlipperCard
+                key={feature.title}
+                feature={feature}
+                isActive={activeIndex === i}
+                onActivate={() => setActiveIndex(i)}
+              />
+            ))}
+          </div>
+        </FadeIn>
+
+        {/* Mobile: stacked cards, all show full content */}
+        <div className="flex flex-col gap-4 md:hidden">
           {FEATURES.map((feature, i) => (
-            <FeatureCard key={feature.title} feature={feature} index={i} />
+            <FadeIn key={feature.title} delay={0.08 * i}>
+              <div className="bg-brand-deep/40 border border-brand-deep rounded-2xl p-6">
+                <div className="w-12 h-12 bg-brand-forest/15 rounded-xl flex items-center justify-center text-brand-sage mb-5">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-heading font-semibold mb-3">
+                  {feature.title}
+                </h3>
+                <p className="text-brand-sage-mist/65 text-sm leading-relaxed">
+                  {feature.body}
+                </p>
+              </div>
+            </FadeIn>
           ))}
         </div>
       </div>
