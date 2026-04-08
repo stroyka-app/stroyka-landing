@@ -97,7 +97,7 @@ export default function Footer() {
               &copy; {new Date().getFullYear()} Stroyka. All rights reserved.
             </p>
             <p className="text-xs text-brand-sage/40">
-              Made for crews who build things.
+              Made for crews who build things
             </p>
           </div>
         </div>

@@ -161,7 +161,7 @@ export default function HowItWorks() {
             <SectionLabel>How It Works</SectionLabel>
           </FadeIn>
           <TextReveal as="h2" className="text-4xl lg:text-5xl font-heading font-bold leading-tight mb-8">
-            Simple for everyone.
+            Simple for everyone
           </TextReveal>
 
           {/* Tab switcher */}

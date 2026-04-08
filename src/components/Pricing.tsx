@@ -35,7 +35,7 @@ export default function Pricing() {
             <SectionLabel>Pricing</SectionLabel>
           </FadeIn>
           <TextReveal as="h2" className="text-4xl lg:text-5xl font-heading font-bold leading-tight mb-4">
-            One price. Whole crew included.
+            One price. Whole crew included
           </TextReveal>
           <FadeIn delay={0.1}>
             <p className="text-base text-brand-sage-mist/75 max-w-lg mx-auto">
@@ -76,7 +76,7 @@ export default function Pricing() {
               <h3 className="font-heading font-semibold text-xl mb-1">Pro</h3>
               <p className="text-brand-sage-mist/60 text-sm mb-6">For crews up to 25 workers</p>
               <div className="mb-6">
-                <span className="text-4xl font-heading font-bold">$299</span>
+                <span className="text-4xl font-heading font-bold">$249</span>
                 <span className="text-brand-sage-mist/60 ml-1">/ month</span>
               </div>
               <ul className="flex flex-col gap-3 mb-8">
@@ -103,9 +103,9 @@ export default function Pricing() {
             <Button variant="primary" href="/demo" className="mb-6">Claim a Founding Spot →</Button>
             <div className="max-w-xs mx-auto">
               <div className="h-2 bg-brand-deep rounded-full overflow-hidden">
-                <div className="h-full rounded-full" style={{ width: "40%", backgroundColor: "#d97706" }} />
+                <div className="h-full rounded-full" style={{ width: "30%", backgroundColor: "#d97706" }} />
               </div>
-              <p className="text-xs text-brand-sage-mist/50 mt-2">12 of 20 spots remaining</p>
+              <p className="text-xs text-brand-sage-mist/50 mt-2">14 of 20 spots remaining</p>
             </div>
           </div>
         </FadeIn>

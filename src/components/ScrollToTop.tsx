@@ -43,7 +43,7 @@ export default function ScrollToTop() {
           transition={{ duration: 0.25, ease: "easeOut" }}
           onClick={scrollToTop}
           aria-label="Scroll to top"
-          className="fixed bottom-6 right-6 z-50 group cursor-pointer"
+          className="fixed bottom-20 right-6 z-50 group cursor-pointer"
         >
           <div className="relative flex items-center justify-center">
             {/* Progress ring */}

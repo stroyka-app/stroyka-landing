@@ -98,7 +98,7 @@ export default function RootLayout({
               offers: {
                 "@type": "AggregateOffer",
                 lowPrice: "149",
-                highPrice: "299",
+                highPrice: "249",
                 priceCurrency: "USD",
                 offerCount: "2",
               },

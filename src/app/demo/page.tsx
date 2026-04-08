@@ -14,7 +14,7 @@ export default function DemoPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-32 pb-24">
+      <main className="min-h-screen pt-32 pb-12">
         <div className="max-w-2xl mx-auto px-6">
           <FadeIn>
             <SectionLabel>Get Started</SectionLabel>
