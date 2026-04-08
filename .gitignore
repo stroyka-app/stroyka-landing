@@ -47,5 +47,9 @@ assets/screenshots/
 docs/reference/what-we-added-explained.md
 docs/reference/infrastructure-and-security.md
 
+# Claude/AI workflow files (local dev only)
+CLAUDE.md
+tasks/
+
 # Misc
 *.tsbuildinfo

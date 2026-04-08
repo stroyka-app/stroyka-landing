@@ -30,14 +30,13 @@
 ## Remaining Items (not from prompts)
 
 ### High Priority
-- [ ] Add screenshots/images to the landing page (Screenshots section)
-- [ ] Create OG image (`/og-image.png`) for social sharing previews
-- [ ] Convert hero video to WebM for better compression (requires `brew install ffmpeg`)
+- [ ] Add screenshots to the landing page — retake with iPhone 16 Pro simulator (Cmd+S export for 1170x2532 images). Screenshots component is built and hidden, just needs assets. See `tasks/lessons.md` for rejected approaches
+- [ ] Review OG image (`/og-image.png`) on social sharing previews
 
 ### Medium Priority
+- [ ] Convert hero video to WebM for better compression (optional, needs `brew install ffmpeg`)
 - [ ] Update Supabase email templates in `job-costing-app` repo to match new brand palette
 - [ ] Add real testimonials when available (Testimonials section is built but hidden)
-- [ ] Set up Upstash Redis in production (done — `becoming-python-93946.upstash.io`)
 
 ### Nice to Have
 - [ ] Add social media links to footer Contact column when accounts are created
