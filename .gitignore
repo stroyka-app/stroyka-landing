@@ -35,6 +35,10 @@ yarn-error.log*
 
 # Source video files (originals kept locally, not in repo)
 assets/*.mp4
+assets/videos/
+
+# Source screenshots (originals kept locally, not in repo)
+assets/screenshots/
 
 # Superpowers brainstorm sessions (local dev only)
 .superpowers/
