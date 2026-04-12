@@ -8,7 +8,7 @@ import SectionLabel from "@/components/ui/SectionLabel";
 const TOTAL_FRAMES = 240;
 
 function getFrameSrc(index: number): string {
-  return `/hero-frames/ezgif-frame-${String(index).padStart(3, "0")}.png`;
+  return `/hero-frames/ezgif-frame-${String(index).padStart(3, "0")}.webp`;
 }
 
 function preloadFrames(
@@ -111,7 +111,6 @@ export default function BuiltTough() {
   const rafId = useRef<number>(0);
   const lastDrawnFrame = useRef<number>(0);
 
-  const [progress, setProgress] = useState(0);
   const [visibleLayers, setVisibleLayers] = useState<boolean[]>(
     LAYERS.map(() => false)
   );
@@ -165,8 +164,6 @@ export default function BuiltTough() {
       const stickyDistance = section.offsetHeight - window.innerHeight;
       const scrolled = -rect.top;
       const p = Math.max(0, Math.min(1, scrolled / stickyDistance));
-
-      setProgress(p);
 
       // First 70% of scroll: unfold (frames 1→240)
       // Last 30%: hold fully unfolded, then unstick naturally
