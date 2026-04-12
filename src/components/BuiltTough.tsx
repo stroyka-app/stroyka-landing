@@ -427,24 +427,21 @@ export default function BuiltTough() {
                canvas parent is the center column which is display:none on <lg).
                So we show a separate img-based fallback on mobile. */}
           <div className="lg:hidden w-full px-6">
-            <div className="relative w-full h-[50vh] flex items-center justify-center">
+            <div
+              className="relative w-full h-[50vh] flex items-center justify-center"
+              style={{
+                maskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)",
+                maskComposite: "intersect",
+                WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)",
+                WebkitMaskComposite: "source-in" as string,
+              }}
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 ref={mobileImgRef}
                 src={getFrameSrc(currentFrame)}
                 alt=""
                 className="max-w-full max-h-full object-contain"
-              />
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  background: [
-                    "linear-gradient(to top, #2f3e46 0%, transparent 20%)",
-                    "linear-gradient(to bottom, #2f3e46 0%, transparent 20%)",
-                    "linear-gradient(to left, #2f3e46 0%, #2f3e46 5%, transparent 45%)",
-                    "linear-gradient(to right, #2f3e46 0%, #2f3e46 5%, transparent 45%)",
-                  ].join(", "),
-                }}
               />
             </div>
             {mobileActive >= 0 && (
