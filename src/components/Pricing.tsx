@@ -105,7 +105,7 @@ export default function Pricing() {
               <div className="h-2 bg-brand-deep rounded-full overflow-hidden">
                 <div className="h-full rounded-full" style={{ width: "30%", backgroundColor: "#d97706" }} />
               </div>
-              <p className="text-xs text-brand-sage-mist/50 mt-2">14 of 20 spots remaining</p>
+              <p className="text-xs text-brand-sage-mist/50 mt-2">6 of 20 spots taken</p>
             </div>
           </div>
         </FadeIn>

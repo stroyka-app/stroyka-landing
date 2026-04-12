@@ -4,6 +4,7 @@ import { useSectionColors } from "@/lib/hooks/useSectionColors";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Problem from "@/components/Problem";
+import BuiltTough from "@/components/BuiltTough";
 import Features from "@/components/Features";
 import HowItWorks from "@/components/HowItWorks";
 import Screenshots from "@/components/Screenshots";
@@ -16,6 +17,7 @@ import Footer from "@/components/Footer";
 const SECTION_IDS = [
   "hero",
   "problem",
+  "built-tough",
   "features",
   "how-it-works",
   "screenshots",
@@ -32,6 +34,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Problem />
+      <BuiltTough />
       <Features />
       <HowItWorks />
       <Screenshots />

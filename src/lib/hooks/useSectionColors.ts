@@ -3,14 +3,15 @@
 import { useEffect, useState } from "react";
 
 const SECTION_COLORS = [
-  "#2f3e46",
-  "#2b3940",
-  "#2f3e46",
-  "#334a4f",
-  "#2f3e46",
-  "#2b3940",
-  "#334a4f",
-  "#2f3e46",
+  "#2f3e46", // hero
+  "#2b3940", // problem
+  "#2f3e46", // built-tough
+  "#2f3e46", // features
+  "#334a4f", // how-it-works
+  "#2f3e46", // screenshots
+  "#2b3940", // pricing
+  "#334a4f", // cta
+  "#2f3e46", // footer
 ];
 
 function lerp(a: number, b: number, t: number): number {

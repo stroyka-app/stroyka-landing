@@ -40,6 +40,13 @@ assets/videos/
 # Source screenshots (originals kept locally, not in repo)
 assets/screenshots/
 
+# Hero frame sequence (source frames kept locally, served from public/)
+assets/ezgif_frames/
+assets/ezgif-frames/
+assets/ezgif-frames-transparent/
+assets/ezgif-frames-cropped/
+public/hero-frames/
+
 # Superpowers brainstorm sessions (local dev only)
 .superpowers/
 

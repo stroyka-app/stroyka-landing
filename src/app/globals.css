@@ -61,3 +61,20 @@
   );
   animation: shimmer 3s ease-in-out infinite;
 }
+
+/* Ambient glow behind the exploded device */
+.device-glow {
+  isolation: isolate;
+}
+.device-glow::before {
+  content: '';
+  position: absolute;
+  inset: 15% 20%;
+  background: radial-gradient(ellipse at 50% 50%,
+    rgba(82, 121, 111, 0.20) 0%,
+    transparent 70%
+  );
+  filter: blur(50px);
+  z-index: -1;
+  pointer-events: none;
+}
