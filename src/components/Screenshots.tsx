@@ -16,30 +16,36 @@ interface Screenshot {
 
 const SCREENSHOTS: Screenshot[] = [
   {
-    path: "/screenshots/projects.png",
+    path: "/screenshots/projects.jpeg",
     label: "Projects",
     caption:
       "All your active jobs in one place — costs, crew, and status at a glance",
   },
   {
-    path: "/screenshots/job-costing.png",
+    path: "/screenshots/job-costing.jpeg",
     label: "Job Costing",
     caption:
       "Every dollar tracked — labor, materials, fuel, and equipment per project",
   },
   {
-    path: "/screenshots/tasks.png",
+    path: "/screenshots/tasks.jpeg",
     label: "Tasks",
     caption:
       "Assign work, set priorities, and track completion across your crew",
   },
   {
-    path: "/screenshots/requests.png",
+    path: "/screenshots/requests.jpeg",
     label: "Requests",
     caption: "Workers submit supply requests — you approve, costs auto-log",
   },
   {
-    path: "/screenshots/worker-view.png",
+    path: "/screenshots/reports.jpeg",
+    label: "Reports",
+    caption:
+      "Budget vs. actual at a glance — labor, materials, and fuel broken down by project",
+  },
+  {
+    path: "/screenshots/worker-view.jpeg",
     label: "Worker View",
     caption:
       "Your crew gets their own dashboard — tasks, time logging, and daily updates",
