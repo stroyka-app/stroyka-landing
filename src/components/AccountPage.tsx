@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import FadeIn from "@/components/ui/FadeIn";
 import Button from "@/components/ui/Button";
 import Logo from "@/components/Logo";
+import Link from "next/link";
 
 type PageState = "loading" | "success" | "error" | "direct";
 
@@ -161,12 +162,12 @@ function SuccessView() {
           <Button variant="primary" size="md" href="https://app.getstroyka.com">
             Open Stroyka
           </Button>
-          <a
+          <Link
             href="/"
             className="text-sm text-brand-sage/60 hover:text-brand-sage transition-colors"
           >
             Back to getstroyka.com
-          </a>
+          </Link>
         </div>
       </FadeIn>
     </PageShell>
