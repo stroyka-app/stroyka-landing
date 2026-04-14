@@ -53,6 +53,10 @@ assets/ezgif-frames-cropped/
 docs/reference/what-we-added-explained.md
 docs/reference/infrastructure-and-security.md
 
+# Security & internal docs (never publish)
+docs/features/
+docs/superpowers/
+
 # Claude/AI workflow files (local dev only)
 CLAUDE.md
 tasks/
