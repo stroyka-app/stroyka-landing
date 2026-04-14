@@ -7,7 +7,11 @@ import { z } from "zod";
 import { billingRatelimit } from "@/lib/billing-ratelimit";
 import { verifyToken, hashToken } from "@/lib/token";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) throw new Error("STRIPE_SECRET_KEY is not configured");
+  return new Stripe(key);
+}
 
 const ALLOWED_ORIGINS = [
   "https://getstroyka.com",
@@ -81,7 +85,7 @@ export async function POST(request: Request) {
 
   // 6. Create Stripe Customer Portal session
   try {
-    const session = await stripe.billingPortal.sessions.create({
+    const session = await getStripe().billingPortal.sessions.create({
       customer: payload.cid,
       return_url: RETURN_URL,
     });
