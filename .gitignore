@@ -57,6 +57,9 @@ docs/reference/infrastructure-and-security.md
 docs/features/
 docs/superpowers/
 
+# Local skills (Claude Code workflow, not production code)
+skills/
+
 # Claude/AI workflow files (local dev only)
 CLAUDE.md
 tasks/
