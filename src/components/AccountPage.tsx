@@ -1,7 +1,7 @@
 // src/components/AccountPage.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, useReducedMotion } from "framer-motion";
 import Navbar from "@/components/Navbar";
@@ -210,19 +210,25 @@ function ErrorView() {
 export default function AccountPage() {
   const searchParams = useSearchParams();
   const [pageState, setPageState] = useState<PageState>("direct");
+  const hasProcessed = useRef(false);
 
   useEffect(() => {
+    // Only process params once — replaceState triggers re-renders
+    // with empty params which would reset state to "direct"
+    if (hasProcessed.current) return;
+
     const token = searchParams.get("token");
     const status = searchParams.get("status");
 
-    // Clear sensitive params from URL immediately
-    if (token || status) {
-      window.history.replaceState({}, "", "/account");
-    }
+    // Nothing to process — stay on direct visit state
+    if (!token && !status) return;
 
-    // Determine initial state
+    hasProcessed.current = true;
+
+    // Determine state BEFORE clearing URL
     if (status === "success") {
       setPageState("success");
+      window.history.replaceState({}, "", "/account");
       return;
     }
 
@@ -233,6 +239,7 @@ export default function AccountPage() {
 
     // Token present — attempt portal redirect
     setPageState("loading");
+    window.history.replaceState({}, "", "/account");
 
     fetch("/api/billing/portal", {
       method: "POST",
