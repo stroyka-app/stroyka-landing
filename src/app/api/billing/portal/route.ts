@@ -15,6 +15,7 @@ function getStripe() {
 
 const ALLOWED_ORIGINS = [
   "https://getstroyka.com",
+  "https://www.getstroyka.com",
   "http://localhost:3000",
 ];
 
