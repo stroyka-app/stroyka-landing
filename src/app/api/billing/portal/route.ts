@@ -69,12 +69,6 @@ export async function POST(request: Request) {
   // 4. Verify HMAC signature + expiry
   const payload = verifyToken(token);
   if (!payload) {
-    console.error("[billing/portal] token verification failed", {
-      tokenLength: token.length,
-      hasDot: token.includes("."),
-      secretConfigured: !!process.env.STRIPE_PORTAL_SIGNING_SECRET,
-      secretLength: process.env.STRIPE_PORTAL_SIGNING_SECRET?.length ?? 0,
-    });
     return DENIED;
   }
 
