@@ -39,15 +39,19 @@ export async function POST(request: Request) {
     return DENIED;
   }
 
-  // 2. Rate limit
+  // 2. Rate limit (fail-open: if Redis is down, skip rate limiting)
   if (process.env.UPSTASH_REDIS_REST_URL) {
-    const ip = headersList.get("x-forwarded-for") ?? "127.0.0.1";
-    const { success } = await billingRatelimit.limit(ip);
-    if (!success) {
-      return NextResponse.json(
-        { error: "Too many requests. Please try again later." },
-        { status: 429 }
-      );
+    try {
+      const ip = headersList.get("x-forwarded-for") ?? "127.0.0.1";
+      const { success } = await billingRatelimit.limit(ip);
+      if (!success) {
+        return NextResponse.json(
+          { error: "Too many requests. Please try again later." },
+          { status: 429 }
+        );
+      }
+    } catch (err) {
+      console.error("[billing/portal] rate limit check failed:", err);
     }
   }
 
@@ -72,16 +76,20 @@ export async function POST(request: Request) {
     return DENIED;
   }
 
-  // 5. Single-use check via Redis
+  // 5. Single-use check via Redis (fail-open: if Redis is down, skip replay protection)
   if (process.env.UPSTASH_REDIS_REST_URL) {
-    const redis = Redis.fromEnv();
-    const tokenHash = hashToken(token);
-    const alreadyUsed = await redis.get<string>(`billing:token:${tokenHash}`);
-    if (alreadyUsed) {
-      return DENIED;
+    try {
+      const redis = Redis.fromEnv();
+      const tokenHash = hashToken(token);
+      const alreadyUsed = await redis.get<string>(`billing:token:${tokenHash}`);
+      if (alreadyUsed) {
+        return DENIED;
+      }
+      // Mark as used with 5-minute TTL
+      await redis.set(`billing:token:${tokenHash}`, "1", { ex: 300 });
+    } catch (err) {
+      console.error("[billing/portal] redis single-use check failed:", err);
     }
-    // Mark as used with 5-minute TTL
-    await redis.set(`billing:token:${tokenHash}`, "1", { ex: 300 });
   }
 
   // 6. Create Stripe Customer Portal session
