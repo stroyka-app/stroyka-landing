@@ -45,8 +45,8 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:block">
-          <Button variant="secondary" size="sm" href="/demo">
-            Request Demo
+          <Button variant="secondary" size="sm" href="/get-started">
+            Get Started
           </Button>
         </div>
 
@@ -91,8 +91,8 @@ export default function Navbar() {
                   {link.label}
                 </a>
               ))}
-              <Button variant="primary" size="sm" href="/demo">
-                Request Demo
+              <Button variant="primary" size="sm" href="/get-started">
+                Get Started
               </Button>
             </div>
           </motion.div>

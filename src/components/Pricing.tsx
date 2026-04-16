@@ -60,7 +60,7 @@ export default function Pricing() {
                   </li>
                 ))}
               </ul>
-              <Button variant="secondary" href="/demo" className="w-full">Request Demo</Button>
+              <Button variant="secondary" href="/get-started?plan=starter" className="w-full">Get Started</Button>
             </div>
           </FadeIn>
 
@@ -86,7 +86,7 @@ export default function Pricing() {
                   </li>
                 ))}
               </ul>
-              <Button variant="primary" href="/demo" className="w-full">Request Demo</Button>
+              <Button variant="primary" href="/get-started?plan=pro" className="w-full">Get Started</Button>
             </motion.div>
           </FadeIn>
         </div>
@@ -95,12 +95,12 @@ export default function Pricing() {
           <div className="max-w-3xl mx-auto border border-dashed border-brand-sage/30 bg-brand-deep/30 rounded-2xl p-8 text-center mb-10">
             <p className="text-lg font-heading font-semibold mb-2 flex items-center justify-center gap-2">
               <ShieldCheck size={20} className="text-brand-forest" />
-              Founding Member Rate — $99/month, locked forever
+              Founding Member Rate — Starter at $99/month, locked forever
             </p>
             <p className="text-sm text-brand-sage-mist/70 mb-6">
-              The first 20 companies to sign up lock in $99/month for life. Price never increases, no matter what the public rate becomes.
+              The first 20 companies to sign up lock in the Starter plan at $99/month for life — $50 off every month, forever.
             </p>
-            <Button variant="primary" href="/demo" className="mb-6">Claim a Founding Spot →</Button>
+            <Button variant="primary" href="/get-started?plan=starter&coupon=FOUNDING99" className="mb-6">Claim a Founding Spot →</Button>
             <div className="max-w-xs mx-auto">
               <div className="h-2 bg-brand-deep rounded-full overflow-hidden">
                 <div className="h-full rounded-full" style={{ width: "30%", backgroundColor: "#d97706" }} />
