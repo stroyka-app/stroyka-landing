@@ -37,7 +37,7 @@ export default function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="font-heading text-sm text-brand-sage hover:text-white transition-colors duration-200"
+              className="font-heading text-[15px] font-medium text-brand-sage-mist/85 hover:text-white transition-colors duration-200"
             >
               {link.label}
             </a>
@@ -80,12 +80,12 @@ export default function Navbar() {
             transition={{ duration: 0.2 }}
             className="md:hidden overflow-hidden backdrop-blur-md bg-brand-midnight/95 border-b border-brand-deep"
           >
-            <div className="flex flex-col px-6 py-4 gap-4">
+            <div className="flex flex-col px-6 py-5 gap-5">
               {NAV_LINKS.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
-                  className="font-heading text-sm text-brand-sage hover:text-white transition-colors"
+                  className="font-heading text-base font-medium text-brand-sage-mist/85 hover:text-white transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}

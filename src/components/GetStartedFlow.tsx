@@ -29,25 +29,25 @@ interface FormData {
 /* ─── Price data ───────────────────────────────────────────────── */
 
 const PRICES = {
-  starter: { monthly: 149, annual: 1490 },
-  pro: { monthly: 249, annual: 2490 },
+  starter: { monthly: 149, annual: 1488 },
+  pro: { monthly: 249, annual: 2484 },
 } as const;
 
 const STARTER_FEATURES = [
-  "Unlimited projects",
-  "Up to 10 workers",
-  "Job costing & P&L reports",
-  "Time tracking & timesheets",
-  "Supply request workflow",
-  "Offline-first sync",
-  "CSV & PDF export",
+  "Everything in Free",
+  "Up to 15 workers",
+  "PDF reports (Timesheet, P&L, Materials)",
+  "Job costing & P&L dashboard",
+  "CSV export",
   "Email support",
 ];
 
 const PRO_FEATURES = [
   "Everything in Starter",
-  "Up to 25 workers",
-  "Advanced reporting",
+  "Unlimited workers",
+  "Excel export",
+  "Photo & file attachments in task messaging",
+  "Advanced analytics",
   "Priority support",
   "Dedicated onboarding call",
 ];
@@ -78,24 +78,28 @@ function AnnualPriceDisplay({ plan }: { plan: Plan }) {
   const annual = PRICES[plan].annual;
   const fullAnnual = monthly * 12;
   const saved = fullAnnual - annual;
+  const perMonth = Math.round(annual / 12);
 
   return (
     <div>
-      <div className="flex items-baseline gap-2">
-        <span className="text-4xl font-heading font-bold">${annual}</span>
-        <span className="text-brand-sage-mist/60">/ year</span>
+      <div className="flex items-baseline gap-1">
+        <span className="text-4xl font-heading font-bold">${perMonth}</span>
+        <span className="text-brand-sage-mist/60 ml-1">/ month</span>
       </div>
-      <div className="flex items-center gap-2 mt-1">
-        <span className="text-sm text-brand-sage-mist/40 line-through">
-          ${fullAnnual}
+      <p className="mt-2 text-[15px] font-heading font-semibold text-brand-sage-mist/90">
+        ${annual.toLocaleString()}{" "}
+        <span className="text-brand-sage-mist/60 font-medium">
+          billed annually
         </span>
-        <span className="text-sm text-green-400 font-heading font-semibold">
+      </p>
+      <div className="flex items-center gap-2 mt-1.5">
+        <span className="text-xs text-brand-sage-mist/40 line-through">
+          ${fullAnnual.toLocaleString()}
+        </span>
+        <span className="text-xs text-green-400 font-heading font-semibold">
           Save ${saved}
         </span>
       </div>
-      <p className="text-xs text-brand-sage-mist/50 mt-0.5">
-        ${Math.round(annual / 12)}/mo billed annually
-      </p>
     </div>
   );
 }
@@ -109,6 +113,7 @@ export default function GetStartedFlow() {
   // URL params (initial values only)
   const urlPlan = searchParams.get("plan") as Plan | null;
   const urlCoupon = searchParams.get("coupon") ?? undefined;
+  const urlBilling = searchParams.get("billing") as Billing | null;
 
   // State — coupon tracked separately so back button can clear it
   const [step, setStep] = useState(1);
@@ -116,7 +121,9 @@ export default function GetStartedFlow() {
   const [plan, setPlan] = useState<Plan | null>(
     urlPlan === "starter" || urlPlan === "pro" ? urlPlan : null
   );
-  const [billing, setBilling] = useState<Billing>("monthly");
+  const [billing, setBilling] = useState<Billing>(
+    urlBilling === "annual" ? "annual" : "monthly",
+  );
   const [coupon, setCoupon] = useState<string | undefined>(urlCoupon);
   const [form, setForm] = useState<FormData>({
     name: "",
@@ -337,37 +344,42 @@ export default function GetStartedFlow() {
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-                {/* Starter card */}
+              <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto items-stretch">
+                {/* Starter card (hero) */}
                 <motion.div
                   whileHover={prefersReduced ? {} : { scale: 1.02 }}
                   transition={{ duration: 0.2 }}
-                  className={`bg-brand-deep/50 border rounded-2xl p-8 cursor-pointer transition-colors duration-200 ${
-                    plan === "starter"
-                      ? "border-brand-forest ring-1 ring-brand-forest/30"
-                      : "border-brand-deep hover:border-brand-forest/40"
-                  }`}
+                  className="bg-brand-deep border border-brand-forest ring-1 ring-brand-forest/30 rounded-2xl p-8 relative cursor-pointer transition-colors duration-200 shadow-xl shadow-brand-forest/10 flex flex-col"
                   onClick={() => setPlan("starter")}
                 >
+                  <span className="absolute -top-3 left-8 bg-brand-forest text-white text-xs font-heading font-semibold px-3 py-1 rounded-full">
+                    Most Popular
+                  </span>
+
                   <div className="flex items-center gap-2 mb-1">
                     <Zap size={18} className="text-brand-forest" />
                     <h3 className="font-heading font-semibold text-xl">Starter</h3>
                   </div>
                   <p className="text-brand-sage-mist/60 text-sm mb-5">
-                    For crews up to 10 workers
+                    For growing crews up to 15
                   </p>
 
-                  <div className="mb-6">
+                  <div className="mb-6 min-h-[112px]">
                     {billing === "monthly" ? (
                       <div>
-                        <span className="text-4xl font-heading font-bold">
-                          ${PRICES.starter.monthly}
-                        </span>
-                        <span className="text-brand-sage-mist/60 ml-1">/ month</span>
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-4xl font-heading font-bold">
+                            ${PRICES.starter.monthly}
+                          </span>
+                          <span className="text-brand-sage-mist/60 ml-1">/ month</span>
+                        </div>
                       </div>
                     ) : (
                       <AnnualPriceDisplay plan="starter" />
                     )}
+                    <p className="text-xs text-brand-sage-mist/50 mt-2">
+                      Up to 15 workers
+                    </p>
                   </div>
 
                   <ul className="flex flex-col gap-2.5 mb-8">
@@ -389,47 +401,44 @@ export default function GetStartedFlow() {
                       e.stopPropagation();
                       goToStep2("starter");
                     }}
-                    className="w-full relative inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-xl transition-colors duration-200 cursor-pointer bg-brand-forest text-white hover:bg-brand-deep active:scale-95 shadow-lg shadow-brand-forest/20 text-base px-6 py-3"
+                    className="mt-auto w-full relative inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-xl transition-colors duration-200 cursor-pointer bg-brand-forest text-white hover:bg-brand-deep active:scale-95 shadow-lg shadow-brand-forest/20 text-base px-6 py-3"
                   >
                     Continue
                     <ArrowRight size={16} />
                   </button>
                 </motion.div>
 
-                {/* Pro card */}
+                {/* Pro card (premium) */}
                 <motion.div
                   whileHover={prefersReduced ? {} : { scale: 1.02 }}
                   transition={{ duration: 0.2 }}
-                  className={`bg-brand-deep border rounded-2xl p-8 relative cursor-pointer transition-colors duration-200 ${
-                    plan === "pro"
-                      ? "border-brand-forest ring-1 ring-brand-forest/30"
-                      : "border-brand-deep hover:border-brand-forest/40"
-                  }`}
+                  className="bg-gradient-to-b from-brand-deep to-brand-deep/70 border border-amber-500/30 rounded-2xl p-8 relative cursor-pointer transition-colors duration-200 shadow-2xl shadow-amber-500/5 flex flex-col"
                   onClick={() => setPlan("pro")}
                 >
-                  <span className="absolute -top-3 left-8 bg-brand-forest text-white text-xs font-heading font-semibold px-3 py-1 rounded-full">
-                    Most Popular
-                  </span>
-
                   <div className="flex items-center gap-2 mb-1">
-                    <Crown size={18} className="text-brand-forest" />
+                    <Crown size={18} className="text-amber-400" />
                     <h3 className="font-heading font-semibold text-xl">Pro</h3>
                   </div>
                   <p className="text-brand-sage-mist/60 text-sm mb-5">
-                    For crews up to 25 workers
+                    For larger operations, no limits
                   </p>
 
-                  <div className="mb-6">
+                  <div className="mb-6 min-h-[112px]">
                     {billing === "monthly" ? (
                       <div>
-                        <span className="text-4xl font-heading font-bold">
-                          ${PRICES.pro.monthly}
-                        </span>
-                        <span className="text-brand-sage-mist/60 ml-1">/ month</span>
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-4xl font-heading font-bold">
+                            ${PRICES.pro.monthly}
+                          </span>
+                          <span className="text-brand-sage-mist/60 ml-1">/ month</span>
+                        </div>
                       </div>
                     ) : (
                       <AnnualPriceDisplay plan="pro" />
                     )}
+                    <p className="text-xs text-amber-400/70 mt-2">
+                      Unlimited workers
+                    </p>
                   </div>
 
                   <ul className="flex flex-col gap-2.5 mb-8">
@@ -451,7 +460,7 @@ export default function GetStartedFlow() {
                       e.stopPropagation();
                       goToStep2("pro");
                     }}
-                    className="w-full relative inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-xl transition-colors duration-200 cursor-pointer bg-brand-forest text-white hover:bg-brand-deep active:scale-95 shadow-lg shadow-brand-forest/20 text-base px-6 py-3"
+                    className="mt-auto w-full relative inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-xl transition-colors duration-200 cursor-pointer border border-brand-forest text-brand-sage hover:bg-brand-forest/10 active:scale-95 text-base px-6 py-3"
                   >
                     Continue
                     <ArrowRight size={16} />
@@ -503,7 +512,12 @@ export default function GetStartedFlow() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-xs text-brand-sage-mist/50 uppercase tracking-wider mb-1">Selected plan</p>
-                      <p className="font-heading font-semibold text-xl capitalize">
+                      <p className="font-heading font-semibold text-xl capitalize flex items-center gap-2">
+                        {plan === "pro" ? (
+                          <Crown size={18} className="text-amber-400" />
+                        ) : (
+                          <Zap size={18} className="text-brand-forest" />
+                        )}
                         {plan}
                       </p>
                     </div>
@@ -516,17 +530,14 @@ export default function GetStartedFlow() {
                         </div>
                       ) : billing === "annual" ? (
                         <div>
-                          <div className="flex items-baseline gap-2">
-                            <span className="text-sm text-brand-sage-mist/40 line-through">
-                              ${PRICES[plan!].monthly * 12}
-                            </span>
+                          <div className="flex items-baseline gap-2 justify-end">
                             <span className="font-heading font-bold text-2xl">
-                              ${PRICES[plan!].annual}
+                              ${Math.round(PRICES[plan!].annual / 12)}
                             </span>
-                            <span className="text-brand-sage-mist/50 text-sm">/yr</span>
+                            <span className="text-brand-sage-mist/50 text-sm">/mo</span>
                           </div>
                           <p className="text-xs text-brand-sage-mist/40 mt-0.5">
-                            ${Math.round(PRICES[plan!].annual / 12)}/mo billed annually
+                            ${PRICES[plan!].annual.toLocaleString()}/yr billed annually
                           </p>
                         </div>
                       ) : (

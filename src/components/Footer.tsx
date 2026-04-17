@@ -1,5 +1,9 @@
 import Link from "next/link";
+import { Apple, Play } from "lucide-react";
 import Logo from "@/components/Logo";
+
+const IOS_URL = process.env.NEXT_PUBLIC_IOS_APP_URL ?? "#";
+const ANDROID_URL = process.env.NEXT_PUBLIC_ANDROID_APP_URL ?? "#";
 
 const PRODUCT_LINKS = [
   { label: "Features", href: "/#features" },
@@ -74,17 +78,57 @@ export default function Footer() {
             </div>
 
             {/* Contact column */}
-            <div>
+            <div id="download" className="scroll-mt-24">
               <h3 className="font-heading text-sm font-semibold text-brand-sage-mist mb-4 uppercase tracking-wider">
                 Contact
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-3 mb-6">
                 <li>
                   <a
                     href="mailto:hello@getstroyka.com"
                     className="text-sm text-brand-sage/60 hover:text-brand-sage transition-colors duration-200"
                   >
                     hello@getstroyka.com
+                  </a>
+                </li>
+              </ul>
+
+              <h3 className="font-heading text-sm font-semibold text-brand-sage-mist mb-3 uppercase tracking-wider">
+                Get the app
+              </h3>
+              <ul className="space-y-3">
+                <li>
+                  <a
+                    href={IOS_URL}
+                    aria-label="Download on the App Store"
+                    className="group inline-flex items-center gap-2 text-sm text-brand-sage/60 hover:text-brand-sage transition-colors duration-200"
+                  >
+                    <Apple size={16} className="shrink-0" />
+                    <span>
+                      App Store
+                      {IOS_URL === "#" && (
+                        <span className="text-brand-sage/40 ml-1.5">
+                          (soon)
+                        </span>
+                      )}
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={ANDROID_URL}
+                    aria-label="Get it on Google Play"
+                    className="group inline-flex items-center gap-2 text-sm text-brand-sage/60 hover:text-brand-sage transition-colors duration-200"
+                  >
+                    <Play size={16} className="shrink-0" />
+                    <span>
+                      Google Play
+                      {ANDROID_URL === "#" && (
+                        <span className="text-brand-sage/40 ml-1.5">
+                          (soon)
+                        </span>
+                      )}
+                    </span>
                   </a>
                 </li>
               </ul>

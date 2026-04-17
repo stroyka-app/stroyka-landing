@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { motion, useReducedMotion } from "framer-motion";
-import { CheckCircle2, Smartphone, Download } from "lucide-react";
+import { CheckCircle2, Smartphone, Download, Crown, Zap } from "lucide-react";
 import Logo from "@/components/Logo";
 
 export default function SuccessContent() {
@@ -88,11 +88,15 @@ export default function SuccessContent() {
         {/* Plan confirmation */}
         {wrap(
           3,
-          <p className="text-lg text-brand-sage-mist/75 mb-10">
-            {planLabel
-              ? `Your ${planLabel} plan is active.`
-              : "Your plan is active."}
-          </p>
+          <div className="flex items-center justify-center gap-2 mb-10">
+            {planLabel === "Pro" && <Crown size={18} className="text-amber-400" />}
+            {planLabel === "Starter" && <Zap size={18} className="text-brand-forest" />}
+            <p className="text-lg text-brand-sage-mist/75">
+              {planLabel
+                ? `Your ${planLabel} plan is active.`
+                : "Your plan is active."}
+            </p>
+          </div>
         )}
 
         {/* Two-column instruction cards */}
