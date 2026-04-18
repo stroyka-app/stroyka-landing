@@ -36,25 +36,32 @@ const FREE_FEATURES: Feature[] = [
   { label: "Time tracking & daily logs", included: true },
   { label: "Material & fuel requests", included: true },
   { label: "Task management & messaging", included: true },
+  { label: "Worker earnings tracker", included: true },
   { label: "Offline-first sync", included: true },
   { label: "PDF & CSV reports (Starter+)", included: false },
   { label: "Job costing & P&L (Starter+)", included: false },
+  { label: "Overtime alerts (Starter+)", included: false },
 ];
 
 const STARTER_FEATURES: Feature[] = [
   { label: "Everything in Free", included: true },
   { label: "Up to 15 workers", included: true },
-  { label: "PDF reports (Timesheet, P&L, Materials)", included: true },
+  { label: "Per-worker hourly rates", included: true },
+  { label: "Overtime alerts (32h & 40h warnings)", included: true },
+  { label: "PDF reports — Timesheet, P&L, Materials", included: true },
   { label: "Job costing & P&L dashboard", included: true },
   { label: "CSV export", included: true },
   { label: "Email support", included: true },
+  { label: "Client invoice generator (Pro)", included: false },
+  { label: "File & photo attachments (Pro)", included: false },
 ];
 
 const PRO_FEATURES: Feature[] = [
   { label: "Everything in Starter", included: true },
   { label: "Unlimited workers", included: true },
+  { label: "Client invoice generator", included: true },
+  { label: "File & photo attachments in tasks", included: true },
   { label: "Excel export", included: true },
-  { label: "Photo & file attachments in task messaging", included: true },
   { label: "Advanced analytics", included: true },
   { label: "Priority support", included: true },
   { label: "Dedicated onboarding call", included: true },
