@@ -57,6 +57,9 @@ docs/reference/infrastructure-and-security.md
 docs/features/
 docs/superpowers/
 
+# Internal design/architecture reviews (drafts kept local, not for repo)
+docs/reviews/
+
 # Local skills (Claude Code workflow, not production code)
 skills/
 
