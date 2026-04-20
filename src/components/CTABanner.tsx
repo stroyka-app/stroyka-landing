@@ -41,10 +41,10 @@ export default function CTABanner() {
         <FadeIn delay={0.2}>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
             <Button variant="primary" size="lg" href="/#download">
-              Download Free
+              Start free
             </Button>
             <Button variant="secondary" size="lg" href="/demo">
-              Book a Demo
+              Book a demo
             </Button>
           </div>
         </FadeIn>

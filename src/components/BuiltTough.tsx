@@ -24,36 +24,36 @@ function preloadFrames(
   }
 }
 
-// Each layer: which column (left/right), vertical offset in the column,
-// and scroll threshold when the label appears.
+// BuiltTough = craft showcase, not a capability list. These labels describe
+// HOW the app is built (engineering angle), not WHAT it does (that's Features).
 const LAYERS = [
   {
     col: "right" as const,
     topPercent: 20,
     revealAt: 0.12,
-    title: "Works without cell service",
-    body: "Logs time and syncs requests offline — basements, tunnels, rural sites.",
+    title: "Engineered for work gloves",
+    body: "Large tap targets, one-hand reach, no tiny checkboxes. Usable with cold fingers on a 5-inch screen.",
   },
   {
     col: "left" as const,
     topPercent: 38,
     revealAt: 0.22,
-    title: "Real-time job costing",
-    body: "Every purchase and timesheet entry rolls into a live project P&L.",
+    title: "Tested at 4am, not at a desk",
+    body: "We rebuilt the clock-in flow three times after shadowing real crews before first light.",
   },
   {
     col: "right" as const,
     topPercent: 56,
     revealAt: 0.32,
-    title: "Built for boss and crew",
-    body: "Approvals and cost reports for bosses. Tasks and time logging for workers.",
+    title: "Same data, two views",
+    body: "Workers see their tasks and hours. Bosses see budgets and approvals. One database, role-aware UI.",
   },
   {
     col: "left" as const,
     topPercent: 75,
     revealAt: 0.42,
-    title: "No training manual needed",
-    body: "Hand it to your crew and they're working in minutes. Day-one simple.",
+    title: "Built in Flutter — one codebase, every device",
+    body: "Runs identically on old Androids and new iPhones. No second-class mobile experience.",
   },
 ];
 
@@ -280,9 +280,9 @@ export default function BuiltTough() {
         <div className="relative h-full flex flex-col items-center justify-center">
           {/* Section header — pinned at top of sticky area, below navbar (h-16 = 64px) */}
           <div className="absolute top-20 left-0 right-0 text-center z-10">
-            <SectionLabel>Under the Hood</SectionLabel>
+            <SectionLabel>Built for the job</SectionLabel>
             <h2 className="text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-brand-sage-mist mt-1">
-              What powers your crew
+              Built like the jobs you run.
             </h2>
           </div>
 

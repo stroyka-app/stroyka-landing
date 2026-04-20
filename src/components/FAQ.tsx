@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import FadeIn from "@/components/ui/FadeIn";
+import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
-
-const INTRO_STYLE_ID = "faq-signal-animations";
 
 interface FaqItem {
   q: string;
@@ -31,7 +30,7 @@ const QUESTIONS: FaqItem[] = [
   },
   {
     q: "Is my data secure?",
-    a: "Stroyka runs on Supabase (enterprise-grade PostgreSQL) with row-level security — meaning your company's data is completely isolated from other companies at the database level. We don't share or sell your data. See our Privacy Policy for full details.",
+    a: "Your company's data is siloed from every other company's data at the database level — we don't mingle it, don't share it, don't sell it. Encrypted at rest and in transit, hosted on battle-tested infrastructure. See our Privacy Policy for the specifics.",
     meta: "Security",
   },
   {
@@ -50,20 +49,6 @@ const QUESTIONS: FaqItem[] = [
     meta: "Pricing",
   },
 ];
-
-function SignalPill({ ready }: { ready: boolean }) {
-  return (
-    <div
-      className={`faq-signal-intro ${ready ? "faq-signal-intro--active" : ""}`}
-    >
-      <span className="faq-signal-intro__beam" aria-hidden="true" />
-      <span className="faq-signal-intro__pulse" aria-hidden="true" />
-      <span className="faq-signal-intro__label">Crew Q&amp;A</span>
-      <span className="faq-signal-intro__meter" aria-hidden="true" />
-      <span className="faq-signal-intro__tick" aria-hidden="true" />
-    </div>
-  );
-}
 
 function FAQItem({
   item,
@@ -186,132 +171,6 @@ function FAQItem({
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const [introReady, setIntroReady] = useState(false);
-
-  // Inject keyframes once on mount
-  useEffect(() => {
-    if (typeof document === "undefined") return;
-    if (document.getElementById(INTRO_STYLE_ID)) return;
-    const style = document.createElement("style");
-    style.id = INTRO_STYLE_ID;
-    style.innerHTML = `
-      @keyframes faq-signal-beam-spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-      @keyframes faq-signal-pulse {
-        0% { transform: scale(0.7); opacity: 0.55; }
-        60% { opacity: 0.1; }
-        100% { transform: scale(1.25); opacity: 0; }
-      }
-      @keyframes faq-signal-meter {
-        0%, 20% { transform: scaleX(0); transform-origin: left; }
-        45%, 60% { transform: scaleX(1); transform-origin: left; }
-        80%, 100% { transform: scaleX(0); transform-origin: right; }
-      }
-      @keyframes faq-signal-tick {
-        0%, 30% { transform: translateX(-6px); opacity: 0.4; }
-        50% { transform: translateX(2px); opacity: 1; }
-        100% { transform: translateX(20px); opacity: 0; }
-      }
-      .faq-signal-intro {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.85rem;
-        padding: 0.65rem 1.25rem;
-        border-radius: 9999px;
-        overflow: hidden;
-        border: 1px solid rgba(82, 121, 111, 0.3);
-        background: rgba(53, 79, 82, 0.35);
-        color: rgba(202, 210, 197, 0.85);
-        text-transform: uppercase;
-        letter-spacing: 0.35em;
-        font-size: 0.65rem;
-        min-width: 18rem;
-        max-width: 22rem;
-        backdrop-filter: blur(12px);
-        opacity: 0;
-        transform: translate3d(0, 12px, 0);
-        filter: blur(8px);
-        transition: opacity 720ms ease, transform 720ms ease, filter 720ms ease;
-        isolation: isolate;
-      }
-      .faq-signal-intro--active {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-        filter: blur(0);
-      }
-      .faq-signal-intro__beam,
-      .faq-signal-intro__pulse {
-        position: absolute;
-        inset: -110%;
-        pointer-events: none;
-        border-radius: 50%;
-      }
-      .faq-signal-intro__beam {
-        background: conic-gradient(from 160deg, rgba(132, 169, 140, 0.28), transparent 32%, rgba(82, 121, 111, 0.25) 58%, transparent 78%, rgba(132, 169, 140, 0.22));
-        animation: faq-signal-beam-spin 18s linear infinite;
-        opacity: 0.6;
-      }
-      .faq-signal-intro__pulse {
-        border: 1px solid rgba(132, 169, 140, 0.5);
-        opacity: 0.25;
-        animation: faq-signal-pulse 3.4s ease-out infinite;
-      }
-      .faq-signal-intro__label {
-        position: relative;
-        z-index: 1;
-        font-weight: 600;
-        letter-spacing: 0.4em;
-        white-space: nowrap;
-      }
-      .faq-signal-intro__meter {
-        position: relative;
-        z-index: 1;
-        flex: 1 1 auto;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(132, 169, 140, 0.8) 35%, transparent 85%);
-        transform: scaleX(0);
-        transform-origin: left;
-        animation: faq-signal-meter 5.8s ease-in-out infinite;
-        opacity: 0.8;
-      }
-      .faq-signal-intro__tick {
-        position: relative;
-        z-index: 1;
-        width: 0.5rem;
-        height: 0.5rem;
-        border-radius: 9999px;
-        background: #84a98c;
-        box-shadow: 0 0 0 4px rgba(132, 169, 140, 0.18);
-        animation: faq-signal-tick 3.2s ease-in-out infinite;
-        flex-shrink: 0;
-      }
-      @media (prefers-reduced-motion: reduce) {
-        .faq-signal-intro__beam,
-        .faq-signal-intro__pulse,
-        .faq-signal-intro__meter,
-        .faq-signal-intro__tick {
-          animation: none !important;
-        }
-      }
-    `;
-
-    document.head.appendChild(style);
-    return () => {
-      if (style.parentNode) style.remove();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      setIntroReady(true);
-      return;
-    }
-    const frame = window.requestAnimationFrame(() => setIntroReady(true));
-    return () => window.cancelAnimationFrame(frame);
-  }, []);
 
   return (
     <section id="faq" className="py-20 lg:py-24 relative overflow-hidden">
@@ -325,28 +184,23 @@ export default function FAQ() {
       />
 
       <div className="relative z-10 max-w-4xl mx-auto px-6">
-        {/* Signal pill */}
-        <div className="flex justify-center mb-10">
-          <SignalPill ready={introReady} />
-        </div>
-
         {/* Header */}
-        <div className="flex flex-col gap-4 mb-12 text-center md:text-left md:flex-row md:items-end md:justify-between">
-          <div className="space-y-3 max-w-xl mx-auto md:mx-0">
-            <p className="text-xs font-heading font-semibold uppercase tracking-[0.35em] text-brand-sage-mist/50">
-              Questions
-            </p>
-            <TextReveal
-              as="h2"
-              className="text-4xl md:text-5xl font-heading font-bold leading-tight text-white"
-            >
-              Straight answers. No runaround.
-            </TextReveal>
-            <p className="text-base text-brand-sage-mist/70">
+        <div className="text-center mb-12">
+          <FadeIn>
+            <SectionLabel>FAQ</SectionLabel>
+          </FadeIn>
+          <TextReveal
+            as="h2"
+            className="text-4xl md:text-5xl font-heading font-bold leading-tight text-white mb-4"
+          >
+            Straight answers. No runaround.
+          </TextReveal>
+          <FadeIn delay={0.1}>
+            <p className="text-base text-brand-sage-mist/70 max-w-xl mx-auto">
               Everything you need to know before bringing Stroyka onto a
               jobsite — the questions real crews actually ask.
             </p>
-          </div>
+          </FadeIn>
         </div>
 
         {/* FAQ list */}

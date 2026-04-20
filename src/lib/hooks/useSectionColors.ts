@@ -2,15 +2,20 @@
 
 import { useEffect, useState } from "react";
 
+// Colors indexed by SECTION_IDS order in src/app/page.tsx. Keep in sync.
 const SECTION_COLORS = [
   "#2f3e46", // hero
-  "#2b3940", // problem
-  "#2f3e46", // built-tough
-  "#2f3e46", // features
+  "#283339", // the-shift
   "#334a4f", // how-it-works
-  "#2f3e46", // screenshots
+  "#2f3e46", // features
+  "#2b3940", // built-tough
+  "#2f3e46", // comparison
+  "#334a4f", // founder
+  "#2f3e46", // integrations
   "#2b3940", // pricing
-  "#334a4f", // cta
+  "#2f3e46", // guarantee
+  "#334a4f", // faq
+  "#2f3e46", // cta
   "#2f3e46", // footer
 ];
 

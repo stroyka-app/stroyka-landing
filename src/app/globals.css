@@ -27,6 +27,78 @@
   }
 }
 
+/* Rotating conic-gradient border + sweep for highlighted cards.
+   Colors are driven by CSS custom properties so each card can theme it
+   independently (Starter = sage/forest, Pro = amber/gold). */
+@property --a {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes glow-spin {
+  to { --a: 360deg; }
+}
+
+.glow-border {
+  position: relative;
+  isolation: isolate;
+  /* Defaults — sage/forest palette */
+  --glow-c1: #52796f;
+  --glow-c2: #84a98c;
+  --glow-c3: #cad2c5;
+  --glow-duration: 6s;
+}
+.glow-border::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--a, 0deg),
+    transparent 0deg,
+    var(--glow-c1) 80deg,
+    var(--glow-c2) 150deg,
+    var(--glow-c3) 180deg,
+    var(--glow-c2) 210deg,
+    var(--glow-c1) 280deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  animation: glow-spin var(--glow-duration) linear infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Soft rotating sweep that reads as ambient light moving through the card. */
+.glow-sweep {
+  position: absolute;
+  inset: -20%;
+  z-index: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from var(--a, 0deg),
+    transparent 0deg,
+    var(--sweep-c1, rgba(132, 169, 140, 0.22)) 70deg,
+    var(--sweep-c2, rgba(202, 210, 197, 0.18)) 110deg,
+    var(--sweep-c3, rgba(82, 121, 111, 0.16)) 160deg,
+    transparent 220deg
+  );
+  filter: blur(28px);
+  animation: glow-spin var(--glow-duration, 6s) linear infinite;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-border::before,
+  .glow-sweep { animation: none; }
+}
+
 /* Legal page content styles */
 .legal-content p {
   @apply text-sm text-brand-sage-mist/75 leading-relaxed mb-4;

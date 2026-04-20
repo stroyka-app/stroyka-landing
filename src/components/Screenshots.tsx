@@ -52,7 +52,7 @@ const SCREENSHOTS: Screenshot[] = [
   },
 ];
 
-const AUTO_ADVANCE_MS = 5000;
+const AUTO_ADVANCE_MS = 8000;
 const SPRING = { type: "spring" as const, stiffness: 300, damping: 30 };
 
 function wrap(index: number, length: number): number {

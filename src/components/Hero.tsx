@@ -136,21 +136,28 @@ export default function Hero() {
 
         {/* Subtext */}
         <FadeIn delay={0.2}>
-          <p className="text-base md:text-lg text-brand-sage-mist/70 leading-relaxed max-w-xl mx-auto mb-10">
+          <p className="text-base md:text-lg text-brand-sage-mist/70 leading-relaxed max-w-xl mx-auto mb-4">
             Stop cobbling together spreadsheets, text messages, and gut feelings
             to run your jobsites. One simple tool for your whole crew — boss and
             workers — that works even without cell service.
           </p>
         </FadeIn>
 
+        {/* Who this is for */}
+        <FadeIn delay={0.25}>
+          <p className="text-sm font-heading font-medium text-brand-sage/80 mb-10">
+            For crews of 5–25. Works the day you sign up.
+          </p>
+        </FadeIn>
+
         {/* CTAs */}
         <FadeIn delay={0.3}>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
-            <Button variant="primary" size="lg" href="/demo">
-              Request a Demo
+            <Button variant="primary" size="lg" href="/#download">
+              Start free
             </Button>
-            <Button variant="ghost" size="lg" href="/#how-it-works">
-              See How It Works
+            <Button variant="secondary" size="lg" href="/demo">
+              Book a demo
             </Button>
           </div>
         </FadeIn>
