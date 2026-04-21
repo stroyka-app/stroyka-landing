@@ -58,23 +58,33 @@ export default function HowItWorks() {
     const onScroll = () => {
       const container = stepsRef.current;
       if (!container) return;
-      const rect = container.getBoundingClientRect();
       const vh = window.innerHeight;
+      const targetY = vh * 0.45;
 
-      // Amber progress rail (0..100) from when container enters viewport
-      // until its bottom passes the upper viewport
-      const raw =
-        (vh * 0.5 - rect.top) / Math.max(1, container.offsetHeight * 0.8);
-      setProgress(Math.max(0, Math.min(1, raw)) * 100);
-
-      // Pick the step whose midpoint is closest to 45% of the viewport
       const els = container.querySelectorAll<HTMLElement>("[data-step]");
+      if (els.length < 2) return;
+
+      const firstRect = els[0].getBoundingClientRect();
+      const lastRect = els[els.length - 1].getBoundingClientRect();
+      const firstMid = firstRect.top + firstRect.height / 2;
+      const lastMid = lastRect.top + lastRect.height / 2;
+
+      // Progress rail maps the focus-line's position between the midpoint of
+      // step 1 (0%) and the midpoint of step 4 (100%). That way each step
+      // owns exactly a 1/(N-1) slice of the rail and the bar fills in lock-
+      // step with the step you're looking at, not with how far the container
+      // has scrolled.
+      const denom = lastMid - firstMid;
+      const p = denom > 0 ? (targetY - firstMid) / denom : 0;
+      setProgress(Math.max(0, Math.min(1, p)) * 100);
+
+      // Active step = step whose midpoint is closest to the focus line
       let closest = 0;
       let best = Infinity;
       els.forEach((el, i) => {
         const r = el.getBoundingClientRect();
         const mid = r.top + r.height / 2;
-        const d = Math.abs(mid - vh * 0.45);
+        const d = Math.abs(mid - targetY);
         if (d < best) {
           best = d;
           closest = i;
@@ -110,12 +120,13 @@ export default function HowItWorks() {
           </FadeIn>
         </div>
 
-        {/* Stage */}
-        <div className="grid md:grid-cols-[1fr_340px] lg:grid-cols-[1fr_380px] gap-12 lg:gap-24 items-start">
+        {/* Stage — phone column widened so it reads as a proper counterpart
+            to the text, not a postage stamp in the corner. */}
+        <div className="grid md:grid-cols-[1fr_400px] lg:grid-cols-[1fr_460px] gap-10 lg:gap-20 items-start">
           {/* Steps column */}
           <div
             ref={stepsRef}
-            className="flex flex-col gap-20 lg:gap-28 pb-[30vh]"
+            className="flex flex-col gap-16 md:gap-20 lg:gap-28 md:pb-[30vh]"
           >
             {STEPS.map((step, i) => {
               const isActive = i === active;
@@ -123,39 +134,63 @@ export default function HowItWorks() {
                 <div
                   key={step.num}
                   data-step={i}
-                  className={`relative pl-16 transition-opacity duration-500 ease-out ${
-                    isActive ? "opacity-100" : "opacity-35"
+                  className={`relative md:pl-16 transition-opacity duration-500 ease-out ${
+                    // Active-opacity dimming only applies on desktop where the
+                    // sticky phone provides the "active" visual anchor. On
+                    // mobile, every step has its own inline screenshot so every
+                    // step should be fully legible.
+                    isActive ? "opacity-100" : "md:opacity-35 opacity-100"
                   }`}
                 >
-                  {/* Vertical rail */}
-                  <span
-                    aria-hidden
-                    className="absolute left-5 top-0 bottom-0 w-px bg-brand-sage-mist/10"
-                  />
-                  {/* Step number badge */}
-                  <span
-                    className={`absolute left-0 top-0 w-[42px] h-[42px] rounded-full flex items-center justify-center font-heading font-bold text-sm border z-10 transition-all duration-300 ${
-                      isActive
-                        ? "bg-brand-amber text-[#1a1108] border-brand-amber shadow-[0_0_24px_rgba(217,119,6,0.45)]"
-                        : "bg-brand-midnight-dark text-brand-sage border-brand-sage/25"
-                    }`}
-                  >
-                    {step.num}
-                  </span>
-                  <h3 className="text-2xl lg:text-3xl font-heading font-bold text-white mb-3.5">
-                    {step.title}
-                  </h3>
-                  <p className="text-brand-sage-mist/70 text-base leading-relaxed max-w-md">
-                    {step.body}
-                  </p>
+                  <div className="pl-16 md:pl-0">
+                    {/* Vertical rail */}
+                    <span
+                      aria-hidden
+                      className="absolute left-5 md:left-5 top-0 bottom-0 w-px bg-brand-sage-mist/10"
+                    />
+                    {/* Step number badge */}
+                    <span
+                      className={`absolute left-0 top-0 w-[42px] h-[42px] rounded-full flex items-center justify-center font-heading font-bold text-sm border z-10 transition-all duration-300 ${
+                        isActive
+                          ? "bg-brand-amber text-[#1a1108] border-brand-amber shadow-[0_0_24px_rgba(217,119,6,0.45)]"
+                          : "bg-brand-midnight-dark text-brand-sage border-brand-sage/25"
+                      }`}
+                    >
+                      {step.num}
+                    </span>
+                    <h3 className="text-2xl lg:text-3xl font-heading font-bold text-white mb-3.5">
+                      {step.title}
+                    </h3>
+                    <p className="text-brand-sage-mist/70 text-base leading-relaxed max-w-md">
+                      {step.body}
+                    </p>
+                  </div>
+
+                  {/* Mobile inline screenshot — lives WITH its step, not dumped
+                      at the bottom. Hidden on desktop where the sticky phone
+                      handles the visual. */}
+                  <div className="md:hidden mt-6 flex justify-center">
+                    <div className="relative w-[240px] rounded-[36px] p-[8px] bg-gradient-to-br from-[#3a4a52] to-[#24313a] shadow-xl">
+                      <div className="absolute top-[12px] left-1/2 -translate-x-1/2 w-16 h-[15px] bg-[#0e1518] rounded-[10px] z-10" />
+                      <div className="relative w-full aspect-[1206/2150] rounded-[28px] overflow-hidden bg-black/40">
+                        <Image
+                          src={step.screenshot}
+                          alt={step.alt}
+                          fill
+                          sizes="240px"
+                          className="object-cover"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               );
             })}
           </div>
 
-          {/* Sticky phone */}
+          {/* Sticky phone — desktop only */}
           <div className="hidden md:flex sticky top-[120px] justify-center items-start">
-            <div className="relative w-[300px] lg:w-[340px]">
+            <div className="relative w-[360px] lg:w-[420px]">
               {/* Amber progress rail on left edge of phone */}
               <div className="absolute -left-4 top-2 bottom-2 w-0.5 rounded bg-brand-sage-mist/10 overflow-hidden">
                 <div
@@ -177,7 +212,7 @@ export default function HowItWorks() {
                       src={s.screenshot}
                       alt={s.alt}
                       fill
-                      sizes="(min-width: 1024px) 340px, 300px"
+                      sizes="(min-width: 1024px) 420px, 360px"
                       priority={i === 0}
                       className={`object-cover transition-opacity duration-[600ms] ease-out ${
                         i === active ? "opacity-100" : "opacity-0"
@@ -187,27 +222,6 @@ export default function HowItWorks() {
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Mobile: inline screenshot per step */}
-          <div className="md:hidden flex flex-col gap-8">
-            {STEPS.map((s) => (
-              <div
-                key={s.num}
-                className="relative mx-auto w-[260px] rounded-[40px] p-[8px] bg-gradient-to-br from-[#3a4a52] to-[#24313a] shadow-xl"
-              >
-                <div className="absolute top-[14px] left-1/2 -translate-x-1/2 w-20 h-[18px] bg-[#0e1518] rounded-[12px] z-10" />
-                <div className="relative w-full aspect-[1206/2150] rounded-[32px] overflow-hidden bg-black/40">
-                  <Image
-                    src={s.screenshot}
-                    alt={s.alt}
-                    fill
-                    sizes="260px"
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </div>

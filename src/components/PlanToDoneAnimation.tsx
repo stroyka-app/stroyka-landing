@@ -1,0 +1,1399 @@
+"use client";
+
+/**
+ * PlanToDoneAnimation V2
+ *
+ * Real-time 3D scroll-pinned cinematic. A procedural house built with React
+ * Three Fiber goes from blueprint lines → wireframe → materialized → photoreal
+ * with golden-hour lighting, driven by scroll progress. DOM overlays layer
+ * cost cards, telemetry, connection lines, and a final hero chip on top.
+ *
+ * V2 fixes (over V1):
+ * - Top-down camera bug (look-from-above is degenerate with Y-up; use slight
+ *   Z offset + explicit look-at orient). Beat 1 stays as a true flat plan view.
+ * - Walls/Roof fully invisible during Beat 1 (was leaking edges before extrude).
+ * - Beat transitions slower + orbiting camera in Beat 3 so the house gets
+ *   shown from multiple angles, not just one perspective.
+ * - Beat 5 hero shot pulled back wider.
+ * - Bigger, more legible title block bottom-right.
+ * - In-3D room labels in Beat 1 (drei <Text>).
+ * - Connection lines from each cost card to its 3D anchor point on the house,
+ *   projected from world space → screen space every frame.
+ */
+
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { PerspectiveCamera, Edges, Html } from "@react-three/drei";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  useReducedMotion,
+  type MotionValue,
+} from "framer-motion";
+import * as THREE from "three";
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * Brand palette
+ * ──────────────────────────────────────────────────────────────────────── */
+
+const COLORS = {
+  sageMist:     "#cad2c5",
+  sage:         "#84a98c",
+  forest:       "#52796f",
+  deep:         "#354f52",
+  midnight:     "#2f3e46",
+  midnightDark: "#1a2428",
+  amber:        "#d97706",
+  amberBright:  "#f59e0b",
+  cedar:        "#b8865f",
+  cedarDark:    "#8a5a3a",
+  shingle:      "#3a3230",
+  trim:         "#f5f1e8",
+  glass:        "#87ceeb",
+  door:         "#5c3920",
+  lawn:         "#4a6a4d",
+};
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * House dimensions (world units)
+ * ──────────────────────────────────────────────────────────────────────── */
+
+const HW = 8;       // house width (X) — represents 32 ft
+const HD = 6;       // house depth (Z) — represents 24 ft
+const WALL_H = 3;   // wall height (Y)
+const ROOF_H = 2.2; // roof rise above walls
+const WALL_T = 0.15;
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * Beat config — V2 timings (slower transitions, longer Beat 3)
+ * ──────────────────────────────────────────────────────────────────────── */
+
+type BeatName = "plan" | "wireframe" | "building" | "chart" | "photoreal" | "metric";
+
+interface Beat {
+  name: BeatName;
+  start: number;
+  end: number;
+  headline: string;
+  kicker: string;
+  state: string;
+}
+
+const BEATS: Beat[] = [
+  { name: "plan",      start: 0.00, end: 0.20, kicker: "MODULE · 01",      headline: "Every project starts on paper.",      state: "PLAN"      },
+  { name: "wireframe", start: 0.20, end: 0.36, kicker: "MODULE · 02",      headline: "Now you can see the whole thing.",    state: "WIREFRAME" },
+  { name: "building",  start: 0.36, end: 0.66, kicker: "MODULE · 03",      headline: "Every material logs itself.",         state: "BUILDING"  },
+  { name: "chart",     start: 0.66, end: 0.78, kicker: "MODULE · 04",      headline: "So you always know where you stand.", state: "TRACKING"  },
+  { name: "photoreal", start: 0.78, end: 0.96, kicker: "CLOSED · JOHNSON", headline: "",                                    state: "COMPLETE"  },
+  { name: "metric",    start: 0.96, end: 1.00, kicker: "CLOSED · JOHNSON", headline: "",                                    state: "COMPLETE"  },
+];
+
+interface CostEntry {
+  label: string;
+  amount: string;
+  subtitle: string;
+  numericValue: number;
+  showAt: number;
+}
+
+const COST_ENTRIES: CostEntry[] = [
+  { label: "CONCRETE", amount: "$2,180", subtitle: "14 yards · poured 04/15",   numericValue: 2180, showAt: 0.40 },
+  { label: "LUMBER",   amount: "$4,820", subtitle: "320 board-ft · oak frame",  numericValue: 4820, showAt: 0.46 },
+  { label: "ROOF",     amount: "$3,640", subtitle: "Architectural shingles",    numericValue: 3640, showAt: 0.52 },
+  { label: "SIDING",   amount: "$5,210", subtitle: "Cedar lap · stained",       numericValue: 5210, showAt: 0.56 },
+  { label: "WINDOWS",  amount: "$3,120", subtitle: "12 units · double-pane",    numericValue: 3120, showAt: 0.60 },
+];
+
+const RUNNING_TOTAL = COST_ENTRIES.reduce((sum, e) => sum + e.numericValue, 0);
+
+const CHART_BARS = [
+  { label: "Labor",     actual: 14210, plan: 16000 },
+  { label: "Materials", actual: RUNNING_TOTAL, plan: 20000 },
+  { label: "Fuel",      actual: 420,   plan: 600   },
+];
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * Helpers
+ * ──────────────────────────────────────────────────────────────────────── */
+
+function clamp01(x: number) {
+  return Math.max(0, Math.min(1, x));
+}
+
+function easeInOut(t: number) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+function ramp(p: number, a: number, b: number) {
+  if (p <= a) return 0;
+  if (p >= b) return 1;
+  return easeInOut((p - a) / (b - a));
+}
+
+function lerp(a: number, b: number, t: number) {
+  return a + (b - a) * t;
+}
+
+function getBeat(p: number): Beat {
+  for (const b of BEATS) if (p >= b.start && p < b.end) return b;
+  return BEATS[BEATS.length - 1];
+}
+
+function formatCurrency(n: number): string {
+  return `$${n.toLocaleString("en-US")}`;
+}
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * Shared refs (Canvas → DOM bridge)
+ * ──────────────────────────────────────────────────────────────────────── */
+
+type ScrollRef = React.MutableRefObject<number>;
+
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * R3F scene components
+ * ──────────────────────────────────────────────────────────────────────── */
+
+/**
+ * Plan label — DOM div positioned in 3D world coords via drei <Html>.
+ * Opacity is driven by the FloorPlan group's CSS so it fades with the plan.
+ */
+function PlanLabel({
+  position,
+  variant,
+  size = "md",
+  children,
+}: {
+  position: [number, number, number];
+  variant: "room" | "dim" | "meta" | "hint";
+  size?: "sm" | "md" | "lg";
+  children: React.ReactNode;
+}) {
+  const sizeCls =
+    size === "lg" ? "text-[15px]" : size === "md" ? "text-[13px]" : "text-[11px]";
+  const variantCls = {
+    // Fix 2: blueprint annotation text → sage (#84a98c)
+    room: "text-brand-sage font-mono tracking-[0.18em] font-semibold",
+    dim:  "text-brand-amber-bright font-mono tracking-[0.18em] font-bold text-[18px] md:text-[20px]",
+    meta: "text-brand-sage/80 font-mono tracking-[0.18em]",
+    hint: "text-brand-sage/90 font-mono tracking-[0.18em] font-semibold",
+  }[variant];
+  return (
+    <Html
+      position={position}
+      center
+      distanceFactor={14}
+      occlude={false}
+      style={{
+        pointerEvents: "none",
+        whiteSpace: "nowrap",
+        opacity: "var(--ptd-label-opacity, 1)",
+        transition: "opacity 80ms linear",
+      }}
+    >
+      <div className={`${sizeCls} ${variantCls} select-none`}>
+        {children}
+      </div>
+    </Html>
+  );
+}
+
+/**
+ * Floor plan — sage outline + amber dimensions + room labels.
+ * Visible only during Beat 1; fades during Beat 2.
+ */
+function FloorPlan({ scroll }: { scroll: ScrollRef }) {
+  const matRef = useRef<THREE.LineBasicMaterial>(null);
+  const dimMatRef = useRef<THREE.LineBasicMaterial>(null);
+  const labelGroupRef = useRef<THREE.Group>(null);
+
+  const planGeo = useMemo(() => {
+    const pts: THREE.Vector3[] = [];
+    const w = HW / 2;
+    const d = HD / 2;
+    // Outer perimeter
+    pts.push(new THREE.Vector3(-w, 0.02, -d), new THREE.Vector3( w, 0.02, -d));
+    pts.push(new THREE.Vector3( w, 0.02, -d), new THREE.Vector3( w, 0.02,  d));
+    pts.push(new THREE.Vector3( w, 0.02,  d), new THREE.Vector3(-w, 0.02,  d));
+    pts.push(new THREE.Vector3(-w, 0.02,  d), new THREE.Vector3(-w, 0.02, -d));
+    // Internal dividers — split into living/kitchen/2 bedrooms/bath
+    pts.push(new THREE.Vector3(-w, 0.02, 0), new THREE.Vector3( w, 0.02, 0));
+    pts.push(new THREE.Vector3(0, 0.02, -d), new THREE.Vector3(0, 0.02,  d));
+    pts.push(new THREE.Vector3(0, 0.02, 1.4), new THREE.Vector3( w, 0.02, 1.4));
+    pts.push(new THREE.Vector3(-w * 0.6, 0.02, 0), new THREE.Vector3(-w * 0.6, 0.02, d));
+    // Door swing arcs (suggest doors)
+    const arcSegs = 12;
+    const drawArc = (cx: number, cz: number, r: number, start: number, end: number) => {
+      for (let i = 0; i < arcSegs; i++) {
+        const t1 = start + ((end - start) * i) / arcSegs;
+        const t2 = start + ((end - start) * (i + 1)) / arcSegs;
+        pts.push(
+          new THREE.Vector3(cx + Math.cos(t1) * r, 0.02, cz + Math.sin(t1) * r),
+          new THREE.Vector3(cx + Math.cos(t2) * r, 0.02, cz + Math.sin(t2) * r)
+        );
+      }
+    };
+    drawArc(-1.0, 0, 0.7, 0, Math.PI / 2);
+    drawArc( 1.0, 0, 0.7, Math.PI / 2, Math.PI);
+    return new THREE.BufferGeometry().setFromPoints(pts);
+  }, []);
+
+  // Amber dimension lines (top, left, right, bottom) with tick marks
+  const dimGeo = useMemo(() => {
+    const pts: THREE.Vector3[] = [];
+    const w = HW / 2;
+    const d = HD / 2;
+    const off = 0.9;
+    const tick = 0.18;
+    // Top: across the X axis at -d-off
+    pts.push(new THREE.Vector3(-w, 0.03, -d - off), new THREE.Vector3( w, 0.03, -d - off));
+    pts.push(new THREE.Vector3(-w, 0.03, -d - off - tick), new THREE.Vector3(-w, 0.03, -d - off + tick));
+    pts.push(new THREE.Vector3( w, 0.03, -d - off - tick), new THREE.Vector3( w, 0.03, -d - off + tick));
+    pts.push(new THREE.Vector3(0,  0.03, -d - off - tick), new THREE.Vector3(0,  0.03, -d - off + tick));
+    // Left: along Z at -w-off
+    pts.push(new THREE.Vector3(-w - off, 0.03, -d), new THREE.Vector3(-w - off, 0.03,  d));
+    pts.push(new THREE.Vector3(-w - off - tick, 0.03, -d), new THREE.Vector3(-w - off + tick, 0.03, -d));
+    pts.push(new THREE.Vector3(-w - off - tick, 0.03,  d), new THREE.Vector3(-w - off + tick, 0.03,  d));
+    pts.push(new THREE.Vector3(-w - off - tick, 0.03,  0), new THREE.Vector3(-w - off + tick, 0.03,  0));
+    // Bottom: scale bar
+    pts.push(new THREE.Vector3(-w + 0.5, 0.03, d + off + 0.6), new THREE.Vector3(-w + 1.5, 0.03, d + off + 0.6));
+    pts.push(new THREE.Vector3(-w + 0.5, 0.03, d + off + 0.5), new THREE.Vector3(-w + 0.5, 0.03, d + off + 0.7));
+    pts.push(new THREE.Vector3(-w + 1.5, 0.03, d + off + 0.5), new THREE.Vector3(-w + 1.5, 0.03, d + off + 0.7));
+    return new THREE.BufferGeometry().setFromPoints(pts);
+  }, []);
+
+  useFrame(() => {
+    const p = scroll.current;
+    const opacity = 1 - ramp(p, 0.16, 0.30);
+    if (matRef.current) matRef.current.opacity = opacity;
+    if (dimMatRef.current) dimMatRef.current.opacity = opacity * 0.9;
+    // Fade DOM-projected labels via shared CSS variable
+    if (typeof document !== "undefined") {
+      document.documentElement.style.setProperty("--ptd-label-opacity", String(opacity));
+    }
+  });
+
+  return (
+    <>
+      <lineSegments geometry={planGeo}>
+        <lineBasicMaterial ref={matRef} color={COLORS.sage} transparent opacity={1} />
+      </lineSegments>
+      <lineSegments geometry={dimGeo}>
+        <lineBasicMaterial ref={dimMatRef} color={COLORS.amber} transparent opacity={0.95} />
+      </lineSegments>
+
+      {/* In-3D room labels + dimension numbers via drei <Html> — DOM divs
+          projected to 3D positions (no workers, no troika). */}
+      <group ref={labelGroupRef}>
+        <PlanLabel position={[-2.0, 0.04,  1.6]} variant="room" size="lg">LIVING</PlanLabel>
+        <PlanLabel position={[ 2.0, 0.04,  1.6]} variant="room" size="lg">KITCHEN</PlanLabel>
+        <PlanLabel position={[-2.4, 0.04, -1.5]} variant="room" size="md">BEDROOM 1</PlanLabel>
+        <PlanLabel position={[ 1.2, 0.04, -1.0]} variant="room" size="md">BEDROOM 2</PlanLabel>
+        <PlanLabel position={[ 2.6, 0.04, -2.2]} variant="room" size="sm">BATH</PlanLabel>
+
+        <PlanLabel position={[0,    0.04, -HD / 2 - 0.9 - 0.35]} variant="dim">32&apos;-0&quot;</PlanLabel>
+        <PlanLabel position={[-HW / 2 - 0.9 - 0.55, 0.04, 0]}    variant="dim">24&apos;-0&quot;</PlanLabel>
+        <PlanLabel position={[-HW / 2 + 1.0, 0.04, HD / 2 + 0.9 + 0.95]} variant="meta">SCALE 1/4&quot;=1&apos;</PlanLabel>
+        <PlanLabel position={[ HW / 2 - 0.4, 0.04, HD / 2 + 0.9 + 0.95]} variant="hint">FLOOR PLAN · A-04</PlanLabel>
+      </group>
+    </>
+  );
+}
+
+/**
+ * Ground plane.
+ */
+function Ground({ scroll }: { scroll: ScrollRef }) {
+  const matRef = useRef<THREE.MeshStandardMaterial>(null);
+  useFrame(() => {
+    const p = scroll.current;
+    const lawnT = ramp(p, 0.66, 0.86);
+    if (matRef.current) {
+      // Start with midnight (matches scene bg), shift to lawn at photoreal
+      const dark = new THREE.Color(COLORS.midnight);
+      const light = new THREE.Color(COLORS.lawn);
+      matRef.current.color.copy(dark).lerp(light, lawnT);
+    }
+  });
+  return (
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+      <planeGeometry args={[80, 80]} />
+      <meshStandardMaterial ref={matRef} color={COLORS.midnight} roughness={0.95} metalness={0} />
+    </mesh>
+  );
+}
+
+/**
+ * Wall slab — invisible during Beat 1, edges during Beat 2, materializes during Beat 3.
+ */
+function Wall({
+  position,
+  size,
+  buildAt,
+  scroll,
+}: {
+  position: [number, number, number];
+  size: [number, number, number];
+  buildAt: number;
+  scroll: ScrollRef;
+}) {
+  const matRef = useRef<THREE.MeshStandardMaterial>(null);
+  const edgeMatRef = useRef<THREE.LineBasicMaterial>(null);
+
+  useFrame(() => {
+    const p = scroll.current;
+    // Edges: appear during Beat 2 (0.20→0.32), fade during photoreal (0.78→0.90)
+    const edgeIn = ramp(p, 0.20, 0.32);
+    const edgeOut = 1 - ramp(p, 0.78, 0.90);
+    const edgeOpacity = edgeIn * edgeOut;
+
+    // Fill: translucent from start of Beat 2 (visible as hologram), solid at buildAt.
+    // This was p=0.30→0.36 before — too late; walls appeared invisible during Beat 2.
+    const translucentIn = ramp(p, 0.20, 0.32);
+    const solidIn = ramp(p, buildAt, buildAt + 0.05);
+    const opacity = Math.max(translucentIn * 0.45, solidIn);
+
+    const sageColor = new THREE.Color(COLORS.sageMist);
+    const wallAmber = new THREE.Color(COLORS.amber); // Fix 3: walls amber
+    const colorT = ramp(p, buildAt, buildAt + 0.05);
+
+    if (matRef.current) {
+      matRef.current.color.copy(sageColor).lerp(wallAmber, colorT);
+      matRef.current.emissive.set(COLORS.sage);
+      matRef.current.emissiveIntensity = lerp(0.5, 0, colorT);
+      matRef.current.opacity = opacity;
+      matRef.current.transparent = opacity < 0.99;
+      matRef.current.visible = opacity > 0.001;
+    }
+    if (edgeMatRef.current) {
+      edgeMatRef.current.opacity = edgeOpacity;
+    }
+  });
+
+  return (
+    <mesh position={position}>
+      <boxGeometry args={size} />
+      <meshStandardMaterial
+        ref={matRef}
+        color={COLORS.sageMist}
+        roughness={0.82}
+        metalness={0.02}
+        transparent
+        opacity={0}
+        visible={false}
+      />
+      <Edges threshold={15}>
+        <lineBasicMaterial ref={edgeMatRef} color={COLORS.sage} transparent opacity={0} />
+      </Edges>
+    </mesh>
+  );
+}
+
+/**
+ * Gabled roof.
+ */
+function Roof({ scroll }: { scroll: ScrollRef }) {
+  const matRef = useRef<THREE.MeshStandardMaterial>(null);
+  const edgeMatRef = useRef<THREE.LineBasicMaterial>(null);
+
+  const geo = useMemo(() => {
+    const g = new THREE.BufferGeometry();
+    const w = HW / 2 + 0.3;
+    const d = HD / 2 + 0.3;
+    const baseY = WALL_H;
+    const peakY = WALL_H + ROOF_H;
+    const v = new Float32Array([
+      -w, baseY, -d,
+       w, baseY, -d,
+       w, baseY,  d,
+      -w, baseY,  d,
+       0, peakY, -d,
+       0, peakY,  d,
+    ]);
+    const idx = [
+      0, 3, 5,    0, 5, 4,
+      1, 4, 5,    1, 5, 2,
+      0, 4, 1,
+      3, 2, 5,
+    ];
+    g.setIndex(idx);
+    g.setAttribute("position", new THREE.BufferAttribute(v, 3));
+    g.computeVertexNormals();
+    return g;
+  }, []);
+
+  useFrame(() => {
+    const p = scroll.current;
+    const edgeIn = ramp(p, 0.22, 0.34);
+    const edgeOut = 1 - ramp(p, 0.78, 0.90);
+    const edgeOpacity = edgeIn * edgeOut;
+
+    // Roof appears translucent earlier (was 0.32→0.38; too late)
+    const translucentIn = ramp(p, 0.22, 0.34);
+    const solidIn = ramp(p, 0.52, 0.58); // ROOF cost
+    const opacity = Math.max(translucentIn * 0.45, solidIn);
+
+    const sageColor = new THREE.Color(COLORS.sageMist);
+    const roofDeep = new THREE.Color(COLORS.deep); // Fix 3: roof → brand-deep
+    const colorT = ramp(p, 0.52, 0.58);
+
+    if (matRef.current) {
+      matRef.current.color.copy(sageColor).lerp(roofDeep, colorT);
+      matRef.current.emissive.set(COLORS.sage);
+      matRef.current.emissiveIntensity = lerp(0.5, 0, colorT);
+      matRef.current.opacity = opacity;
+      matRef.current.transparent = opacity < 0.99;
+      matRef.current.visible = opacity > 0.001;
+    }
+    if (edgeMatRef.current) edgeMatRef.current.opacity = edgeOpacity;
+  });
+
+  return (
+    <mesh geometry={geo}>
+      <meshStandardMaterial
+        ref={matRef}
+        color={COLORS.sageMist}
+        roughness={0.9}
+        metalness={0.02}
+        side={THREE.DoubleSide}
+        transparent
+        opacity={0}
+        visible={false}
+      />
+      <Edges geometry={geo} threshold={15}>
+        <lineBasicMaterial ref={edgeMatRef} color={COLORS.sage} transparent opacity={0} />
+      </Edges>
+    </mesh>
+  );
+}
+
+/**
+ * Windows + door.
+ */
+function WindowsAndDoor({ scroll }: { scroll: ScrollRef }) {
+  const groupRef = useRef<THREE.Group>(null);
+
+  useFrame(() => {
+    const p = scroll.current;
+    const t = ramp(p, 0.60, 0.66);
+    if (groupRef.current) {
+      groupRef.current.visible = t > 0.001;
+      groupRef.current.children.forEach((child) => {
+        child.traverse((obj) => {
+          if ((obj as THREE.Mesh).material) {
+            const mat = (obj as THREE.Mesh).material as THREE.Material & { opacity?: number };
+            if ("opacity" in mat) {
+              mat.opacity = t;
+              mat.transparent = t < 0.99;
+            }
+          }
+        });
+      });
+    }
+  });
+
+  const positions: Array<[number, number, number]> = [
+    [-2.4, 1.5,  HD / 2 + 0.01],
+    [ 2.4, 1.5,  HD / 2 + 0.01],
+    [-2.4, 1.5, -HD / 2 - 0.01],
+    [ 2.4, 1.5, -HD / 2 - 0.01],
+  ];
+
+  return (
+    <group ref={groupRef} visible={false}>
+      {positions.map((pos, i) => {
+        const isFront = pos[2] > 0;
+        return (
+          <group key={i} position={pos} rotation={[0, isFront ? 0 : Math.PI, 0]}>
+            <mesh position={[0, 0, 0.001]}>
+              <planeGeometry args={[1.2, 1.2]} />
+              <meshStandardMaterial
+                color={COLORS.glass}
+                roughness={0.05}
+                metalness={0.6}
+                emissive={COLORS.glass}
+                emissiveIntensity={0.15}
+                transparent
+                opacity={0}
+                side={THREE.DoubleSide}
+              />
+            </mesh>
+            <mesh position={[0, 0, 0]}>
+              <planeGeometry args={[1.4, 1.4]} />
+              <meshStandardMaterial color={COLORS.trim} roughness={0.55} transparent opacity={0} side={THREE.DoubleSide} />
+            </mesh>
+          </group>
+        );
+      })}
+      <mesh position={[0, 1.2, HD / 2 + 0.02]}>
+        <planeGeometry args={[1.0, 2.4]} />
+        <meshStandardMaterial color={COLORS.door} roughness={0.6} transparent opacity={0} side={THREE.DoubleSide} />
+      </mesh>
+    </group>
+  );
+}
+
+/**
+ * Foundation slab.
+ */
+function Foundation({ scroll }: { scroll: ScrollRef }) {
+  const matRef = useRef<THREE.MeshStandardMaterial>(null);
+  useFrame(() => {
+    const p = scroll.current;
+    const t = ramp(p, 0.40, 0.46);
+    if (matRef.current) {
+      matRef.current.opacity = t;
+      matRef.current.transparent = t < 0.99;
+      matRef.current.visible = t > 0.001;
+    }
+  });
+  return (
+    <mesh position={[0, 0.08, 0]}>
+      <boxGeometry args={[HW + 0.4, 0.16, HD + 0.4]} />
+      <meshStandardMaterial
+        ref={matRef}
+        color={COLORS.forest}
+        roughness={0.85}
+        metalness={0}
+        transparent
+        opacity={0}
+        visible={false}
+      />
+    </mesh>
+  );
+}
+
+function InteriorDivider({
+  position,
+  size,
+  scroll,
+}: {
+  position: [number, number, number];
+  size: [number, number, number];
+  scroll: ScrollRef;
+}) {
+  const edgeRef = useRef<THREE.LineBasicMaterial>(null);
+  useFrame(() => {
+    const p = scroll.current;
+    const edgeIn = ramp(p, 0.22, 0.34);
+    const edgeOut = 1 - ramp(p, 0.62, 0.78);
+    if (edgeRef.current) edgeRef.current.opacity = edgeIn * edgeOut * 0.7;
+  });
+  return (
+    <mesh position={position}>
+      <boxGeometry args={size} />
+      <meshBasicMaterial transparent opacity={0} visible={false} />
+      <Edges threshold={15}>
+        <lineBasicMaterial ref={edgeRef} color={COLORS.sage} transparent opacity={0} />
+      </Edges>
+    </mesh>
+  );
+}
+
+function Walls({ scroll }: { scroll: ScrollRef }) {
+  const walls: Array<{
+    position: [number, number, number];
+    size: [number, number, number];
+    buildAt: number;
+  }> = [
+    { position: [0, WALL_H / 2,  HD / 2], size: [HW + WALL_T, WALL_H, WALL_T], buildAt: 0.56 },
+    { position: [0, WALL_H / 2, -HD / 2], size: [HW + WALL_T, WALL_H, WALL_T], buildAt: 0.56 },
+    { position: [-HW / 2, WALL_H / 2, 0], size: [WALL_T, WALL_H, HD],          buildAt: 0.56 },
+    { position: [ HW / 2, WALL_H / 2, 0], size: [WALL_T, WALL_H, HD],          buildAt: 0.56 },
+  ];
+  return (
+    <>
+      {walls.map((w, i) => (
+        <Wall key={i} position={w.position} size={w.size} buildAt={w.buildAt} scroll={scroll} />
+      ))}
+      <InteriorDivider position={[0, WALL_H / 2, 0]} size={[HW - 0.4, WALL_H, WALL_T]} scroll={scroll} />
+      <InteriorDivider position={[-0.01, WALL_H / 2, -1.2]} size={[WALL_T, WALL_H, HD - 2]} scroll={scroll} />
+    </>
+  );
+}
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * Camera rig — extended Beat 1, orbit in Beat 3, wider hero shot
+ * ──────────────────────────────────────────────────────────────────────── */
+
+function CameraRig({ scroll }: { scroll: ScrollRef }) {
+  const camRef = useRef<THREE.PerspectiveCamera>(null);
+
+  // Orbit radius/elevation for Beat 3 — camera circles the house
+  const ORBIT_R = 14;
+  const ORBIT_Y = 7;
+
+  useFrame(() => {
+    if (!camRef.current) return;
+    const p = scroll.current;
+
+    // Beat 1: true top-down. Use slight Z offset from origin so look-at isn't
+    // degenerate; force camera UP to Z-back so "north" reads correctly.
+    if (p < 0.18) {
+      const t = ramp(p, 0.0, 0.18);
+      const camY = lerp(28, 24, t);
+      const fov = lerp(24, 26, t);
+      camRef.current.position.set(0.001, camY, 0.001);
+      camRef.current.up.set(0, 0, -1);
+      camRef.current.lookAt(0, 0, 0);
+      camRef.current.fov = fov;
+      camRef.current.updateProjectionMatrix();
+      return;
+    }
+
+    // Beat 2: lift up and rotate from top-down to 3-quarter (0.18 → 0.36)
+    if (p < 0.36) {
+      const t = easeInOut(ramp(p, 0.18, 0.36));
+      // Interpolate camera position from (0,24,0.01) to (12, 9, 12)
+      const cx = lerp(0.001, 12, t);
+      const cy = lerp(24, 9, t);
+      const cz = lerp(0.001, 12, t);
+      const ty = lerp(0, 1.2, t);
+      const fov = lerp(26, 34, t);
+      // Smoothly rotate up vector from (0,0,-1) back to (0,1,0)
+      const upY = lerp(0, 1, t);
+      const upZ = lerp(-1, 0, t);
+      camRef.current.position.set(cx, cy, cz);
+      camRef.current.up.set(0, upY, upZ).normalize();
+      camRef.current.lookAt(0, ty, 0);
+      camRef.current.fov = fov;
+      camRef.current.updateProjectionMatrix();
+      return;
+    }
+
+    // Beat 3: orbit around the house (0.36 → 0.66) — half-revolution + elevation drift
+    if (p < 0.66) {
+      const t = easeInOut(ramp(p, 0.36, 0.66));
+      // angle from 0 (front-right) to 1.2π (around the back side) so we see all sides
+      const angle = lerp(Math.PI * 0.25, Math.PI * 1.45, t);
+      const r = lerp(ORBIT_R, ORBIT_R - 1.5, t);
+      const cx = Math.cos(angle) * r;
+      const cz = Math.sin(angle) * r;
+      const cy = lerp(ORBIT_Y, 6, t);
+      const fov = lerp(34, 36, t);
+      camRef.current.position.set(cx, cy, cz);
+      camRef.current.up.set(0, 1, 0);
+      camRef.current.lookAt(0, 1.2, 0);
+      camRef.current.fov = fov;
+      camRef.current.updateProjectionMatrix();
+      return;
+    }
+
+    // Beat 4 (chart): slight pull-back, settled angle (0.66 → 0.78)
+    if (p < 0.78) {
+      const t = easeInOut(ramp(p, 0.66, 0.78));
+      const angle = lerp(Math.PI * 1.45, Math.PI * 1.7, t);
+      const r = lerp(ORBIT_R - 1.5, ORBIT_R + 2, t);
+      const cx = Math.cos(angle) * r;
+      const cz = Math.sin(angle) * r;
+      const cy = lerp(6, 7, t);
+      const fov = 34;
+      camRef.current.position.set(cx, cy, cz);
+      camRef.current.up.set(0, 1, 0);
+      camRef.current.lookAt(0, 1.2, 0);
+      camRef.current.fov = fov;
+      camRef.current.updateProjectionMatrix();
+      return;
+    }
+
+    // Beat 5 + 6: cinematic wide hero shot (0.78 → 1.0) — pulled back further
+    const t = easeInOut(ramp(p, 0.78, 1.0));
+    const angle = lerp(Math.PI * 1.7, Math.PI * 1.85, t);
+    const r = lerp(ORBIT_R + 2, ORBIT_R + 6, t);
+    const cx = Math.cos(angle) * r;
+    const cz = Math.sin(angle) * r;
+    const cy = lerp(7, 5.5, t);
+    const fov = lerp(34, 30, t);
+    camRef.current.position.set(cx, cy, cz);
+    camRef.current.up.set(0, 1, 0);
+    camRef.current.lookAt(0, 1.2, 0);
+    camRef.current.fov = fov;
+    camRef.current.updateProjectionMatrix();
+  });
+
+  return (
+    <PerspectiveCamera
+      ref={camRef}
+      makeDefault
+      fov={26}
+      near={0.1}
+      far={120}
+      position={[0.001, 28, 0.001]}
+    />
+  );
+}
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * Lighting
+ * ──────────────────────────────────────────────────────────────────────── */
+
+function Lights({ scroll }: { scroll: ScrollRef }) {
+  const ambRef = useRef<THREE.AmbientLight>(null);
+  const sunRef = useRef<THREE.DirectionalLight>(null);
+  const hemiRef = useRef<THREE.HemisphereLight>(null);
+
+  useFrame(() => {
+    const p = scroll.current;
+    const earlyToNeutral = ramp(p, 0.20, 0.50);
+    const goldenT = ramp(p, 0.66, 0.92);
+
+    if (ambRef.current) {
+      const col = new THREE.Color(COLORS.forest)
+        .lerp(new THREE.Color("#f6e7c8"), earlyToNeutral)
+        .lerp(new THREE.Color("#ffb978"), goldenT);
+      ambRef.current.color.copy(col);
+      ambRef.current.intensity = lerp(0.45, 0.6, earlyToNeutral);
+    }
+    if (sunRef.current) {
+      const sx = lerp(5, 16, goldenT);
+      const sy = lerp(20, 5, goldenT);
+      const sz = lerp(10, -5, goldenT);
+      sunRef.current.position.set(sx, sy, sz);
+      const sunCol = new THREE.Color("#ffffff").lerp(new THREE.Color("#ff955a"), goldenT);
+      sunRef.current.color.copy(sunCol);
+      sunRef.current.intensity = lerp(0.85, 1.7, goldenT);
+    }
+    if (hemiRef.current) {
+      const skyCol = new THREE.Color(COLORS.midnight).lerp(new THREE.Color("#ffb978"), goldenT);
+      const gndCol = new THREE.Color(COLORS.midnightDark).lerp(new THREE.Color("#6b4a2a"), goldenT);
+      hemiRef.current.color.copy(skyCol);
+      hemiRef.current.groundColor.copy(gndCol);
+      hemiRef.current.intensity = lerp(0.3, 0.55, goldenT);
+    }
+  });
+
+  return (
+    <>
+      <ambientLight ref={ambRef} intensity={0.45} color={COLORS.forest} />
+      <directionalLight
+        ref={sunRef}
+        position={[5, 20, 10]}
+        intensity={0.85}
+        color="#ffffff"
+      />
+      <hemisphereLight
+        ref={hemiRef}
+        color={COLORS.midnight}
+        groundColor={COLORS.midnightDark}
+        intensity={0.3}
+      />
+    </>
+  );
+}
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * Scene composition
+ * ──────────────────────────────────────────────────────────────────────── */
+
+function SceneBackground({ scroll }: { scroll: ScrollRef }) {
+  const { scene } = useThree();
+  const bgColor = useMemo(() => new THREE.Color(COLORS.midnight), []);
+  const fog = useMemo(() => new THREE.Fog(COLORS.midnight, 22, 60), []);
+  const midnight = useMemo(() => new THREE.Color(COLORS.midnight), []);
+  const deep = useMemo(() => new THREE.Color(COLORS.deep), []);
+  useEffect(() => {
+    scene.background = bgColor;
+    scene.fog = fog;
+  }, [scene, bgColor, fog]);
+  useFrame(() => {
+    const p = scroll.current;
+    // Blueprint/wireframe/build: midnight. Photoreal: shift to deep (+depth).
+    const t = ramp(p, 0.66, 0.85);
+    bgColor.copy(midnight).lerp(deep, t);
+    fog.color.copy(bgColor);
+  });
+  return null;
+}
+
+function HouseScene({
+  scroll,
+}: {
+  scroll: ScrollRef;
+}) {
+  return (
+    <>
+      <SceneBackground scroll={scroll} />
+      <Lights scroll={scroll} />
+      <CameraRig scroll={scroll} />
+      <Ground scroll={scroll} />
+      <FloorPlan scroll={scroll} />
+      <Foundation scroll={scroll} />
+      <Walls scroll={scroll} />
+      <Roof scroll={scroll} />
+      <WindowsAndDoor scroll={scroll} />
+    </>
+  );
+}
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * DOM overlays
+ * ──────────────────────────────────────────────────────────────────────── */
+
+function CADFrame({ progress }: { progress: MotionValue<number> }) {
+  const opacity = useTransform(progress, [0.78, 0.90], [1, 0.35]);
+  return (
+    <motion.div
+      style={{ opacity }}
+      aria-hidden="true"
+      className="absolute inset-0 pointer-events-none z-20"
+    >
+      {/* Corner crop marks */}
+      <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+        <g stroke={COLORS.sage} strokeWidth="0.18" fill="none" opacity="0.6">
+          <path d="M2 2 L2 7 M2 2 L7 2" />
+          <path d="M98 2 L98 7 M98 2 L93 2" />
+          <path d="M2 98 L2 93 M2 98 L7 98" />
+          <path d="M98 98 L98 93 M98 98 L93 98" />
+        </g>
+        <g stroke={COLORS.sage} strokeWidth="0.08" fill="none" opacity="0.18">
+          <line x1="0" y1="50" x2="100" y2="50" strokeDasharray="0.6 1.2" />
+          <line x1="50" y1="0" x2="50" y2="100" strokeDasharray="0.6 1.2" />
+        </g>
+      </svg>
+
+      {/* Title block bottom-right — bigger, more legible.
+          Hidden on mobile where it would collide with the cost-card stack. */}
+      <div className="hidden md:block absolute bottom-6 right-6 md:bottom-8 md:right-10 font-mono text-[12px] md:text-[13px] tracking-[0.12em] text-brand-sage-mist/85 leading-[1.55] bg-brand-midnight-dark/55 backdrop-blur-md border-l-[3px] border-brand-amber pl-4 pr-5 py-3 rounded-sm shadow-xl shadow-black/40">
+        <div className="text-[10px] tracking-[0.22em] text-brand-amber font-bold mb-1.5">JOHNSON RESIDENCE</div>
+        <div><span className="text-brand-amber/90 font-semibold">DWG</span> &nbsp; A-04 · REV 03</div>
+        <div><span className="text-brand-amber/90 font-semibold">DATE</span> &nbsp; 04 / 15 / 2026</div>
+        <div><span className="text-brand-amber/90 font-semibold">SCALE</span> 1/4&quot; = 1&apos;-0&quot;</div>
+        <div><span className="text-brand-amber/90 font-semibold">SHEET</span> 04 / 10</div>
+      </div>
+
+      {/* Side ruler (left edge) */}
+      <div className="hidden md:block absolute left-3 top-1/4 bottom-1/4 w-px bg-brand-sage/15">
+        {[0, 0.25, 0.5, 0.75, 1].map((t) => (
+          <div
+            key={t}
+            className="absolute -left-1 w-2 h-px bg-brand-sage/40"
+            style={{ top: `${t * 100}%` }}
+          />
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+function TelemetryPill({ frame, state }: { frame: number; state: string }) {
+  const padded = String(frame).padStart(2, "0");
+  return (
+    <div className="hidden md:flex absolute top-6 left-1/2 -translate-x-1/2 items-center gap-2.5 z-30 font-mono text-[10px] tracking-[0.12em] text-brand-sage-mist/85 bg-brand-midnight-dark/70 border border-brand-forest/30 px-3.5 py-1.5 rounded-sm backdrop-blur-md shadow-lg shadow-black/30">
+      <span className="text-brand-sage-mist/45">FRAME</span>
+      <span className="text-brand-amber-bright font-semibold tabular-nums">{padded} / 60</span>
+      <span className="text-brand-forest/40">·</span>
+      <span className="text-brand-sage-mist/45">STATE</span>
+      <span className="text-brand-amber-bright font-semibold">{state}</span>
+      <span className="text-brand-forest/40">·</span>
+      <div className="w-24 h-[2px] bg-brand-forest/20 relative overflow-hidden rounded-full">
+        <div
+          className="absolute left-0 top-0 bottom-0 bg-brand-amber-bright"
+          style={{ width: `${(frame / 60) * 100}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function HeadlineOverlay({ kicker, headline }: { kicker: string; headline: string }) {
+  // Top-left anchored so it lives ABOVE the house in every beat (top-down plan,
+  // 3/4-view wireframe, photoreal) rather than crossing over dimensions/labels.
+  return (
+    <div className="absolute top-14 md:top-16 left-6 md:left-12 lg:left-20 z-20 max-w-[75%] md:max-w-[42%] pointer-events-none">
+      <motion.div
+        key={kicker + headline}
+        initial={{ opacity: 0, x: -16 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <div className="font-mono text-[10px] md:text-[11px] tracking-[0.18em] text-brand-amber font-semibold mb-2 md:mb-2.5">
+          {kicker}
+        </div>
+        <h3
+          className="text-[24px] md:text-[38px] lg:text-[44px] font-heading font-bold tracking-tight text-white leading-[1.05]"
+          style={{ textShadow: "0 6px 32px rgba(0,0,0,0.65)" }}
+        >
+          {headline || " "}
+        </h3>
+        {headline && (
+          <div className="mt-3 h-[2px] w-12 bg-brand-amber rounded-full" />
+        )}
+      </motion.div>
+    </div>
+  );
+}
+
+function CostCard({
+  entry,
+  index,
+  progress,
+}: {
+  entry: CostEntry;
+  index: number;
+  progress: MotionValue<number>;
+}) {
+  const opacity = useTransform(
+    progress,
+    [entry.showAt - 0.02, entry.showAt + 0.025, 0.72, 0.78],
+    [0, 1, 1, 0]
+  );
+  const y = useTransform(progress, [entry.showAt - 0.02, entry.showAt + 0.05], [20, 0]);
+  const topPx = 90 + index * 92;
+
+  return (
+    <motion.div
+      style={{ opacity, y, top: `${topPx}px` }}
+      className="hidden md:block absolute right-6 lg:right-10 w-[228px] z-20 font-heading"
+    >
+      <div
+        className="relative rounded-[3px] overflow-hidden"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(15,21,24,0.88) 0%, rgba(26,36,40,0.82) 100%)",
+          backdropFilter: "blur(16px) saturate(140%)",
+          WebkitBackdropFilter: "blur(16px) saturate(140%)",
+          boxShadow:
+            "0 22px 50px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04) inset",
+        }}
+      >
+        <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-brand-amber" />
+        <div className="px-4 py-3">
+          <div className="flex items-center justify-between mb-1.5">
+            <div className="font-mono text-[9px] tracking-[0.18em] text-brand-amber font-semibold">
+              + {entry.label}
+            </div>
+            <div className="w-1.5 h-1.5 rounded-full bg-brand-sage shadow-[0_0_8px_#84a98c]" />
+          </div>
+          <div className="text-white text-[22px] font-bold tracking-tighter leading-none tabular-nums">
+            {entry.amount}
+          </div>
+          <div className="text-[11px] text-brand-sage-mist/55 mt-1.5">{entry.subtitle}</div>
+          <div className="mt-2.5 pt-2 border-t border-brand-forest/15 flex justify-between font-mono text-[9px] text-brand-sage-mist/45">
+            <span>JOB · #204</span>
+            <span className="text-brand-sage">▲ logged</span>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function RunningTotalCard({
+  total,
+  progress,
+}: {
+  total: number;
+  progress: MotionValue<number>;
+}) {
+  const opacity = useTransform(progress, [0.36, 0.42, 0.74, 0.80], [0, 1, 1, 0]);
+  return (
+    <motion.div
+      style={{ opacity }}
+      className="hidden md:block absolute bottom-8 md:left-12 lg:left-20 z-20"
+    >
+      <div
+        className="rounded-[3px] px-6 py-4"
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(82,121,111,0.22), rgba(82,121,111,0.10))",
+          backdropFilter: "blur(14px)",
+          WebkitBackdropFilter: "blur(14px)",
+          border: "1px solid rgba(132,169,140,0.4)",
+          boxShadow: "0 18px 40px rgba(0,0,0,0.45)",
+        }}
+      >
+        {/* Fix 5: 48px × 1px amber rule above label */}
+        <div
+          aria-hidden="true"
+          className="mb-2"
+          style={{ width: "48px", height: "1px", background: "#d97706" }}
+        />
+        <div className="font-mono text-[10px] tracking-[0.18em] text-brand-sage font-semibold">
+          SPENT TO DATE
+        </div>
+        {/* Fix 5: 56–64px amber number with glow */}
+        <div
+          className="font-heading font-bold tracking-tighter leading-none mt-2 tabular-nums"
+          style={{
+            color: "#d97706",
+            fontSize: "clamp(42px, 5vw, 64px)",
+            textShadow: "0 0 40px rgba(217, 119, 6, 0.4)",
+          }}
+        >
+          {formatCurrency(total)}
+        </div>
+        <div className="flex gap-1 mt-3">
+          {COST_ENTRIES.map((e, i) => {
+            const shown =
+              total >=
+              COST_ENTRIES.slice(0, i + 1).reduce((s, x) => s + x.numericValue, 0);
+            return (
+              <div
+                key={e.label}
+                className={`h-1 w-6 rounded-full transition-colors duration-300 ${
+                  shown ? "bg-brand-amber" : "bg-brand-forest/25"
+                }`}
+              />
+            );
+          })}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function ChartBar({
+  bar,
+  fill,
+}: {
+  bar: { label: string; actual: number; plan: number };
+  fill: MotionValue<number>;
+}) {
+  const targetPct = (bar.actual / bar.plan) * 100;
+  const width = useTransform(fill, (v) => `${v * targetPct}%`);
+  return (
+    <div>
+      <div className="flex justify-between text-[11px] text-brand-sage-mist/85 mb-1 font-heading">
+        <span className="font-medium">{bar.label}</span>
+        <span className="font-mono tabular-nums">
+          ${(bar.actual / 1000).toFixed(1)}k / ${(bar.plan / 1000).toFixed(1)}k
+        </span>
+      </div>
+      <div className="h-[6px] bg-brand-forest/15 rounded-sm relative overflow-hidden">
+        <motion.div
+          style={{ width }}
+          className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-brand-sage to-brand-forest rounded-sm"
+        />
+      </div>
+    </div>
+  );
+}
+
+function ChartCard({ progress }: { progress: MotionValue<number> }) {
+  const opacity = useTransform(progress, [0.66, 0.70, 0.76, 0.80], [0, 1, 1, 0]);
+  const x = useTransform(progress, [0.66, 0.70], [40, 0]);
+  const fill = useTransform(progress, [0.70, 0.76], [0, 1]);
+  return (
+    <motion.div
+      style={{ opacity, x }}
+      className="hidden md:block absolute top-1/2 -translate-y-1/2 right-6 lg:right-10 z-20 w-[280px]"
+    >
+      <div
+        className="rounded-[3px] p-4 font-heading"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(15,21,24,0.92) 0%, rgba(26,36,40,0.86) 100%)",
+          backdropFilter: "blur(18px) saturate(140%)",
+          WebkitBackdropFilter: "blur(18px) saturate(140%)",
+          border: "1px solid rgba(132,169,140,0.3)",
+          boxShadow:
+            "0 28px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) inset",
+        }}
+      >
+        <div className="flex justify-between items-baseline mb-3.5">
+          <div className="font-mono text-[10px] tracking-[0.16em] text-brand-sage font-semibold">
+            PLAN VS ACTUAL
+          </div>
+          <div className="font-mono text-[9px] text-brand-amber tracking-wider">JOB #204</div>
+        </div>
+        <div className="flex flex-col gap-3">
+          {CHART_BARS.map((bar) => (
+            <ChartBar key={bar.label} bar={bar} fill={fill} />
+          ))}
+        </div>
+        <div className="mt-3.5 pt-3 border-t border-brand-forest/15 flex justify-between font-mono text-[9px] text-brand-sage-mist/55">
+          <span>ON BUDGET</span>
+          <span className="text-brand-sage">● 89% TRACK</span>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function HeroChip({ progress }: { progress: MotionValue<number> }) {
+  const opacity = useTransform(progress, [0.94, 0.98], [0, 1]);
+  const scale = useTransform(progress, [0.94, 0.98], [0.86, 1]);
+  return (
+    <motion.div
+      style={{ opacity, scale }}
+      className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20"
+    >
+      <div
+        className="flex items-center gap-3 px-5 py-3 rounded-full"
+        style={{
+          background: "rgba(15, 21, 24, 0.88)",
+          backdropFilter: "blur(16px) saturate(160%)",
+          WebkitBackdropFilter: "blur(16px) saturate(160%)",
+          border: "1px solid rgba(132, 169, 140, 0.4)",
+          boxShadow:
+            "0 30px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05) inset",
+        }}
+      >
+        <span className="relative flex w-2.5 h-2.5">
+          <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage opacity-75 animate-ping" />
+          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-sage" />
+        </span>
+        <span className="font-heading text-sm md:text-base font-semibold text-white tracking-tight">
+          Johnson Home
+        </span>
+        <span className="text-brand-sage/40">·</span>
+        <span className="font-heading text-xs md:text-sm text-brand-sage-mist/85">On time</span>
+        <span className="text-brand-sage/40">·</span>
+        <span className="font-heading text-xs md:text-sm text-brand-sage-mist/85">On budget</span>
+      </div>
+    </motion.div>
+  );
+}
+
+function MobileCostRow({
+  entry,
+  progress,
+}: {
+  entry: CostEntry;
+  progress: MotionValue<number>;
+}) {
+  const opacity = useTransform(
+    progress,
+    [entry.showAt - 0.02, entry.showAt + 0.025, 0.72, 0.78],
+    [0, 1, 1, 0]
+  );
+  return (
+    <motion.div
+      style={{ opacity }}
+      className="flex items-center justify-between bg-brand-midnight-dark/85 border-l-2 border-brand-amber px-3 py-2 rounded-sm backdrop-blur-md"
+    >
+      <span className="font-mono text-[9px] tracking-[0.14em] text-brand-amber font-semibold">
+        + {entry.label}
+      </span>
+      <span className="text-white text-sm font-heading font-bold tracking-tighter tabular-nums">
+        {entry.amount}
+      </span>
+    </motion.div>
+  );
+}
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * Static fallback (reduced-motion)
+ * ──────────────────────────────────────────────────────────────────────── */
+
+function StaticFallback() {
+  return (
+    <section
+      id="plan-to-done"
+      aria-label="Construction project lifecycle visualization"
+      className="relative bg-brand-midnight py-16 lg:py-24"
+    >
+      <div className="max-w-5xl mx-auto px-6">
+        <div className="text-center mb-10">
+          <p className="font-heading text-xs font-semibold tracking-[0.2em] uppercase text-brand-forest mb-3">
+            How Stroyka Sees Your Project
+          </p>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold tracking-tight text-white leading-tight max-w-2xl mx-auto">
+            From plan to done — every dollar tracked.
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-3xl mx-auto">
+          {COST_ENTRIES.map((entry) => (
+            <div
+              key={entry.label}
+              className="bg-brand-midnight-dark/70 border border-brand-forest/25 border-l-[2px] border-l-brand-amber rounded-sm px-4 py-3"
+            >
+              <div className="font-mono text-[9px] tracking-[0.18em] text-brand-amber font-semibold mb-1">
+                + {entry.label}
+              </div>
+              <div className="text-white text-xl font-heading font-bold tracking-tighter">
+                {entry.amount}
+              </div>
+              <div className="text-[11px] text-brand-sage-mist/55 mt-0.5">{entry.subtitle}</div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-8 text-center">
+          <div className="inline-flex items-center gap-3 bg-brand-forest/15 border border-brand-forest/35 px-5 py-2.5 rounded-full backdrop-blur-md">
+            <span className="w-2.5 h-2.5 rounded-full bg-brand-sage" />
+            <span className="font-heading text-sm font-semibold text-white">Johnson Home</span>
+            <span className="text-brand-sage/40">·</span>
+            <span className="text-sm text-brand-sage-mist/85">On time · On budget</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * Main component
+ * ──────────────────────────────────────────────────────────────────────── */
+
+export default function PlanToDoneAnimation() {
+  const prefersReduced = useReducedMotion();
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef(0);
+  const scrollYProgress = useMotionValue(0);
+
+  const [beat, setBeat] = useState<Beat>(BEATS[0]);
+  const [frame, setFrame] = useState(0);
+  const [totalSpent, setTotalSpent] = useState(0);
+
+  // Manual scroll progress via bounding-rect math. Bulletproof against
+  // framer-motion's useScroll target-resolution flakiness (container-
+  // position warnings, dynamic-import hydration timing, etc.).
+  useEffect(() => {
+    let raf = 0;
+    let lastP = -1;
+    let lastBeatName: BeatName | null = null;
+    let lastFrame = -1;
+    let lastTotal = -1;
+
+    const tick = () => {
+      const el = wrapperRef.current;
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        const scrollable = rect.height - window.innerHeight;
+        const past = -rect.top;
+        const p = scrollable > 0 ? Math.max(0, Math.min(1, past / scrollable)) : 0;
+
+        if (p !== lastP) {
+          lastP = p;
+          scrollRef.current = p;
+          scrollYProgress.set(p);
+
+          const f = Math.min(60, Math.floor(p * 60));
+          if (f !== lastFrame) {
+            lastFrame = f;
+            setFrame(f);
+          }
+
+          const next = getBeat(p);
+          if (next.name !== lastBeatName) {
+            lastBeatName = next.name;
+            setBeat(next);
+          }
+
+          const ramp03 = clamp01((p - 0.36) / (0.66 - 0.36));
+          const eased = 1 - Math.pow(1 - ramp03, 3);
+          const total = Math.round(eased * RUNNING_TOTAL);
+          if (total !== lastTotal) {
+            lastTotal = total;
+            setTotalSpent(total);
+          }
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [scrollYProgress]);
+
+  if (prefersReduced) return <StaticFallback />;
+
+  return (
+    <section
+      id="plan-to-done"
+      aria-label="Construction project lifecycle — interactive scroll animation"
+      className="relative bg-brand-midnight"
+      style={{ overflow: "clip" }}
+    >
+      {/* Fix 4: top gradient bridge from Features section above (120px deep→transparent) */}
+      <div
+        aria-hidden="true"
+        className="absolute top-0 left-0 right-0 pointer-events-none z-[5]"
+        style={{
+          height: "120px",
+          background: "linear-gradient(to bottom, #354f52, transparent)",
+        }}
+      />
+      {/* Fix 4: bottom gradient bridge to next section (120px transparent→midnight) */}
+      <div
+        aria-hidden="true"
+        className="absolute bottom-0 left-0 right-0 pointer-events-none z-[5]"
+        style={{
+          height: "120px",
+          background: "linear-gradient(to top, #2f3e46, transparent)",
+        }}
+      />
+      <div className="max-w-6xl mx-auto px-6 pt-16 lg:pt-24 pb-6 text-center">
+        <p className="font-heading text-xs font-semibold tracking-[0.2em] uppercase text-brand-forest mb-3">
+          How Stroyka Sees Your Project
+        </p>
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold tracking-tight text-white leading-tight max-w-2xl mx-auto">
+          From plan to done — every dollar tracked.
+        </h2>
+        <p className="text-sm md:text-base text-brand-sage-mist/65 mt-4 max-w-lg mx-auto">
+          Scroll to see a project unfold in Stroyka — every material, every cost, in real time.
+        </p>
+      </div>
+
+      {/* NOTE: no overflow:hidden here — it would scope position:sticky to this
+          element, which breaks the pinning on the inner canvas wrapper. Fix 1's
+          containment is applied to the outer <section> and the sticky wrapper. */}
+      <div
+        ref={wrapperRef}
+        style={{ position: "relative", height: "500vh" }}
+      >
+        <div
+          className="sticky top-16 h-[calc(100vh-4rem)] min-h-[560px] bg-brand-midnight"
+          style={{ overflow: "clip" }}
+        >
+          <div className="absolute inset-0 z-0">
+            <Canvas
+              dpr={[1, 2]}
+              gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
+              camera={{ fov: 26, near: 0.1, far: 120, position: [0.001, 28, 0.001] }}
+            >
+              <HouseScene scroll={scrollRef} />
+            </Canvas>
+          </div>
+
+          {/* CAD grid backdrop — Fix 2: forest at 20% opacity */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 z-[1] pointer-events-none"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(82,121,111,0.20) 1px, transparent 1px), linear-gradient(90deg, rgba(82,121,111,0.20) 1px, transparent 1px)",
+              backgroundSize: "56px 56px",
+              maskImage:
+                "radial-gradient(ellipse at center, #000 0%, #000 50%, transparent 85%)",
+              WebkitMaskImage:
+                "radial-gradient(ellipse at center, #000 0%, #000 50%, transparent 85%)",
+            }}
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 z-[2] pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(ellipse 100% 75% at 50% 55%, transparent 45%, rgba(15,21,24,0.55) 100%)",
+            }}
+          />
+
+          <CADFrame progress={scrollYProgress} />
+          <TelemetryPill frame={frame} state={beat.state} />
+          <HeadlineOverlay kicker={beat.kicker} headline={beat.headline} />
+
+          {COST_ENTRIES.map((entry, i) => (
+            <CostCard
+              key={entry.label}
+              entry={entry}
+              index={i}
+              progress={scrollYProgress}
+            />
+          ))}
+
+          <RunningTotalCard total={totalSpent} progress={scrollYProgress} />
+          <ChartCard progress={scrollYProgress} />
+          <HeroChip progress={scrollYProgress} />
+
+          <div className="md:hidden absolute bottom-4 left-4 right-4 z-20 flex flex-col gap-1.5">
+            {COST_ENTRIES.map((entry) => (
+              <MobileCostRow key={entry.label} entry={entry} progress={scrollYProgress} />
+            ))}
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+}

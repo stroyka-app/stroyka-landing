@@ -1,13 +1,23 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useSectionColors } from "@/lib/hooks/useSectionColors";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import TheShift from "@/components/TheShift";
 import HowItWorks from "@/components/HowItWorks";
 import Features from "@/components/Features";
-import BuiltTough from "@/components/BuiltTough";
 import Comparison from "@/components/Comparison";
+
+const PlanToDoneAnimation = dynamic(
+  () => import("@/components/PlanToDoneAnimation"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="bg-brand-midnight" style={{ minHeight: "60vh" }} aria-hidden="true" />
+    ),
+  },
+);
 import FounderNote from "@/components/FounderNote";
 import Integrations from "@/components/Integrations";
 import Pricing from "@/components/Pricing";
@@ -21,7 +31,7 @@ const SECTION_IDS = [
   "the-shift",
   "how-it-works",
   "features",
-  "built-tough",
+  "plan-to-done",
   "comparison",
   "founder",
   "integrations",
@@ -45,7 +55,7 @@ export default function Home() {
       <TheShift />
       <HowItWorks />
       <Features />
-      <BuiltTough />
+      <PlanToDoneAnimation />
       <Comparison />
       <FounderNote />
       <Integrations />

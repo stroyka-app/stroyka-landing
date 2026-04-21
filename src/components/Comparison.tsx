@@ -16,13 +16,11 @@ interface Row {
   note?: string;
 }
 
+// Reordered to group cells vertically: spreadsheets column reads YES → PARTIAL
+// → NO top-to-bottom, minimising visual chaos and letting the reader compare
+// by block rather than row-by-row.
 const ROWS: Row[] = [
-  {
-    label: "Works offline at the jobsite",
-    spreadsheets: "no",
-    enterprise: "partial",
-    stroyka: "yes",
-  },
+  // Block 1 — spreadsheets YES (things a spreadsheet actually does well)
   {
     label: "Flat monthly pricing",
     spreadsheets: "yes",
@@ -37,21 +35,24 @@ const ROWS: Row[] = [
     stroyka: "yes",
   },
   {
-    label: "Real-time job costing",
-    spreadsheets: "no",
-    enterprise: "yes",
-    stroyka: "yes",
-  },
-  {
-    label: "Crew-facing mobile app",
-    spreadsheets: "no",
-    enterprise: "partial",
-    stroyka: "yes",
-  },
-  {
     label: "No training required",
     spreadsheets: "yes",
     enterprise: "no",
+    stroyka: "yes",
+  },
+  // Block 2 — spreadsheets PARTIAL
+  {
+    label: "Export to QuickBooks / Xero",
+    spreadsheets: "partial",
+    enterprise: "yes",
+    stroyka: "yes",
+    note: "CSV + PDF now, direct integrations on the roadmap.",
+  },
+  // Block 3 — spreadsheets NO, enterprise YES (things enterprise does well)
+  {
+    label: "Real-time job costing",
+    spreadsheets: "no",
+    enterprise: "yes",
     stroyka: "yes",
   },
   {
@@ -60,25 +61,31 @@ const ROWS: Row[] = [
     enterprise: "yes",
     stroyka: "yes",
   },
+  // Block 4 — spreadsheets NO, enterprise PARTIAL (the gap Stroyka fills)
   {
-    label: "Export to QuickBooks / Xero",
-    spreadsheets: "partial",
-    enterprise: "yes",
+    label: "Works offline at the jobsite",
+    spreadsheets: "no",
+    enterprise: "partial",
     stroyka: "yes",
-    note: "CSV + PDF now, direct integrations on the roadmap.",
+  },
+  {
+    label: "Crew-facing mobile app",
+    spreadsheets: "no",
+    enterprise: "partial",
+    stroyka: "yes",
   },
 ];
 
 function Cell({ value, highlight }: { value: CellValue; highlight: boolean }) {
   const base =
-    "flex items-center justify-center w-8 h-8 rounded-full border transition-colors";
+    "flex items-center justify-center w-8 h-8 rounded-full border-[1.5px] transition-colors";
   if (value === "yes") {
     return (
       <span
         className={`${base} ${
           highlight
-            ? "bg-brand-forest/25 border-brand-sage/50 text-brand-sage"
-            : "bg-brand-forest/10 border-brand-forest/30 text-brand-sage/70"
+            ? "bg-emerald-500/30 border-emerald-400/70 text-white shadow-[0_0_16px_rgba(52,211,153,0.25)]"
+            : "bg-emerald-500/20 border-emerald-400/50 text-emerald-300"
         }`}
       >
         <Check size={14} strokeWidth={3} />
@@ -88,7 +95,7 @@ function Cell({ value, highlight }: { value: CellValue; highlight: boolean }) {
   if (value === "partial") {
     return (
       <span
-        className={`${base} bg-amber-500/10 border-amber-500/30 text-amber-400/80`}
+        className={`${base} bg-amber-500/25 border-amber-400/60 text-amber-300`}
         title="Partial"
       >
         <Minus size={14} strokeWidth={3} />
@@ -97,7 +104,7 @@ function Cell({ value, highlight }: { value: CellValue; highlight: boolean }) {
   }
   return (
     <span
-      className={`${base} bg-red-950/20 border-red-400/20 text-red-300/60`}
+      className={`${base} bg-rose-500/20 border-rose-400/55 text-rose-300`}
     >
       <X size={14} strokeWidth={3} />
     </span>
@@ -240,19 +247,19 @@ export default function Comparison() {
         <FadeIn delay={0.25}>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-5 text-[12.5px] text-brand-sage-mist/55">
             <span className="flex items-center gap-2">
-              <span className="w-4 h-4 rounded-full bg-brand-forest/15 border border-brand-forest/30 flex items-center justify-center text-brand-sage">
+              <span className="w-4 h-4 rounded-full bg-emerald-500/20 border border-emerald-400/50 flex items-center justify-center text-emerald-300">
                 <Check size={10} strokeWidth={3} />
               </span>
               Yes
             </span>
             <span className="flex items-center gap-2">
-              <span className="w-4 h-4 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
+              <span className="w-4 h-4 rounded-full bg-amber-500/25 border border-amber-400/60 flex items-center justify-center text-amber-300">
                 <Minus size={10} strokeWidth={3} />
               </span>
               Partial
             </span>
             <span className="flex items-center gap-2">
-              <span className="w-4 h-4 rounded-full bg-red-950/20 border border-red-400/20 flex items-center justify-center text-red-300/70">
+              <span className="w-4 h-4 rounded-full bg-rose-500/20 border border-rose-400/55 flex items-center justify-center text-rose-300">
                 <X size={10} strokeWidth={3} />
               </span>
               No

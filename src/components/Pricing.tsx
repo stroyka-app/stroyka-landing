@@ -364,9 +364,9 @@ export default function Pricing() {
           </FadeIn>
         </div>
 
-        {/* Founding Member */}
+        {/* Founding Member — width matches the 3-card pricing grid above */}
         <FadeIn delay={0.3}>
-          <div className="relative overflow-hidden rounded-3xl mb-10 border border-brand-amber/20 bg-[linear-gradient(135deg,#1a1108_0%,#2a1a0a_50%,#1a2428_100%)] p-8 md:p-12 grid md:grid-cols-[1.4fr_1fr] gap-10 items-center">
+          <div className="relative overflow-hidden rounded-3xl mb-10 max-w-5xl mx-auto border border-brand-amber/20 bg-[linear-gradient(135deg,#1a1108_0%,#2a1a0a_50%,#1a2428_100%)] p-8 md:p-12 grid md:grid-cols-[1.4fr_1fr] gap-10 items-center">
             <span
               aria-hidden
               className="pointer-events-none absolute -top-[30%] -right-[10%] w-[400px] h-[400px] rounded-full blur-[60px] bg-[radial-gradient(circle,rgba(245,158,11,0.15),transparent_70%)]"

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ComponentType, type SVGProps } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { WifiOff, Rocket, UserCog, Lock, Database, Scale, Tag } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
@@ -49,6 +50,57 @@ const QUESTIONS: FaqItem[] = [
     meta: "Pricing",
   },
 ];
+
+// Category pills stay inside Stroyka's earth-tone palette. Categories that share
+// meaning cluster share a tone; a single amber pill (Pricing) is the only "hot"
+// colour so it doubles as a pull toward conversion. Icons handle per-category
+// differentiation inside each cluster — not colour.
+type PillCluster = "trust" | "ops" | "money";
+
+function metaCluster(meta: string): PillCluster {
+  switch (meta) {
+    case "Offline":
+    case "Security":
+    case "Data":
+      return "trust";
+    case "Setup":
+    case "Admin":
+    case "Comparison":
+      return "ops";
+    case "Pricing":
+      return "money";
+    default:
+      return "trust";
+  }
+}
+
+function clusterStyle(cluster: PillCluster): string {
+  switch (cluster) {
+    case "trust":
+      // Sage — reliability cluster
+      return "bg-brand-sage/18 border-brand-sage/65 text-brand-sage shadow-[0_0_22px_-6px_rgba(132,169,140,0.55),inset_0_1px_0_0_rgba(202,210,197,0.25)]";
+    case "ops":
+      // Forest — operations/decisions cluster
+      return "bg-brand-forest/30 border-brand-forest/70 text-brand-sage-mist shadow-[0_0_22px_-6px_rgba(82,121,111,0.55),inset_0_1px_0_0_rgba(132,169,140,0.28)]";
+    case "money":
+      // Amber — the only hot colour, reserved for Pricing
+      return "bg-brand-amber/20 border-brand-amber/65 text-brand-amber-bright shadow-[0_0_22px_-6px_rgba(217,119,6,0.60),inset_0_1px_0_0_rgba(245,158,11,0.30)]";
+  }
+}
+
+type IconType = ComponentType<SVGProps<SVGSVGElement> & { size?: number | string }>;
+function metaIcon(meta: string): IconType {
+  switch (meta) {
+    case "Offline":    return WifiOff;
+    case "Setup":      return Rocket;
+    case "Admin":      return UserCog;
+    case "Security":   return Lock;
+    case "Data":       return Database;
+    case "Comparison": return Scale;
+    case "Pricing":    return Tag;
+    default:           return Tag;
+  }
+}
 
 function FAQItem({
   item,
@@ -140,9 +192,22 @@ function FAQItem({
             >
               {item.q}
             </h3>
-            <span className="inline-flex w-fit items-center rounded-full border border-brand-forest/20 bg-brand-forest/5 px-2.5 py-0.5 text-[10px] font-heading font-semibold uppercase tracking-[0.25em] text-brand-sage-mist/60 sm:ml-auto shrink-0">
-              {item.meta}
-            </span>
+            {(() => {
+              const Icon = metaIcon(item.meta);
+              return (
+                <span
+                  className={`inline-flex w-fit items-center gap-1.5 rounded-full border-[1.5px] px-3 py-1 text-[10px] font-heading font-semibold uppercase tracking-[0.22em] transition-shadow duration-300 sm:ml-auto shrink-0 ${clusterStyle(metaCluster(item.meta))}`}
+                >
+                  <Icon
+                    size={11}
+                    strokeWidth={2.2}
+                    aria-hidden="true"
+                    className="opacity-85"
+                  />
+                  {item.meta}
+                </span>
+              );
+            })()}
           </div>
 
           <AnimatePresence initial={false}>

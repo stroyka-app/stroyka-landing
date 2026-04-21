@@ -49,7 +49,7 @@ export default function FounderNote() {
           />
 
           {/* Portrait */}
-          <div className="relative flex-shrink-0 mx-auto md:mx-0">
+          <div className="relative flex-shrink-0 flex flex-col items-center md:block md:mx-0">
             <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden ring-2 ring-brand-forest/30 shadow-xl shadow-brand-midnight-dark/50">
               {/* Fallback initial — always rendered under the img */}
               <div className="absolute inset-0 bg-gradient-to-br from-brand-forest/30 to-brand-deep/60 flex items-center justify-center">

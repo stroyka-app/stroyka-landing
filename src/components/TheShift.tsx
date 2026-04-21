@@ -1,30 +1,55 @@
 "use client";
 
-import type { CSSProperties } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import { Clock, DollarSign, CheckCheck, LineChart } from "lucide-react";
+import { motion } from "framer-motion";
+import {
+  Clock,
+  DollarSign,
+  CheckCheck,
+  LineChart,
+  MessageSquare,
+  Search,
+  Receipt,
+  TrendingDown,
+} from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
 
-const SYMPTOMS = [
-  "WhatsApp timesheets",
-  "Paper daily logs",
-  "Guessing at costs",
-  "Lost receipts",
-  '"Who approved that?"',
-  "Excel from 2019",
-  "Unbilled hours",
-  "Missed material runs",
-];
+/**
+ * Before / After rows are paired 1:1 so the reader can scan laterally and
+ * see exactly which pain each feature solves. Order matters — keep parallel.
+ */
 
-interface Solution {
+interface Item {
   icon: typeof Clock;
   title: string;
   caption: string;
 }
 
-const SOLUTIONS: Solution[] = [
+const BEFORE: Item[] = [
+  {
+    icon: MessageSquare,
+    title: "Timesheet dispute in WhatsApp",
+    caption: "6:15 AM · Jose logged 9h, foreman remembers 7",
+  },
+  {
+    icon: TrendingDown,
+    title: "Budget drift caught days late",
+    caption: "Thursday · Johnson Home is already 18% over",
+  },
+  {
+    icon: Search,
+    title: "Material request buried in a thread",
+    caption: "7:12 AM · \"need 20 QUIKRETE\" scrolled past",
+  },
+  {
+    icon: Receipt,
+    title: "Receipts unaccounted at month close",
+    caption: "Month end · $340 concrete receipt lost in the truck",
+  },
+];
+
+const AFTER: Item[] = [
   {
     icon: Clock,
     title: "Timesheets sign themselves",
@@ -47,26 +72,41 @@ const SOLUTIONS: Solution[] = [
   },
 ];
 
-function SymptomChip({ label, index }: { label: string; index: number }) {
-  const prefersReduced = useReducedMotion();
-  // Alternating ±1°..±2° tilt, staggered animation delay so they don't
-  // wobble in lockstep.
-  const rot = (index % 2 === 0 ? -1 : 1) * ((index % 3) + 1);
-  const style: CSSProperties = {
-    ["--rot" as string]: `${rot}deg`,
-    animationDelay: `${(index * 0.4).toFixed(1)}s`,
-    transform: prefersReduced ? `rotate(${rot}deg)` : undefined,
-  };
+function Row({
+  icon: Icon,
+  title,
+  caption,
+  tone,
+}: Item & { tone: "bad" | "good" }) {
+  const container =
+    tone === "bad"
+      ? "bg-red-950/30 border-red-400/15"
+      : "bg-brand-midnight/60 border-brand-forest/15";
+  const iconBox =
+    tone === "bad"
+      ? "bg-red-500/15 text-red-300"
+      : "bg-brand-forest/20 text-brand-sage";
+  const captionCls =
+    tone === "bad"
+      ? "text-red-300/70"
+      : "text-brand-sage-mist/55";
 
   return (
-    <span
-      style={style}
-      className={`inline-block px-3.5 py-2 rounded-lg font-heading text-[13px] font-medium text-red-200/85 bg-red-950/40 border border-red-400/20 ${
-        prefersReduced ? "" : "animate-wobble"
-      }`}
-    >
-      {label}
-    </span>
+    <div className={`flex items-center gap-3.5 p-3.5 rounded-xl border ${container}`}>
+      <span
+        className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${iconBox}`}
+      >
+        <Icon size={18} strokeWidth={2} />
+      </span>
+      <div className="min-w-0">
+        <p className="font-heading text-[14.5px] font-medium text-white leading-tight">
+          {title}
+        </p>
+        <p className={`mt-1 text-[12.5px] leading-snug ${captionCls}`}>
+          {caption}
+        </p>
+      </div>
+    </div>
   );
 }
 
@@ -119,9 +159,10 @@ export default function TheShift() {
                 spreadsheet no one&rsquo;s opened since bid day. One rainy
                 Tuesday and the week slips.
               </p>
-              <div className="flex flex-wrap gap-2">
-                {SYMPTOMS.map((s, i) => (
-                  <SymptomChip key={s} label={s} index={i} />
+
+              <div className="flex flex-col gap-2.5">
+                {BEFORE.map((item) => (
+                  <Row key={item.title} {...item} tone="bad" />
                 ))}
               </div>
             </motion.div>
@@ -157,23 +198,8 @@ export default function TheShift() {
               </p>
 
               <div className="flex flex-col gap-2.5">
-                {SOLUTIONS.map(({ icon: Icon, title, caption }) => (
-                  <div
-                    key={title}
-                    className="flex items-center gap-3.5 p-3.5 rounded-xl bg-brand-midnight/60 border border-brand-forest/15"
-                  >
-                    <span className="w-9 h-9 rounded-lg bg-brand-forest/20 text-brand-sage flex items-center justify-center flex-shrink-0">
-                      <Icon size={18} strokeWidth={2} />
-                    </span>
-                    <div className="min-w-0">
-                      <p className="font-heading text-[14.5px] font-medium text-white leading-tight">
-                        {title}
-                      </p>
-                      <p className="mt-1 text-[12.5px] text-brand-sage-mist/55 leading-snug">
-                        {caption}
-                      </p>
-                    </div>
-                  </div>
+                {AFTER.map((item) => (
+                  <Row key={item.title} {...item} tone="good" />
                 ))}
               </div>
             </motion.div>

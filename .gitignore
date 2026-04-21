@@ -69,3 +69,6 @@ tasks/
 
 # Misc
 *.tsbuildinfo
+
+# Claude Code local settings
+.claude/
