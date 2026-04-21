@@ -208,20 +208,27 @@ function FloorPlan({ scroll }: { scroll: ScrollRef }) {
   const dimMatRef = useRef<THREE.LineBasicMaterial>(null);
   const labelGroupRef = useRef<THREE.Group>(null);
 
+  // Floor-plan lines must clear the ground plane (y=0) with enough depth
+  // separation for the top-down camera (~28u away) to resolve cleanly.
+  // 2cm wasn't enough — it flickered. 15cm is far more than needed and still
+  // visually reads as "on the floor" from bird's-eye.
+  const PLAN_Y = 0.15;
+  const DIM_Y = 0.17; // dims slightly above plan so they layer cleanly
+
   const planGeo = useMemo(() => {
     const pts: THREE.Vector3[] = [];
     const w = HW / 2;
     const d = HD / 2;
     // Outer perimeter
-    pts.push(new THREE.Vector3(-w, 0.02, -d), new THREE.Vector3( w, 0.02, -d));
-    pts.push(new THREE.Vector3( w, 0.02, -d), new THREE.Vector3( w, 0.02,  d));
-    pts.push(new THREE.Vector3( w, 0.02,  d), new THREE.Vector3(-w, 0.02,  d));
-    pts.push(new THREE.Vector3(-w, 0.02,  d), new THREE.Vector3(-w, 0.02, -d));
+    pts.push(new THREE.Vector3(-w, PLAN_Y, -d), new THREE.Vector3( w, PLAN_Y, -d));
+    pts.push(new THREE.Vector3( w, PLAN_Y, -d), new THREE.Vector3( w, PLAN_Y,  d));
+    pts.push(new THREE.Vector3( w, PLAN_Y,  d), new THREE.Vector3(-w, PLAN_Y,  d));
+    pts.push(new THREE.Vector3(-w, PLAN_Y,  d), new THREE.Vector3(-w, PLAN_Y, -d));
     // Internal dividers — split into living/kitchen/2 bedrooms/bath
-    pts.push(new THREE.Vector3(-w, 0.02, 0), new THREE.Vector3( w, 0.02, 0));
-    pts.push(new THREE.Vector3(0, 0.02, -d), new THREE.Vector3(0, 0.02,  d));
-    pts.push(new THREE.Vector3(0, 0.02, 1.4), new THREE.Vector3( w, 0.02, 1.4));
-    pts.push(new THREE.Vector3(-w * 0.6, 0.02, 0), new THREE.Vector3(-w * 0.6, 0.02, d));
+    pts.push(new THREE.Vector3(-w, PLAN_Y, 0), new THREE.Vector3( w, PLAN_Y, 0));
+    pts.push(new THREE.Vector3(0, PLAN_Y, -d), new THREE.Vector3(0, PLAN_Y,  d));
+    pts.push(new THREE.Vector3(0, PLAN_Y, 1.4), new THREE.Vector3( w, PLAN_Y, 1.4));
+    pts.push(new THREE.Vector3(-w * 0.6, PLAN_Y, 0), new THREE.Vector3(-w * 0.6, PLAN_Y, d));
     // Door swing arcs (suggest doors)
     const arcSegs = 12;
     const drawArc = (cx: number, cz: number, r: number, start: number, end: number) => {
@@ -229,8 +236,8 @@ function FloorPlan({ scroll }: { scroll: ScrollRef }) {
         const t1 = start + ((end - start) * i) / arcSegs;
         const t2 = start + ((end - start) * (i + 1)) / arcSegs;
         pts.push(
-          new THREE.Vector3(cx + Math.cos(t1) * r, 0.02, cz + Math.sin(t1) * r),
-          new THREE.Vector3(cx + Math.cos(t2) * r, 0.02, cz + Math.sin(t2) * r)
+          new THREE.Vector3(cx + Math.cos(t1) * r, PLAN_Y, cz + Math.sin(t1) * r),
+          new THREE.Vector3(cx + Math.cos(t2) * r, PLAN_Y, cz + Math.sin(t2) * r)
         );
       }
     };
@@ -247,19 +254,19 @@ function FloorPlan({ scroll }: { scroll: ScrollRef }) {
     const off = 0.9;
     const tick = 0.18;
     // Top: across the X axis at -d-off
-    pts.push(new THREE.Vector3(-w, 0.03, -d - off), new THREE.Vector3( w, 0.03, -d - off));
-    pts.push(new THREE.Vector3(-w, 0.03, -d - off - tick), new THREE.Vector3(-w, 0.03, -d - off + tick));
-    pts.push(new THREE.Vector3( w, 0.03, -d - off - tick), new THREE.Vector3( w, 0.03, -d - off + tick));
-    pts.push(new THREE.Vector3(0,  0.03, -d - off - tick), new THREE.Vector3(0,  0.03, -d - off + tick));
+    pts.push(new THREE.Vector3(-w, DIM_Y, -d - off), new THREE.Vector3( w, DIM_Y, -d - off));
+    pts.push(new THREE.Vector3(-w, DIM_Y, -d - off - tick), new THREE.Vector3(-w, DIM_Y, -d - off + tick));
+    pts.push(new THREE.Vector3( w, DIM_Y, -d - off - tick), new THREE.Vector3( w, DIM_Y, -d - off + tick));
+    pts.push(new THREE.Vector3(0,  DIM_Y, -d - off - tick), new THREE.Vector3(0,  DIM_Y, -d - off + tick));
     // Left: along Z at -w-off
-    pts.push(new THREE.Vector3(-w - off, 0.03, -d), new THREE.Vector3(-w - off, 0.03,  d));
-    pts.push(new THREE.Vector3(-w - off - tick, 0.03, -d), new THREE.Vector3(-w - off + tick, 0.03, -d));
-    pts.push(new THREE.Vector3(-w - off - tick, 0.03,  d), new THREE.Vector3(-w - off + tick, 0.03,  d));
-    pts.push(new THREE.Vector3(-w - off - tick, 0.03,  0), new THREE.Vector3(-w - off + tick, 0.03,  0));
+    pts.push(new THREE.Vector3(-w - off, DIM_Y, -d), new THREE.Vector3(-w - off, DIM_Y,  d));
+    pts.push(new THREE.Vector3(-w - off - tick, DIM_Y, -d), new THREE.Vector3(-w - off + tick, DIM_Y, -d));
+    pts.push(new THREE.Vector3(-w - off - tick, DIM_Y,  d), new THREE.Vector3(-w - off + tick, DIM_Y,  d));
+    pts.push(new THREE.Vector3(-w - off - tick, DIM_Y,  0), new THREE.Vector3(-w - off + tick, DIM_Y,  0));
     // Bottom: scale bar
-    pts.push(new THREE.Vector3(-w + 0.5, 0.03, d + off + 0.6), new THREE.Vector3(-w + 1.5, 0.03, d + off + 0.6));
-    pts.push(new THREE.Vector3(-w + 0.5, 0.03, d + off + 0.5), new THREE.Vector3(-w + 0.5, 0.03, d + off + 0.7));
-    pts.push(new THREE.Vector3(-w + 1.5, 0.03, d + off + 0.5), new THREE.Vector3(-w + 1.5, 0.03, d + off + 0.7));
+    pts.push(new THREE.Vector3(-w + 0.5, DIM_Y, d + off + 0.6), new THREE.Vector3(-w + 1.5, DIM_Y, d + off + 0.6));
+    pts.push(new THREE.Vector3(-w + 0.5, DIM_Y, d + off + 0.5), new THREE.Vector3(-w + 0.5, DIM_Y, d + off + 0.7));
+    pts.push(new THREE.Vector3(-w + 1.5, DIM_Y, d + off + 0.5), new THREE.Vector3(-w + 1.5, DIM_Y, d + off + 0.7));
     return new THREE.BufferGeometry().setFromPoints(pts);
   }, []);
 
@@ -469,67 +476,373 @@ function Roof({ scroll }: { scroll: ScrollRef }) {
 }
 
 /**
- * Windows + door.
+ * Landscape — walkway, shrubs, and a tree. Appears during the photoreal
+ * phase so the scene has real context (a "property") instead of a single
+ * 3D object in a void.
+ */
+function Landscape({ scroll }: { scroll: ScrollRef }) {
+  const groupRef = useRef<THREE.Group>(null);
+  useFrame(() => {
+    const p = scroll.current;
+    const t = ramp(p, 0.66, 0.84);
+    if (groupRef.current) {
+      groupRef.current.visible = t > 0.001;
+      groupRef.current.traverse((obj) => {
+        const mesh = obj as THREE.Mesh;
+        if (mesh.material) {
+          const mat = mesh.material as THREE.Material & { opacity?: number };
+          if ("opacity" in mat) {
+            mat.opacity = t;
+            mat.transparent = t < 0.99;
+          }
+        }
+      });
+    }
+  });
+
+  // Shrub clusters — grouped ellipsoids so each "bush" reads as multiple
+  // branch masses, not a single sphere.
+  const shrubPositions: Array<[number, number, number]> = [
+    // Flanking the door
+    [-1.8, 0,  HD / 2 + 0.5],
+    [ 1.8, 0,  HD / 2 + 0.5],
+    // Corner plantings
+    [-HW / 2 - 0.4, 0,  HD / 2 + 0.3],
+    [ HW / 2 + 0.4, 0,  HD / 2 + 0.3],
+    // Back-right corner (seen from hero cam)
+    [ HW / 2 + 0.3, 0, -HD / 2 - 0.3],
+  ];
+
+  return (
+    <group ref={groupRef} visible={false}>
+      {/* Walkway — concrete slab from the front yard to the door */}
+      <mesh position={[0, 0.02, HD / 2 + 2.2]}>
+        <boxGeometry args={[1.8, 0.04, 3.2]} />
+        <meshStandardMaterial
+          color="#7a7468"
+          roughness={0.95}
+          transparent
+          opacity={0}
+        />
+      </mesh>
+
+      {/* Foundation course — dark stone band at the base of all walls */}
+      <mesh position={[0, 0.22, HD / 2 + WALL_T / 2 + 0.015]}>
+        <boxGeometry args={[HW + WALL_T + 0.1, 0.44, 0.03]} />
+        <meshStandardMaterial color="#3a332c" roughness={0.9} transparent opacity={0} />
+      </mesh>
+      <mesh position={[0, 0.22, -HD / 2 - WALL_T / 2 - 0.015]}>
+        <boxGeometry args={[HW + WALL_T + 0.1, 0.44, 0.03]} />
+        <meshStandardMaterial color="#3a332c" roughness={0.9} transparent opacity={0} />
+      </mesh>
+      <mesh position={[ HW / 2 + WALL_T / 2 + 0.015, 0.22, 0]}>
+        <boxGeometry args={[0.03, 0.44, HD + 0.1]} />
+        <meshStandardMaterial color="#3a332c" roughness={0.9} transparent opacity={0} />
+      </mesh>
+      <mesh position={[-HW / 2 - WALL_T / 2 - 0.015, 0.22, 0]}>
+        <boxGeometry args={[0.03, 0.44, HD + 0.1]} />
+        <meshStandardMaterial color="#3a332c" roughness={0.9} transparent opacity={0} />
+      </mesh>
+
+      {/* Shrubs — each is 3 overlapping ellipsoid masses */}
+      {shrubPositions.map((pos, i) => (
+        <group key={`shrub-${i}`} position={pos}>
+          <mesh position={[0, 0.35, 0]}>
+            <sphereGeometry args={[0.45, 12, 10]} />
+            <meshStandardMaterial color="#4a6a4d" roughness={0.95} transparent opacity={0} />
+          </mesh>
+          <mesh position={[0.22, 0.42, 0.1]} scale={[0.75, 0.85, 0.75]}>
+            <sphereGeometry args={[0.45, 12, 10]} />
+            <meshStandardMaterial color="#3f5d42" roughness={0.95} transparent opacity={0} />
+          </mesh>
+          <mesh position={[-0.2, 0.3, -0.12]} scale={[0.7, 0.75, 0.7]}>
+            <sphereGeometry args={[0.45, 12, 10]} />
+            <meshStandardMaterial color="#557556" roughness={0.95} transparent opacity={0} />
+          </mesh>
+        </group>
+      ))}
+
+      {/* Tree — trunk cylinder + foliage cluster, placed front-left for
+          scene depth and framing in the hero 3/4 shot. */}
+      <group position={[-HW / 2 - 3.2, 0, HD / 2 + 1.8]}>
+        <mesh position={[0, 1.1, 0]}>
+          <cylinderGeometry args={[0.14, 0.18, 2.2, 10]} />
+          <meshStandardMaterial color="#3f2a1e" roughness={0.95} transparent opacity={0} />
+        </mesh>
+        <mesh position={[0, 2.6, 0]}>
+          <sphereGeometry args={[1.05, 14, 12]} />
+          <meshStandardMaterial color="#3f5d42" roughness={0.95} transparent opacity={0} />
+        </mesh>
+        <mesh position={[0.4, 2.9, 0.25]} scale={[0.8, 0.85, 0.8]}>
+          <sphereGeometry args={[1.05, 14, 12]} />
+          <meshStandardMaterial color="#4a6a4d" roughness={0.95} transparent opacity={0} />
+        </mesh>
+        <mesh position={[-0.35, 2.75, -0.25]} scale={[0.75, 0.82, 0.75]}>
+          <sphereGeometry args={[1.05, 14, 12]} />
+          <meshStandardMaterial color="#557556" roughness={0.95} transparent opacity={0} />
+        </mesh>
+      </group>
+    </group>
+  );
+}
+
+/**
+ * Architectural detail pass — windows on all 4 walls, door, porch overhang,
+ * gutters along the long eaves, downspouts at the two front corners, and a
+ * chimney on the ridge. Appears alongside siding (0.54→0.60) so these details
+ * are part of the final wall-up moment, not a late-beat add-on.
  */
 function WindowsAndDoor({ scroll }: { scroll: ScrollRef }) {
   const groupRef = useRef<THREE.Group>(null);
 
   useFrame(() => {
     const p = scroll.current;
-    const t = ramp(p, 0.60, 0.66);
+    const t = ramp(p, 0.54, 0.62);
     if (groupRef.current) {
       groupRef.current.visible = t > 0.001;
-      groupRef.current.children.forEach((child) => {
-        child.traverse((obj) => {
-          if ((obj as THREE.Mesh).material) {
-            const mat = (obj as THREE.Mesh).material as THREE.Material & { opacity?: number };
-            if ("opacity" in mat) {
-              mat.opacity = t;
-              mat.transparent = t < 0.99;
-            }
+      groupRef.current.traverse((obj) => {
+        const mesh = obj as THREE.Mesh;
+        if (mesh.material) {
+          const mat = mesh.material as THREE.Material & { opacity?: number };
+          if ("opacity" in mat) {
+            mat.opacity = t;
+            mat.transparent = t < 0.99;
           }
-        });
+        }
       });
     }
   });
 
-  const positions: Array<[number, number, number]> = [
-    [-2.4, 1.5,  HD / 2 + 0.01],
-    [ 2.4, 1.5,  HD / 2 + 0.01],
-    [-2.4, 1.5, -HD / 2 - 0.01],
-    [ 2.4, 1.5, -HD / 2 - 0.01],
+  // IMPORTANT — wall geometry is WALL_T (0.15) thick, centered on its face
+  // axis. Front wall extends z = 2.925..3.075; east wall x = 3.925..4.075.
+  // Windows/doors must sit CLEARLY outside the outer face (≥ 9cm) so the
+  // depth buffer at hero-cam distance (~20u) can resolve them from the
+  // foundation band at z≈3.09 that runs behind the lower part of the door.
+  const OUTER_Z = HD / 2 + WALL_T / 2 + 0.09; // 3.165 — well outside front face
+  const OUTER_X = HW / 2 + WALL_T / 2 + 0.09; // 4.165 — well outside east face
+
+  // Windows on front (+Z) and back (-Z) walls
+  const frontBack: Array<[number, number, number]> = [
+    [-2.4, 1.5,  OUTER_Z],
+    [ 2.4, 1.5,  OUTER_Z],
+    [-2.4, 1.5, -OUTER_Z],
+    [ 2.4, 1.5, -OUTER_Z],
   ];
+
+  // Windows on east (+X) and west (-X) walls
+  const eastWest: Array<{ pos: [number, number, number]; facingEast: boolean }> = [
+    { pos: [ OUTER_X, 1.5, -1.5 ], facingEast: true  },
+    { pos: [ OUTER_X, 1.5,  1.5 ], facingEast: true  },
+    { pos: [-OUTER_X, 1.5, -1.5 ], facingEast: false },
+    { pos: [-OUTER_X, 1.5,  1.5 ], facingEast: false },
+  ];
+
+  const WindowUnit = ({ width = 1.2, height = 1.2 }: { width?: number; height?: number }) => (
+    <>
+      {/* Trim — base layer */}
+      <mesh position={[0, 0, 0]}>
+        <planeGeometry args={[width + 0.18, height + 0.18]} />
+        <meshStandardMaterial color={COLORS.trim} roughness={0.55} transparent opacity={0} />
+      </mesh>
+      {/* Glass — 2cm in front of trim */}
+      <mesh position={[0, 0, 0.02]}>
+        <planeGeometry args={[width, height]} />
+        <meshStandardMaterial
+          color={COLORS.glass}
+          roughness={0.08}
+          metalness={0.55}
+          emissive={COLORS.glass}
+          emissiveIntensity={0.18}
+          transparent
+          opacity={0}
+        />
+      </mesh>
+      {/* Muntin cross — horizontal + vertical bars, 4cm in front of glass.
+          The two muntin planes are coplanar but at perpendicular orientations
+          and don't overlap in screen space, so no z-fight between them. */}
+      <mesh position={[0, 0, 0.04]}>
+        <planeGeometry args={[width, 0.04]} />
+        <meshStandardMaterial color={COLORS.trim} roughness={0.5} transparent opacity={0} />
+      </mesh>
+      <mesh position={[0, 0, 0.04]}>
+        <planeGeometry args={[0.04, height]} />
+        <meshStandardMaterial color={COLORS.trim} roughness={0.5} transparent opacity={0} />
+      </mesh>
+    </>
+  );
 
   return (
     <group ref={groupRef} visible={false}>
-      {positions.map((pos, i) => {
+      {/* Front + back windows */}
+      {frontBack.map((pos, i) => {
         const isFront = pos[2] > 0;
         return (
-          <group key={i} position={pos} rotation={[0, isFront ? 0 : Math.PI, 0]}>
-            <mesh position={[0, 0, 0.001]}>
-              <planeGeometry args={[1.2, 1.2]} />
-              <meshStandardMaterial
-                color={COLORS.glass}
-                roughness={0.05}
-                metalness={0.6}
-                emissive={COLORS.glass}
-                emissiveIntensity={0.15}
-                transparent
-                opacity={0}
-                side={THREE.DoubleSide}
-              />
-            </mesh>
-            <mesh position={[0, 0, 0]}>
-              <planeGeometry args={[1.4, 1.4]} />
-              <meshStandardMaterial color={COLORS.trim} roughness={0.55} transparent opacity={0} side={THREE.DoubleSide} />
-            </mesh>
+          <group key={`fb-${i}`} position={pos} rotation={[0, isFront ? 0 : Math.PI, 0]}>
+            <WindowUnit />
           </group>
         );
       })}
-      <mesh position={[0, 1.2, HD / 2 + 0.02]}>
-        <planeGeometry args={[1.0, 2.4]} />
-        <meshStandardMaterial color={COLORS.door} roughness={0.6} transparent opacity={0} side={THREE.DoubleSide} />
+
+      {/* Side windows (east/west) */}
+      {eastWest.map((w, i) => (
+        <group
+          key={`ew-${i}`}
+          position={w.pos}
+          rotation={[0, w.facingEast ? Math.PI / 2 : -Math.PI / 2, 0]}
+        >
+          <WindowUnit width={1.0} height={1.2} />
+        </group>
+      ))}
+
+      {/* Front door + frame — offset from outer wall face.
+          Layer z-offsets of 2cm each so the depth buffer can resolve them
+          from the hero-shot distance (~20u). Tiny sub-mm offsets z-fight. */}
+      <group position={[0, 1.2, OUTER_Z]}>
+        {/* Door trim — base */}
+        <mesh position={[0, 0, 0]}>
+          <planeGeometry args={[1.22, 2.6]} />
+          <meshStandardMaterial color={COLORS.trim} roughness={0.55} transparent opacity={0} />
+        </mesh>
+        {/* Door slab — 2cm in front of trim */}
+        <mesh position={[0, 0, 0.02]}>
+          <planeGeometry args={[1.0, 2.4]} />
+          <meshStandardMaterial color={COLORS.door} roughness={0.6} transparent opacity={0} />
+        </mesh>
+        {/* Doorknob — 4cm in front of slab */}
+        <mesh position={[0.35, -0.05, 0.04]}>
+          <circleGeometry args={[0.04, 12]} />
+          <meshStandardMaterial color="#c89b50" roughness={0.3} metalness={0.7} transparent opacity={0} />
+        </mesh>
+      </group>
+
+      {/* Porch overhang — slab above the door. Y must clear the door top
+          (door top at 1.2 + 1.2 = 2.4) with a small air gap. */}
+      <mesh position={[0, 2.65, OUTER_Z + 0.4]}>
+        <boxGeometry args={[2.0, 0.08, 0.8]} />
+        <meshStandardMaterial color={COLORS.trim} roughness={0.6} transparent opacity={0} />
       </mesh>
+
+      {/* Gutters — horizontal pipes along the long eaves, sitting just in
+          front of the wall outer face and at wall-top height. */}
+      <mesh
+        position={[0, WALL_H + 0.05, OUTER_Z + 0.05]}
+        rotation={[0, 0, Math.PI / 2]}
+      >
+        <cylinderGeometry args={[0.08, 0.08, HW + 0.6, 16]} />
+        <meshStandardMaterial color={COLORS.trim} roughness={0.5} metalness={0.2} transparent opacity={0} />
+      </mesh>
+      <mesh
+        position={[0, WALL_H + 0.05, -OUTER_Z - 0.05]}
+        rotation={[0, 0, Math.PI / 2]}
+      >
+        <cylinderGeometry args={[0.08, 0.08, HW + 0.6, 16]} />
+        <meshStandardMaterial color={COLORS.trim} roughness={0.5} metalness={0.2} transparent opacity={0} />
+      </mesh>
+
+      {/* Downspouts — vertical pipes at the two front corners, outside both
+          the east/west wall and the front-wall outer face. */}
+      {[
+        [-OUTER_X - 0.08, WALL_H / 2, OUTER_Z + 0.05] as [number, number, number],
+        [ OUTER_X + 0.08, WALL_H / 2, OUTER_Z + 0.05] as [number, number, number],
+      ].map((p, i) => (
+        <mesh key={`ds-${i}`} position={p}>
+          <cylinderGeometry args={[0.06, 0.06, WALL_H + 0.1, 12]} />
+          <meshStandardMaterial color={COLORS.trim} roughness={0.55} metalness={0.2} transparent opacity={0} />
+        </mesh>
+      ))}
+
+      {/* Chimney — sits on the east roof slope (off-ridge), with:
+           • Flashing collar at the base where it meets the roof (hides the
+             slope-to-square mismatch and reads as sheet metal).
+           • Brick body with an integrated stone shoulder (narrower above).
+           • Two clay flue pots on top — the architectural detail that
+             stops the silhouette looking like a vent pipe.
+         Base Y is calculated from the ridge-side edge of the chimney so the
+         bottom sits on the roof without poking through. */}
+      {(() => {
+        const chimX = 1.3;                      // east slope, off-ridge
+        const chimZ = -0.2;                     // tiny back offset for visual depth
+        const bodyW = 0.72;                     // footprint
+        const bodyH = 1.25;                     // taller than wide for presence
+        // Roof is a gable along Z: roofY(x) = peakY − (|x| / (HW/2)) × ROOF_H
+        // Use the edge of the chimney closest to the ridge so the base
+        // doesn't poke through the roof on the uphill side.
+        const ridgeSideX = chimX - bodyW / 2;
+        const baseY =
+          WALL_H + ROOF_H - (Math.abs(ridgeSideX) / (HW / 2)) * ROOF_H;
+        const centerY = baseY + bodyH / 2;
+        const capY = baseY + bodyH + 0.08;
+        const shoulderY = baseY + bodyH - 0.18;
+        return (
+          <>
+            {/* Flashing collar — wider dark ring at the base */}
+            <mesh position={[chimX, baseY + 0.06, chimZ]}>
+              <boxGeometry args={[bodyW + 0.18, 0.12, bodyW + 0.18]} />
+              <meshStandardMaterial
+                color="#1b1410"
+                roughness={0.7}
+                metalness={0.25}
+                transparent
+                opacity={0}
+              />
+            </mesh>
+            {/* Main body — brick */}
+            <mesh position={[chimX, centerY, chimZ]}>
+              <boxGeometry args={[bodyW, bodyH, bodyW]} />
+              <meshStandardMaterial
+                color="#8a4a30"
+                roughness={0.9}
+                transparent
+                opacity={0}
+              />
+            </mesh>
+            {/* Stone shoulder — narrower cornice near the top of the body */}
+            <mesh position={[chimX, shoulderY, chimZ]}>
+              <boxGeometry args={[bodyW + 0.1, 0.08, bodyW + 0.1]} />
+              <meshStandardMaterial
+                color="#5e3425"
+                roughness={0.85}
+                transparent
+                opacity={0}
+              />
+            </mesh>
+            {/* Cap slab */}
+            <mesh position={[chimX, capY, chimZ]}>
+              <boxGeometry args={[bodyW + 0.24, 0.14, bodyW + 0.24]} />
+              <meshStandardMaterial
+                color="#221611"
+                roughness={0.85}
+                transparent
+                opacity={0}
+              />
+            </mesh>
+            {/* Two clay flue pots — terracotta cylinders side-by-side */}
+            {[-0.17, 0.17].map((dx, i) => (
+              <mesh key={i} position={[chimX + dx, capY + 0.23, chimZ]}>
+                <cylinderGeometry args={[0.085, 0.1, 0.32, 18]} />
+                <meshStandardMaterial
+                  color="#c26744"
+                  roughness={0.85}
+                  transparent
+                  opacity={0}
+                />
+              </mesh>
+            ))}
+            {/* Flue pot rims — darker collars at the top of each pot */}
+            {[-0.17, 0.17].map((dx, i) => (
+              <mesh key={`rim-${i}`} position={[chimX + dx, capY + 0.4, chimZ]}>
+                <cylinderGeometry args={[0.09, 0.09, 0.035, 18]} />
+                <meshStandardMaterial
+                  color="#3a1f12"
+                  roughness={0.9}
+                  transparent
+                  opacity={0}
+                />
+              </mesh>
+            ))}
+          </>
+        );
+      })()}
     </group>
   );
 }
@@ -697,9 +1010,11 @@ function CameraRig({ scroll }: { scroll: ScrollRef }) {
       return;
     }
 
-    // Beat 5 + 6: cinematic wide hero shot (0.78 → 1.0) — pulled back further
+    // Beat 5 + 6: cinematic wide hero shot (0.78 → 1.0). Swing around so the
+    // camera lands on the FRONT-right three-quarter — door and front windows
+    // face the viewer instead of the back of the house.
     const t = easeInOut(ramp(p, 0.78, 1.0));
-    const angle = lerp(Math.PI * 1.7, Math.PI * 1.85, t);
+    const angle = lerp(Math.PI * 1.7, Math.PI * 0.30, t);
     const r = lerp(ORBIT_R + 2, ORBIT_R + 6, t);
     const cx = Math.cos(angle) * r;
     const cz = Math.sin(angle) * r;
@@ -822,6 +1137,7 @@ function HouseScene({
       <Walls scroll={scroll} />
       <Roof scroll={scroll} />
       <WindowsAndDoor scroll={scroll} />
+      <Landscape scroll={scroll} />
     </>
   );
 }
@@ -1320,8 +1636,8 @@ export default function PlanToDoneAnimation() {
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold tracking-tight text-white leading-tight max-w-2xl mx-auto">
           From plan to done — every dollar tracked.
         </h2>
-        <p className="text-sm md:text-base text-brand-sage-mist/65 mt-4 max-w-lg mx-auto">
-          Scroll to see a project unfold in Stroyka — every material, every cost, in real time.
+        <p className="text-sm md:text-base text-brand-sage-mist/65 mt-4 max-w-3xl mx-auto">
+          Scroll to see a project unfold in Stroyka — every material, every cost, in real&nbsp;time.
         </p>
       </div>
 

@@ -163,9 +163,8 @@ export default function Pricing() {
             Flat monthly. No per-seat games.
           </TextReveal>
           <FadeIn delay={0.1}>
-            <p className="text-base text-brand-sage-mist/75 max-w-lg mx-auto">
-              Per-seat = per-worker. We don&rsquo;t do that. Free forever for
-              crews up to 5.
+            <p className="text-base text-brand-sage-mist/75 max-w-2xl mx-auto">
+              Per-seat = per-worker. We don&rsquo;t do that. Free forever for crews up to&nbsp;5.
             </p>
           </FadeIn>
         </div>

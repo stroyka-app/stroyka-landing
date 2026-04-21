@@ -28,10 +28,12 @@ export default function Footer() {
 
       <div className="bg-brand-midnight pt-16 pb-8">
         <div className="max-w-6xl mx-auto px-6">
-          {/* Main grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+          {/* Main grid — each column centers its own content so the footer
+              reads as balanced across the bottom divider line, rather than
+              left-hugging with ragged whitespace in each 25% slot. */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12 text-center md:text-left lg:text-center">
             {/* Brand column */}
-            <div className="lg:col-span-1">
+            <div className="flex flex-col items-center md:items-start lg:items-center">
               <Logo variant="dark" size={32} />
               <p className="mt-4 text-sm text-brand-sage/60 leading-relaxed max-w-xs">
                 Job costing, crew management, and supply tracking built for
@@ -40,7 +42,7 @@ export default function Footer() {
             </div>
 
             {/* Product column */}
-            <div>
+            <div className="flex flex-col items-center md:items-start lg:items-center">
               <h3 className="font-heading text-sm font-semibold text-brand-sage-mist mb-4 uppercase tracking-wider">
                 Product
               </h3>
@@ -59,7 +61,7 @@ export default function Footer() {
             </div>
 
             {/* Company column */}
-            <div>
+            <div className="flex flex-col items-center md:items-start lg:items-center">
               <h3 className="font-heading text-sm font-semibold text-brand-sage-mist mb-4 uppercase tracking-wider">
                 Company
               </h3>
@@ -78,7 +80,7 @@ export default function Footer() {
             </div>
 
             {/* Contact column */}
-            <div id="download" className="scroll-mt-24">
+            <div id="download" className="scroll-mt-24 flex flex-col items-center md:items-start lg:items-center">
               <h3 className="font-heading text-sm font-semibold text-brand-sage-mist mb-4 uppercase tracking-wider">
                 Contact
               </h3>
@@ -135,8 +137,10 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Bottom bar */}
-          <div className="border-t border-brand-sage/10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
+          {/* Bottom bar — stacked and centered so the divider above reads as
+              the anchor line for the whole footer rather than a left-to-right
+              "stretched" line with two distant endpoints. */}
+          <div className="border-t border-brand-sage/10 pt-6 flex flex-col items-center gap-2 text-center">
             <p className="text-xs text-brand-sage/40">
               &copy; {new Date().getFullYear()} Stroyka. All rights reserved.
             </p>
