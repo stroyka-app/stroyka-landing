@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import {
   Clock,
   DollarSign,
@@ -78,17 +77,20 @@ function Row({
   caption,
   tone,
 }: Item & { tone: "bad" | "good" }) {
+  // Warm-amber "bad" tone keeps the problem/solution visual hierarchy but
+  // stays inside the brand palette (brand-amber is the existing accent).
+  // Previously pure Tailwind red which clashed with the rest of the site.
   const container =
     tone === "bad"
-      ? "bg-red-950/30 border-red-400/15"
+      ? "bg-amber-950/25 border-amber-400/15"
       : "bg-brand-midnight/60 border-brand-forest/15";
   const iconBox =
     tone === "bad"
-      ? "bg-red-500/15 text-red-300"
+      ? "bg-amber-500/15 text-amber-300"
       : "bg-brand-forest/20 text-brand-sage";
   const captionCls =
     tone === "bad"
-      ? "text-red-300/70"
+      ? "text-amber-200/65"
       : "text-brand-sage-mist/55";
 
   return (
@@ -127,7 +129,7 @@ export default function TheShift() {
           </TextReveal>
           <FadeIn delay={0.1}>
             <p className="text-base text-brand-sage-mist/75">
-              Before and after Stroyka, at the same crew of twelve.
+              Before and after Stroyka, with the same crew of twelve.
             </p>
           </FadeIn>
         </div>
@@ -135,20 +137,17 @@ export default function TheShift() {
         {/* Two cards, one narrative */}
         <div className="grid md:grid-cols-2 gap-6 lg:gap-8 items-stretch">
           {/* ── Before ─────────────────────────────────────────────── */}
+          {/* FadeIn wrapper handles the scroll-reveal. The inner div is a
+              plain container — previously a second motion.div with its own
+              whileInView created a double-stutter. */}
           <FadeIn>
-            <motion.div
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="relative overflow-hidden h-full rounded-2xl p-8 lg:p-10 border border-red-400/15 bg-gradient-to-br from-red-950/25 via-brand-deep/70 to-brand-midnight/80 backdrop-blur-sm"
-            >
+            <div className="relative overflow-hidden h-full rounded-2xl p-8 lg:p-10 border border-amber-400/15 bg-gradient-to-br from-amber-950/20 via-brand-deep/70 to-brand-midnight/80 backdrop-blur-sm">
               <span
                 aria-hidden
-                className="pointer-events-none absolute -top-16 -right-16 w-72 h-72 rounded-full bg-red-500/20 blur-[80px]"
+                className="pointer-events-none absolute -top-16 -right-16 w-72 h-72 rounded-full bg-amber-500/15 blur-[80px]"
               />
-              <span className="inline-flex items-center gap-2 mb-4 font-heading text-[11px] font-semibold uppercase tracking-[0.16em] text-red-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
+              <span className="inline-flex items-center gap-2 mb-4 font-heading text-[11px] font-semibold uppercase tracking-[0.16em] text-amber-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
                 Before
               </span>
               <h3 className="text-2xl lg:text-[28px] font-heading font-bold text-white mb-4 leading-snug">
@@ -165,22 +164,12 @@ export default function TheShift() {
                   <Row key={item.title} {...item} tone="bad" />
                 ))}
               </div>
-            </motion.div>
+            </div>
           </FadeIn>
 
           {/* ── After ──────────────────────────────────────────────── */}
           <FadeIn delay={0.1}>
-            <motion.div
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{
-                duration: 0.6,
-                delay: 0.08,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="relative overflow-hidden h-full rounded-2xl p-8 lg:p-10 border border-brand-forest/25 bg-gradient-to-br from-brand-forest/20 via-brand-deep/70 to-brand-midnight/80 backdrop-blur-sm"
-            >
+            <div className="relative overflow-hidden h-full rounded-2xl p-8 lg:p-10 border border-brand-forest/25 bg-gradient-to-br from-brand-forest/20 via-brand-deep/70 to-brand-midnight/80 backdrop-blur-sm">
               <span
                 aria-hidden
                 className="pointer-events-none absolute -top-16 -right-16 w-72 h-72 rounded-full bg-brand-sage/25 blur-[80px]"
@@ -202,7 +191,7 @@ export default function TheShift() {
                   <Row key={item.title} {...item} tone="good" />
                 ))}
               </div>
-            </motion.div>
+            </div>
           </FadeIn>
         </div>
       </div>

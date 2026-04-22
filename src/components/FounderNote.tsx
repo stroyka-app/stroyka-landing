@@ -39,7 +39,7 @@ export default function FounderNote() {
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           className="relative mt-6 grid md:grid-cols-[auto_1fr] gap-8 lg:gap-12 items-center rounded-3xl border border-brand-forest/15 bg-gradient-to-br from-brand-deep/60 via-brand-midnight/70 to-brand-midnight/80 p-8 lg:p-12 backdrop-blur-sm"
         >
           {/* Soft glow */}

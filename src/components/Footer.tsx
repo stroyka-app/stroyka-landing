@@ -21,10 +21,10 @@ const COMPANY_LINKS = [
 export default function Footer() {
   return (
     <footer id="footer" className="relative">
-      {/* Top gradient separator — thin glowing line */}
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-forest/50 to-transparent" />
-      {/* Soft glow bleeding down from the separator */}
-      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-brand-forest/5 to-transparent pointer-events-none" />
+      {/* Subtle top blend into the CTA section above — no hard divider line,
+          just a soft shadow fading into midnight so the eye slides from the
+          CTA band into the footer without a visible seam. */}
+      <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/15 to-transparent pointer-events-none" />
 
       <div className="bg-brand-midnight pt-16 pb-8">
         <div className="max-w-6xl mx-auto px-6">

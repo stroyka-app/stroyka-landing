@@ -212,7 +212,7 @@ export default function Comparison() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-40px" }}
                   transition={{
-                    duration: 0.4,
+                    duration: 0.55,
                     delay: i * 0.04,
                     ease: [0.22, 1, 0.36, 1],
                   }}

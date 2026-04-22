@@ -132,7 +132,7 @@ export default function Features() {
             <SectionLabel>Features</SectionLabel>
           </FadeIn>
           <TextReveal as="h2" className="text-4xl lg:text-5xl font-heading font-bold leading-tight">
-            Everything your crew needs. Nothing they don&apos;t
+            Everything your crew needs. Nothing they don&apos;t.
           </TextReveal>
         </div>
 

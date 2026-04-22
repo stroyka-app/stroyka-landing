@@ -70,5 +70,11 @@ tasks/
 # Misc
 *.tsbuildinfo
 
+# Playwright visual-check output (screenshots, traces) — never commit
+.playwright/
+playwright-report/
+test-results/
+/screenshots/
+
 # Claude Code local settings
 .claude/

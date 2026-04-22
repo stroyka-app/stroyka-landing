@@ -122,11 +122,14 @@ export default function Hero() {
             <br />
             Management
             <br />
+            {/* Two-stop gradient (sage → sage-mist) — reads cleaner on the
+                video than the previous 3-stop version, which dipped through
+                the darker forest token mid-phrase and lost contrast. */}
             <span
               className="bg-clip-text text-transparent"
               style={{
                 backgroundImage:
-                  "linear-gradient(135deg, #84a98c 0%, #52796f 50%, #cad2c5 100%)",
+                  "linear-gradient(135deg, #84a98c 0%, #cad2c5 100%)",
               }}
             >
               for Real Crews
@@ -137,9 +140,8 @@ export default function Hero() {
         {/* Subtext */}
         <FadeIn delay={0.2}>
           <p className="text-base md:text-lg text-brand-sage-mist/70 leading-relaxed max-w-xl mx-auto mb-4">
-            Stop cobbling together spreadsheets, text messages, and gut feelings
-            to run your jobsites. One simple tool for your whole crew — boss and
-            workers — that works even without cell service.
+            One tool for the whole crew — boss and workers. Clock-in, job
+            costing, reports. Works on any phone, even with no signal.
           </p>
         </FadeIn>
 

@@ -3,19 +3,24 @@
 import { useEffect, useState } from "react";
 
 // Colors indexed by SECTION_IDS order in src/app/page.tsx. Keep in sync.
+// Interleaved dark-teal progression. Adjacent values are close enough that
+// linear interpolation across a section boundary never crosses a hue —
+// all values sit on the same blue-grey axis, just at different luminance.
+// The R3F scene at `plan-to-done` locks its own ground/fog to #2f3e46, so
+// that slot matches exactly (avoids a body-vs-canvas color mismatch).
 const SECTION_COLORS = [
   "#2f3e46", // hero
-  "#283339", // the-shift
-  "#334a4f", // how-it-works
-  "#2f3e46", // features
-  "#2b3940", // built-tough
-  "#2f3e46", // comparison
-  "#334a4f", // founder
-  "#2f3e46", // integrations
-  "#2b3940", // pricing
+  "#2a363d", // the-shift
+  "#32434b", // how-it-works
+  "#2d3c43", // features
+  "#2f3e46", // plan-to-done  (matches the R3F canvas's own midnight backdrop)
+  "#2d3c43", // comparison
+  "#32434b", // founder
+  "#2d3c43", // integrations
+  "#2a363d", // pricing
   "#2f3e46", // guarantee
-  "#334a4f", // faq
-  "#2f3e46", // cta
+  "#32434b", // faq
+  "#354f52", // cta           (brand-deep — highlights the action band)
   "#2f3e46", // footer
 ];
 

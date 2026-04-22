@@ -311,22 +311,20 @@ function FloorPlan({ scroll }: { scroll: ScrollRef }) {
 /**
  * Ground plane.
  */
-function Ground({ scroll }: { scroll: ScrollRef }) {
-  const matRef = useRef<THREE.MeshStandardMaterial>(null);
-  useFrame(() => {
-    const p = scroll.current;
-    const lawnT = ramp(p, 0.66, 0.86);
-    if (matRef.current) {
-      // Start with midnight (matches scene bg), shift to lawn at photoreal
-      const dark = new THREE.Color(COLORS.midnight);
-      const light = new THREE.Color(COLORS.lawn);
-      matRef.current.color.copy(dark).lerp(light, lawnT);
-    }
-  });
+function Ground({ scroll: _scroll }: { scroll: ScrollRef }) {
+  // Ground stays at brand-midnight throughout the entire scroll — no lawn
+  // transition. The previous midnight→lawn-green shift created an ugly
+  // bright-green background in the photoreal section that clashed with the
+  // rest of the page palette and forced the exit transition to fade from
+  // green → midnight (that "huge fade" you hated).
+  //
+  // Unlit meshBasicMaterial renders at the exact hex we set, matching the
+  // CSS bg-brand-midnight behind the transparent canvas — so the scene
+  // edge is pixel-identical to the page background above and below it.
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
       <planeGeometry args={[80, 80]} />
-      <meshStandardMaterial ref={matRef} color={COLORS.midnight} roughness={0.95} metalness={0} />
+      <meshBasicMaterial color={COLORS.midnight} />
     </mesh>
   );
 }
@@ -864,10 +862,14 @@ function Foundation({ scroll }: { scroll: ScrollRef }) {
   return (
     <mesh position={[0, 0.08, 0]}>
       <boxGeometry args={[HW + 0.4, 0.16, HD + 0.4]} />
+      {/* Concrete slab color — neutral slate that reads as poured concrete
+          and harmonizes with the midnight palette. Previously brand-forest
+          (#52796f) which made the whole top-down scene look like a green
+          rectangle was dominating the page. */}
       <meshStandardMaterial
         ref={matRef}
-        color={COLORS.forest}
-        roughness={0.85}
+        color="#4d5a5f"
+        roughness={0.9}
         metalness={0}
         transparent
         opacity={0}
@@ -1101,23 +1103,16 @@ function Lights({ scroll }: { scroll: ScrollRef }) {
  * Scene composition
  * ──────────────────────────────────────────────────────────────────────── */
 
-function SceneBackground({ scroll }: { scroll: ScrollRef }) {
+function SceneBackground({ scroll: _scroll }: { scroll: ScrollRef }) {
+  // Canvas is alpha:true — sticky container's CSS bg-brand-midnight shows
+  // through. Fog stays at midnight throughout so anything that fades to fog
+  // distance also fades to the same midnight as the page background.
   const { scene } = useThree();
-  const bgColor = useMemo(() => new THREE.Color(COLORS.midnight), []);
   const fog = useMemo(() => new THREE.Fog(COLORS.midnight, 22, 60), []);
-  const midnight = useMemo(() => new THREE.Color(COLORS.midnight), []);
-  const deep = useMemo(() => new THREE.Color(COLORS.deep), []);
   useEffect(() => {
-    scene.background = bgColor;
+    scene.background = null;
     scene.fog = fog;
-  }, [scene, bgColor, fog]);
-  useFrame(() => {
-    const p = scroll.current;
-    // Blueprint/wireframe/build: midnight. Photoreal: shift to deep (+depth).
-    const t = ramp(p, 0.66, 0.85);
-    bgColor.copy(midnight).lerp(deep, t);
-    fog.color.copy(bgColor);
-  });
+  }, [scene, fog]);
   return null;
 }
 
@@ -1221,7 +1216,7 @@ function HeadlineOverlay({ kicker, headline }: { kicker: string; headline: strin
         key={kicker + headline}
         initial={{ opacity: 0, x: -16 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="font-mono text-[10px] md:text-[11px] tracking-[0.18em] text-brand-amber font-semibold mb-2 md:mb-2.5">
           {kicker}
@@ -1611,24 +1606,10 @@ export default function PlanToDoneAnimation() {
       className="relative bg-brand-midnight"
       style={{ overflow: "clip" }}
     >
-      {/* Fix 4: top gradient bridge from Features section above (120px deep→transparent) */}
-      <div
-        aria-hidden="true"
-        className="absolute top-0 left-0 right-0 pointer-events-none z-[5]"
-        style={{
-          height: "120px",
-          background: "linear-gradient(to bottom, #354f52, transparent)",
-        }}
-      />
-      {/* Fix 4: bottom gradient bridge to next section (120px transparent→midnight) */}
-      <div
-        aria-hidden="true"
-        className="absolute bottom-0 left-0 right-0 pointer-events-none z-[5]"
-        style={{
-          height: "120px",
-          background: "linear-gradient(to top, #2f3e46, transparent)",
-        }}
-      />
+      {/* No top or bottom gradient bridges — ground is brand-midnight
+          throughout, so the canvas edges already match the page background
+          on all sides. Bridges here were previously causing the "huge
+          fade" transition you saw at the end. */}
       <div className="max-w-6xl mx-auto px-6 pt-16 lg:pt-24 pb-6 text-center">
         <p className="font-heading text-xs font-semibold tracking-[0.2em] uppercase text-brand-forest mb-3">
           How Stroyka Sees Your Project
@@ -1655,7 +1636,7 @@ export default function PlanToDoneAnimation() {
           <div className="absolute inset-0 z-0">
             <Canvas
               dpr={[1, 2]}
-              gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
+              gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
               camera={{ fov: 26, near: 0.1, far: 120, position: [0.001, 28, 0.001] }}
             >
               <HouseScene scroll={scrollRef} />
@@ -1676,14 +1657,9 @@ export default function PlanToDoneAnimation() {
                 "radial-gradient(ellipse at center, #000 0%, #000 50%, transparent 85%)",
             }}
           />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 z-[2] pointer-events-none"
-            style={{
-              background:
-                "radial-gradient(ellipse 100% 75% at 50% 55%, transparent 45%, rgba(15,21,24,0.55) 100%)",
-            }}
-          />
+          {/* Vignette removed — the ground plane is already exact-match
+              brand-midnight. Any extra darkening overlay re-introduced the
+              seam with the page background. */}
 
           <CADFrame progress={scrollYProgress} />
           <TelemetryPill frame={frame} state={beat.state} />

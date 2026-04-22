@@ -70,8 +70,8 @@ export default function Integrations() {
           </FadeIn>
           <FadeIn delay={0.15}>
             <p className="mt-3 text-sm text-brand-sage-mist/65 max-w-lg mx-auto">
-              CSV + PDF export today. Direct integrations shipping through
-              2026 — email us if you want us to prioritize yours.
+              CSV and PDF export today. Native integrations rolling out in
+              2026 — email us to move yours up the list.
             </p>
           </FadeIn>
         </div>
@@ -87,7 +87,7 @@ export default function Integrations() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-40px" }}
                   transition={{
-                    duration: 0.4,
+                    duration: 0.55,
                     delay: i * 0.05,
                     ease: [0.22, 1, 0.36, 1],
                   }}

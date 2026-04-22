@@ -230,7 +230,7 @@ export default function Pricing() {
                   href="/#download"
                   className="w-full"
                 >
-                  Download the App
+                  Start free
                 </Button>
               </div>
             </div>

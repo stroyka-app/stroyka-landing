@@ -163,7 +163,7 @@ function FAQItem({
           />
           <motion.svg
             animate={{ rotate: isOpen ? 45 : 0 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="relative h-5 w-5 text-brand-sage"
             viewBox="0 0 24 24"
             fill="none"
@@ -219,7 +219,8 @@ function FAQItem({
                 initial={prefersReduced ? { opacity: 0 } : { height: 0, opacity: 0 }}
                 animate={prefersReduced ? { opacity: 1 } : { height: "auto", opacity: 1 }}
                 exit={prefersReduced ? { opacity: 0 } : { height: 0, opacity: 0 }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                style={{ willChange: "height, opacity" }}
                 className="overflow-hidden"
               >
                 <p className="pr-2 pt-1 text-sm md:text-[15px] leading-relaxed text-brand-sage-mist/75">
