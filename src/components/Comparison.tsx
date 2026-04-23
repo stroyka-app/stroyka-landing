@@ -29,9 +29,12 @@ const ROWS: Row[] = [
 
 function Cell({ value, highlight }: { value: CellValue; highlight: boolean }) {
   if (value === "yes") {
+    // Both highlighted (Stroyka) and un-highlighted "Yes" use the same sage
+    // brand color — a tinted sage circle with a filled sage variant for
+    // the Stroyka column so it still visually bloo­ms.
     const cls = highlight
-      ? "bg-brand-deep text-bone border-brand-deep shadow-[0_0_22px_-2px_rgba(61,88,67,0.5)]"
-      : "bg-transparent text-ink/80 border-ink/30";
+      ? "bg-brand-deep text-bone border-brand-deep shadow-[0_0_22px_-2px_rgba(52,69,58,0.5)]"
+      : "bg-brand-sage/15 text-brand-deep border-brand-sage/60";
     return (
       <span className={`flex items-center justify-center w-9 h-9 rounded-full border-[1.5px] ${cls}`}>
         <Check size={14} strokeWidth={3} />
@@ -92,7 +95,7 @@ export default function Comparison() {
 
         {/* Table */}
         <FadeIn delay={0.15}>
-          <div className="relative rounded-sm border border-ink/18 bg-bone-soft/50 backdrop-blur-sm overflow-hidden shadow-[0_40px_120px_-40px_rgba(0,0,0,0.6)]">
+          <div className="card-stone relative rounded-3xl border border-ink/15 backdrop-blur-sm overflow-hidden">
             {/* Sage "Stroyka" column bloom — sits behind the cells */}
             <div
               aria-hidden
@@ -100,7 +103,7 @@ export default function Comparison() {
             />
 
             {/* Column headers */}
-            <div className="relative grid grid-cols-[1.6fr_repeat(3,1fr)] gap-2 px-4 md:px-8 py-5 border-b border-ink/15 bg-bone-soft/60">
+            <div className="relative grid grid-cols-[1.6fr_repeat(3,1fr)] gap-2 px-4 md:px-8 py-5 border-b border-ink/15">
               <div className="flex items-center gap-2.5">
                 <span className="flex-shrink-0 w-9 h-9 rounded-full bg-ink/10 border border-ink/20 flex items-center justify-center text-ink/60">
                   <HardHat size={15} strokeWidth={1.8} />
@@ -175,7 +178,7 @@ export default function Comparison() {
         <FadeIn delay={0.25}>
           <div className="mt-8 flex flex-wrap items-center gap-6 font-mono text-[11px] tracking-[0.15em] uppercase text-ink/55">
             <span className="flex items-center gap-2">
-              <span className="w-4 h-4 rounded-full bg-brand-deep text-bone flex items-center justify-center">
+              <span className="w-4 h-4 rounded-full bg-brand-sage/15 text-brand-deep border-[1.5px] border-brand-sage/60 flex items-center justify-center">
                 <Check size={10} strokeWidth={3} />
               </span>
               Yes

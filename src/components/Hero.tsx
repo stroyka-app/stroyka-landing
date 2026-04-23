@@ -45,16 +45,18 @@ export default function Hero() {
         className="absolute inset-0 z-0"
         style={{
           background:
-            "linear-gradient(180deg, #3D5843 0%, #4A6852 18%, #5A7060 35%, #768266 55%, #8F8F6E 75%, #A89E85 100%)",
+            "linear-gradient(180deg, #34453A 0%, #3E5043 18%, #4B5F4E 35%, #6B7465 55%, #8A876B 75%, #A89E85 100%)",
         }}
       />
 
-      {/* ── Video layer — mix-blend-luminosity restores the green-cast
-          footage feel Maks originally liked. Desaturated into the green
-          gradient above, natural motion through the scene. */}
+      {/* ── Video layer — natural tones at low opacity. No blend-luminosity
+          (it was stripping color from the footage and forcing the green
+          gradient onto it — reading as "obvious green video"). The video
+          now plays at its real hue, muted to 28% so it reads as atmosphere
+          behind the gradient rather than a tinted overlay. */}
       <motion.div
         style={prefersReduced ? undefined : { y: videoY, scale: videoScale }}
-        className="absolute inset-0 z-[1] will-change-transform mix-blend-luminosity opacity-55"
+        className="absolute inset-0 z-[1] will-change-transform opacity-30"
       >
         <video
           autoPlay
@@ -75,7 +77,7 @@ export default function Hero() {
         className="absolute inset-0 z-[2] pointer-events-none"
         style={{
           background:
-            "linear-gradient(180deg, rgba(61,88,67,0.45) 0%, rgba(61,88,67,0.10) 30%, transparent 55%, rgba(168,158,133,0.45) 85%, #A89E85 100%)",
+            "linear-gradient(180deg, rgba(52,69,58,0.45) 0%, rgba(52,69,58,0.10) 30%, transparent 55%, rgba(168,158,133,0.45) 85%, #A89E85 100%)",
         }}
       />
 
@@ -155,39 +157,39 @@ export default function Hero() {
               Uses bone-soft bg (matches the mid-tone of the gradient around it)
               so it reads as an inset panel rather than a bright card. */}
           <FadeIn delay={0.35}>
-            <aside className="w-full lg:w-[320px] border border-ink/20 bg-bone/95 backdrop-blur-md rounded-2xl p-7 font-mono text-[12px] tracking-[0.06em] shadow-[0_30px_80px_-30px_rgba(31,26,20,0.5)]">
-              <div className="flex items-center justify-between pb-3 mb-4 border-b border-ink/15">
-                <span className="uppercase tracking-[0.2em] text-ink-muted">Project sheet</span>
-                <span className="flex items-center gap-1.5 text-brand-forest">
+            <aside className="w-full lg:w-[320px] border border-bone/30 bg-bone/25 backdrop-blur-2xl rounded-2xl p-7 font-mono text-[12px] tracking-[0.06em] shadow-[0_30px_80px_-30px_rgba(20,30,20,0.6)]">
+              <div className="flex items-center justify-between pb-3 mb-4 border-b border-bone/20">
+                <span className="uppercase tracking-[0.2em] text-bone/60">Project sheet</span>
+                <span className="flex items-center gap-1.5 text-brand-sage-bright">
                   <span className="relative inline-flex w-1.5 h-1.5">
-                    <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage opacity-70 animate-ping" />
-                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage" />
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage-bright opacity-60 animate-ping" />
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage-bright" />
                   </span>
                   live
                 </span>
               </div>
-              <dl className="space-y-3 text-ink-soft">
+              <dl className="space-y-3 text-bone/80">
                 <div className="flex justify-between">
-                  <dt className="text-ink-muted uppercase">Crew</dt>
-                  <dd className="tabular-nums text-ink">12 workers</dd>
+                  <dt className="text-bone/55 uppercase">Crew</dt>
+                  <dd className="tabular-nums text-bone">12 workers</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-ink-muted uppercase">Job no.</dt>
-                  <dd className="tabular-nums text-ink">2411-JH</dd>
+                  <dt className="text-bone/55 uppercase">Job no.</dt>
+                  <dd className="tabular-nums text-bone">2411-JH</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-ink-muted uppercase">Labor wk</dt>
-                  <dd className="tabular-nums text-ink">428.5 h</dd>
+                  <dt className="text-bone/55 uppercase">Labor wk</dt>
+                  <dd className="tabular-nums text-bone">428.5 h</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-ink-muted uppercase">Budget</dt>
-                  <dd className="tabular-nums text-ink">
-                    <span className="text-brand-forest">▲</span> on plan
+                  <dt className="text-bone/55 uppercase">Budget</dt>
+                  <dd className="tabular-nums text-bone">
+                    <span className="text-brand-sage-bright">▲</span> on plan
                   </dd>
                 </div>
-                <div className="flex justify-between pt-3 mt-3 border-t border-ink/15">
-                  <dt className="text-ink-muted uppercase">Offline</dt>
-                  <dd className="text-ink">Yes — any phone</dd>
+                <div className="flex justify-between pt-3 mt-3 border-t border-bone/20">
+                  <dt className="text-bone/55 uppercase">Offline</dt>
+                  <dd className="text-bone">Yes — any phone</dd>
                 </div>
               </dl>
             </aside>

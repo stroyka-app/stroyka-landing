@@ -40,9 +40,9 @@ import * as THREE from "three";
 const COLORS = {
   sageMist:     "#cad2c5",
   sage:         "#84a98c",
-  forest:       "#5A7060",
-  deep:         "#3D5843",
-  midnight:     "#3D5843",
+  forest:       "#4B5F4E",
+  deep:         "#34453A",
+  midnight:     "#34453A",
   midnightDark: "#2B3D30",
   amber:        "#d97706",
   amberBright:  "#f59e0b",
@@ -1628,7 +1628,7 @@ export default function PlanToDoneAnimation() {
       <div
         aria-hidden
         className="h-40 w-full"
-        style={{ background: "linear-gradient(to bottom, #BFB49C, #3D5843)" }}
+        style={{ background: "linear-gradient(to bottom, #BFB49C, #34453A)" }}
       />
 
       {/* 3D canvas on dark teal-sage */}

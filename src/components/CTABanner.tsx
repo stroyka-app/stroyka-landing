@@ -19,7 +19,7 @@ export default function CTABanner() {
         className="absolute inset-0 z-0"
         style={{
           background:
-            "linear-gradient(180deg, #BFB49C 0%, #8F937A 30%, #5A7060 60%, #3D5843 85%, #2B3D30 100%)",
+            "linear-gradient(180deg, #BFB49C 0%, #8A8A74 30%, #4B5F4E 60%, #34453A 85%, #2B3D30 100%)",
         }}
       />
 
