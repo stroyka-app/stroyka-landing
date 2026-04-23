@@ -30,7 +30,7 @@ const ROWS: Row[] = [
 function Cell({ value, highlight }: { value: CellValue; highlight: boolean }) {
   if (value === "yes") {
     const cls = highlight
-      ? "bg-brand-sage-bright text-bone border-brand-sage-bright shadow-[0_0_20px_-2px_rgba(184,212,189,0.65)]"
+      ? "bg-brand-forest text-bone border-brand-forest shadow-[0_0_22px_-2px_rgba(63,78,53,0.45)]"
       : "bg-transparent text-ink/80 border-ink/30";
     return (
       <span className={`flex items-center justify-center w-9 h-9 rounded-full border-[1.5px] ${cls}`}>
@@ -175,7 +175,7 @@ export default function Comparison() {
         <FadeIn delay={0.25}>
           <div className="mt-8 flex flex-wrap items-center gap-6 font-mono text-[11px] tracking-[0.15em] uppercase text-ink/55">
             <span className="flex items-center gap-2">
-              <span className="w-4 h-4 rounded-full bg-brand-sage-bright text-bone flex items-center justify-center">
+              <span className="w-4 h-4 rounded-full bg-brand-forest text-bone flex items-center justify-center">
                 <Check size={10} strokeWidth={3} />
               </span>
               Yes

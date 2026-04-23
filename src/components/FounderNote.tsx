@@ -44,7 +44,7 @@ export default function FounderNote() {
         <FadeIn delay={0.16}>
           <div className="space-y-6 text-[17px] leading-[1.7] text-ink/85">
             <p>
-              <span className="font-display float-left text-7xl leading-[0.85] pr-3 pt-1 text-brand-sage-bright">M</span>
+              <span className="font-display float-left text-7xl leading-[0.85] pr-3 pt-1 text-brand-forest">M</span>
               y family ran a framing crew out of a spreadsheet, a clipboard, and
               a group chat nobody had the energy to keep clean by the end of the
               week. Budgets drifted. Receipts vanished. The answer to

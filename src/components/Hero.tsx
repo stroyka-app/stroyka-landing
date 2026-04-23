@@ -15,10 +15,14 @@ const FOUNDING_SPOTS_REMAINING = Math.max(
 );
 
 /**
- * Hero — rich-dark editorial with video. The construction video is back
- * behind a heavy green-ink wash so the editorial type reads as the primary
- * voice, not the footage. Scroll-linked parallax on both the video and
- * the headline gives the section life without leaning on gimmicks.
+ * Hero — vertical gradient from deep forest at the top through olive to pale
+ * pistachio at the bottom. The gradient IS the transition into the next
+ * section (which picks up at pistachio). Video sits inside with luminosity
+ * blend so it reads as atmosphere, not a photograph to look at.
+ *
+ * The text hierarchy follows the gradient: cream over the dark half,
+ * with the Project Sheet card landing on the pale pistachio end so it
+ * becomes a moment of rest and contrast (ink text on pistachio).
  */
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
@@ -28,62 +32,64 @@ export default function Hero() {
     offset: ["start start", "end start"],
   });
 
-  // Parallax — video drifts up slowly, headline drifts slightly faster
-  const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const videoScale = useTransform(scrollYProgress, [0, 1], [1.04, 1.18]);
-  const headlineY = useTransform(scrollYProgress, [0, 1], ["0%", "-12%"]);
-  const headlineOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1.04, 1.16]);
+  const headlineY = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
+  const headlineOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.1]);
 
   return (
-    <section ref={ref} id="hero" className="relative overflow-hidden bg-bone min-h-[96vh]">
-      {/* ── Video background with rich overlay ─────────────────────────── */}
+    <section ref={ref} id="hero" className="relative overflow-hidden min-h-[100vh]">
+      {/* ── Gradient shell — forest → olive → pistachio ──────────────────── */}
+      <div
+        aria-hidden
+        className="absolute inset-0 z-0"
+        style={{
+          background:
+            "linear-gradient(180deg, #1F2A1C 0%, #2A3524 22%, #3F4E35 44%, #6B7E55 66%, #A9B68A 84%, #D3DAC0 100%)",
+        }}
+      />
+
+      {/* ── Video layer ──────────────────────────────────────────────────── */}
       <motion.div
         style={prefersReduced ? undefined : { y: videoY, scale: videoScale }}
-        className="absolute inset-0 z-0 will-change-transform"
+        className="absolute inset-0 z-[1] will-change-transform mix-blend-luminosity opacity-55"
       >
-        {/* Base gradient — warm green-black, not the old blue-grey */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: [
-              "radial-gradient(ellipse 80% 60% at 70% 35%, rgba(82,121,111,0.24) 0%, transparent 60%)",
-              "radial-gradient(ellipse 50% 50% at 15% 80%, rgba(21,26,22,0.7) 0%, transparent 55%)",
-              "linear-gradient(180deg, #0C110E 0%, #0F1510 55%, #0C110E 100%)",
-            ].join(", "),
-          }}
-        />
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover mix-blend-luminosity opacity-[0.55]"
+          className="absolute inset-0 w-full h-full object-cover"
         >
           <source src="/videos/hero-construction.mp4" type="video/mp4" />
         </video>
-        {/* Dark wash + grain */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(12,17,14,0.55) 0%, rgba(12,17,14,0.7) 65%, rgba(12,17,14,0.95) 100%)",
-          }}
-        />
-        {/* Faint pistachio vignette glow bottom-left to give the frame life */}
-        <div
-          aria-hidden
-          className="absolute -bottom-32 -left-20 w-[60vw] h-[60vw] rounded-full opacity-[0.18]"
-          style={{
-            background:
-              "radial-gradient(circle, #B8D4BD 0%, transparent 60%)",
-            filter: "blur(80px)",
-          }}
-        />
       </motion.div>
 
-      {/* ── Field-journal header rule ──────────────────────────────────── */}
-      <div className="relative z-10 border-b border-ink/15">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-3 flex items-center justify-between font-mono text-[10.5px] tracking-[0.22em] uppercase text-ink/60">
+      {/* Dark→transparent top vignette so the top of the gradient doesn't
+          read grey under bright video frames */}
+      <div
+        aria-hidden
+        className="absolute inset-0 z-[2] pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(31,42,28,0.45) 0%, rgba(31,42,28,0.15) 40%, transparent 100%)",
+        }}
+      />
+
+      {/* Soft sage glow bottom-left — gives life to the pistachio end */}
+      <div
+        aria-hidden
+        className="absolute -bottom-32 -left-24 w-[60vw] h-[60vw] rounded-full opacity-30 z-[2] pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle, #B8D4BD 0%, transparent 60%)",
+          filter: "blur(80px)",
+        }}
+      />
+
+      {/* ── Field-journal header rule — cream on dark top ───────────────── */}
+      <div className="relative z-10 border-b border-bone/12">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-3 flex items-center justify-between font-mono text-[10.5px] tracking-[0.22em] uppercase text-bone/65">
           <span>Stroyka — The Field Journal</span>
           <span className="hidden sm:inline">Vol. 01 · Est. 2026 · Austin TX</span>
           <span className="sm:hidden">Vol. 01</span>
@@ -93,24 +99,24 @@ export default function Hero() {
       {/* ── Content ─────────────────────────────────────────────────────── */}
       <motion.div
         style={prefersReduced ? undefined : { y: headlineY, opacity: headlineOpacity }}
-        className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 pt-16 pb-24 lg:pt-24 lg:pb-32 will-change-transform"
+        className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 pt-16 pb-28 lg:pt-24 lg:pb-40 will-change-transform"
       >
         <FadeIn delay={0}>
-          <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink/75 mb-10 inline-flex items-center gap-2.5">
+          <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-bone/80 mb-10 inline-flex items-center gap-2.5">
             <span className="relative inline-flex w-2 h-2">
               <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage-bright opacity-60 animate-ping" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-sage-bright" />
             </span>
             Start free
-            <span className="text-ink/30">/</span>
-            <span className="text-ink">$99/mo founding rate</span>
-            <span className="text-ink/30">/</span>
+            <span className="text-bone/30">/</span>
+            <span className="text-bone">$99/mo founding rate</span>
+            <span className="text-bone/30">/</span>
             {FOUNDING_SPOTS_REMAINING} spots left
           </p>
         </FadeIn>
 
         <FadeIn delay={0.08}>
-          <h1 className="font-display font-light text-[clamp(3.5rem,10vw,9.5rem)] leading-[0.92] tracking-[-0.03em] text-ink mb-10 max-w-[16ch]">
+          <h1 className="font-display font-light text-[clamp(3.5rem,10vw,9.5rem)] leading-[0.92] tracking-[-0.03em] text-bone mb-10 max-w-[16ch]">
             <span className="block">Construction</span>
             <span className="block">
               management<span className="text-brand-sage-bright">,</span>
@@ -139,12 +145,12 @@ export default function Hero() {
         <div className="grid lg:grid-cols-[1fr_auto] gap-10 lg:gap-16 items-end">
           <div className="max-w-xl">
             <FadeIn delay={0.18}>
-              <p className="text-lg lg:text-xl text-ink/80 leading-[1.55]">
+              <p className="text-lg lg:text-xl text-bone/85 leading-[1.55]">
                 One tool for the whole crew — boss and workers. Clock-in, job costing, reports. Works on any phone, even with no signal.
               </p>
             </FadeIn>
             <FadeIn delay={0.22}>
-              <p className="font-mono text-[12px] tracking-[0.15em] uppercase text-ink/55 mb-10 mt-6">
+              <p className="font-mono text-[12px] tracking-[0.15em] uppercase text-bone/55 mb-10 mt-6">
                 For crews of 5–25 · Works the day you sign up
               </p>
             </FadeIn>
@@ -153,48 +159,49 @@ export default function Hero() {
                 <Button variant="primary" size="lg" href="/#download">
                   Start free
                 </Button>
-                <Button variant="secondary" size="lg" href="/demo">
-                  Book a demo
+                <Button variant="ghost" size="lg" href="/demo" className="text-bone hover:text-brand-sage-bright">
+                  Book a demo →
                 </Button>
               </div>
             </FadeIn>
           </div>
 
-          {/* Project Sheet — kept, Maks liked it. Upgraded with a live
-              "on plan" indicator that pulses gently. */}
+          {/* Project Sheet — lives on the pale pistachio end of the hero
+              gradient. Flipped contrast: ink text on pistachio = moment of
+              rest against the dark editorial above. */}
           <FadeIn delay={0.35}>
-            <aside className="w-full lg:w-[320px] border border-ink/18 bg-bone-soft/70 backdrop-blur-md rounded-sm p-6 font-mono text-[12px] tracking-[0.06em]">
+            <aside className="w-full lg:w-[320px] border border-ink/20 bg-bone/90 backdrop-blur-md rounded-sm p-6 font-mono text-[12px] tracking-[0.06em] shadow-[0_30px_80px_-30px_rgba(31,42,28,0.4)]">
               <div className="flex items-center justify-between pb-3 mb-4 border-b border-ink/15">
-                <span className="uppercase tracking-[0.2em] text-ink/60">Project sheet</span>
-                <span className="flex items-center gap-1.5 text-brand-sage-bright">
+                <span className="uppercase tracking-[0.2em] text-ink-muted">Project sheet</span>
+                <span className="flex items-center gap-1.5 text-brand-forest">
                   <span className="relative inline-flex w-1.5 h-1.5">
-                    <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage-bright opacity-60 animate-ping" />
-                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage-bright" />
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage opacity-70 animate-ping" />
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage" />
                   </span>
                   live
                 </span>
               </div>
-              <dl className="space-y-3 text-ink/85">
+              <dl className="space-y-3 text-ink-soft">
                 <div className="flex justify-between">
-                  <dt className="text-ink/55 uppercase">Crew</dt>
+                  <dt className="text-ink-muted uppercase">Crew</dt>
                   <dd className="tabular-nums text-ink">12 workers</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-ink/55 uppercase">Job no.</dt>
+                  <dt className="text-ink-muted uppercase">Job no.</dt>
                   <dd className="tabular-nums text-ink">2411-JH</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-ink/55 uppercase">Labor wk</dt>
+                  <dt className="text-ink-muted uppercase">Labor wk</dt>
                   <dd className="tabular-nums text-ink">428.5 h</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-ink/55 uppercase">Budget</dt>
+                  <dt className="text-ink-muted uppercase">Budget</dt>
                   <dd className="tabular-nums text-ink">
-                    <span className="text-brand-sage-bright">▲</span> on plan
+                    <span className="text-brand-forest">▲</span> on plan
                   </dd>
                 </div>
                 <div className="flex justify-between pt-3 mt-3 border-t border-ink/15">
-                  <dt className="text-ink/55 uppercase">Offline</dt>
+                  <dt className="text-ink-muted uppercase">Offline</dt>
                   <dd className="text-ink">Yes — any phone</dd>
                 </div>
               </dl>
@@ -202,17 +209,6 @@ export default function Hero() {
           </FadeIn>
         </div>
       </motion.div>
-
-      {/* ── Scroll hint hairline — a slow pistachio line draws across ──── */}
-      <div className="absolute bottom-0 left-0 right-0 h-px overflow-hidden z-10">
-        <div
-          className="h-full bg-brand-sage-bright/40"
-          style={{
-            animation: prefersReduced ? undefined : "marquee 8s linear infinite",
-            width: "200%",
-          }}
-        />
-      </div>
     </section>
   );
 }

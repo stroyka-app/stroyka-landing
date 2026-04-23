@@ -141,7 +141,7 @@ export default function Pricing() {
                 onClick={() => setBilling("monthly")}
                 className={`font-mono text-[12px] tracking-[0.15em] uppercase px-5 py-2 rounded-full transition-all duration-200 ${
                   billing === "monthly"
-                    ? "bg-brand-sage-bright text-bone shadow-[0_0_18px_-4px_rgba(184,212,189,0.6)]"
+                    ? "bg-brand-forest text-bone shadow-[0_0_20px_-4px_rgba(63,78,53,0.5)]"
                     : "text-ink/60 hover:text-ink"
                 }`}
               >
@@ -152,7 +152,7 @@ export default function Pricing() {
                 onClick={() => setBilling("annual")}
                 className={`font-mono text-[12px] tracking-[0.15em] uppercase px-5 py-2 rounded-full transition-all duration-200 flex items-center gap-2 ${
                   billing === "annual"
-                    ? "bg-brand-sage-bright text-bone shadow-[0_0_18px_-4px_rgba(184,212,189,0.6)]"
+                    ? "bg-brand-forest text-bone shadow-[0_0_20px_-4px_rgba(63,78,53,0.5)]"
                     : "text-ink/60 hover:text-ink"
                 }`}
               >
@@ -214,7 +214,7 @@ export default function Pricing() {
                   <span className="glow-sweep" />
                 </span>
               )}
-              <span className="absolute -top-3 left-8 z-[3] bg-brand-sage-bright text-bone font-mono text-[11px] tracking-[0.15em] uppercase font-semibold px-3 py-1 rounded-full">
+              <span className="absolute -top-3 left-8 z-[3] bg-brand-forest text-bone font-mono text-[11px] tracking-[0.15em] uppercase font-semibold px-3 py-1 rounded-full">
                 Most popular
               </span>
               <div className="relative z-[1] flex flex-col h-full">
@@ -320,7 +320,7 @@ export default function Pricing() {
 
         {/* Founding Member band */}
         <FadeIn delay={0.3}>
-          <div className="relative overflow-hidden rounded-sm mb-10 max-w-5xl border border-clay/25 bg-[linear-gradient(135deg,#0C110E_0%,#1a1810_50%,#0C110E_100%)] p-10 md:p-14 grid md:grid-cols-[1.4fr_1fr] gap-10 items-center">
+          <div className="relative overflow-hidden rounded-sm mb-10 max-w-5xl border border-clay/30 bg-[linear-gradient(135deg,#1F2A1C_0%,#2A2017_50%,#1F2A1C_100%)] p-10 md:p-14 grid md:grid-cols-[1.4fr_1fr] gap-10 items-center">
             <span
               aria-hidden
               className="pointer-events-none absolute -top-[30%] -right-[10%] w-[500px] h-[500px] rounded-full blur-[80px] bg-clay/20"
@@ -330,30 +330,30 @@ export default function Pricing() {
                 <ShieldCheck size={14} className="text-clay" />
                 Founding Member — limited
               </p>
-              <h3 className="font-display text-3xl md:text-5xl leading-[1.02] text-ink mb-5">
+              <h3 className="font-display text-3xl md:text-5xl leading-[1.02] text-bone mb-5">
                 $99 a month. <span className="italic">Locked forever.</span>
               </h3>
-              <p className="text-[15px] text-ink/75 mb-7 leading-relaxed max-w-lg">
+              <p className="text-[15px] text-bone/75 mb-7 leading-relaxed max-w-lg">
                 The first 20 companies to subscribe lock in $99/month for life — Starter at 34% off, forever. No matter what the public rate becomes.
               </p>
-              <Button variant="primary" href="/get-started?plan=starter&coupon=FOUNDING99">
+              <Button variant="invert" href="/get-started?plan=starter&coupon=FOUNDING99">
                 Claim a Founding Spot →
               </Button>
             </div>
 
-            <div className="relative z-[1] rounded-sm p-6 bg-ink/5 border border-ink/10 backdrop-blur-sm">
+            <div className="relative z-[1] rounded-sm p-6 bg-bone/5 border border-bone/15 backdrop-blur-sm">
               <div className="flex justify-between items-baseline mb-3 font-mono">
-                <span className="text-[11px] tracking-[0.18em] uppercase text-ink/65">
+                <span className="text-[11px] tracking-[0.18em] uppercase text-bone/65">
                   Spots claimed
                 </span>
-                <span className="font-display text-3xl text-ink tabular-nums">
+                <span className="font-display text-3xl text-bone tabular-nums">
                   <span ref={countRef}>{spotsCount}</span>
-                  <span className="text-[15px] text-ink/55 font-mono">
+                  <span className="text-[15px] text-bone/55 font-mono">
                     {" "}/{" "}{FOUNDING_SPOTS_TOTAL}
                   </span>
                 </span>
               </div>
-              <div className="h-[3px] rounded bg-ink/10 overflow-hidden mb-4 relative">
+              <div className="h-[3px] rounded bg-bone/12 overflow-hidden mb-4 relative">
                 <motion.div
                   initial={{ width: 0 }}
                   whileInView={{
@@ -364,7 +364,7 @@ export default function Pricing() {
                   className="h-full rounded bg-gradient-to-r from-clay to-clay-soft"
                 />
               </div>
-              <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-ink/55">
+              <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-bone/55">
                 {FOUNDING_SPOTS_TAKEN} of {FOUNDING_SPOTS_TOTAL}
                 {FOUNDING_SPOTS_REMAINING > 0 && ` · ${FOUNDING_SPOTS_REMAINING} remaining`}
               </p>

@@ -75,17 +75,17 @@ function FlipperCard({ feature, isActive, onActivate }: FlipperCardProps) {
         "relative cursor-pointer rounded-sm border overflow-hidden",
         "flex-shrink-0 min-w-0 transition-colors",
         isActive
-          ? "border-brand-sage/40 bg-bone-soft p-8 shadow-[0_0_40px_-16px_rgba(184,212,189,0.45)]"
-          : "border-ink/15 bg-bone-deep/50 p-6",
+          ? "border-brand-forest bg-bone-soft p-8 shadow-[0_20px_60px_-30px_rgba(63,78,53,0.4)]"
+          : "border-ink/15 bg-bone-deep p-6",
       ].join(" ")}
       style={{ flexBasis: 0 }}
     >
       <div
         className={[
-          "w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 transition-colors",
+          "w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300",
           isActive
-            ? "bg-brand-sage-bright text-bone"
-            : "bg-bone text-ink/50",
+            ? "bg-brand-forest text-bone shadow-[0_0_20px_-4px_rgba(63,78,53,0.6)]"
+            : "bg-bone text-ink-muted border border-ink/15",
         ].join(" ")}
       >
         {feature.icon}
@@ -121,7 +121,7 @@ export default function Features() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section id="features" className="bg-bone-deep py-24 lg:py-32">
+    <section id="features" className="bg-bone py-24 lg:py-32">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <div className="max-w-3xl mb-16 lg:mb-20">
           <FadeIn>
@@ -154,7 +154,7 @@ export default function Features() {
           {FEATURES.map((feature, i) => (
             <FadeIn key={feature.title} delay={0.08 * i}>
               <div className="bg-bone-soft border border-ink/15 rounded-sm p-6">
-                <div className="w-11 h-11 bg-brand-sage-bright text-bone rounded-full flex items-center justify-center mb-5">
+                <div className="w-11 h-11 bg-brand-forest text-bone rounded-full flex items-center justify-center mb-5">
                   {feature.icon}
                 </div>
                 <h3 className="font-display text-2xl leading-snug text-ink mb-3">

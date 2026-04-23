@@ -6,10 +6,10 @@ import { cn } from "@/lib/utils";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /**
-   * primary   — sage-bright bg + dark text (the alive CTA on dark surfaces)
-   * secondary — cream outline on dark
-   * invert    — cream bg + dark text (neutral CTA on sage-heavy moments)
-   * ghost     — text only, hover → sage-bright
+   * primary   — solid deep-forest bg + cream text. Default CTA on any light bg.
+   * secondary — ink outline + ink text, fills to ink on hover. Good on light.
+   * invert    — cream bg + ink text. Use on dark sections (hero top, CTA, footer).
+   * ghost     — text only, hover → brand-forest.
    */
   variant?: "primary" | "secondary" | "invert" | "ghost";
   size?: "sm" | "md" | "lg";
@@ -60,13 +60,13 @@ export default function Button({
     "relative inline-flex items-center justify-center font-heading font-semibold tracking-wide rounded-full transition-colors duration-200 cursor-pointer";
   const variants = {
     primary:
-      "bg-brand-sage-bright text-bone hover:bg-ink active:scale-95 shadow-[0_0_28px_-6px_rgba(184,212,189,0.6)]",
-    secondary:
-      "border border-ink/40 text-ink hover:bg-ink/10 hover:border-ink/70 active:scale-95",
-    invert:
       "bg-ink text-bone hover:bg-ink-soft active:scale-95",
+    secondary:
+      "border border-ink/70 text-ink hover:bg-ink hover:text-bone active:scale-95",
+    invert:
+      "bg-bone text-ink hover:bg-bone-deep active:scale-95",
     ghost:
-      "text-ink hover:text-brand-sage-bright active:scale-95",
+      "text-ink hover:text-brand-forest active:scale-95",
   };
   const sizes = {
     sm: "text-sm px-5 py-2",

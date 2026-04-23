@@ -5,33 +5,36 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // ─── v2: rich warm dark ────────────────────────────────────
-        // `bone` is the page shell (dark green-ink, warmer than previous
-        // blue-grey). `ink` is cream text for dark surfaces. `clay` is a
-        // warm oak accent for Pro pricing. Names retained from v1 for
-        // mechanical migration — values redefined.
+        // ─── v3: Paysages-inspired continuous sage ramp ────────────────
+        // All colors sit on the same warm green-yellow hue family so
+        // transitions between adjacent section tones read as soft even
+        // with hard cuts. Light dominant; two dark forest moments
+        // (hero top + CTA/footer) for rhythm.
         bone: {
-          DEFAULT: "#0C110E", // deepest — page base
-          deep:    "#151A16", // subtle section variation
-          soft:    "#1F2620", // raised cards
+          DEFAULT: "#F2EFE0", // warm cream — page base
+          deep:    "#EBE9D0", // subtle cream variation
+          soft:    "#D3DAC0", // pale pistachio — the signature Paysages tone
         },
         ink: {
-          DEFAULT: "#EDE6D3", // warm cream — body text on dark
-          soft:    "#C9BFAA", // secondary
-          muted:   "#8C857A", // tertiary / captions
+          DEFAULT: "#1F2A1C", // deep forest-black — primary text on light
+          soft:    "#3F4E35", // secondary — rich forest
+          muted:   "#6B7E55", // tertiary — olive
         },
         clay: {
-          DEFAULT: "#D4A574", // warm oak — Pro accent
-          soft:    "#E8C89D",
+          DEFAULT: "#C9844E", // warm terracotta — Pro accent
+          soft:    "#D9A478",
         },
         brand: {
           "sage-mist":     "#cad2c5",
-          "sage-bright":   "#B8D4BD", // NEW — pops on dark, use sparingly
-          sage:            "#84a98c",
-          forest:          "#52796f",
-          deep:            "#354f52",
-          midnight:        "#2f3e46",
-          "midnight-dark": "#1a2428",
+          "sage-bright":   "#B8D4BD",
+          sage:            "#8AAA91",
+          // Forest family — redefined from the old teal-blue tokens to a
+          // continuous olive-green ramp so `bg-brand-forest`/`-deep`/
+          // `-midnight` blend with the bone/ink family above.
+          forest:          "#3F4E35",
+          deep:            "#2A3524",
+          midnight:        "#1F2A1C",
+          "midnight-dark": "#151A11",
           amber:           "#d97706",
           "amber-bright":  "#f59e0b",
         },
@@ -57,8 +60,8 @@ const config: Config = {
           "50%":     { transform: "rotate(calc(var(--rot, 0deg) + 1deg)) translateY(-3px)" },
         },
         "pulse-sage": {
-          "0%,100%": { boxShadow: "0 0 16px rgba(184,212,189,0.28)" },
-          "50%":     { boxShadow: "0 0 28px rgba(184,212,189,0.55)" },
+          "0%,100%": { boxShadow: "0 0 16px rgba(138,170,145,0.28)" },
+          "50%":     { boxShadow: "0 0 28px rgba(138,170,145,0.55)" },
         },
       },
     },

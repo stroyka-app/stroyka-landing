@@ -152,7 +152,7 @@ export default function HowItWorks() {
                     <span
                       className={`absolute left-0 top-0 w-[44px] h-[44px] rounded-full flex items-center justify-center font-mono text-[12px] tracking-[0.08em] z-10 transition-all duration-300 ${
                         isActive
-                          ? "bg-brand-sage-bright text-bone border border-brand-sage-bright shadow-[0_0_24px_-4px_rgba(184,212,189,0.7)]"
+                          ? "bg-brand-forest text-bone border border-brand-forest shadow-[0_0_22px_-4px_rgba(63,78,53,0.6)]"
                           : "bg-bone-soft text-ink-muted border border-ink/25"
                       }`}
                     >
@@ -194,7 +194,7 @@ export default function HowItWorks() {
               {/* Ink progress rail on left edge of phone */}
               <div className="absolute -left-4 top-2 bottom-2 w-0.5 rounded bg-ink/15 overflow-hidden">
                 <div
-                  className="absolute inset-x-0 top-0 bg-gradient-to-b from-brand-sage-bright to-brand-sage transition-[height] duration-[250ms] ease-linear"
+                  className="absolute inset-x-0 top-0 bg-gradient-to-b from-brand-forest to-brand-sage transition-[height] duration-[250ms] ease-linear"
                   style={{ height: `${progress}%` }}
                 />
               </div>

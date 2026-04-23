@@ -19,9 +19,17 @@ export default function Navbar() {
   const scrolled = scrollY > 50;
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  // Over the dark hero (top of page), we need cream logo + cream nav text.
+  // Once scrolled past into the cream/pistachio sections, switch to dark.
+  const logoVariant: "dark" | "light" = scrolled ? "light" : "dark";
+  const navTextColor = scrolled
+    ? "text-ink-soft hover:text-ink"
+    : "text-bone/85 hover:text-bone";
+  const barColor = scrolled ? "bg-ink" : "bg-bone";
+
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? "backdrop-blur-md bg-bone/85 border-b border-ink/10"
           : "bg-transparent"
@@ -29,7 +37,7 @@ export default function Navbar() {
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 flex items-center justify-between h-16">
         <Link href="/" aria-label="Home">
-          <Logo variant="light" size={30} />
+          <Logo variant={logoVariant} size={30} />
         </Link>
 
         <div className="hidden md:flex items-center gap-9">
@@ -37,7 +45,7 @@ export default function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="font-mono text-[12px] tracking-[0.15em] uppercase text-ink-soft hover:text-ink transition-colors duration-200"
+              className={`font-mono text-[12px] tracking-[0.15em] uppercase transition-colors duration-200 ${navTextColor}`}
             >
               {link.label}
             </a>
@@ -45,9 +53,15 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:block">
-          <Button variant="secondary" size="sm" href="/get-started">
-            Get Started
-          </Button>
+          {scrolled ? (
+            <Button variant="secondary" size="sm" href="/get-started">
+              Get Started
+            </Button>
+          ) : (
+            <Button variant="invert" size="sm" href="/get-started">
+              Get Started
+            </Button>
+          )}
         </div>
 
         <button
@@ -57,15 +71,15 @@ export default function Navbar() {
           aria-expanded={mobileOpen}
         >
           <motion.span
-            className="block w-6 h-0.5 bg-ink"
+            className={`block w-6 h-0.5 ${barColor}`}
             animate={mobileOpen ? { rotate: 45, y: 4 } : { rotate: 0, y: 0 }}
           />
           <motion.span
-            className="block w-6 h-0.5 bg-ink"
+            className={`block w-6 h-0.5 ${barColor}`}
             animate={mobileOpen ? { opacity: 0 } : { opacity: 1 }}
           />
           <motion.span
-            className="block w-6 h-0.5 bg-ink"
+            className={`block w-6 h-0.5 ${barColor}`}
             animate={mobileOpen ? { rotate: -45, y: -4 } : { rotate: 0, y: 0 }}
           />
         </button>
