@@ -36,15 +36,16 @@ export default function Hero() {
 
   return (
     <section ref={ref} id="hero" className="relative overflow-hidden min-h-[100vh]">
-      {/* ── Gradient shell: forest green at top → warm stone at bottom.
-          Integrates the original green-hero feel with the stone palette.
-          Bottom stop (#A89E85) matches TheShift's top — seamless. */}
+      {/* ── Gradient shell: teal-sage dark at top (close to main's #2f3e46)
+          → warm stone at bottom. Integrates the original-hero feel with
+          the stone palette. Bottom stop (#A89E85) matches TheShift's top
+          — seamless. */}
       <div
         aria-hidden
         className="absolute inset-0 z-0"
         style={{
           background:
-            "linear-gradient(180deg, #1F2A1C 0%, #2F3E2C 18%, #3F4E35 35%, #5D5B46 55%, #7A6E5B 75%, #A89E85 100%)",
+            "linear-gradient(180deg, #2A3842 0%, #2F3E46 18%, #3E4C51 35%, #5E605B 55%, #7A6E5B 75%, #A89E85 100%)",
         }}
       />
 
@@ -74,13 +75,14 @@ export default function Hero() {
         className="absolute inset-0 z-[2] pointer-events-none"
         style={{
           background:
-            "linear-gradient(180deg, rgba(31,42,28,0.45) 0%, rgba(31,42,28,0.10) 30%, transparent 55%, rgba(168,158,133,0.45) 85%, #A89E85 100%)",
+            "linear-gradient(180deg, rgba(42,56,66,0.45) 0%, rgba(42,56,66,0.10) 30%, transparent 55%, rgba(168,158,133,0.45) 85%, #A89E85 100%)",
         }}
       />
 
-      {/* ── Field-journal header rule ──────────────────────────────────── */}
-      <div className="relative z-10 border-b border-bone/12">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-3 flex items-center justify-between font-mono text-[10.5px] tracking-[0.22em] uppercase text-bone/65">
+      {/* Field-journal header rule — hairline removed per feedback; the
+          nav & field-journal strip now breathe directly into the hero. */}
+      <div className="relative z-10">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-3 flex items-center justify-between font-mono text-[10.5px] tracking-[0.22em] uppercase text-bone/55">
           <span>Stroyka — The Field Journal</span>
           <span className="hidden sm:inline">Vol. 01 · Est. 2026 · Austin TX</span>
           <span className="sm:hidden">Vol. 01</span>

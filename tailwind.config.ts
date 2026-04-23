@@ -27,26 +27,28 @@ const config: Config = {
           soft:    "#CDA07A",
         },
         brand: {
-          // Sage kept only as a tiny accent — dots, hover glows, never
-          // dominant. Maks' favorite color but used sparingly.
+          // Sage kept as a subtle accent — dots, hover glows, small type.
           "sage-mist":     "#cad2c5",
           "sage-bright":   "#B8D4BD",
           sage:            "#8AAA91",
-          // Forest green — integrated into the stone ramp at the two
-          // "green moments" (Hero top + PlanToDone). Blends through the
-          // ramp-mid taupes into stone. Footer stays warm dark stone
-          // via explicit #1F1A14 instead of brand.midnight.
-          forest:          "#3F4E35",
-          deep:            "#2F3E2C",
-          midnight:        "#1F2A1C",
-          "midnight-dark": "#141D12",
+          // Dark family — teal-sage (close to the original main hero
+          // #2f3e46 Maks referenced). Reads as "sage/earth/pistachio"
+          // darkened rather than forest green. Used at Hero top,
+          // PlanToDone 3D canvas, and Footer.
+          forest:          "#3E4C51",
+          deep:            "#2A3842",
+          midnight:        "#2A3842",
+          "midnight-dark": "#1F2B2F",
           amber:           "#d97706",
           "amber-bright":  "#f59e0b",
         },
       },
       fontFamily: {
         display: ["var(--font-fraunces)",      "Georgia", "serif"],
-        heading: ["var(--font-space-grotesk)", "system-ui", "sans-serif"],
+        // `heading` aliases to body (Inter) — Space Grotesk retired in v6
+        // to trim to three faces: Fraunces (display), Inter (everything),
+        // JetBrains Mono (small tech/data accents).
+        heading: ["var(--font-inter)",         "system-ui", "sans-serif"],
         body:    ["var(--font-inter)",         "system-ui", "sans-serif"],
         mono:    ["var(--font-jetbrains-mono)", "ui-monospace", "monospace"],
       },

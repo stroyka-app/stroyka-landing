@@ -40,10 +40,10 @@ import * as THREE from "three";
 const COLORS = {
   sageMist:     "#cad2c5",
   sage:         "#84a98c",
-  forest:       "#3F4E35",
-  deep:         "#2F3E2C",
-  midnight:     "#1F2A1C",
-  midnightDark: "#141D12",
+  forest:       "#3E4C51",
+  deep:         "#2A3842",
+  midnight:     "#2A3842",
+  midnightDark: "#1F2B2F",
   amber:        "#d97706",
   amberBright:  "#f59e0b",
   cedar:        "#b8865f",
@@ -1600,31 +1600,44 @@ export default function PlanToDoneAnimation() {
   if (prefersReduced) return <StaticFallback />;
 
   return (
-    <section
-      id="plan-to-done"
-      aria-label="Construction project lifecycle — interactive scroll animation"
-      className="relative bg-brand-midnight"
-      style={{ overflow: "clip" }}
-    >
-      {/* No top or bottom gradient bridges — ground is brand-midnight
-          throughout, so the canvas edges already match the page background
-          on all sides. Bridges here were previously causing the "huge
-          fade" transition you saw at the end. */}
-      <div className="max-w-6xl mx-auto px-6 pt-16 lg:pt-24 pb-6 text-center">
-        <p className="font-heading text-xs font-semibold tracking-[0.2em] uppercase text-brand-forest mb-3">
-          How Stroyka Sees Your Project
-        </p>
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold tracking-tight text-white leading-tight max-w-2xl mx-auto">
-          From plan to done — every dollar tracked.
-        </h2>
-        <p className="text-sm md:text-base text-brand-sage-mist/65 mt-4 max-w-3xl mx-auto">
-          Scroll to see a project unfold in Stroyka — every material, every cost, in real&nbsp;time.
-        </p>
-      </div>
+    <>
+      {/* Title on stone — continues Features' ramp so the heading
+          breathes on light before the 3D house enters on dark. Maks
+          called this out explicitly in v5 review. */}
+      <section
+        id="plan-to-done-intro"
+        aria-label="Project lifecycle — introduction"
+        className="relative bg-[#BFB49C] pt-20 lg:pt-28 pb-10 lg:pb-14"
+      >
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-soft mb-5 inline-flex items-center gap-2.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand-sage" aria-hidden />
+            How Stroyka Sees Your Project
+          </p>
+          <h2 className="font-display font-light text-4xl md:text-5xl lg:text-6xl leading-[0.98] tracking-[-0.02em] text-ink max-w-3xl mx-auto mb-5">
+            From plan to done — every dollar tracked.
+          </h2>
+          <p className="text-base md:text-lg text-ink-soft leading-relaxed max-w-2xl mx-auto">
+            Scroll to see a project unfold in Stroyka — every material, every cost, in real&nbsp;time.
+          </p>
+        </div>
+      </section>
 
-      {/* NOTE: no overflow:hidden here — it would scope position:sticky to this
-          element, which breaks the pinning on the inner canvas wrapper. Fix 1's
-          containment is applied to the outer <section> and the sticky wrapper. */}
+      {/* Gradient bridge — stone → teal-sage dark. Gives the title real
+          breathing room between its last line and the 3D canvas below. */}
+      <div
+        aria-hidden
+        className="h-40 w-full"
+        style={{ background: "linear-gradient(to bottom, #BFB49C, #2A3842)" }}
+      />
+
+      {/* 3D canvas on dark teal-sage */}
+      <section
+        id="plan-to-done"
+        aria-label="Construction project lifecycle — interactive scroll animation"
+        className="relative bg-brand-midnight"
+        style={{ overflow: "clip" }}
+      >
       <div
         ref={wrapperRef}
         style={{ position: "relative", height: "500vh" }}
@@ -1686,6 +1699,7 @@ export default function PlanToDoneAnimation() {
 
         </div>
       </div>
-    </section>
+      </section>
+    </>
   );
 }

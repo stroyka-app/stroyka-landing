@@ -48,11 +48,12 @@ export default function Home() {
       <TheShift />
       <HowItWorks />
       <Features />
-      {/* Bridge: Features ends at #BFB49C → PlanToDone forest #1F2A1C */}
-      <Bridge from="#BFB49C" to="#1F2A1C" height="h-40" />
+      {/* PlanToDoneAnimation now handles its own title-on-stone section
+          + internal gradient bridge into the dark 3D canvas. We only
+          need the outbound bridge from the canvas (#2A3842) back to
+          Comparison's start color (#BFB49C). */}
       <PlanToDoneAnimation />
-      {/* Bridge: PlanToDone forest → Comparison starts at #BFB49C */}
-      <Bridge from="#1F2A1C" to="#BFB49C" height="h-40" />
+      <Bridge from="#2A3842" to="#BFB49C" height="h-40" />
       <Comparison />
       <FounderNote />
       <Integrations />
