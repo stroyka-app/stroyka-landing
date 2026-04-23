@@ -77,7 +77,7 @@ function Column({
       <p className={`font-mono text-[11px] tracking-[0.22em] uppercase ${accentText} mb-4`}>
         {label}
       </p>
-      <h3 className="font-display font-light text-3xl lg:text-[42px] leading-[1.05] text-bone mb-3">
+      <h3 className="font-display font-light text-3xl lg:text-[42px] leading-[1.05] text-ink mb-3">
         {heading}
       </h3>
       <p className="text-[15px] text-brand-sage-mist/60 leading-relaxed mb-10 max-w-md">
@@ -94,7 +94,7 @@ function Column({
               {item.time}
             </span>
             <div>
-              <p className="font-display text-[19px] leading-snug text-bone mb-1.5">
+              <p className="font-display text-[19px] leading-snug text-ink mb-1.5">
                 {item.title}
               </p>
               <p className="text-[13.5px] text-brand-sage-mist/55 leading-relaxed">
@@ -110,7 +110,7 @@ function Column({
 
 export default function TheShift() {
   return (
-    <section id="the-shift" className="relative bg-ink text-bone py-24 lg:py-32">
+    <section id="the-shift" className="relative bg-bone py-24 lg:py-32">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         {/* Header */}
         <div className="max-w-3xl mb-20 lg:mb-24">
@@ -119,7 +119,7 @@ export default function TheShift() {
           </FadeIn>
           <TextReveal
             as="h2"
-            className="font-display font-light text-5xl lg:text-7xl leading-[0.95] tracking-[-0.02em] text-bone mb-6"
+            className="font-display font-light text-5xl lg:text-7xl leading-[0.95] tracking-[-0.02em] text-ink mb-6"
           >
             Tuesday morning, before and after.
           </TextReveal>

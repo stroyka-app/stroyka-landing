@@ -42,9 +42,9 @@ export default function FounderNote() {
 
         {/* Body */}
         <FadeIn delay={0.16}>
-          <div className="space-y-6 text-[17px] leading-[1.7] text-ink-soft">
+          <div className="space-y-6 text-[17px] leading-[1.7] text-ink/85">
             <p>
-              <span className="font-display float-left text-6xl leading-[0.85] pr-3 pt-1 text-ink">M</span>
+              <span className="font-display float-left text-7xl leading-[0.85] pr-3 pt-1 text-brand-sage-bright">M</span>
               y family ran a framing crew out of a spreadsheet, a clipboard, and
               a group chat nobody had the energy to keep clean by the end of the
               week. Budgets drifted. Receipts vanished. The answer to
@@ -55,7 +55,7 @@ export default function FounderNote() {
               Works offline. Takes an afternoon to learn. Built for the crew,
               not the back office. Nothing more, nothing less.
             </p>
-            <p className="font-display italic text-[19px] text-ink">
+            <p className="font-display italic text-[22px] text-ink leading-snug">
               If it doesn&rsquo;t make your Tuesday easier, it has no business
               being on your phone.
             </p>

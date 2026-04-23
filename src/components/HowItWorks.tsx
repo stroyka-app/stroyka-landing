@@ -99,7 +99,7 @@ export default function HowItWorks() {
   }, []);
 
   return (
-    <section id="how-it-works" className="relative bg-bone py-28 lg:py-36">
+    <section id="how-it-works" className="relative bg-bone-deep py-28 lg:py-36">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         {/* Header */}
         <div className="max-w-2xl mb-20 lg:mb-24">
@@ -152,8 +152,8 @@ export default function HowItWorks() {
                     <span
                       className={`absolute left-0 top-0 w-[44px] h-[44px] rounded-full flex items-center justify-center font-mono text-[12px] tracking-[0.08em] z-10 transition-all duration-300 ${
                         isActive
-                          ? "bg-ink text-bone border border-ink"
-                          : "bg-bone-soft text-ink-muted border border-ink/20"
+                          ? "bg-brand-sage-bright text-bone border border-brand-sage-bright shadow-[0_0_24px_-4px_rgba(184,212,189,0.7)]"
+                          : "bg-bone-soft text-ink-muted border border-ink/25"
                       }`}
                     >
                       {step.num}
@@ -194,7 +194,7 @@ export default function HowItWorks() {
               {/* Ink progress rail on left edge of phone */}
               <div className="absolute -left-4 top-2 bottom-2 w-0.5 rounded bg-ink/15 overflow-hidden">
                 <div
-                  className="absolute inset-x-0 top-0 bg-ink transition-[height] duration-[250ms] ease-linear"
+                  className="absolute inset-x-0 top-0 bg-gradient-to-b from-brand-sage-bright to-brand-sage transition-[height] duration-[250ms] ease-linear"
                   style={{ height: `${progress}%` }}
                 />
               </div>

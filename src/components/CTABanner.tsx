@@ -10,14 +10,14 @@ import Button from "@/components/ui/Button";
  */
 export default function CTABanner() {
   return (
-    <section id="cta" className="relative bg-ink text-bone overflow-hidden">
+    <section id="cta" className="relative bg-bone text-ink overflow-hidden">
       {/* Fine grid backdrop — barely visible, evokes a drafting sheet */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-[0.05]"
         style={{
           backgroundImage:
-            "linear-gradient(to right, #eee8db 1px, transparent 1px), linear-gradient(to bottom, #eee8db 1px, transparent 1px)",
+            "linear-gradient(to right, #EDE6D3 1px, transparent 1px), linear-gradient(to bottom, #EDE6D3 1px, transparent 1px)",
           backgroundSize: "72px 72px",
         }}
       />
@@ -34,7 +34,7 @@ export default function CTABanner() {
         {/* Oversized Fraunces — bleed-scale. Leading cranked down so the lines
             touch, serif style for editorial cover-page feel. */}
         <FadeIn delay={0.05}>
-          <h2 className="font-display font-light text-[clamp(3rem,12.5vw,13rem)] leading-[0.88] tracking-[-0.035em] text-bone max-w-[14ch] mb-12 lg:mb-16">
+          <h2 className="font-display font-light text-[clamp(3rem,12.5vw,13rem)] leading-[0.88] tracking-[-0.035em] text-ink max-w-[14ch] mb-12 lg:mb-16">
             Run a <span className="italic font-normal">cleaner</span> jobsite.
           </h2>
         </FadeIn>
@@ -51,7 +51,7 @@ export default function CTABanner() {
               <Button variant="invert" size="lg" href="/#download">
                 Start free
               </Button>
-              <Button variant="ghost" size="lg" href="/demo" className="text-bone hover:text-brand-sage">
+              <Button variant="ghost" size="lg" href="/demo" className="text-ink hover:text-brand-sage">
                 Book a demo →
               </Button>
             </div>
@@ -60,11 +60,11 @@ export default function CTABanner() {
 
         {/* Footer microprint — mono, spaced */}
         <FadeIn delay={0.3}>
-          <p className="mt-20 pt-10 border-t border-bone/10 font-mono text-[11px] tracking-[0.22em] uppercase text-brand-sage-mist/50">
+          <p className="mt-20 pt-10 border-t border-ink/10 font-mono text-[11px] tracking-[0.22em] uppercase text-brand-sage-mist/50">
             Free for crews up to 5
-            <span className="text-bone/30 mx-3">/</span>
+            <span className="text-ink/30 mx-3">/</span>
             $99/mo founding rate
-            <span className="text-bone/30 mx-3">/</span>
+            <span className="text-ink/30 mx-3">/</span>
             Cancel anytime
           </p>
         </FadeIn>

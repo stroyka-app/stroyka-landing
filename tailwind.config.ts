@@ -5,22 +5,28 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // ─── v2: rich warm dark ────────────────────────────────────
+        // `bone` is the page shell (dark green-ink, warmer than previous
+        // blue-grey). `ink` is cream text for dark surfaces. `clay` is a
+        // warm oak accent for Pro pricing. Names retained from v1 for
+        // mechanical migration — values redefined.
         bone: {
-          DEFAULT: "#EEE8DB",
-          deep:    "#E3DCCC",
-          soft:    "#F5F1E8",
+          DEFAULT: "#0C110E", // deepest — page base
+          deep:    "#151A16", // subtle section variation
+          soft:    "#1F2620", // raised cards
         },
         ink: {
-          DEFAULT: "#1B1E1B",
-          soft:    "#3A3F3B",
-          muted:   "#6B6F6A",
+          DEFAULT: "#EDE6D3", // warm cream — body text on dark
+          soft:    "#C9BFAA", // secondary
+          muted:   "#8C857A", // tertiary / captions
         },
         clay: {
-          DEFAULT: "#C4562F",
-          soft:    "#E08A5F",
+          DEFAULT: "#D4A574", // warm oak — Pro accent
+          soft:    "#E8C89D",
         },
         brand: {
           "sage-mist":     "#cad2c5",
+          "sage-bright":   "#B8D4BD", // NEW — pops on dark, use sparingly
           sage:            "#84a98c",
           forest:          "#52796f",
           deep:            "#354f52",
@@ -39,7 +45,7 @@ const config: Config = {
       animation: {
         marquee:       "marquee 60s linear infinite",
         wobble:        "wobble 5s ease-in-out infinite",
-        "pulse-amber": "pulse-amber 2.2s ease-in-out infinite",
+        "pulse-sage":  "pulse-sage 2.4s ease-in-out infinite",
         "spin-slow":   "spin 6s linear infinite",
       },
       keyframes: {
@@ -50,9 +56,9 @@ const config: Config = {
           "0%,100%": { transform: "rotate(var(--rot, 0deg)) translateY(0)" },
           "50%":     { transform: "rotate(calc(var(--rot, 0deg) + 1deg)) translateY(-3px)" },
         },
-        "pulse-amber": {
-          "0%,100%": { boxShadow: "0 0 12px rgba(245,158,11,0.5)" },
-          "50%":     { boxShadow: "0 0 20px rgba(245,158,11,0.8)" },
+        "pulse-sage": {
+          "0%,100%": { boxShadow: "0 0 16px rgba(184,212,189,0.28)" },
+          "50%":     { boxShadow: "0 0 28px rgba(184,212,189,0.55)" },
         },
       },
     },

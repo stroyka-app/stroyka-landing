@@ -20,10 +20,10 @@ const COMPANY_LINKS = [
 
 export default function Footer() {
   return (
-    <footer id="footer" className="relative bg-ink text-bone">
+    <footer id="footer" className="relative bg-bone text-ink">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 pt-20 pb-10">
         {/* Colophon line — mono, Paysages-style */}
-        <div className="flex flex-wrap items-center justify-between gap-4 pb-10 mb-16 border-b border-bone/10 font-mono text-[11px] tracking-[0.22em] uppercase text-brand-sage-mist/50">
+        <div className="flex flex-wrap items-center justify-between gap-4 pb-10 mb-16 border-b border-ink/10 font-mono text-[11px] tracking-[0.22em] uppercase text-brand-sage-mist/50">
           <span>Stroyka — The Field Journal · Vol. 01</span>
           <span>Austin, Texas · Est. 2026</span>
         </div>
@@ -45,7 +45,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-[14.5px] text-brand-sage-mist/70 hover:text-bone transition-colors duration-200"
+                    className="text-[14.5px] text-brand-sage-mist/70 hover:text-ink transition-colors duration-200"
                   >
                     {link.label}
                   </a>
@@ -63,7 +63,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-[14.5px] text-brand-sage-mist/70 hover:text-bone transition-colors duration-200"
+                    className="text-[14.5px] text-brand-sage-mist/70 hover:text-ink transition-colors duration-200"
                   >
                     {link.label}
                   </Link>
@@ -80,7 +80,7 @@ export default function Footer() {
               <li>
                 <a
                   href="mailto:hello@getstroyka.com"
-                  className="text-[14.5px] text-brand-sage-mist/70 hover:text-bone transition-colors duration-200"
+                  className="text-[14.5px] text-brand-sage-mist/70 hover:text-ink transition-colors duration-200"
                 >
                   hello@getstroyka.com
                 </a>
@@ -95,7 +95,7 @@ export default function Footer() {
                 <a
                   href={IOS_URL}
                   aria-label="Download on the App Store"
-                  className="group inline-flex items-center gap-2.5 text-[14.5px] text-brand-sage-mist/70 hover:text-bone transition-colors duration-200"
+                  className="group inline-flex items-center gap-2.5 text-[14.5px] text-brand-sage-mist/70 hover:text-ink transition-colors duration-200"
                 >
                   <Apple size={15} className="shrink-0" />
                   <span>
@@ -112,7 +112,7 @@ export default function Footer() {
                 <a
                   href={ANDROID_URL}
                   aria-label="Get it on Google Play"
-                  className="group inline-flex items-center gap-2.5 text-[14.5px] text-brand-sage-mist/70 hover:text-bone transition-colors duration-200"
+                  className="group inline-flex items-center gap-2.5 text-[14.5px] text-brand-sage-mist/70 hover:text-ink transition-colors duration-200"
                 >
                   <Play size={15} className="shrink-0" />
                   <span>
@@ -130,9 +130,9 @@ export default function Footer() {
         </div>
 
         {/* Oversized wordmark — editorial finale */}
-        <div className="py-12 border-t border-bone/10">
-          <p className="font-display text-[clamp(4rem,16vw,14rem)] leading-[0.9] tracking-[-0.04em] text-bone/90 select-none">
-            Stroyka<span className="text-brand-sage">.</span>
+        <div className="py-12 border-t border-ink/10">
+          <p className="font-display text-[clamp(4rem,16vw,14rem)] leading-[0.9] tracking-[-0.04em] text-ink/85 select-none">
+            Stroyka<span className="text-brand-sage-bright">.</span>
           </p>
         </div>
 

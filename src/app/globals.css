@@ -7,14 +7,15 @@
     scroll-behavior: smooth;
   }
   body {
+    /* Cream-tinted grain at <3% opacity — reads like newsprint, not noise */
     background-image:
-      radial-gradient(rgba(27, 30, 27, 0.035) 1px, transparent 1px);
+      radial-gradient(rgba(237, 230, 211, 0.035) 1px, transparent 1px);
     background-size: 3px 3px;
     background-attachment: fixed;
   }
   ::selection {
-    background-color: #1b1e1b;
-    color: #eee8db;
+    background-color: #B8D4BD;
+    color: #0C110E;
   }
 }
 
@@ -27,6 +28,28 @@
   }
   .hairline {
     border-width: 1px;
+  }
+  /* Cursor-follow radial glow for cards. Components set --mx/--my via JS.
+     Falls back to centered glow when not hovered. */
+  .cursor-glow {
+    position: relative;
+  }
+  .cursor-glow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      320px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(184, 212, 189, 0.12),
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .cursor-glow:hover::before {
+    opacity: 1;
   }
 }
 
@@ -50,15 +73,15 @@
   isolation: isolate;
   --glow-c1: #52796f;
   --glow-c2: #84a98c;
-  --glow-c3: #cad2c5;
+  --glow-c3: #B8D4BD;
   --glow-duration: 6s;
 }
 .glow-border::before {
   content: "";
   position: absolute;
-  inset: -2px;
+  inset: -1px;
   border-radius: inherit;
-  padding: 2px;
+  padding: 1px;
   background: conic-gradient(
     from var(--a, 0deg),
     transparent 0deg,
@@ -87,19 +110,20 @@
   background: conic-gradient(
     from var(--a, 0deg),
     transparent 0deg,
-    var(--sweep-c1, rgba(132, 169, 140, 0.22)) 70deg,
-    var(--sweep-c2, rgba(202, 210, 197, 0.18)) 110deg,
-    var(--sweep-c3, rgba(82, 121, 111, 0.16)) 160deg,
+    var(--sweep-c1, rgba(184, 212, 189, 0.22)) 70deg,
+    var(--sweep-c2, rgba(138, 170, 145, 0.16)) 110deg,
+    var(--sweep-c3, rgba(82, 121, 111, 0.14)) 160deg,
     transparent 220deg
   );
-  filter: blur(28px);
+  filter: blur(36px);
   animation: glow-spin var(--glow-duration, 6s) linear infinite;
   pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .glow-border::before,
-  .glow-sweep { animation: none; }
+  .glow-sweep,
+  .cursor-glow::before { animation: none; }
 }
 
 .legal-content p {
@@ -115,7 +139,7 @@
   @apply text-ink;
 }
 .legal-content a {
-  @apply underline text-brand-forest hover:text-ink transition-colors;
+  @apply underline text-brand-sage-bright hover:text-ink transition-colors;
 }
 .legal-content h3 {
   @apply text-base font-heading font-semibold text-ink mt-6 mb-3;
@@ -130,7 +154,7 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.08) 50%,
+    rgba(237, 230, 211, 0.08) 50%,
     transparent 100%
   );
   animation: shimmer 3s ease-in-out infinite;
@@ -144,14 +168,13 @@
   position: absolute;
   inset: 15% 20%;
   background: radial-gradient(ellipse at 50% 50%,
-    rgba(82, 121, 111, 0.20) 0%,
+    rgba(184, 212, 189, 0.18) 0%,
     transparent 70%
   );
   filter: blur(50px);
   z-index: -1;
 }
 
-/* Editorial mask reveal — key headline moments in the rewritten sections */
 @keyframes mask-reveal-keyframes {
   to { clip-path: inset(0 0 0 0); }
 }
@@ -160,7 +183,6 @@
   animation: mask-reveal-keyframes 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-/* Pen-stroke underline — SVG stroke-dashoffset animation for the hero accent */
 @keyframes draw-underline {
   to { stroke-dashoffset: 0; }
 }

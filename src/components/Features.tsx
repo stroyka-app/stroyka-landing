@@ -75,8 +75,8 @@ function FlipperCard({ feature, isActive, onActivate }: FlipperCardProps) {
         "relative cursor-pointer rounded-sm border overflow-hidden",
         "flex-shrink-0 min-w-0 transition-colors",
         isActive
-          ? "border-ink bg-bone-soft p-8"
-          : "border-ink/15 bg-bone/60 p-6",
+          ? "border-brand-sage/40 bg-bone-soft p-8 shadow-[0_0_40px_-16px_rgba(184,212,189,0.45)]"
+          : "border-ink/15 bg-bone-deep/50 p-6",
       ].join(" ")}
       style={{ flexBasis: 0 }}
     >
@@ -84,8 +84,8 @@ function FlipperCard({ feature, isActive, onActivate }: FlipperCardProps) {
         className={[
           "w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 transition-colors",
           isActive
-            ? "bg-ink text-bone"
-            : "bg-bone-soft text-ink-muted",
+            ? "bg-brand-sage-bright text-bone"
+            : "bg-bone text-ink/50",
         ].join(" ")}
       >
         {feature.icon}
@@ -154,7 +154,7 @@ export default function Features() {
           {FEATURES.map((feature, i) => (
             <FadeIn key={feature.title} delay={0.08 * i}>
               <div className="bg-bone-soft border border-ink/15 rounded-sm p-6">
-                <div className="w-11 h-11 bg-ink text-bone rounded-full flex items-center justify-center mb-5">
+                <div className="w-11 h-11 bg-brand-sage-bright text-bone rounded-full flex items-center justify-center mb-5">
                   {feature.icon}
                 </div>
                 <h3 className="font-display text-2xl leading-snug text-ink mb-3">
