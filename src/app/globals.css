@@ -197,6 +197,37 @@
     repeating-linear-gradient(-45deg, rgba(74, 64, 51, 0.06) 0 1px, transparent 1px 8px);
 }
 
+/* ─── Stone card style ─────────────────────────────────────────────────
+   Polished stone look: a warm diagonal gradient across the card body,
+   a subtle top-edge highlight (light hitting the top), and a deep drop
+   shadow. Used across Guarantee, Features, Integrations, FAQ (open),
+   and Pricing plan cards. Replaces the flat bone-soft fills that read
+   as plain/static. */
+.card-stone {
+  background: linear-gradient(135deg, rgba(227, 220, 201, 0.92) 0%, rgba(212, 203, 180, 0.82) 60%, rgba(191, 180, 156, 0.7) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 251, 240, 0.35),
+    inset 0 -1px 0 rgba(46, 38, 28, 0.08),
+    0 20px 50px -24px rgba(46, 38, 28, 0.28),
+    0 6px 12px -8px rgba(46, 38, 28, 0.12);
+}
+.card-stone-dark {
+  background: linear-gradient(135deg, rgba(31, 26, 20, 0.92) 0%, rgba(46, 38, 28, 0.88) 60%, rgba(74, 64, 51, 0.82) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(227, 220, 201, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    0 20px 50px -24px rgba(0, 0, 0, 0.5),
+    0 6px 12px -8px rgba(0, 0, 0, 0.25);
+}
+.card-stone-warm {
+  background: linear-gradient(135deg, rgba(216, 200, 170, 0.92) 0%, rgba(205, 160, 122, 0.2) 100%), rgba(227, 220, 201, 0.88);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 251, 240, 0.35),
+    inset 0 -1px 0 rgba(184, 120, 78, 0.12),
+    0 20px 50px -24px rgba(184, 120, 78, 0.25),
+    0 6px 12px -8px rgba(46, 38, 28, 0.12);
+}
+
 /* ─── Section gradient bridges ──────────────────────────────────────────
    Every section's background is a vertical gradient where the top color
    matches the previous section's bottom color, and the bottom color

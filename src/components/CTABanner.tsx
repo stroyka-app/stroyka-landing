@@ -23,7 +23,10 @@ export default function CTABanner() {
         }}
       />
 
-      {/* Fine drafting grid — cream hairlines, very faint */}
+      {/* Fine drafting grid — cream hairlines, very faint, mask-faded at
+          the bottom so the grid disappears before meeting the footer
+          edge. Prevents the visible horizontal line where the pattern
+          cut off in v4. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-[1] opacity-[0.08]"
@@ -31,6 +34,10 @@ export default function CTABanner() {
           backgroundImage:
             "linear-gradient(to right, #E3DCC9 1px, transparent 1px), linear-gradient(to bottom, #E3DCC9 1px, transparent 1px)",
           backgroundSize: "72px 72px",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, black 0%, black 55%, transparent 95%)",
+          maskImage:
+            "linear-gradient(to bottom, black 0%, black 55%, transparent 95%)",
         }}
       />
 

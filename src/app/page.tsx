@@ -48,11 +48,11 @@ export default function Home() {
       <TheShift />
       <HowItWorks />
       <Features />
-      {/* Bridge: Features ends at #BFB49C → PlanToDone dark #1F1A14 */}
-      <Bridge from="#BFB49C" to="#1F1A14" />
+      {/* Bridge: Features ends at #BFB49C → PlanToDone forest #1F2A1C */}
+      <Bridge from="#BFB49C" to="#1F2A1C" height="h-40" />
       <PlanToDoneAnimation />
-      {/* Bridge: PlanToDone dark → Comparison starts at #BFB49C */}
-      <Bridge from="#1F1A14" to="#BFB49C" />
+      {/* Bridge: PlanToDone forest → Comparison starts at #BFB49C */}
+      <Bridge from="#1F2A1C" to="#BFB49C" height="h-40" />
       <Comparison />
       <FounderNote />
       <Integrations />

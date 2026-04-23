@@ -75,8 +75,8 @@ function FlipperCard({ feature, isActive, onActivate }: FlipperCardProps) {
         "relative cursor-pointer rounded-sm border overflow-hidden",
         "flex-shrink-0 min-w-0 transition-colors",
         isActive
-          ? "border-brand-forest bg-bone-soft p-8 shadow-[0_20px_60px_-30px_rgba(63,78,53,0.4)]"
-          : "border-ink/15 bg-bone-deep p-6",
+          ? "card-stone-warm border-clay/40 p-8"
+          : "card-stone border-ink/15 p-6",
       ].join(" ")}
       style={{ flexBasis: 0 }}
     >
@@ -153,8 +153,8 @@ export default function Features() {
         <div className="flex flex-col gap-4 md:hidden">
           {FEATURES.map((feature, i) => (
             <FadeIn key={feature.title} delay={0.08 * i}>
-              <div className="bg-bone-soft border border-ink/15 rounded-sm p-6">
-                <div className="w-11 h-11 bg-brand-forest text-bone rounded-full flex items-center justify-center mb-5">
+              <div className="card-stone border border-ink/15 rounded-sm p-6">
+                <div className="w-11 h-11 bg-ink text-bone rounded-full flex items-center justify-center mb-5">
                   {feature.icon}
                 </div>
                 <h3 className="font-display text-2xl leading-snug text-ink mb-3">

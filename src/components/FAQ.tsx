@@ -89,8 +89,8 @@ function FAQItem({
       {...glow}
       className={`group cursor-glow relative overflow-hidden rounded-sm border transition-all duration-500 ${
         isOpen
-          ? "border-ink/60 bg-[#E3DCC9] shadow-[0_20px_60px_-30px_rgba(46,38,28,0.4)]"
-          : "border-ink/15 bg-bone-soft/40 hover:border-ink/30"
+          ? "card-stone border-ink/60"
+          : "card-stone border-ink/15 hover:border-ink/35 opacity-90 hover:opacity-100"
       }`}
     >
       <button

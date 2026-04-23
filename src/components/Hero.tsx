@@ -36,22 +36,24 @@ export default function Hero() {
 
   return (
     <section ref={ref} id="hero" className="relative overflow-hidden min-h-[100vh]">
-      {/* ── Warm-stone gradient shell ────────────────────────────────────
-          Bottom stop (#A89E85) matches TheShift's top color so the
-          section boundary is literally the same pixel color. */}
+      {/* ── Gradient shell: forest green at top → warm stone at bottom.
+          Integrates the original green-hero feel with the stone palette.
+          Bottom stop (#A89E85) matches TheShift's top — seamless. */}
       <div
         aria-hidden
         className="absolute inset-0 z-0"
         style={{
           background:
-            "linear-gradient(180deg, #1F1A14 0%, #2E261C 18%, #4A4033 40%, #7A6E5B 70%, #A89E85 100%)",
+            "linear-gradient(180deg, #1F2A1C 0%, #2F3E2C 18%, #3F4E35 35%, #5D5B46 55%, #7A6E5B 75%, #A89E85 100%)",
         }}
       />
 
-      {/* ── Video layer — natural tones at reduced opacity ─────────────── */}
+      {/* ── Video layer — mix-blend-luminosity restores the green-cast
+          footage feel Maks originally liked. Desaturated into the green
+          gradient above, natural motion through the scene. */}
       <motion.div
         style={prefersReduced ? undefined : { y: videoY, scale: videoScale }}
-        className="absolute inset-0 z-[1] will-change-transform opacity-[0.32]"
+        className="absolute inset-0 z-[1] will-change-transform mix-blend-luminosity opacity-55"
       >
         <video
           autoPlay
@@ -64,15 +66,15 @@ export default function Hero() {
         </video>
       </motion.div>
 
-      {/* Top-dark + bottom-gradient wash so the headline reads clearly on
-          the darker upper half and the gradient continues clean at the
-          bottom without the video fighting the stone tone. */}
+      {/* Top/bottom washes so the headline reads clearly and the bottom
+          ramps smoothly into the stone next-section color without the
+          video fighting the transition pixels. */}
       <div
         aria-hidden
         className="absolute inset-0 z-[2] pointer-events-none"
         style={{
           background:
-            "linear-gradient(180deg, rgba(31,26,20,0.45) 0%, rgba(31,26,20,0.15) 35%, rgba(168,158,133,0.35) 75%, #A89E85 100%)",
+            "linear-gradient(180deg, rgba(31,42,28,0.45) 0%, rgba(31,42,28,0.10) 30%, transparent 55%, rgba(168,158,133,0.45) 85%, #A89E85 100%)",
         }}
       />
 

@@ -32,12 +32,14 @@ const config: Config = {
           "sage-mist":     "#cad2c5",
           "sage-bright":   "#B8D4BD",
           sage:            "#8AAA91",
-          // Earth family — redefined from green to warm walnut so
-          // `brand-forest/deep/midnight` live in the stone palette.
-          forest:          "#4A4033",
-          deep:            "#2E261C",
-          midnight:        "#1F1A14",
-          "midnight-dark": "#141009",
+          // Forest green — integrated into the stone ramp at the two
+          // "green moments" (Hero top + PlanToDone). Blends through the
+          // ramp-mid taupes into stone. Footer stays warm dark stone
+          // via explicit #1F1A14 instead of brand.midnight.
+          forest:          "#3F4E35",
+          deep:            "#2F3E2C",
+          midnight:        "#1F2A1C",
+          "midnight-dark": "#141D12",
           amber:           "#d97706",
           "amber-bright":  "#f59e0b",
         },

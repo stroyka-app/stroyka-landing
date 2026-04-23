@@ -173,7 +173,7 @@ export default function Pricing() {
           <FadeIn>
             <div
               {...freeGlow}
-              className="cursor-glow bg-bone-soft/60 border border-ink/18 backdrop-blur-sm rounded-sm p-8 h-full flex flex-col relative hover:border-ink/35 transition-colors"
+              className="card-stone cursor-glow border border-ink/18 backdrop-blur-sm rounded-sm p-8 h-full flex flex-col relative hover:border-ink/35 transition-colors"
             >
               <div className="flex items-center gap-2 mb-1">
                 <Download size={16} className="text-ink-muted" />
@@ -204,7 +204,7 @@ export default function Pricing() {
               {...starterGlow}
               whileHover={prefersReduced ? undefined : { y: -3 }}
               transition={{ duration: 0.2 }}
-              className="cursor-glow glow-border bg-bone-soft/80 backdrop-blur-md border border-clay/40 rounded-sm p-8 h-full flex flex-col relative shadow-[0_0_60px_-20px_rgba(184,120,78,0.35)]"
+              className="card-stone-warm cursor-glow glow-border backdrop-blur-md border border-clay/40 rounded-sm p-8 h-full flex flex-col relative shadow-[0_0_60px_-20px_rgba(184,120,78,0.35)]"
             >
               {!prefersReduced && (
                 <span
@@ -273,7 +273,7 @@ export default function Pricing() {
                   "--glow-duration": "7s",
                 } as CSSProperties
               }
-              className="cursor-glow glow-border bg-bone-soft/70 backdrop-blur-md border border-clay/35 rounded-sm p-8 h-full flex flex-col relative shadow-[0_0_60px_-20px_rgba(212,165,116,0.35)]"
+              className="card-stone cursor-glow glow-border backdrop-blur-md border border-clay/30 rounded-sm p-8 h-full flex flex-col relative shadow-[0_0_60px_-20px_rgba(205,160,122,0.3)]"
             >
               <div className="relative z-[1] flex flex-col h-full">
                 <div className="flex items-center gap-2 mb-1">

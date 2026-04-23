@@ -71,7 +71,7 @@ function PromiseCard({ promise }: { promise: Promise }) {
           ? undefined
           : { rotateX, rotateY, transformStyle: "preserve-3d" }
       }
-      className="cursor-glow h-full flex flex-col p-8 rounded-sm border border-ink/15 bg-bone-soft/60 backdrop-blur-sm hover:border-clay/35 transition-colors duration-500"
+      className="card-stone cursor-glow h-full flex flex-col p-8 rounded-sm border border-ink/15 backdrop-blur-sm hover:border-clay/35 transition-colors duration-500"
     >
       <span className="relative flex-shrink-0 w-12 h-12 rounded-full bg-clay/10 border border-clay/40 text-clay flex items-center justify-center mb-6">
         <span
