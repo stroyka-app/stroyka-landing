@@ -53,7 +53,7 @@ export default function Home() {
           need the outbound bridge from the canvas (#2A3842) back to
           Comparison's start color (#BFB49C). */}
       <PlanToDoneAnimation />
-      <Bridge from="#2A3842" to="#BFB49C" height="h-40" />
+      <Bridge from="#2F3A2B" to="#BFB49C" height="h-40" />
       <Comparison />
       <FounderNote />
       <Integrations />

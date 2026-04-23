@@ -320,7 +320,7 @@ export default function Pricing() {
 
         {/* Founding Member band */}
         <FadeIn delay={0.3}>
-          <div className="relative overflow-hidden rounded-sm mb-10 max-w-5xl border border-clay/30 bg-[linear-gradient(135deg,#1F2B2F_0%,#2A2620_50%,#1F2B2F_100%)] p-10 md:p-14 grid md:grid-cols-[1.4fr_1fr] gap-10 items-center">
+          <div className="relative overflow-hidden rounded-sm mb-10 max-w-5xl border border-clay/30 bg-[linear-gradient(135deg,#242E22_0%,#2F2E22_50%,#242E22_100%)] p-10 md:p-14 grid md:grid-cols-[1.4fr_1fr] gap-10 items-center">
             <span
               aria-hidden
               className="pointer-events-none absolute -top-[30%] -right-[10%] w-[500px] h-[500px] rounded-full blur-[80px] bg-clay/20"

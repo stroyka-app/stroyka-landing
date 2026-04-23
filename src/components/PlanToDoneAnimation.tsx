@@ -40,10 +40,10 @@ import * as THREE from "three";
 const COLORS = {
   sageMist:     "#cad2c5",
   sage:         "#84a98c",
-  forest:       "#3E4C51",
-  deep:         "#2A3842",
-  midnight:     "#2A3842",
-  midnightDark: "#1F2B2F",
+  forest:       "#525744",
+  deep:         "#3B4635",
+  midnight:     "#2F3A2B",
+  midnightDark: "#242E22",
   amber:        "#d97706",
   amberBright:  "#f59e0b",
   cedar:        "#b8865f",
@@ -1623,12 +1623,12 @@ export default function PlanToDoneAnimation() {
         </div>
       </section>
 
-      {/* Gradient bridge — stone → teal-sage dark. Gives the title real
+      {/* Gradient bridge — stone → deep sage. Gives the title real
           breathing room between its last line and the 3D canvas below. */}
       <div
         aria-hidden
         className="h-40 w-full"
-        style={{ background: "linear-gradient(to bottom, #BFB49C, #2A3842)" }}
+        style={{ background: "linear-gradient(to bottom, #BFB49C, #2F3A2B)" }}
       />
 
       {/* 3D canvas on dark teal-sage */}

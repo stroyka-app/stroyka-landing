@@ -45,7 +45,7 @@ export default function Hero() {
         className="absolute inset-0 z-0"
         style={{
           background:
-            "linear-gradient(180deg, #2A3842 0%, #2F3E46 18%, #3E4C51 35%, #5E605B 55%, #7A6E5B 75%, #A89E85 100%)",
+            "linear-gradient(180deg, #2F3A2B 0%, #3B4635 18%, #525744 35%, #6B6951 55%, #857B63 75%, #A89E85 100%)",
         }}
       />
 
@@ -75,7 +75,7 @@ export default function Hero() {
         className="absolute inset-0 z-[2] pointer-events-none"
         style={{
           background:
-            "linear-gradient(180deg, rgba(42,56,66,0.45) 0%, rgba(42,56,66,0.10) 30%, transparent 55%, rgba(168,158,133,0.45) 85%, #A89E85 100%)",
+            "linear-gradient(180deg, rgba(47,58,43,0.45) 0%, rgba(47,58,43,0.10) 30%, transparent 55%, rgba(168,158,133,0.45) 85%, #A89E85 100%)",
         }}
       />
 

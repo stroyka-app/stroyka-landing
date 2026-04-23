@@ -31,14 +31,14 @@ const config: Config = {
           "sage-mist":     "#cad2c5",
           "sage-bright":   "#B8D4BD",
           sage:            "#8AAA91",
-          // Dark family — teal-sage (close to the original main hero
-          // #2f3e46 Maks referenced). Reads as "sage/earth/pistachio"
-          // darkened rather than forest green. Used at Hero top,
-          // PlanToDone 3D canvas, and Footer.
-          forest:          "#3E4C51",
-          deep:            "#2A3842",
-          midnight:        "#2A3842",
-          "midnight-dark": "#1F2B2F",
+          // Dark family — deep muted sage/earth. Green-dominant but
+          // low-saturation and slightly warm so it doesn't read as
+          // "forest green" or "teal blue". Used at Hero top, PlanToDone
+          // canvas, CTA end, Footer.
+          forest:          "#525744",
+          deep:            "#3B4635",
+          midnight:        "#2F3A2B",
+          "midnight-dark": "#242E22",
           amber:           "#d97706",
           "amber-bright":  "#f59e0b",
         },
