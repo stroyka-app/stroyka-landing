@@ -56,7 +56,7 @@ export default function Integrations() {
                     delay: i * 0.05,
                     ease: [0.22, 1, 0.36, 1],
                   }}
-                  className="card-stone relative flex items-start gap-3 p-5 rounded-sm border border-ink/15 hover:border-clay/35 transition-colors"
+                  className="card-stone relative flex items-start gap-3 p-5 rounded-2xl border border-ink/15 hover:border-brand-sage/40 transition-colors"
                 >
                   <span className="flex-shrink-0 w-10 h-10 rounded-full bg-ink text-bone flex items-center justify-center shadow-[0_4px_12px_-4px_rgba(46,38,28,0.4)]">
                     <Icon size={17} strokeWidth={1.8} />
@@ -67,7 +67,7 @@ export default function Integrations() {
                         {tool.name}
                       </p>
                       {tool.status === "soon" && (
-                        <span className="font-mono text-[9.5px] font-semibold uppercase tracking-[0.15em] text-clay px-1.5 py-0.5 rounded bg-clay/10 border border-clay/30">
+                        <span className="font-mono text-[9.5px] font-semibold uppercase tracking-[0.15em] text-brand-forest px-1.5 py-0.5 rounded bg-brand-sage/15 border border-brand-sage/40">
                           Soon
                         </span>
                       )}

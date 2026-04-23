@@ -45,7 +45,7 @@ export default function Hero() {
         className="absolute inset-0 z-0"
         style={{
           background:
-            "linear-gradient(180deg, #2F3A2B 0%, #3B4635 18%, #525744 35%, #6B6951 55%, #857B63 75%, #A89E85 100%)",
+            "linear-gradient(180deg, #3D5843 0%, #4A6852 18%, #5A7060 35%, #768266 55%, #8F8F6E 75%, #A89E85 100%)",
         }}
       />
 
@@ -75,30 +75,24 @@ export default function Hero() {
         className="absolute inset-0 z-[2] pointer-events-none"
         style={{
           background:
-            "linear-gradient(180deg, rgba(47,58,43,0.45) 0%, rgba(47,58,43,0.10) 30%, transparent 55%, rgba(168,158,133,0.45) 85%, #A89E85 100%)",
+            "linear-gradient(180deg, rgba(61,88,67,0.45) 0%, rgba(61,88,67,0.10) 30%, transparent 55%, rgba(168,158,133,0.45) 85%, #A89E85 100%)",
         }}
       />
 
-      {/* Field-journal header rule — hairline removed per feedback; the
-          nav & field-journal strip now breathe directly into the hero. */}
-      <div className="relative z-10">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-3 flex items-center justify-between font-mono text-[10.5px] tracking-[0.22em] uppercase text-bone/55">
-          <span>Stroyka — The Field Journal</span>
-          <span className="hidden sm:inline">Vol. 01 · Est. 2026 · Austin TX</span>
-          <span className="sm:hidden">Vol. 01</span>
-        </div>
-      </div>
+      {/* Field-journal strip removed — it collided with the Navbar
+          wordmark. The Navbar's "STROYKA" logo is the only top-of-page
+          brand mark now; the Field Journal colophon lives in the Footer. */}
 
       {/* ── Content ─────────────────────────────────────────────────────── */}
       <motion.div
         style={prefersReduced ? undefined : { y: headlineY, opacity: headlineOpacity }}
-        className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 pt-16 pb-28 lg:pt-24 lg:pb-40 will-change-transform"
+        className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 pt-24 pb-28 lg:pt-32 lg:pb-40 will-change-transform"
       >
         <FadeIn delay={0}>
           <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-bone/80 mb-10 inline-flex items-center gap-2.5">
             <span className="relative inline-flex w-2 h-2">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-clay opacity-55 animate-ping" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-clay" />
+              <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage-bright opacity-60 animate-ping" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-sage-bright" />
             </span>
             Start free
             <span className="text-bone/30">/</span>
@@ -111,9 +105,7 @@ export default function Hero() {
         <FadeIn delay={0.08}>
           <h1 className="font-display font-light text-[clamp(3.5rem,10vw,9.5rem)] leading-[0.92] tracking-[-0.03em] text-bone mb-10 max-w-[16ch]">
             <span className="block">Construction</span>
-            <span className="block">
-              management<span className="text-clay">,</span>
-            </span>
+            <span className="block">management,</span>
             <span className="block italic font-normal relative">
               for real crews.
               <svg
@@ -125,7 +117,7 @@ export default function Hero() {
               >
                 <path
                   d="M2 10 Q 100 2, 200 8 T 398 6"
-                  stroke="#CDA07A"
+                  stroke="#B8D4BD"
                   strokeWidth="3"
                   strokeLinecap="round"
                   className="draw-underline"
@@ -149,10 +141,10 @@ export default function Hero() {
             </FadeIn>
             <FadeIn delay={0.28}>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <Button variant="invert" size="lg" href="/#download">
+                <Button variant="primary" size="lg" href="/#download">
                   Start free
                 </Button>
-                <Button variant="ghost" size="lg" href="/demo" className="text-bone hover:text-clay-soft">
+                <Button variant="ghost" size="lg" href="/demo" className="text-bone hover:text-brand-sage-bright">
                   Book a demo →
                 </Button>
               </div>
@@ -163,13 +155,13 @@ export default function Hero() {
               Uses bone-soft bg (matches the mid-tone of the gradient around it)
               so it reads as an inset panel rather than a bright card. */}
           <FadeIn delay={0.35}>
-            <aside className="w-full lg:w-[320px] border border-ink/20 bg-bone/90 backdrop-blur-md rounded-sm p-6 font-mono text-[12px] tracking-[0.06em] shadow-[0_30px_80px_-30px_rgba(31,26,20,0.5)]">
+            <aside className="w-full lg:w-[320px] border border-ink/20 bg-bone/95 backdrop-blur-md rounded-2xl p-7 font-mono text-[12px] tracking-[0.06em] shadow-[0_30px_80px_-30px_rgba(31,26,20,0.5)]">
               <div className="flex items-center justify-between pb-3 mb-4 border-b border-ink/15">
                 <span className="uppercase tracking-[0.2em] text-ink-muted">Project sheet</span>
-                <span className="flex items-center gap-1.5 text-clay">
+                <span className="flex items-center gap-1.5 text-brand-forest">
                   <span className="relative inline-flex w-1.5 h-1.5">
-                    <span className="absolute inline-flex h-full w-full rounded-full bg-clay opacity-70 animate-ping" />
-                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-clay" />
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage opacity-70 animate-ping" />
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage" />
                   </span>
                   live
                 </span>
@@ -190,7 +182,7 @@ export default function Hero() {
                 <div className="flex justify-between">
                   <dt className="text-ink-muted uppercase">Budget</dt>
                   <dd className="tabular-nums text-ink">
-                    <span className="text-clay">▲</span> on plan
+                    <span className="text-brand-forest">▲</span> on plan
                   </dd>
                 </div>
                 <div className="flex justify-between pt-3 mt-3 border-t border-ink/15">

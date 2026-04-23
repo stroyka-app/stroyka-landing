@@ -67,15 +67,15 @@ function BeforeColumn() {
   return (
     <div className="relative">
       {/* Warm tan card with crosshatch noise */}
-      <div className="texture-crosshatch rounded-sm border border-clay/25 bg-[linear-gradient(135deg,#EFE2C8_0%,#E8D7B6_100%)] p-8 lg:p-10 relative overflow-hidden">
+      <div className="card-stone-warm texture-crosshatch rounded-2xl border border-ink-soft/25 p-8 lg:p-10 relative overflow-hidden">
         <span
           aria-hidden
           className="pointer-events-none absolute -top-20 -right-16 w-64 h-64 rounded-full opacity-30 blur-[60px]"
-          style={{ background: "radial-gradient(circle, #C9844E 0%, transparent 70%)" }}
+          style={{ background: "radial-gradient(circle, #8F7B5C 0%, transparent 70%)" }}
         />
 
-        <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-clay mb-4 flex items-center gap-2">
-          <span className="inline-block w-1.5 h-1.5 rounded-full bg-clay" aria-hidden />
+        <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-soft mb-4 flex items-center gap-2">
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-ink-soft" aria-hidden />
           Before
         </p>
         <h3 className="font-display font-light text-3xl lg:text-[42px] leading-[1.05] text-ink mb-3">
@@ -85,16 +85,16 @@ function BeforeColumn() {
           Hours in WhatsApp. Receipts in the truck. Budgets in a spreadsheet no one has opened since bid day.
         </p>
 
-        <ul className="space-y-0 border-t border-clay/20">
+        <ul className="space-y-0 border-t border-ink-soft/20">
           {BEFORE.map((item, i) => (
             <li
               key={item.title}
-              className="grid grid-cols-[88px_1fr] gap-5 py-5 border-b border-clay/20 relative"
+              className="grid grid-cols-[88px_1fr] gap-5 py-5 border-b border-ink-soft/20 relative"
               style={{
                 transform: `rotate(${(i % 2 === 0 ? 0.2 : -0.15)}deg)`,
               }}
             >
-              <span className="font-mono text-[12px] tracking-[0.08em] uppercase text-clay pt-1">
+              <span className="font-mono text-[12px] tracking-[0.08em] uppercase text-ink-soft pt-1">
                 {item.time}
               </span>
               <div>
@@ -122,15 +122,15 @@ function BeforeColumn() {
 function AfterColumn() {
   return (
     <div className="relative">
-      <div className="relative rounded-sm border border-ink/15 bg-[linear-gradient(135deg,#F0ECE0_0%,#E0DAC9_100%)] p-8 lg:p-10 overflow-hidden shadow-[0_30px_80px_-40px_rgba(46,38,28,0.25)]">
+      <div className="card-stone-sage relative rounded-2xl border border-brand-sage/30 p-8 lg:p-10 overflow-hidden">
         <span
           aria-hidden
-          className="pointer-events-none absolute -top-20 -right-16 w-64 h-64 rounded-full opacity-25 blur-[60px]"
-          style={{ background: "radial-gradient(circle, #CDA07A 0%, transparent 70%)" }}
+          className="pointer-events-none absolute -top-20 -right-16 w-64 h-64 rounded-full opacity-35 blur-[60px]"
+          style={{ background: "radial-gradient(circle, #B8D4BD 0%, transparent 70%)" }}
         />
 
-        <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-soft mb-4 flex items-center gap-2">
-          <span className="inline-block w-1.5 h-1.5 rounded-full bg-clay" aria-hidden />
+        <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-brand-forest mb-4 flex items-center gap-2">
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-sage-bright" aria-hidden />
           After
         </p>
         <h3 className="font-display font-light text-3xl lg:text-[42px] leading-[1.05] text-ink mb-3">
@@ -140,13 +140,13 @@ function AfterColumn() {
           Crew clocks in. Budget moves. Materials approve. You open the phone at 6am and know exactly where Johnson Home stands.
         </p>
 
-        <ul className="space-y-0 border-t border-ink/15">
+        <ul className="space-y-0 border-t border-brand-sage/30">
           {AFTER.map((item) => (
             <li
               key={item.title}
-              className="grid grid-cols-[88px_1fr] gap-5 py-5 border-b border-ink/15"
+              className="grid grid-cols-[88px_1fr] gap-5 py-5 border-b border-brand-sage/30"
             >
-              <span className="font-mono text-[12px] tracking-[0.08em] uppercase text-ink-soft pt-1">
+              <span className="font-mono text-[12px] tracking-[0.08em] uppercase text-brand-forest pt-1">
                 {item.time}
               </span>
               <div>

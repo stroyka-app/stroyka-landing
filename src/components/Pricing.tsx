@@ -79,7 +79,7 @@ function FeatureList({ features, sub }: { features: Feature[]; sub?: boolean }) 
         >
           <span
             className={`mt-0.5 flex-shrink-0 ${
-              f.included ? "text-clay" : "text-ink/25"
+              f.included ? "text-brand-forest" : "text-ink/25"
             }`}
           >
             {f.included ? <Check size={14} strokeWidth={2.5} /> : <X size={14} strokeWidth={2} />}
@@ -106,10 +106,10 @@ export default function Pricing() {
     <section id="pricing" className="relative bg-gradient-to-b from-[#D4CBB4] to-[#BFB49C] py-24 lg:py-32 overflow-hidden">
       <div
         aria-hidden
-        className="pointer-events-none absolute top-1/3 right-0 w-[50vw] h-[50vw] opacity-25"
+        className="pointer-events-none absolute top-1/3 right-0 w-[50vw] h-[50vw] opacity-30"
         style={{
           background:
-            "radial-gradient(ellipse 50% 50% at 90% 30%, rgba(205, 160, 122, 0.18), transparent 70%)",
+            "radial-gradient(ellipse 50% 50% at 90% 30%, rgba(184,212,189,0.25), transparent 70%)",
           filter: "blur(70px)",
         }}
       />
@@ -158,7 +158,7 @@ export default function Pricing() {
               >
                 Annual
                 <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full leading-none ${
-                  billing === "annual" ? "bg-ink/20 text-ink" : "bg-clay/15 text-clay"
+                  billing === "annual" ? "bg-bone/30 text-bone" : "bg-brand-sage/20 text-brand-forest"
                 }`}>
                   −17%
                 </span>
@@ -173,7 +173,7 @@ export default function Pricing() {
           <FadeIn>
             <div
               {...freeGlow}
-              className="card-stone cursor-glow border border-ink/18 backdrop-blur-sm rounded-sm p-8 h-full flex flex-col relative hover:border-ink/35 transition-colors"
+              className="card-stone cursor-glow border border-ink/18 backdrop-blur-sm rounded-2xl p-8 h-full flex flex-col relative hover:border-ink/35 transition-colors"
             >
               <div className="flex items-center gap-2 mb-1">
                 <Download size={16} className="text-ink-muted" />
@@ -204,12 +204,12 @@ export default function Pricing() {
               {...starterGlow}
               whileHover={prefersReduced ? undefined : { y: -3 }}
               transition={{ duration: 0.2 }}
-              className="card-stone-warm cursor-glow glow-border backdrop-blur-md border border-clay/40 rounded-sm p-8 h-full flex flex-col relative shadow-[0_0_60px_-20px_rgba(184,120,78,0.35)]"
+              className="card-stone-sage cursor-glow glow-border backdrop-blur-md border border-brand-sage/45 rounded-2xl p-8 h-full flex flex-col relative shadow-[0_0_60px_-20px_rgba(138,170,145,0.4)]"
             >
               {!prefersReduced && (
                 <span
                   aria-hidden
-                  className="pointer-events-none absolute inset-0 rounded-sm overflow-hidden"
+                  className="pointer-events-none absolute inset-0 rounded-2xl overflow-hidden"
                 >
                   <span className="glow-sweep" />
                 </span>
@@ -219,8 +219,8 @@ export default function Pricing() {
               </span>
               <div className="relative z-[1] flex flex-col h-full">
                 <div className="flex items-center gap-2 mb-1">
-                  <Zap size={16} className="text-clay" />
-                  <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-clay">Starter</h3>
+                  <Zap size={16} className="text-brand-forest" />
+                  <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-brand-forest">Starter</h3>
                 </div>
                 <p className="text-ink/70 text-[14px] mb-6 mt-2">For growing crews up to 15</p>
                 <div className="mb-8 min-h-[112px]">
@@ -267,18 +267,18 @@ export default function Pricing() {
               transition={{ duration: 0.2 }}
               style={
                 {
-                  "--glow-c1": "#D4A574",
-                  "--glow-c2": "#E8C89D",
-                  "--glow-c3": "#F1D9B4",
+                  "--glow-c1": "#2B3D30",
+                  "--glow-c2": "#5A7060",
+                  "--glow-c3": "#8AAA91",
                   "--glow-duration": "7s",
                 } as CSSProperties
               }
-              className="card-stone cursor-glow glow-border backdrop-blur-md border border-clay/30 rounded-sm p-8 h-full flex flex-col relative shadow-[0_0_60px_-20px_rgba(205,160,122,0.3)]"
+              className="card-stone cursor-glow glow-border backdrop-blur-md border border-brand-deep/40 rounded-2xl p-8 h-full flex flex-col relative shadow-[0_0_60px_-20px_rgba(43,61,48,0.3)]"
             >
               <div className="relative z-[1] flex flex-col h-full">
                 <div className="flex items-center gap-2 mb-1">
-                  <Crown size={16} className="text-clay" />
-                  <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-clay">Pro</h3>
+                  <Crown size={16} className="text-brand-deep" />
+                  <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-brand-deep">Pro</h3>
                 </div>
                 <p className="text-ink/70 text-[14px] mb-6 mt-2">For larger operations, no limits</p>
                 <div className="mb-8 min-h-[112px]">
@@ -303,7 +303,7 @@ export default function Pricing() {
                       )}
                     </motion.div>
                   </AnimatePresence>
-                  <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-clay/85 mt-2">
+                  <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-brand-deep/85 mt-2">
                     Unlimited workers
                   </p>
                 </div>
@@ -320,14 +320,14 @@ export default function Pricing() {
 
         {/* Founding Member band */}
         <FadeIn delay={0.3}>
-          <div className="relative overflow-hidden rounded-sm mb-10 max-w-5xl border border-clay/30 bg-[linear-gradient(135deg,#242E22_0%,#2F2E22_50%,#242E22_100%)] p-10 md:p-14 grid md:grid-cols-[1.4fr_1fr] gap-10 items-center">
+          <div className="relative overflow-hidden rounded-3xl mb-10 max-w-5xl border border-brand-sage/25 bg-[linear-gradient(135deg,#2B3D30_0%,#3D5843_50%,#2B3D30_100%)] p-10 md:p-14 grid md:grid-cols-[1.4fr_1fr] gap-10 items-center">
             <span
               aria-hidden
-              className="pointer-events-none absolute -top-[30%] -right-[10%] w-[500px] h-[500px] rounded-full blur-[80px] bg-clay/20"
+              className="pointer-events-none absolute -top-[30%] -right-[10%] w-[500px] h-[500px] rounded-full blur-[80px] bg-brand-sage-bright/18"
             />
             <div className="relative">
-              <p className="font-mono text-[11px] font-semibold tracking-[0.22em] uppercase text-clay mb-5 flex items-center gap-2">
-                <ShieldCheck size={14} className="text-clay" />
+              <p className="font-mono text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-sage-bright mb-5 flex items-center gap-2">
+                <ShieldCheck size={14} className="text-brand-sage-bright" />
                 Founding Member — limited
               </p>
               <h3 className="font-display text-3xl md:text-5xl leading-[1.02] text-bone mb-5">
@@ -341,7 +341,7 @@ export default function Pricing() {
               </Button>
             </div>
 
-            <div className="relative z-[1] rounded-sm p-6 bg-bone/5 border border-bone/15 backdrop-blur-sm">
+            <div className="relative z-[1] rounded-2xl p-6 bg-bone/5 border border-bone/15 backdrop-blur-sm">
               <div className="flex justify-between items-baseline mb-3 font-mono">
                 <span className="text-[11px] tracking-[0.18em] uppercase text-bone/65">
                   Spots claimed
@@ -361,7 +361,7 @@ export default function Pricing() {
                   }}
                   viewport={{ once: true }}
                   transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
-                  className="h-full rounded bg-gradient-to-r from-clay to-clay-soft"
+                  className="h-full rounded bg-gradient-to-r from-brand-sage to-brand-sage-bright"
                 />
               </div>
               <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-bone/55">

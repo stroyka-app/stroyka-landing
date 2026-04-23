@@ -19,7 +19,7 @@ export default function CTABanner() {
         className="absolute inset-0 z-0"
         style={{
           background:
-            "linear-gradient(180deg, #BFB49C 0%, #8B8974 30%, #525744 60%, #2F3A2B 85%, #242E22 100%)",
+            "linear-gradient(180deg, #BFB49C 0%, #8F937A 30%, #5A7060 60%, #3D5843 85%, #2B3D30 100%)",
         }}
       />
 
@@ -44,9 +44,9 @@ export default function CTABanner() {
       {/* Soft sage glow top-right for the pistachio top edge */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-40 right-0 w-[50vw] h-[50vw] opacity-25 z-[1]"
+        className="pointer-events-none absolute -top-40 right-0 w-[50vw] h-[50vw] opacity-30 z-[1]"
         style={{
-          background: "radial-gradient(circle, #CDA07A 0%, transparent 60%)",
+          background: "radial-gradient(circle, #B8D4BD 0%, transparent 60%)",
           filter: "blur(80px)",
         }}
       />
@@ -54,7 +54,7 @@ export default function CTABanner() {
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 py-32 lg:py-44">
         <FadeIn>
           <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink mb-10 inline-flex items-center gap-2.5">
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-clay" aria-hidden />
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-sage" aria-hidden />
             The invitation
           </p>
         </FadeIn>
@@ -82,7 +82,7 @@ export default function CTABanner() {
               <Button variant="invert" size="lg" href="/#download">
                 Start free
               </Button>
-              <Button variant="ghost" size="lg" href="/demo" className="text-bone hover:text-clay-soft">
+              <Button variant="ghost" size="lg" href="/demo" className="text-bone hover:text-brand-sage-bright">
                 Book a demo →
               </Button>
             </div>

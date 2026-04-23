@@ -87,7 +87,7 @@ function FAQItem({
   return (
     <li
       {...glow}
-      className={`group cursor-glow relative overflow-hidden rounded-sm border transition-all duration-500 ${
+      className={`group cursor-glow relative overflow-hidden rounded-2xl border transition-all duration-500 ${
         isOpen
           ? "card-stone border-ink/60"
           : "card-stone border-ink/15 hover:border-ink/35 opacity-90 hover:opacity-100"
@@ -111,7 +111,7 @@ function FAQItem({
           {isOpen && !prefersReduced && (
             <span
               aria-hidden
-              className="pointer-events-none absolute inset-0 rounded-full border border-clay/55 animate-ping"
+              className="pointer-events-none absolute inset-0 rounded-full border border-brand-sage-bright/55 animate-ping"
             />
           )}
           <Icon size={16} strokeWidth={1.8} />
@@ -129,7 +129,7 @@ function FAQItem({
             <span
               className={`inline-flex w-fit items-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.22em] sm:ml-auto shrink-0 transition-colors duration-300 ${
                 isPricing
-                  ? "text-clay"
+                  ? "text-brand-forest"
                   : isOpen
                     ? "text-brand-sage"
                     : "text-ink-muted"
@@ -185,7 +185,7 @@ export default function FAQ() {
         className="pointer-events-none absolute top-0 left-0 w-[50vw] h-[50vw] opacity-40"
         style={{
           background:
-            "radial-gradient(ellipse 50% 50% at 10% 10%, rgba(205, 160, 122, 0.25), transparent 70%)",
+            "radial-gradient(ellipse 50% 50% at 10% 10%, rgba(184, 212, 189, 0.28), transparent 70%)",
           filter: "blur(70px)",
         }}
       />

@@ -30,7 +30,7 @@ const ROWS: Row[] = [
 function Cell({ value, highlight }: { value: CellValue; highlight: boolean }) {
   if (value === "yes") {
     const cls = highlight
-      ? "bg-brand-forest text-bone border-brand-forest shadow-[0_0_22px_-2px_rgba(63,78,53,0.45)]"
+      ? "bg-brand-deep text-bone border-brand-deep shadow-[0_0_22px_-2px_rgba(61,88,67,0.5)]"
       : "bg-transparent text-ink/80 border-ink/30";
     return (
       <span className={`flex items-center justify-center w-9 h-9 rounded-full border-[1.5px] ${cls}`}>
@@ -40,7 +40,7 @@ function Cell({ value, highlight }: { value: CellValue; highlight: boolean }) {
   }
   if (value === "partial") {
     return (
-      <span className="flex items-center justify-center w-9 h-9 rounded-full border-[1.5px] border-clay/55 bg-clay/10 text-clay" title="Partial">
+      <span className="flex items-center justify-center w-9 h-9 rounded-full border-[1.5px] border-ink-muted/45 bg-ink-muted/10 text-ink-muted" title="Partial">
         <Minus size={14} strokeWidth={3} />
       </span>
     );
@@ -67,7 +67,7 @@ export default function Comparison() {
         className="pointer-events-none absolute top-1/2 -translate-y-1/2 right-[8%] w-[40vw] h-[40vw] opacity-30"
         style={{
           background:
-            "radial-gradient(ellipse 45% 50% at 50% 50%, rgba(205, 160, 122, 0.22), transparent 70%)",
+            "radial-gradient(ellipse 45% 50% at 50% 50%, rgba(184, 212, 189, 0.24), transparent 70%)",
           filter: "blur(80px)",
         }}
       />
@@ -96,7 +96,7 @@ export default function Comparison() {
             {/* Sage "Stroyka" column bloom — sits behind the cells */}
             <div
               aria-hidden
-              className="pointer-events-none absolute top-0 bottom-0 right-0 w-[calc(25%-4px)] bg-[linear-gradient(180deg,rgba(74,64,51,0.06)_0%,rgba(184,120,78,0.04)_100%)]"
+              className="pointer-events-none absolute top-0 bottom-0 right-0 w-[calc(25%-4px)] bg-[linear-gradient(180deg,rgba(138,170,145,0.1)_0%,rgba(61,88,67,0.05)_100%)]"
             />
 
             {/* Column headers */}
@@ -127,7 +127,7 @@ export default function Comparison() {
                     </div>
                     <div
                       className={`mt-1 font-mono text-[10px] tracking-[0.15em] uppercase ${
-                        isStroyka ? "text-clay" : "text-ink/40"
+                        isStroyka ? "text-brand-forest" : "text-ink/40"
                       }`}
                     >
                       {col.sub}
@@ -175,13 +175,13 @@ export default function Comparison() {
         <FadeIn delay={0.25}>
           <div className="mt-8 flex flex-wrap items-center gap-6 font-mono text-[11px] tracking-[0.15em] uppercase text-ink/55">
             <span className="flex items-center gap-2">
-              <span className="w-4 h-4 rounded-full bg-brand-forest text-bone flex items-center justify-center">
+              <span className="w-4 h-4 rounded-full bg-brand-deep text-bone flex items-center justify-center">
                 <Check size={10} strokeWidth={3} />
               </span>
               Yes
             </span>
             <span className="flex items-center gap-2">
-              <span className="w-4 h-4 rounded-full border-[1.5px] border-clay/55 bg-clay/15 text-clay flex items-center justify-center">
+              <span className="w-4 h-4 rounded-full border-[1.5px] border-ink-muted/45 bg-ink-muted/10 text-ink-muted flex items-center justify-center">
                 <Minus size={10} strokeWidth={3} />
               </span>
               Partial

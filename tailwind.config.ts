@@ -27,18 +27,15 @@ const config: Config = {
           soft:    "#CDA07A",
         },
         brand: {
-          // Sage kept as a subtle accent — dots, hover glows, small type.
+          // Living sage family — clearly green-dominant, chromatic, alive.
+          // Spans from pale pistachio pop down to deep sage dark.
           "sage-mist":     "#cad2c5",
           "sage-bright":   "#B8D4BD",
           sage:            "#8AAA91",
-          // Dark family — deep muted sage/earth. Green-dominant but
-          // low-saturation and slightly warm so it doesn't read as
-          // "forest green" or "teal blue". Used at Hero top, PlanToDone
-          // canvas, CTA end, Footer.
-          forest:          "#525744",
-          deep:            "#3B4635",
-          midnight:        "#2F3A2B",
-          "midnight-dark": "#242E22",
+          forest:          "#5A7060",
+          deep:            "#3D5843",
+          midnight:        "#3D5843",
+          "midnight-dark": "#2B3D30",
           amber:           "#d97706",
           "amber-bright":  "#f59e0b",
         },

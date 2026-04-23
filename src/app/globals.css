@@ -70,9 +70,9 @@
 .glow-border {
   position: relative;
   isolation: isolate;
-  --glow-c1: #4A4033;
-  --glow-c2: #7A6E5B;
-  --glow-c3: #B8784E;
+  --glow-c1: #3D5843;
+  --glow-c2: #8AAA91;
+  --glow-c3: #B8D4BD;
   --glow-duration: 6s;
 }
 .glow-border::before {
@@ -109,9 +109,9 @@
   background: conic-gradient(
     from var(--a, 0deg),
     transparent 0deg,
-    var(--sweep-c1, rgba(184, 120, 78, 0.18)) 70deg,
-    var(--sweep-c2, rgba(122, 110, 91, 0.14)) 110deg,
-    var(--sweep-c3, rgba(74, 64, 51, 0.12)) 160deg,
+    var(--sweep-c1, rgba(184, 212, 189, 0.22)) 70deg,
+    var(--sweep-c2, rgba(138, 170, 145, 0.16)) 110deg,
+    var(--sweep-c3, rgba(61, 88, 67, 0.14)) 160deg,
     transparent 220deg
   );
   filter: blur(36px);
@@ -198,34 +198,61 @@
 }
 
 /* ─── Stone card style ─────────────────────────────────────────────────
-   Polished stone look: a warm diagonal gradient across the card body,
-   a subtle top-edge highlight (light hitting the top), and a deep drop
-   shadow. Used across Guarantee, Features, Integrations, FAQ (open),
-   and Pricing plan cards. Replaces the flat bone-soft fills that read
-   as plain/static. */
+   Polished stone look with beauty — a warm diagonal gradient on the
+   card body, a glossy top-edge highlight (light hitting the top), a
+   soft inner bottom shadow, and a layered drop shadow for depth.
+   Cards use rounded-2xl/3xl for softness. */
 .card-stone {
-  background: linear-gradient(135deg, rgba(227, 220, 201, 0.92) 0%, rgba(212, 203, 180, 0.82) 60%, rgba(191, 180, 156, 0.7) 100%);
+  background: linear-gradient(138deg,
+    rgba(246, 241, 224, 0.96) 0%,
+    rgba(227, 220, 201, 0.92) 45%,
+    rgba(206, 196, 172, 0.88) 100%);
   box-shadow:
-    inset 0 1px 0 rgba(255, 251, 240, 0.35),
+    inset 0 1px 0 rgba(255, 253, 243, 0.6),
+    inset 1px 0 0 rgba(255, 253, 243, 0.22),
     inset 0 -1px 0 rgba(46, 38, 28, 0.08),
-    0 20px 50px -24px rgba(46, 38, 28, 0.28),
-    0 6px 12px -8px rgba(46, 38, 28, 0.12);
+    0 30px 60px -28px rgba(46, 38, 28, 0.32),
+    0 10px 20px -10px rgba(46, 38, 28, 0.14);
 }
+/* Sage-tinted card — used on "highlighted" contexts like active Features
+   card, Starter pricing, or the After side of TheShift. Has a subtle
+   pistachio glow feel without being green-heavy. */
+.card-stone-sage {
+  background: linear-gradient(138deg,
+    rgba(237, 234, 214, 0.96) 0%,
+    rgba(216, 221, 200, 0.93) 45%,
+    rgba(186, 204, 182, 0.88) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 253, 243, 0.6),
+    inset 1px 0 0 rgba(255, 253, 243, 0.22),
+    inset 0 -1px 0 rgba(61, 88, 67, 0.1),
+    0 30px 60px -28px rgba(61, 88, 67, 0.3),
+    0 10px 20px -10px rgba(46, 38, 28, 0.14);
+}
+/* Dark sage card for Before / contrast moments. */
 .card-stone-dark {
-  background: linear-gradient(135deg, rgba(31, 26, 20, 0.92) 0%, rgba(46, 38, 28, 0.88) 60%, rgba(74, 64, 51, 0.82) 100%);
+  background: linear-gradient(138deg,
+    rgba(45, 64, 49, 0.98) 0%,
+    rgba(61, 88, 67, 0.94) 50%,
+    rgba(90, 112, 96, 0.9) 100%);
   box-shadow:
     inset 0 1px 0 rgba(227, 220, 201, 0.18),
     inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-    0 20px 50px -24px rgba(0, 0, 0, 0.5),
-    0 6px 12px -8px rgba(0, 0, 0, 0.25);
+    0 30px 60px -24px rgba(20, 34, 24, 0.5),
+    0 10px 20px -8px rgba(0, 0, 0, 0.25);
 }
+/* Warm aged card — used on TheShift's "Before" column for the messy
+   vintage feel (tan + crosshatch texture overlaid on top). */
 .card-stone-warm {
-  background: linear-gradient(135deg, rgba(216, 200, 170, 0.92) 0%, rgba(205, 160, 122, 0.2) 100%), rgba(227, 220, 201, 0.88);
+  background: linear-gradient(138deg,
+    rgba(237, 222, 190, 0.95) 0%,
+    rgba(218, 197, 160, 0.92) 50%,
+    rgba(192, 167, 126, 0.88) 100%);
   box-shadow:
-    inset 0 1px 0 rgba(255, 251, 240, 0.35),
-    inset 0 -1px 0 rgba(184, 120, 78, 0.12),
-    0 20px 50px -24px rgba(184, 120, 78, 0.25),
-    0 6px 12px -8px rgba(46, 38, 28, 0.12);
+    inset 0 1px 0 rgba(255, 251, 235, 0.55),
+    inset 0 -1px 0 rgba(115, 85, 50, 0.12),
+    0 30px 60px -28px rgba(115, 85, 50, 0.32),
+    0 10px 20px -10px rgba(46, 38, 28, 0.14);
 }
 
 /* ─── Section gradient bridges ──────────────────────────────────────────

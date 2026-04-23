@@ -71,12 +71,12 @@ function PromiseCard({ promise }: { promise: Promise }) {
           ? undefined
           : { rotateX, rotateY, transformStyle: "preserve-3d" }
       }
-      className="card-stone cursor-glow h-full flex flex-col p-8 rounded-sm border border-ink/15 backdrop-blur-sm hover:border-clay/35 transition-colors duration-500"
+      className="card-stone cursor-glow h-full flex flex-col p-8 rounded-2xl border border-ink/15 backdrop-blur-sm hover:border-brand-sage/40 transition-colors duration-500"
     >
-      <span className="relative flex-shrink-0 w-12 h-12 rounded-full bg-clay/10 border border-clay/40 text-clay flex items-center justify-center mb-6">
+      <span className="relative flex-shrink-0 w-12 h-12 rounded-full bg-brand-sage/15 border border-brand-sage/45 text-brand-forest flex items-center justify-center mb-6">
         <span
           aria-hidden
-          className="absolute inset-0 rounded-full bg-clay/20 blur-md opacity-60"
+          className="absolute inset-0 rounded-full bg-brand-sage-bright/25 blur-md opacity-60"
         />
         <Icon size={18} strokeWidth={2} className="relative" />
       </span>

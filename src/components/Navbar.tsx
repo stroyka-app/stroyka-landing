@@ -53,15 +53,14 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:block">
-          {scrolled ? (
-            <Button variant="secondary" size="sm" href="/get-started">
-              Get Started
-            </Button>
-          ) : (
-            <Button variant="invert" size="sm" href="/get-started">
-              Get Started
-            </Button>
-          )}
+          <Button
+            variant="outline"
+            size="sm"
+            href="/get-started"
+            className={scrolled ? "text-ink" : "text-bone"}
+          >
+            Get Started
+          </Button>
         </div>
 
         <button
