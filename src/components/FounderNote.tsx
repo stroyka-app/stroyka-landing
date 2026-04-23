@@ -20,7 +20,7 @@ const FOUNDER = {
 
 export default function FounderNote() {
   return (
-    <section id="founder" className="relative bg-bone py-28 lg:py-36">
+    <section id="founder" className="relative bg-gradient-to-b from-[#D4CBB4] to-[#E3DCC9] py-28 lg:py-36">
       <div className="max-w-2xl mx-auto px-6">
         <FadeIn>
           <SectionLabel>A letter</SectionLabel>

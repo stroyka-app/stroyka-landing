@@ -15,14 +15,11 @@ const FOUNDING_SPOTS_REMAINING = Math.max(
 );
 
 /**
- * Hero — vertical gradient from deep forest at the top through olive to pale
- * pistachio at the bottom. The gradient IS the transition into the next
- * section (which picks up at pistachio). Video sits inside with luminosity
- * blend so it reads as atmosphere, not a photograph to look at.
- *
- * The text hierarchy follows the gradient: cream over the dark half,
- * with the Project Sheet card landing on the pale pistachio end so it
- * becomes a moment of rest and contrast (ink text on pistachio).
+ * Hero — continuous warm-stone gradient from deepest earth at the top
+ * down to mid stone at the bottom (where it will seamlessly meet the
+ * next section's top color). Video sits inside at reduced opacity with
+ * NORMAL blending (no mix-blend-luminosity greening), so footage reads
+ * in its natural tones, just muted.
  */
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
@@ -32,27 +29,29 @@ export default function Hero() {
     offset: ["start start", "end start"],
   });
 
-  const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
-  const videoScale = useTransform(scrollYProgress, [0, 1], [1.04, 1.16]);
-  const headlineY = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
-  const headlineOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.1]);
+  const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1.04, 1.14]);
+  const headlineY = useTransform(scrollYProgress, [0, 1], ["0%", "-8%"]);
+  const headlineOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.15]);
 
   return (
     <section ref={ref} id="hero" className="relative overflow-hidden min-h-[100vh]">
-      {/* ── Gradient shell — forest → olive → pistachio ──────────────────── */}
+      {/* ── Warm-stone gradient shell ────────────────────────────────────
+          Bottom stop (#A89E85) matches TheShift's top color so the
+          section boundary is literally the same pixel color. */}
       <div
         aria-hidden
         className="absolute inset-0 z-0"
         style={{
           background:
-            "linear-gradient(180deg, #1F2A1C 0%, #2A3524 22%, #3F4E35 44%, #6B7E55 66%, #A9B68A 84%, #D3DAC0 100%)",
+            "linear-gradient(180deg, #1F1A14 0%, #2E261C 18%, #4A4033 40%, #7A6E5B 70%, #A89E85 100%)",
         }}
       />
 
-      {/* ── Video layer ──────────────────────────────────────────────────── */}
+      {/* ── Video layer — natural tones at reduced opacity ─────────────── */}
       <motion.div
         style={prefersReduced ? undefined : { y: videoY, scale: videoScale }}
-        className="absolute inset-0 z-[1] will-change-transform mix-blend-luminosity opacity-55"
+        className="absolute inset-0 z-[1] will-change-transform opacity-[0.32]"
       >
         <video
           autoPlay
@@ -65,29 +64,19 @@ export default function Hero() {
         </video>
       </motion.div>
 
-      {/* Dark→transparent top vignette so the top of the gradient doesn't
-          read grey under bright video frames */}
+      {/* Top-dark + bottom-gradient wash so the headline reads clearly on
+          the darker upper half and the gradient continues clean at the
+          bottom without the video fighting the stone tone. */}
       <div
         aria-hidden
         className="absolute inset-0 z-[2] pointer-events-none"
         style={{
           background:
-            "linear-gradient(180deg, rgba(31,42,28,0.45) 0%, rgba(31,42,28,0.15) 40%, transparent 100%)",
+            "linear-gradient(180deg, rgba(31,26,20,0.45) 0%, rgba(31,26,20,0.15) 35%, rgba(168,158,133,0.35) 75%, #A89E85 100%)",
         }}
       />
 
-      {/* Soft sage glow bottom-left — gives life to the pistachio end */}
-      <div
-        aria-hidden
-        className="absolute -bottom-32 -left-24 w-[60vw] h-[60vw] rounded-full opacity-30 z-[2] pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle, #B8D4BD 0%, transparent 60%)",
-          filter: "blur(80px)",
-        }}
-      />
-
-      {/* ── Field-journal header rule — cream on dark top ───────────────── */}
+      {/* ── Field-journal header rule ──────────────────────────────────── */}
       <div className="relative z-10 border-b border-bone/12">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-3 flex items-center justify-between font-mono text-[10.5px] tracking-[0.22em] uppercase text-bone/65">
           <span>Stroyka — The Field Journal</span>
@@ -104,8 +93,8 @@ export default function Hero() {
         <FadeIn delay={0}>
           <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-bone/80 mb-10 inline-flex items-center gap-2.5">
             <span className="relative inline-flex w-2 h-2">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage-bright opacity-60 animate-ping" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-sage-bright" />
+              <span className="absolute inline-flex h-full w-full rounded-full bg-clay opacity-55 animate-ping" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-clay" />
             </span>
             Start free
             <span className="text-bone/30">/</span>
@@ -119,7 +108,7 @@ export default function Hero() {
           <h1 className="font-display font-light text-[clamp(3.5rem,10vw,9.5rem)] leading-[0.92] tracking-[-0.03em] text-bone mb-10 max-w-[16ch]">
             <span className="block">Construction</span>
             <span className="block">
-              management<span className="text-brand-sage-bright">,</span>
+              management<span className="text-clay">,</span>
             </span>
             <span className="block italic font-normal relative">
               for real crews.
@@ -132,7 +121,7 @@ export default function Hero() {
               >
                 <path
                   d="M2 10 Q 100 2, 200 8 T 398 6"
-                  stroke="#B8D4BD"
+                  stroke="#CDA07A"
                   strokeWidth="3"
                   strokeLinecap="round"
                   className="draw-underline"
@@ -156,27 +145,27 @@ export default function Hero() {
             </FadeIn>
             <FadeIn delay={0.28}>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <Button variant="primary" size="lg" href="/#download">
+                <Button variant="invert" size="lg" href="/#download">
                   Start free
                 </Button>
-                <Button variant="ghost" size="lg" href="/demo" className="text-bone hover:text-brand-sage-bright">
+                <Button variant="ghost" size="lg" href="/demo" className="text-bone hover:text-clay-soft">
                   Book a demo →
                 </Button>
               </div>
             </FadeIn>
           </div>
 
-          {/* Project Sheet — lives on the pale pistachio end of the hero
-              gradient. Flipped contrast: ink text on pistachio = moment of
-              rest against the dark editorial above. */}
+          {/* Project Sheet — floats on the mid-stone portion of the gradient.
+              Uses bone-soft bg (matches the mid-tone of the gradient around it)
+              so it reads as an inset panel rather than a bright card. */}
           <FadeIn delay={0.35}>
-            <aside className="w-full lg:w-[320px] border border-ink/20 bg-bone/90 backdrop-blur-md rounded-sm p-6 font-mono text-[12px] tracking-[0.06em] shadow-[0_30px_80px_-30px_rgba(31,42,28,0.4)]">
+            <aside className="w-full lg:w-[320px] border border-ink/20 bg-bone/90 backdrop-blur-md rounded-sm p-6 font-mono text-[12px] tracking-[0.06em] shadow-[0_30px_80px_-30px_rgba(31,26,20,0.5)]">
               <div className="flex items-center justify-between pb-3 mb-4 border-b border-ink/15">
                 <span className="uppercase tracking-[0.2em] text-ink-muted">Project sheet</span>
-                <span className="flex items-center gap-1.5 text-brand-forest">
+                <span className="flex items-center gap-1.5 text-clay">
                   <span className="relative inline-flex w-1.5 h-1.5">
-                    <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage opacity-70 animate-ping" />
-                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage" />
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-clay opacity-70 animate-ping" />
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-clay" />
                   </span>
                   live
                 </span>
@@ -197,7 +186,7 @@ export default function Hero() {
                 <div className="flex justify-between">
                   <dt className="text-ink-muted uppercase">Budget</dt>
                   <dd className="tabular-nums text-ink">
-                    <span className="text-brand-forest">▲</span> on plan
+                    <span className="text-clay">▲</span> on plan
                   </dd>
                 </div>
                 <div className="flex justify-between pt-3 mt-3 border-t border-ink/15">

@@ -60,14 +60,14 @@ const COLS = [
 
 export default function Comparison() {
   return (
-    <section id="comparison" className="relative bg-bone-deep py-24 lg:py-32 overflow-hidden">
+    <section id="comparison" className="relative bg-gradient-to-b from-[#BFB49C] to-[#D4CBB4] py-24 lg:py-32 overflow-hidden">
       {/* Ambient sage glow behind the Stroyka column */}
       <div
         aria-hidden
-        className="pointer-events-none absolute top-1/2 -translate-y-1/2 right-[8%] w-[40vw] h-[40vw] opacity-40"
+        className="pointer-events-none absolute top-1/2 -translate-y-1/2 right-[8%] w-[40vw] h-[40vw] opacity-30"
         style={{
           background:
-            "radial-gradient(ellipse 45% 50% at 50% 50%, rgba(184,212,189,0.2), transparent 70%)",
+            "radial-gradient(ellipse 45% 50% at 50% 50%, rgba(205, 160, 122, 0.22), transparent 70%)",
           filter: "blur(80px)",
         }}
       />
@@ -96,7 +96,7 @@ export default function Comparison() {
             {/* Sage "Stroyka" column bloom — sits behind the cells */}
             <div
               aria-hidden
-              className="pointer-events-none absolute top-0 bottom-0 right-0 w-[calc(25%-4px)] bg-[linear-gradient(180deg,rgba(184,212,189,0.08)_0%,rgba(82,121,111,0.05)_100%)]"
+              className="pointer-events-none absolute top-0 bottom-0 right-0 w-[calc(25%-4px)] bg-[linear-gradient(180deg,rgba(74,64,51,0.06)_0%,rgba(184,120,78,0.04)_100%)]"
             />
 
             {/* Column headers */}
@@ -120,14 +120,14 @@ export default function Comparison() {
                   <div key={col.key} className="text-center relative">
                     <div
                       className={`font-display leading-tight ${
-                        isStroyka ? "text-brand-sage-bright text-xl" : "text-ink/80 text-[15px]"
+                        isStroyka ? "text-ink text-xl" : "text-ink/80 text-[15px]"
                       }`}
                     >
                       {col.label}
                     </div>
                     <div
                       className={`mt-1 font-mono text-[10px] tracking-[0.15em] uppercase ${
-                        isStroyka ? "text-brand-sage/75" : "text-ink/40"
+                        isStroyka ? "text-clay" : "text-ink/40"
                       }`}
                     >
                       {col.sub}

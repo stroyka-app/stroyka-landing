@@ -89,8 +89,8 @@ function FAQItem({
       {...glow}
       className={`group cursor-glow relative overflow-hidden rounded-sm border transition-all duration-500 ${
         isOpen
-          ? "border-brand-forest/60 bg-bone shadow-[0_20px_60px_-30px_rgba(63,78,53,0.45)]"
-          : "border-ink/15 bg-bone/50 hover:border-ink/30"
+          ? "border-ink/60 bg-[#E3DCC9] shadow-[0_20px_60px_-30px_rgba(46,38,28,0.4)]"
+          : "border-ink/15 bg-bone-soft/40 hover:border-ink/30"
       }`}
     >
       <button
@@ -104,14 +104,14 @@ function FAQItem({
         <span
           className={`relative flex h-11 w-11 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-full border transition-all duration-500 ${
             isOpen
-              ? "bg-brand-forest text-bone border-brand-forest shadow-[0_0_22px_-4px_rgba(63,78,53,0.7)]"
+              ? "bg-ink text-bone border-ink shadow-[0_0_22px_-4px_rgba(46,38,28,0.6)]"
               : "bg-bone-soft text-ink-muted border-ink/25 group-hover:border-ink/45 group-hover:text-ink"
           }`}
         >
           {isOpen && !prefersReduced && (
             <span
               aria-hidden
-              className="pointer-events-none absolute inset-0 rounded-full border border-brand-sage-bright/50 animate-ping"
+              className="pointer-events-none absolute inset-0 rounded-full border border-clay/55 animate-ping"
             />
           )}
           <Icon size={16} strokeWidth={1.8} />
@@ -121,7 +121,7 @@ function FAQItem({
           <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:gap-4">
             <h3
               className={`font-display text-[22px] md:text-[26px] leading-snug transition-colors duration-300 ${
-                isOpen ? "text-brand-forest" : "text-ink"
+                isOpen ? "text-ink" : "text-ink"
               }`}
             >
               {item.q}
@@ -178,14 +178,14 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="relative bg-bone-soft py-24 lg:py-32 overflow-hidden">
+    <section id="faq" className="relative bg-gradient-to-b from-[#A89E85] to-[#BFB49C] py-24 lg:py-32 overflow-hidden">
       {/* Ambient sage vignette top-left */}
       <div
         aria-hidden
-        className="pointer-events-none absolute top-0 left-0 w-[50vw] h-[50vw] opacity-50"
+        className="pointer-events-none absolute top-0 left-0 w-[50vw] h-[50vw] opacity-40"
         style={{
           background:
-            "radial-gradient(ellipse 50% 50% at 10% 10%, rgba(138,170,145,0.25), transparent 70%)",
+            "radial-gradient(ellipse 50% 50% at 10% 10%, rgba(205, 160, 122, 0.25), transparent 70%)",
           filter: "blur(70px)",
         }}
       />

@@ -122,15 +122,15 @@ function BeforeColumn() {
 function AfterColumn() {
   return (
     <div className="relative">
-      <div className="relative rounded-sm border border-brand-sage/30 bg-bone p-8 lg:p-10 overflow-hidden shadow-[0_30px_80px_-40px_rgba(63,78,53,0.35)]">
+      <div className="relative rounded-sm border border-ink/15 bg-[linear-gradient(135deg,#F0ECE0_0%,#E0DAC9_100%)] p-8 lg:p-10 overflow-hidden shadow-[0_30px_80px_-40px_rgba(46,38,28,0.25)]">
         <span
           aria-hidden
-          className="pointer-events-none absolute -top-20 -right-16 w-64 h-64 rounded-full opacity-35 blur-[60px]"
-          style={{ background: "radial-gradient(circle, #B8D4BD 0%, transparent 70%)" }}
+          className="pointer-events-none absolute -top-20 -right-16 w-64 h-64 rounded-full opacity-25 blur-[60px]"
+          style={{ background: "radial-gradient(circle, #CDA07A 0%, transparent 70%)" }}
         />
 
-        <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-brand-forest mb-4 flex items-center gap-2">
-          <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-sage-bright" aria-hidden />
+        <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-soft mb-4 flex items-center gap-2">
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-clay" aria-hidden />
           After
         </p>
         <h3 className="font-display font-light text-3xl lg:text-[42px] leading-[1.05] text-ink mb-3">
@@ -140,13 +140,13 @@ function AfterColumn() {
           Crew clocks in. Budget moves. Materials approve. You open the phone at 6am and know exactly where Johnson Home stands.
         </p>
 
-        <ul className="space-y-0 border-t border-brand-sage/30">
+        <ul className="space-y-0 border-t border-ink/15">
           {AFTER.map((item) => (
             <li
               key={item.title}
-              className="grid grid-cols-[88px_1fr] gap-5 py-5 border-b border-brand-sage/30"
+              className="grid grid-cols-[88px_1fr] gap-5 py-5 border-b border-ink/15"
             >
-              <span className="font-mono text-[12px] tracking-[0.08em] uppercase text-brand-forest pt-1">
+              <span className="font-mono text-[12px] tracking-[0.08em] uppercase text-ink-soft pt-1">
                 {item.time}
               </span>
               <div>
@@ -167,7 +167,7 @@ function AfterColumn() {
 
 export default function TheShift() {
   return (
-    <section id="the-shift" className="relative bg-bone-soft py-24 lg:py-32">
+    <section id="the-shift" className="relative bg-gradient-to-b from-[#A89E85] to-[#BFB49C] py-24 lg:py-32">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <div className="max-w-3xl mb-20 lg:mb-24">
           <FadeIn>

@@ -121,7 +121,7 @@ export default function Features() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section id="features" className="bg-bone py-24 lg:py-32">
+    <section id="features" className="bg-gradient-to-b from-[#D4CBB4] to-[#BFB49C] py-24 lg:py-32">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <div className="max-w-3xl mb-16 lg:mb-20">
           <FadeIn>

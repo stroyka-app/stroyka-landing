@@ -19,7 +19,7 @@ export default function CTABanner() {
         className="absolute inset-0 z-0"
         style={{
           background:
-            "linear-gradient(180deg, #D3DAC0 0%, #A9B68A 25%, #6B7E55 55%, #3F4E35 85%, #2A3524 100%)",
+            "linear-gradient(180deg, #BFB49C 0%, #8B7F66 30%, #4A4033 60%, #2E261C 85%, #1F1A14 100%)",
         }}
       />
 
@@ -29,7 +29,7 @@ export default function CTABanner() {
         className="pointer-events-none absolute inset-0 z-[1] opacity-[0.08]"
         style={{
           backgroundImage:
-            "linear-gradient(to right, #EDE6D3 1px, transparent 1px), linear-gradient(to bottom, #EDE6D3 1px, transparent 1px)",
+            "linear-gradient(to right, #E3DCC9 1px, transparent 1px), linear-gradient(to bottom, #E3DCC9 1px, transparent 1px)",
           backgroundSize: "72px 72px",
         }}
       />
@@ -37,9 +37,9 @@ export default function CTABanner() {
       {/* Soft sage glow top-right for the pistachio top edge */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-40 right-0 w-[50vw] h-[50vw] opacity-30 z-[1]"
+        className="pointer-events-none absolute -top-40 right-0 w-[50vw] h-[50vw] opacity-25 z-[1]"
         style={{
-          background: "radial-gradient(circle, #B8D4BD 0%, transparent 60%)",
+          background: "radial-gradient(circle, #CDA07A 0%, transparent 60%)",
           filter: "blur(80px)",
         }}
       />
@@ -47,7 +47,7 @@ export default function CTABanner() {
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 py-32 lg:py-44">
         <FadeIn>
           <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink mb-10 inline-flex items-center gap-2.5">
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-forest" aria-hidden />
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-clay" aria-hidden />
             The invitation
           </p>
         </FadeIn>
@@ -75,7 +75,7 @@ export default function CTABanner() {
               <Button variant="invert" size="lg" href="/#download">
                 Start free
               </Button>
-              <Button variant="ghost" size="lg" href="/demo" className="text-bone hover:text-brand-sage-bright">
+              <Button variant="ghost" size="lg" href="/demo" className="text-bone hover:text-clay-soft">
                 Book a demo →
               </Button>
             </div>

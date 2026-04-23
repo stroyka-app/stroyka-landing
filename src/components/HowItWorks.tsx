@@ -99,7 +99,7 @@ export default function HowItWorks() {
   }, []);
 
   return (
-    <section id="how-it-works" className="relative bg-bone-deep py-28 lg:py-36">
+    <section id="how-it-works" className="relative bg-gradient-to-b from-[#BFB49C] to-[#D4CBB4] py-28 lg:py-36">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         {/* Header */}
         <div className="max-w-2xl mb-20 lg:mb-24">

@@ -23,7 +23,7 @@ const TOOLS: Tool[] = [
 
 export default function Integrations() {
   return (
-    <section id="integrations" className="relative bg-bone-deep py-20 lg:py-28">
+    <section id="integrations" className="relative bg-gradient-to-b from-[#E3DCC9] to-[#D4CBB4] py-20 lg:py-28">
       <div className="max-w-5xl mx-auto px-6 lg:px-10">
         <div className="max-w-2xl mb-12">
           <FadeIn>

@@ -7,15 +7,15 @@
     scroll-behavior: smooth;
   }
   body {
-    /* Very faint forest-ink grain at <3% — reads as newsprint paper, not noise */
+    /* Very faint warm-earth grain at <3% — reads as plaster paper, not noise */
     background-image:
-      radial-gradient(rgba(31, 42, 28, 0.035) 1px, transparent 1px);
+      radial-gradient(rgba(46, 38, 28, 0.04) 1px, transparent 1px);
     background-size: 3px 3px;
     background-attachment: fixed;
   }
   ::selection {
-    background-color: #8AAA91;
-    color: #F2EFE0;
+    background-color: #2E261C;
+    color: #E3DCC9;
   }
 }
 
@@ -29,7 +29,7 @@
   .hairline {
     border-width: 1px;
   }
-  /* Cursor-follow radial glow — sage-tinted on cream surfaces */
+  /* Cursor-follow radial glow — clay-tinted on warm stone surfaces */
   .cursor-glow {
     position: relative;
   }
@@ -40,7 +40,7 @@
     border-radius: inherit;
     background: radial-gradient(
       320px circle at var(--mx, 50%) var(--my, 50%),
-      rgba(138, 170, 145, 0.18),
+      rgba(74, 64, 51, 0.14),
       transparent 60%
     );
     opacity: 0;
@@ -49,14 +49,6 @@
   }
   .cursor-glow:hover::before {
     opacity: 1;
-  }
-  /* Dark-surface variant of cursor-glow (used on forest sections) */
-  .cursor-glow-dark::before {
-    background: radial-gradient(
-      320px circle at var(--mx, 50%) var(--my, 50%),
-      rgba(184, 212, 189, 0.15),
-      transparent 60%
-    ) !important;
   }
 }
 
@@ -78,9 +70,9 @@
 .glow-border {
   position: relative;
   isolation: isolate;
-  --glow-c1: #6B7E55;
-  --glow-c2: #8AAA91;
-  --glow-c3: #B8D4BD;
+  --glow-c1: #4A4033;
+  --glow-c2: #7A6E5B;
+  --glow-c3: #B8784E;
   --glow-duration: 6s;
 }
 .glow-border::before {
@@ -117,9 +109,9 @@
   background: conic-gradient(
     from var(--a, 0deg),
     transparent 0deg,
-    var(--sweep-c1, rgba(184, 212, 189, 0.20)) 70deg,
-    var(--sweep-c2, rgba(138, 170, 145, 0.15)) 110deg,
-    var(--sweep-c3, rgba(107, 126, 85, 0.12)) 160deg,
+    var(--sweep-c1, rgba(184, 120, 78, 0.18)) 70deg,
+    var(--sweep-c2, rgba(122, 110, 91, 0.14)) 110deg,
+    var(--sweep-c3, rgba(74, 64, 51, 0.12)) 160deg,
     transparent 220deg
   );
   filter: blur(36px);
@@ -161,7 +153,7 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(242, 239, 224, 0.12) 50%,
+    rgba(227, 220, 201, 0.12) 50%,
     transparent 100%
   );
   animation: shimmer 3s ease-in-out infinite;
@@ -175,7 +167,7 @@
   position: absolute;
   inset: 15% 20%;
   background: radial-gradient(ellipse at 50% 50%,
-    rgba(138, 170, 145, 0.22) 0%,
+    rgba(184, 120, 78, 0.18) 0%,
     transparent 70%
   );
   filter: blur(50px);
@@ -199,11 +191,20 @@
   animation: draw-underline 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
 }
 
-/* Newsprint-style crosshatch texture — used on TheShift "Before" column
-   to make it feel literally messy vs the clean "After" side. Very low
-   opacity so the cream tone stays dominant. */
 .texture-crosshatch {
   background-image:
-    repeating-linear-gradient(45deg, rgba(201, 132, 78, 0.06) 0 1px, transparent 1px 8px),
-    repeating-linear-gradient(-45deg, rgba(107, 126, 85, 0.05) 0 1px, transparent 1px 8px);
+    repeating-linear-gradient(45deg, rgba(184, 120, 78, 0.08) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(-45deg, rgba(74, 64, 51, 0.06) 0 1px, transparent 1px 8px);
+}
+
+/* ─── Section gradient bridges ──────────────────────────────────────────
+   Every section's background is a vertical gradient where the top color
+   matches the previous section's bottom color, and the bottom color
+   matches the next section's top color. This makes every section-to-
+   section transition literally seamless — no hard edge anywhere on the
+   page. Defined here as data-attribute utilities for composability. */
+.section-ramp {
+  --from: #E3DCC9;
+  --to:   #D4CBB4;
+  background: linear-gradient(to bottom, var(--from) 0%, var(--to) 100%);
 }

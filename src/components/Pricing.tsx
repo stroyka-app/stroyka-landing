@@ -79,7 +79,7 @@ function FeatureList({ features, sub }: { features: Feature[]; sub?: boolean }) 
         >
           <span
             className={`mt-0.5 flex-shrink-0 ${
-              f.included ? "text-brand-sage-bright" : "text-ink/25"
+              f.included ? "text-clay" : "text-ink/25"
             }`}
           >
             {f.included ? <Check size={14} strokeWidth={2.5} /> : <X size={14} strokeWidth={2} />}
@@ -103,13 +103,13 @@ export default function Pricing() {
   });
 
   return (
-    <section id="pricing" className="relative bg-bone py-24 lg:py-32 overflow-hidden">
+    <section id="pricing" className="relative bg-gradient-to-b from-[#D4CBB4] to-[#BFB49C] py-24 lg:py-32 overflow-hidden">
       <div
         aria-hidden
-        className="pointer-events-none absolute top-1/3 right-0 w-[50vw] h-[50vw] opacity-30"
+        className="pointer-events-none absolute top-1/3 right-0 w-[50vw] h-[50vw] opacity-25"
         style={{
           background:
-            "radial-gradient(ellipse 50% 50% at 90% 30%, rgba(184,212,189,0.16), transparent 70%)",
+            "radial-gradient(ellipse 50% 50% at 90% 30%, rgba(205, 160, 122, 0.18), transparent 70%)",
           filter: "blur(70px)",
         }}
       />
@@ -158,7 +158,7 @@ export default function Pricing() {
               >
                 Annual
                 <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full leading-none ${
-                  billing === "annual" ? "bg-ink/20 text-ink" : "bg-brand-sage/20 text-brand-sage-bright"
+                  billing === "annual" ? "bg-ink/20 text-ink" : "bg-clay/15 text-clay"
                 }`}>
                   −17%
                 </span>
@@ -204,7 +204,7 @@ export default function Pricing() {
               {...starterGlow}
               whileHover={prefersReduced ? undefined : { y: -3 }}
               transition={{ duration: 0.2 }}
-              className="cursor-glow glow-border bg-bone-soft/80 backdrop-blur-md border border-brand-sage/35 rounded-sm p-8 h-full flex flex-col relative shadow-[0_0_60px_-20px_rgba(184,212,189,0.5)]"
+              className="cursor-glow glow-border bg-bone-soft/80 backdrop-blur-md border border-clay/40 rounded-sm p-8 h-full flex flex-col relative shadow-[0_0_60px_-20px_rgba(184,120,78,0.35)]"
             >
               {!prefersReduced && (
                 <span
@@ -219,8 +219,8 @@ export default function Pricing() {
               </span>
               <div className="relative z-[1] flex flex-col h-full">
                 <div className="flex items-center gap-2 mb-1">
-                  <Zap size={16} className="text-brand-sage-bright" />
-                  <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-brand-sage-bright">Starter</h3>
+                  <Zap size={16} className="text-clay" />
+                  <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-clay">Starter</h3>
                 </div>
                 <p className="text-ink/70 text-[14px] mb-6 mt-2">For growing crews up to 15</p>
                 <div className="mb-8 min-h-[112px]">

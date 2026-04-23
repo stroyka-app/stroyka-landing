@@ -5,36 +5,39 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // ─── v3: Paysages-inspired continuous sage ramp ────────────────
-        // All colors sit on the same warm green-yellow hue family so
-        // transitions between adjacent section tones read as soft even
-        // with hard cuts. Light dominant; two dark forest moments
-        // (hero top + CTA/footer) for rhythm.
+        // ─── v4: warm stone middle-ground ────────────────────────────────
+        // Neutral warm-taupe ramp — not cream, not green. A quiet,
+        // architectural palette that sits between light and dark. Sage
+        // kept only as a tiny accent color; it no longer dominates.
+        // Hex values chosen to form a continuous lightness ramp so
+        // gradient bridges between any two adjacent tones read as seamless.
         bone: {
-          DEFAULT: "#F2EFE0", // warm cream — page base
-          deep:    "#EBE9D0", // subtle cream variation
-          soft:    "#D3DAC0", // pale pistachio — the signature Paysages tone
+          DEFAULT: "#E3DCC9", // palest warm stone
+          deep:    "#D4CBB4", // light stone
+          soft:    "#BFB49C", // mid stone — the signature middle-ground
+          warm:    "#A89E85", // deeper warm taupe
         },
         ink: {
-          DEFAULT: "#1F2A1C", // deep forest-black — primary text on light
-          soft:    "#3F4E35", // secondary — rich forest
-          muted:   "#6B7E55", // tertiary — olive
+          DEFAULT: "#2E261C", // near-black warm earth — primary text
+          soft:    "#4A4033", // deep walnut — secondary text
+          muted:   "#7A6E5B", // warm taupe — tertiary
         },
         clay: {
-          DEFAULT: "#C9844E", // warm terracotta — Pro accent
-          soft:    "#D9A478",
+          DEFAULT: "#B8784E", // terracotta — Pro accent (warm, in family)
+          soft:    "#CDA07A",
         },
         brand: {
+          // Sage kept only as a tiny accent — dots, hover glows, never
+          // dominant. Maks' favorite color but used sparingly.
           "sage-mist":     "#cad2c5",
           "sage-bright":   "#B8D4BD",
           sage:            "#8AAA91",
-          // Forest family — redefined from the old teal-blue tokens to a
-          // continuous olive-green ramp so `bg-brand-forest`/`-deep`/
-          // `-midnight` blend with the bone/ink family above.
-          forest:          "#3F4E35",
-          deep:            "#2A3524",
-          midnight:        "#1F2A1C",
-          "midnight-dark": "#151A11",
+          // Earth family — redefined from green to warm walnut so
+          // `brand-forest/deep/midnight` live in the stone palette.
+          forest:          "#4A4033",
+          deep:            "#2E261C",
+          midnight:        "#1F1A14",
+          "midnight-dark": "#141009",
           amber:           "#d97706",
           "amber-bright":  "#f59e0b",
         },
@@ -60,8 +63,8 @@ const config: Config = {
           "50%":     { transform: "rotate(calc(var(--rot, 0deg) + 1deg)) translateY(-3px)" },
         },
         "pulse-sage": {
-          "0%,100%": { boxShadow: "0 0 16px rgba(138,170,145,0.28)" },
-          "50%":     { boxShadow: "0 0 28px rgba(138,170,145,0.55)" },
+          "0%,100%": { boxShadow: "0 0 16px rgba(138,170,145,0.25)" },
+          "50%":     { boxShadow: "0 0 28px rgba(138,170,145,0.5)" },
         },
       },
     },
