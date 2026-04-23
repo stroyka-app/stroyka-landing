@@ -51,43 +51,6 @@ const QUESTIONS: FaqItem[] = [
   },
 ];
 
-// Category pills stay inside Stroyka's earth-tone palette. Categories that share
-// meaning cluster share a tone; a single amber pill (Pricing) is the only "hot"
-// colour so it doubles as a pull toward conversion. Icons handle per-category
-// differentiation inside each cluster — not colour.
-type PillCluster = "trust" | "ops" | "money";
-
-function metaCluster(meta: string): PillCluster {
-  switch (meta) {
-    case "Offline":
-    case "Security":
-    case "Data":
-      return "trust";
-    case "Setup":
-    case "Admin":
-    case "Comparison":
-      return "ops";
-    case "Pricing":
-      return "money";
-    default:
-      return "trust";
-  }
-}
-
-function clusterStyle(cluster: PillCluster): string {
-  switch (cluster) {
-    case "trust":
-      // Sage — reliability cluster
-      return "bg-brand-sage/18 border-brand-sage/65 text-brand-sage shadow-[0_0_22px_-6px_rgba(132,169,140,0.55),inset_0_1px_0_0_rgba(202,210,197,0.25)]";
-    case "ops":
-      // Forest — operations/decisions cluster
-      return "bg-brand-forest/30 border-brand-forest/70 text-brand-sage-mist shadow-[0_0_22px_-6px_rgba(82,121,111,0.55),inset_0_1px_0_0_rgba(132,169,140,0.28)]";
-    case "money":
-      // Amber — the only hot colour, reserved for Pricing
-      return "bg-brand-amber/20 border-brand-amber/65 text-brand-amber-bright shadow-[0_0_22px_-6px_rgba(217,119,6,0.60),inset_0_1px_0_0_rgba(245,158,11,0.30)]";
-  }
-}
-
 type IconType = ComponentType<SVGProps<SVGSVGElement> & { size?: number | string }>;
 function metaIcon(meta: string): IconType {
   switch (meta) {
@@ -116,98 +79,35 @@ function FAQItem({
   const prefersReduced = useReducedMotion();
   const panelId = `faq-panel-${index}`;
   const buttonId = `faq-trigger-${index}`;
-
-  const setCardGlow = (e: React.MouseEvent<HTMLLIElement>) => {
-    if (prefersReduced) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    e.currentTarget.style.setProperty("--faq-x", `${e.clientX - rect.left}px`);
-    e.currentTarget.style.setProperty("--faq-y", `${e.clientY - rect.top}px`);
-  };
-
-  const clearCardGlow = (e: React.MouseEvent<HTMLLIElement>) => {
-    e.currentTarget.style.removeProperty("--faq-x");
-    e.currentTarget.style.removeProperty("--faq-y");
-  };
+  const Icon = metaIcon(item.meta);
+  const isPricing = item.meta === "Pricing";
 
   return (
-    <li
-      onMouseMove={setCardGlow}
-      onMouseLeave={clearCardGlow}
-      className="group relative overflow-hidden rounded-3xl border border-brand-forest/15 bg-brand-deep/40 backdrop-blur-xl transition-all duration-500 hover:-translate-y-0.5 hover:border-brand-forest/30 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)]"
-    >
-      {/* Cursor glow */}
-      <div
-        className={`pointer-events-none absolute inset-0 transition-opacity duration-500 ${
-          isOpen ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-        }`}
-        style={{
-          background:
-            "radial-gradient(240px circle at var(--faq-x, 50%) var(--faq-y, 50%), rgba(82,121,111,0.18), transparent 70%)",
-        }}
-      />
-
+    <li className={`group relative overflow-hidden border-t border-ink/15 ${isOpen ? "bg-bone-soft" : ""}`}>
       <button
         type="button"
         id={buttonId}
         aria-controls={panelId}
         aria-expanded={isOpen}
         onClick={onToggle}
-        className="relative flex w-full items-start gap-5 px-6 py-6 md:px-8 md:py-7 text-left cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-forest/50"
+        className="relative flex w-full items-start gap-6 px-2 md:px-4 py-7 text-left cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink/30"
       >
-        {/* Icon circle */}
-        <span className="relative flex h-11 w-11 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-full border border-brand-forest/30 bg-brand-forest/5 transition-all duration-500 group-hover:scale-105 group-hover:border-brand-forest/50">
-          <span
-            className={`pointer-events-none absolute inset-0 rounded-full border border-brand-forest/40 opacity-40 ${
-              isOpen && !prefersReduced ? "animate-ping" : ""
-            }`}
-          />
-          <motion.svg
-            animate={{ rotate: isOpen ? 45 : 0 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="relative h-5 w-5 text-brand-sage"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <path
-              d="M12 5v14"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-            <path
-              d="M5 12h14"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </motion.svg>
+        <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors ${
+          isOpen ? "bg-ink text-bone" : "bg-bone-deep text-ink-soft"
+        }`}>
+          <Icon size={16} strokeWidth={1.8} />
         </span>
 
         <div className="flex flex-1 flex-col gap-3 min-w-0">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
-            <h3
-              className={`text-base md:text-lg font-heading font-semibold leading-snug transition-colors duration-300 ${
-                isOpen ? "text-brand-sage" : "text-white"
-              }`}
-            >
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:gap-4">
+            <h3 className="font-display text-[22px] md:text-[26px] leading-snug text-ink">
               {item.q}
             </h3>
-            {(() => {
-              const Icon = metaIcon(item.meta);
-              return (
-                <span
-                  className={`inline-flex w-fit items-center gap-1.5 rounded-full border-[1.5px] px-3 py-1 text-[10px] font-heading font-semibold uppercase tracking-[0.22em] transition-shadow duration-300 sm:ml-auto shrink-0 ${clusterStyle(metaCluster(item.meta))}`}
-                >
-                  <Icon
-                    size={11}
-                    strokeWidth={2.2}
-                    aria-hidden="true"
-                    className="opacity-85"
-                  />
-                  {item.meta}
-                </span>
-              );
-            })()}
+            <span className={`inline-flex w-fit items-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.22em] sm:ml-auto shrink-0 ${
+              isPricing ? "text-clay" : "text-ink-muted"
+            }`}>
+              {item.meta}
+            </span>
           </div>
 
           <AnimatePresence initial={false}>
@@ -223,13 +123,23 @@ function FAQItem({
                 style={{ willChange: "height, opacity" }}
                 className="overflow-hidden"
               >
-                <p className="pr-2 pt-1 text-sm md:text-[15px] leading-relaxed text-brand-sage-mist/75">
+                <p className="pr-2 pt-1 text-[15px] leading-[1.65] text-ink-soft max-w-2xl">
                   {item.a}
                 </p>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
+
+        <motion.span
+          animate={{ rotate: isOpen ? 45 : 0 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          className="flex-shrink-0 text-ink-muted mt-1 hidden sm:block"
+        >
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
+            <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        </motion.span>
       </button>
     </li>
   );
@@ -239,39 +149,27 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-20 lg:py-24 relative overflow-hidden">
-      {/* Subtle aurora backdrop */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-60"
-        style={{
-          background:
-            "radial-gradient(ellipse 60% 80% at 15% 10%, rgba(82,121,111,0.12), transparent 65%)",
-        }}
-      />
-
-      <div className="relative z-10 max-w-4xl mx-auto px-6">
-        {/* Header */}
-        <div className="text-center mb-12">
+    <section id="faq" className="bg-bone py-24 lg:py-32">
+      <div className="max-w-4xl mx-auto px-6 lg:px-10">
+        <div className="max-w-2xl mb-16">
           <FadeIn>
             <SectionLabel>FAQ</SectionLabel>
           </FadeIn>
           <TextReveal
             as="h2"
-            className="text-4xl md:text-5xl font-heading font-bold leading-tight text-white mb-4"
+            className="font-display font-light text-5xl lg:text-7xl leading-[0.95] tracking-[-0.02em] text-ink mb-6"
           >
             Straight answers. No runaround.
           </TextReveal>
           <FadeIn delay={0.1}>
-            <p className="text-base text-brand-sage-mist/70 max-w-xl mx-auto">
-              Everything you need to know before bringing Stroyka onto a
-              jobsite — the questions real crews actually ask.
+            <p className="text-lg text-ink-soft leading-relaxed max-w-xl">
+              Everything you need to know before bringing Stroyka onto a jobsite — the questions real crews actually ask.
             </p>
           </FadeIn>
         </div>
 
-        {/* FAQ list */}
         <FadeIn>
-          <ul className="flex flex-col gap-4">
+          <ul className="flex flex-col border-b border-ink/15">
             {QUESTIONS.map((item, i) => (
               <FAQItem
                 key={item.q}

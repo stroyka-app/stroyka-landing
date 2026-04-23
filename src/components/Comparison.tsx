@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, X, Minus, HardHat } from "lucide-react";
+import { Check, X, Minus } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
@@ -16,11 +16,7 @@ interface Row {
   note?: string;
 }
 
-// Reordered to group cells vertically: spreadsheets column reads YES → PARTIAL
-// → NO top-to-bottom, minimising visual chaos and letting the reader compare
-// by block rather than row-by-row.
 const ROWS: Row[] = [
-  // Block 1 — spreadsheets YES (things a spreadsheet actually does well)
   {
     label: "Flat monthly pricing",
     spreadsheets: "yes",
@@ -28,19 +24,8 @@ const ROWS: Row[] = [
     stroyka: "yes",
     note: "$0 / $149 / $249. No per-worker fees.",
   },
-  {
-    label: "Setup in under an afternoon",
-    spreadsheets: "yes",
-    enterprise: "no",
-    stroyka: "yes",
-  },
-  {
-    label: "No training required",
-    spreadsheets: "yes",
-    enterprise: "no",
-    stroyka: "yes",
-  },
-  // Block 2 — spreadsheets PARTIAL
+  { label: "Setup in under an afternoon", spreadsheets: "yes", enterprise: "no",  stroyka: "yes" },
+  { label: "No training required",        spreadsheets: "yes", enterprise: "no",  stroyka: "yes" },
   {
     label: "Export to QuickBooks / Xero",
     spreadsheets: "partial",
@@ -48,64 +33,32 @@ const ROWS: Row[] = [
     stroyka: "yes",
     note: "CSV + PDF now, direct integrations on the roadmap.",
   },
-  // Block 3 — spreadsheets NO, enterprise YES (things enterprise does well)
-  {
-    label: "Real-time job costing",
-    spreadsheets: "no",
-    enterprise: "yes",
-    stroyka: "yes",
-  },
-  {
-    label: "Approval workflows + audit trail",
-    spreadsheets: "no",
-    enterprise: "yes",
-    stroyka: "yes",
-  },
-  // Block 4 — spreadsheets NO, enterprise PARTIAL (the gap Stroyka fills)
-  {
-    label: "Works offline at the jobsite",
-    spreadsheets: "no",
-    enterprise: "partial",
-    stroyka: "yes",
-  },
-  {
-    label: "Crew-facing mobile app",
-    spreadsheets: "no",
-    enterprise: "partial",
-    stroyka: "yes",
-  },
+  { label: "Real-time job costing",              spreadsheets: "no", enterprise: "yes",     stroyka: "yes" },
+  { label: "Approval workflows + audit trail",   spreadsheets: "no", enterprise: "yes",     stroyka: "yes" },
+  { label: "Works offline at the jobsite",       spreadsheets: "no", enterprise: "partial", stroyka: "yes" },
+  { label: "Crew-facing mobile app",             spreadsheets: "no", enterprise: "partial", stroyka: "yes" },
 ];
 
 function Cell({ value, highlight }: { value: CellValue; highlight: boolean }) {
-  const base =
-    "flex items-center justify-center w-8 h-8 rounded-full border-[1.5px] transition-colors";
   if (value === "yes") {
+    const cls = highlight
+      ? "bg-ink text-bone border-ink"
+      : "bg-transparent text-ink border-ink/30";
     return (
-      <span
-        className={`${base} ${
-          highlight
-            ? "bg-emerald-500/30 border-emerald-400/70 text-white shadow-[0_0_16px_rgba(52,211,153,0.25)]"
-            : "bg-emerald-500/20 border-emerald-400/50 text-emerald-300"
-        }`}
-      >
+      <span className={`flex items-center justify-center w-8 h-8 rounded-full border-[1.5px] ${cls}`}>
         <Check size={14} strokeWidth={3} />
       </span>
     );
   }
   if (value === "partial") {
     return (
-      <span
-        className={`${base} bg-amber-500/25 border-amber-400/60 text-amber-300`}
-        title="Partial"
-      >
+      <span className="flex items-center justify-center w-8 h-8 rounded-full border-[1.5px] border-clay/50 text-clay" title="Partial">
         <Minus size={14} strokeWidth={3} />
       </span>
     );
   }
   return (
-    <span
-      className={`${base} bg-rose-500/20 border-rose-400/55 text-rose-300`}
-    >
+    <span className="flex items-center justify-center w-8 h-8 rounded-full border-[1.5px] border-ink/15 text-ink-muted/60">
       <X size={14} strokeWidth={3} />
     </span>
   );
@@ -113,89 +66,48 @@ function Cell({ value, highlight }: { value: CellValue; highlight: boolean }) {
 
 const COLS = [
   { key: "spreadsheets", label: "Spreadsheets + WhatsApp", sub: "The default" },
-  {
-    key: "enterprise",
-    label: "Enterprise software",
-    sub: "For 50+ person GCs",
-  },
-  { key: "stroyka", label: "Stroyka", sub: "For crews of 5–25" },
+  { key: "enterprise",   label: "Enterprise software",      sub: "For 50+ person GCs" },
+  { key: "stroyka",      label: "Stroyka",                  sub: "For crews of 5–25" },
 ] as const;
 
 export default function Comparison() {
   return (
-    <section id="comparison" className="relative py-20 lg:py-28">
-      <div className="max-w-5xl mx-auto px-6">
+    <section id="comparison" className="relative bg-bone py-24 lg:py-32">
+      <div className="max-w-5xl mx-auto px-6 lg:px-10">
         {/* Header */}
-        <div className="text-center mb-14">
+        <div className="max-w-2xl mb-16">
           <FadeIn>
             <SectionLabel>The alternatives</SectionLabel>
           </FadeIn>
           <TextReveal
             as="h2"
-            className="text-4xl lg:text-5xl font-heading font-bold leading-tight mb-4"
+            className="font-display font-light text-5xl lg:text-7xl leading-[0.95] tracking-[-0.02em] text-ink mb-6"
           >
             Where Stroyka lands.
           </TextReveal>
           <FadeIn delay={0.1}>
-            <p className="text-base text-brand-sage-mist/75 max-w-xl mx-auto">
-              Honest comparison. If you&rsquo;re a 50+ person GC with a
-              dedicated back-office team, enterprise tools are still the right
-              call. If you&rsquo;re a 5–25 crew trying to stop texting
-              timesheets, keep reading.
+            <p className="text-lg text-ink-soft leading-relaxed max-w-xl">
+              Honest comparison. If you&rsquo;re a 50+ person GC with a dedicated back-office team, enterprise tools are still the right call. If you&rsquo;re a 5–25 crew trying to stop texting timesheets, keep reading.
             </p>
           </FadeIn>
         </div>
 
         {/* Table */}
         <FadeIn delay={0.15}>
-          <div className="relative rounded-3xl border border-brand-forest/15 bg-brand-deep/30 backdrop-blur-sm overflow-hidden">
+          <div className="relative border border-ink/15 bg-bone-soft rounded-sm overflow-hidden">
             {/* Column headers */}
-            <div className="grid grid-cols-[1.5fr_repeat(3,1fr)] gap-2 px-4 md:px-8 py-5 border-b border-brand-forest/15 bg-brand-midnight/50">
-              {/* Top-left corner — small label with icon so the cell doesn't read empty */}
-              <div className="flex items-center gap-2.5">
-                <span className="flex-shrink-0 w-9 h-9 rounded-lg bg-brand-forest/15 border border-brand-forest/25 flex items-center justify-center text-brand-sage">
-                  <HardHat size={16} strokeWidth={1.8} />
-                </span>
-                <div className="hidden sm:block">
-                  <div className="font-heading font-semibold text-sm text-brand-sage-mist/85 leading-tight">
-                    What matters
-                  </div>
-                  <div className="text-[11px] text-brand-sage-mist/45 mt-0.5">
-                    on the jobsite
-                  </div>
-                </div>
+            <div className="grid grid-cols-[1.6fr_repeat(3,1fr)] gap-2 px-6 md:px-8 py-5 border-b border-ink/15 bg-bone-deep/50">
+              <div className="font-mono text-[10.5px] tracking-[0.22em] uppercase text-ink-muted self-center">
+                What matters on the jobsite
               </div>
               {COLS.map((col) => {
                 const isStroyka = col.key === "stroyka";
                 return (
-                  <div
-                    key={col.key}
-                    className={`text-center ${
-                      isStroyka ? "relative" : ""
-                    }`}
-                  >
-                    {isStroyka && (
-                      <span
-                        aria-hidden
-                        className="absolute inset-x-2 -top-1 bottom-0 rounded-2xl bg-brand-forest/10 border border-brand-forest/30 -z-0"
-                      />
-                    )}
-                    <div
-                      className={`relative z-[1] font-heading font-semibold leading-tight ${
-                        isStroyka
-                          ? "text-brand-sage text-base md:text-lg"
-                          : "text-brand-sage-mist/85 text-sm md:text-base"
-                      }`}
-                    >
+                  <div key={col.key} className="text-center">
+                    <div className={`font-display leading-tight ${isStroyka ? "text-ink text-xl" : "text-ink-soft text-[15px]"}`}>
                       {col.label}
                     </div>
-                    <div
-                      className={`relative z-[1] mt-1 text-[11px] md:text-xs font-medium ${
-                        isStroyka
-                          ? "text-brand-sage/70"
-                          : "text-brand-sage-mist/45"
-                      }`}
-                    >
+                    <div className="mt-1 font-mono text-[10px] tracking-[0.15em] uppercase text-ink-muted/80">
                       {col.sub}
                     </div>
                   </div>
@@ -204,7 +116,7 @@ export default function Comparison() {
             </div>
 
             {/* Rows */}
-            <div className="divide-y divide-brand-forest/10">
+            <div className="divide-y divide-ink/10">
               {ROWS.map((row, i) => (
                 <motion.div
                   key={row.label}
@@ -216,27 +128,21 @@ export default function Comparison() {
                     delay: i * 0.04,
                     ease: [0.22, 1, 0.36, 1],
                   }}
-                  className="grid grid-cols-[1.5fr_repeat(3,1fr)] gap-2 px-4 md:px-8 py-4 items-center hover:bg-brand-forest/5 transition-colors"
+                  className="grid grid-cols-[1.6fr_repeat(3,1fr)] gap-2 px-6 md:px-8 py-4 items-center hover:bg-bone-deep/40 transition-colors"
                 >
                   <div>
-                    <p className="text-[14px] md:text-[15px] text-brand-sage-mist/85 font-medium leading-snug">
+                    <p className="text-[15px] text-ink font-medium leading-snug">
                       {row.label}
                     </p>
                     {row.note && (
-                      <p className="mt-1 text-[11.5px] text-brand-sage-mist/45 leading-snug">
+                      <p className="mt-1 font-mono text-[11px] tracking-[0.05em] text-ink-muted leading-snug">
                         {row.note}
                       </p>
                     )}
                   </div>
-                  <div className="flex justify-center">
-                    <Cell value={row.spreadsheets} highlight={false} />
-                  </div>
-                  <div className="flex justify-center">
-                    <Cell value={row.enterprise} highlight={false} />
-                  </div>
-                  <div className="flex justify-center">
-                    <Cell value={row.stroyka} highlight />
-                  </div>
+                  <div className="flex justify-center"><Cell value={row.spreadsheets} highlight={false} /></div>
+                  <div className="flex justify-center"><Cell value={row.enterprise}   highlight={false} /></div>
+                  <div className="flex justify-center"><Cell value={row.stroyka}      highlight /></div>
                 </motion.div>
               ))}
             </div>
@@ -245,21 +151,21 @@ export default function Comparison() {
 
         {/* Legend */}
         <FadeIn delay={0.25}>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-5 text-[12.5px] text-brand-sage-mist/55">
+          <div className="mt-8 flex flex-wrap items-center gap-6 font-mono text-[11px] tracking-[0.15em] uppercase text-ink-muted">
             <span className="flex items-center gap-2">
-              <span className="w-4 h-4 rounded-full bg-emerald-500/20 border border-emerald-400/50 flex items-center justify-center text-emerald-300">
+              <span className="w-4 h-4 rounded-full bg-ink text-bone flex items-center justify-center">
                 <Check size={10} strokeWidth={3} />
               </span>
               Yes
             </span>
             <span className="flex items-center gap-2">
-              <span className="w-4 h-4 rounded-full bg-amber-500/25 border border-amber-400/60 flex items-center justify-center text-amber-300">
+              <span className="w-4 h-4 rounded-full border-[1.5px] border-clay/60 text-clay flex items-center justify-center">
                 <Minus size={10} strokeWidth={3} />
               </span>
               Partial
             </span>
             <span className="flex items-center gap-2">
-              <span className="w-4 h-4 rounded-full bg-rose-500/20 border border-rose-400/55 flex items-center justify-center text-rose-300">
+              <span className="w-4 h-4 rounded-full border-[1.5px] border-ink/20 text-ink-muted/70 flex items-center justify-center">
                 <X size={10} strokeWidth={3} />
               </span>
               No

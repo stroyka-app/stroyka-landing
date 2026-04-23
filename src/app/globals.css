@@ -6,9 +6,15 @@
   html {
     scroll-behavior: smooth;
   }
+  body {
+    background-image:
+      radial-gradient(rgba(27, 30, 27, 0.035) 1px, transparent 1px);
+    background-size: 3px 3px;
+    background-attachment: fixed;
+  }
   ::selection {
-    background-color: #52796f;
-    color: #cad2c5;
+    background-color: #1b1e1b;
+    color: #eee8db;
   }
 }
 
@@ -16,20 +22,19 @@
   .text-balance {
     text-wrap: balance;
   }
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+  .hairline {
+    border-width: 1px;
+  }
 }
 
 @keyframes shimmer {
-  0% {
-    transform: translateX(-100%) rotate(-15deg);
-  }
-  100% {
-    transform: translateX(200%) rotate(-15deg);
-  }
+  0%   { transform: translateX(-100%) rotate(-15deg); }
+  100% { transform: translateX(200%) rotate(-15deg); }
 }
 
-/* Rotating conic-gradient border + sweep for highlighted cards.
-   Colors are driven by CSS custom properties so each card can theme it
-   independently (Starter = sage/forest, Pro = amber/gold). */
 @property --a {
   syntax: "<angle>";
   inherits: false;
@@ -43,7 +48,6 @@
 .glow-border {
   position: relative;
   isolation: isolate;
-  /* Defaults — sage/forest palette */
   --glow-c1: #52796f;
   --glow-c2: #84a98c;
   --glow-c3: #cad2c5;
@@ -75,7 +79,6 @@
   z-index: 2;
 }
 
-/* Soft rotating sweep that reads as ambient light moving through the card. */
 .glow-sweep {
   position: absolute;
   inset: -20%;
@@ -99,24 +102,23 @@
   .glow-sweep { animation: none; }
 }
 
-/* Legal page content styles */
 .legal-content p {
-  @apply text-sm text-brand-sage-mist/75 leading-relaxed mb-4;
+  @apply text-sm text-ink-soft leading-relaxed mb-4;
 }
 .legal-content ul {
   @apply mb-4 space-y-2;
 }
 .legal-content li {
-  @apply text-sm text-brand-sage-mist/75 leading-relaxed ml-4 list-disc;
+  @apply text-sm text-ink-soft leading-relaxed ml-4 list-disc;
 }
 .legal-content strong {
-  @apply text-brand-sage-mist/90;
+  @apply text-ink;
 }
 .legal-content a {
-  @apply underline text-brand-forest hover:text-brand-sage transition-colors;
+  @apply underline text-brand-forest hover:text-ink transition-colors;
 }
 .legal-content h3 {
-  @apply text-base font-heading font-semibold text-brand-sage-mist/90 mt-6 mb-3;
+  @apply text-base font-heading font-semibold text-ink mt-6 mb-3;
 }
 
 .shimmer-streak {
@@ -134,7 +136,6 @@
   animation: shimmer 3s ease-in-out infinite;
 }
 
-/* Ambient glow behind the exploded device */
 .device-glow {
   isolation: isolate;
 }
@@ -148,5 +149,23 @@
   );
   filter: blur(50px);
   z-index: -1;
-  pointer-events: none;
+}
+
+/* Editorial mask reveal — key headline moments in the rewritten sections */
+@keyframes mask-reveal-keyframes {
+  to { clip-path: inset(0 0 0 0); }
+}
+.mask-reveal {
+  clip-path: inset(0 0 100% 0);
+  animation: mask-reveal-keyframes 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Pen-stroke underline — SVG stroke-dashoffset animation for the hero accent */
+@keyframes draw-underline {
+  to { stroke-dashoffset: 0; }
+}
+.draw-underline {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: draw-underline 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
 }

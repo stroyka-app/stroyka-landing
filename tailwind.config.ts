@@ -5,6 +5,20 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        bone: {
+          DEFAULT: "#EEE8DB",
+          deep:    "#E3DCCC",
+          soft:    "#F5F1E8",
+        },
+        ink: {
+          DEFAULT: "#1B1E1B",
+          soft:    "#3A3F3B",
+          muted:   "#6B6F6A",
+        },
+        clay: {
+          DEFAULT: "#C4562F",
+          soft:    "#E08A5F",
+        },
         brand: {
           "sage-mist":     "#cad2c5",
           sage:            "#84a98c",
@@ -17,8 +31,10 @@ const config: Config = {
         },
       },
       fontFamily: {
+        display: ["var(--font-fraunces)",      "Georgia", "serif"],
         heading: ["var(--font-space-grotesk)", "system-ui", "sans-serif"],
         body:    ["var(--font-inter)",         "system-ui", "sans-serif"],
+        mono:    ["var(--font-jetbrains-mono)", "ui-monospace", "monospace"],
       },
       animation: {
         marquee:       "marquee 60s linear infinite",

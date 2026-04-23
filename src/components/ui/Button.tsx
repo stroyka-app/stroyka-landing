@@ -5,7 +5,13 @@ import { motion, useSpring, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "ghost";
+  /**
+   * primary  — solid ink on bone (default — for bone sections)
+   * secondary — ink outline on bone
+   * invert   — bone on ink (for use on ink/dark sections)
+   * ghost    — text only, ink color
+   */
+  variant?: "primary" | "secondary" | "invert" | "ghost";
   size?: "sm" | "md" | "lg";
   href?: string;
   children: React.ReactNode;
@@ -51,38 +57,31 @@ export default function Button({
   };
 
   const base =
-    "relative inline-flex items-center justify-center font-heading font-semibold tracking-wide rounded-xl transition-colors duration-200 cursor-pointer";
+    "relative inline-flex items-center justify-center font-heading font-semibold tracking-wide rounded-full transition-colors duration-200 cursor-pointer";
   const variants = {
     primary:
-      "bg-brand-forest text-white hover:bg-brand-deep active:scale-95 shadow-lg shadow-brand-forest/20",
+      "bg-ink text-bone hover:bg-ink-soft active:scale-95",
     secondary:
-      "border border-brand-forest text-brand-sage hover:bg-brand-forest/10 active:scale-95",
-    ghost: "text-brand-sage hover:text-white active:scale-95",
+      "border border-ink text-ink hover:bg-ink hover:text-bone active:scale-95",
+    invert:
+      "bg-bone text-ink hover:bg-bone-soft active:scale-95",
+    ghost:
+      "text-ink hover:text-brand-forest active:scale-95",
   };
   const sizes = {
-    sm: "text-sm px-4 py-2",
-    md: "text-base px-6 py-3",
-    lg: "text-lg px-8 py-4",
+    sm: "text-sm px-5 py-2",
+    md: "text-[15px] px-6 py-3",
+    lg: "text-[15px] px-7 py-3.5",
   };
 
   const cls = cn(base, variants[variant], sizes[size], className);
 
   const inner = href ? (
     <a href={href} className={cls}>
-      {variant === "primary" && (
-        <span className="absolute inset-0 overflow-hidden rounded-xl">
-          <span className="shimmer-streak" />
-        </span>
-      )}
       {children}
     </a>
   ) : (
     <button className={cls} {...props}>
-      {variant === "primary" && (
-        <span className="absolute inset-0 overflow-hidden rounded-xl">
-          <span className="shimmer-streak" />
-        </span>
-      )}
       {children}
     </button>
   );

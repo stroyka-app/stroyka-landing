@@ -1,109 +1,81 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 
 /**
- * FounderNote — the human-face section.
+ * FounderNote — the editorial letter.
  *
- * NOTE FOR MAKS: drop a photo at /public/founder.jpeg and set `photoSrc` to
- * "/founder.jpeg" to enable the portrait. While it's `null`, the component
- * renders the "M" monogram placeholder and never attempts to load an image
- * (so no 404 in the console).
+ * Treated like a letter-from-the-editor in a magazine: centered single column,
+ * dateline at top, an oversized italic opening line, drop-capped first letter,
+ * and a hand-feel signature (Fraunces italic, slight rotation). Paper, not UI.
  */
 const FOUNDER = {
   name: "Maks Dalen",
   title: "Founder, Stroyka",
-  location: "Austin, TX",
-  photoSrc: null as string | null, // e.g. "/founder.jpeg" when the asset is ready
-  body: [
-    "I grew up on jobsites. My family ran a framing crew out of a spreadsheet, a clipboard, and a group chat that nobody had the energy to keep clean by the end of the week.",
-    "Stroyka is the tool I wanted to hand my old man — flat pricing, works offline, takes an afternoon to learn. Nothing more, nothing less.",
-  ],
+  location: "Austin, Texas",
   signatureName: "Maks",
+  dateline: "A letter from the founder · Vol. 01",
 };
 
 export default function FounderNote() {
-  const [imgOk, setImgOk] = useState(true);
-
   return (
-    <section id="founder" className="relative py-20 lg:py-24">
-      <div className="max-w-5xl mx-auto px-6">
+    <section id="founder" className="relative bg-bone py-28 lg:py-36">
+      <div className="max-w-2xl mx-auto px-6">
         <FadeIn>
-          <SectionLabel>Who&rsquo;s building this</SectionLabel>
+          <SectionLabel>A letter</SectionLabel>
         </FadeIn>
 
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="relative mt-6 grid md:grid-cols-[auto_1fr] gap-8 lg:gap-12 items-center rounded-3xl border border-brand-forest/15 bg-gradient-to-br from-brand-deep/60 via-brand-midnight/70 to-brand-midnight/80 p-8 lg:p-12 backdrop-blur-sm"
-        >
-          {/* Soft glow */}
-          <span
-            aria-hidden
-            className="pointer-events-none absolute -top-20 -left-20 w-80 h-80 rounded-full bg-brand-forest/15 blur-[80px]"
-          />
+        {/* Dateline */}
+        <FadeIn delay={0.05}>
+          <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-muted mb-10 pb-6 border-b border-ink/12">
+            {FOUNDER.location} <span className="text-ink-muted/50">·</span> {FOUNDER.dateline}
+          </p>
+        </FadeIn>
 
-          {/* Portrait */}
-          <div className="relative flex-shrink-0 flex flex-col items-center md:block md:mx-0">
-            <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden ring-2 ring-brand-forest/30 shadow-xl shadow-brand-midnight-dark/50">
-              {/* Fallback initial — always rendered under the img */}
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-forest/30 to-brand-deep/60 flex items-center justify-center">
-                <span className="font-heading font-bold text-5xl text-brand-sage-mist/30">
-                  {FOUNDER.name.charAt(0)}
-                </span>
-              </div>
-              {/* Only render the img when we have a photo path AND the load
-                  hasn't failed. Unmounts entirely on error so the browser
-                  can't leak the "broken image" alt-text UI. */}
-              {FOUNDER.photoSrc && imgOk && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={FOUNDER.photoSrc}
-                  alt=""
-                  aria-hidden
-                  className="relative w-full h-full object-cover"
-                  onError={() => setImgOk(false)}
-                />
-              )}
-            </div>
-            {/* Location / role under portrait, mobile-only */}
-            <div className="mt-4 text-center md:hidden">
-              <p className="font-heading font-semibold text-white">
-                {FOUNDER.name}
-              </p>
-              <p className="text-xs text-brand-sage-mist/55">
-                {FOUNDER.title} · {FOUNDER.location}
-              </p>
-            </div>
-          </div>
+        {/* Opening pull line — oversized italic Fraunces */}
+        <FadeIn delay={0.1}>
+          <p className="font-display italic font-light text-[clamp(1.75rem,4.2vw,3rem)] leading-[1.12] tracking-[-0.01em] text-ink mb-12">
+            I grew up on jobsites.
+          </p>
+        </FadeIn>
 
-          {/* Note */}
-          <div className="relative">
-            <div className="hidden md:block mb-4">
-              <p className="font-heading font-semibold text-white text-lg">
-                {FOUNDER.name}
-              </p>
-              <p className="text-sm text-brand-sage-mist/55">
-                {FOUNDER.title} · {FOUNDER.location}
-              </p>
-            </div>
-
-            <div className="space-y-4 text-[15.5px] leading-relaxed text-brand-sage-mist/80">
-              {FOUNDER.body.map((para, i) => (
-                <p key={i}>{para}</p>
-              ))}
-            </div>
-
-            <p className="mt-6 font-heading italic text-brand-sage text-lg">
-              — {FOUNDER.signatureName}
+        {/* Body */}
+        <FadeIn delay={0.16}>
+          <div className="space-y-6 text-[17px] leading-[1.7] text-ink-soft">
+            <p>
+              <span className="font-display float-left text-6xl leading-[0.85] pr-3 pt-1 text-ink">M</span>
+              y family ran a framing crew out of a spreadsheet, a clipboard, and
+              a group chat nobody had the energy to keep clean by the end of the
+              week. Budgets drifted. Receipts vanished. The answer to
+              &ldquo;where are we on Johnson Home?&rdquo; was usually a shrug.
+            </p>
+            <p>
+              Stroyka is the tool I wanted to hand my old man. Flat pricing.
+              Works offline. Takes an afternoon to learn. Built for the crew,
+              not the back office. Nothing more, nothing less.
+            </p>
+            <p className="font-display italic text-[19px] text-ink">
+              If it doesn&rsquo;t make your Tuesday easier, it has no business
+              being on your phone.
             </p>
           </div>
-        </motion.div>
+        </FadeIn>
+
+        {/* Signature */}
+        <FadeIn delay={0.24}>
+          <div className="mt-14 pt-10 border-t border-ink/12">
+            <p
+              className="font-display italic text-4xl text-ink mb-3"
+              style={{ transform: "rotate(-2deg)", transformOrigin: "left center" }}
+            >
+              — {FOUNDER.signatureName}
+            </p>
+            <p className="font-mono text-[11px] tracking-[0.2em] uppercase text-ink-muted">
+              {FOUNDER.name} <span className="text-ink-muted/50">·</span> {FOUNDER.title}
+            </p>
+          </div>
+        </FadeIn>
       </div>
     </section>
   );

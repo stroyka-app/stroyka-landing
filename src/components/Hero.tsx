@@ -1,7 +1,5 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import FadeIn from "@/components/ui/FadeIn";
 import Button from "@/components/ui/Button";
 
@@ -14,180 +12,135 @@ const FOUNDING_SPOTS_REMAINING = Math.max(
   FOUNDING_SPOTS_TOTAL - FOUNDING_SPOTS_TAKEN,
 );
 
-function FloatingShapes() {
-  const ref = useRef(null);
-  const prefersReduced = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, -80]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, -40]);
-  const y3 = useTransform(scrollYProgress, [0, 1], [0, -120]);
-  const rotate1 = useTransform(scrollYProgress, [0, 1], [0, 20]);
-
-  if (prefersReduced) return null;
-
-  return (
-    <div ref={ref} className="absolute inset-0 z-[2] overflow-hidden pointer-events-none">
-      {/* Top-left bracket — echoes Cornerstone mark */}
-      <motion.div
-        style={{ y: y1, rotate: rotate1 }}
-        className="absolute top-[12%] left-[8%] w-20 h-20 border-l-[3px] border-t-[3px] border-brand-sage-mist/10 rounded-tl-sm"
-      />
-      {/* Bottom-right bracket */}
-      <motion.div
-        style={{ y: y2 }}
-        className="absolute bottom-[15%] right-[12%] w-16 h-16 border-r-[3px] border-b-[3px] border-brand-forest/15 rounded-br-sm"
-      />
-      {/* Subtle line accent */}
-      <motion.div
-        style={{ y: y3 }}
-        className="absolute top-[30%] right-[20%] w-12 h-px bg-brand-sage/10 rounded-full"
-      />
-      {/* Horizontal bar */}
-      <motion.div
-        style={{ y: y1 }}
-        className="absolute bottom-[30%] left-[15%] w-24 h-1 bg-brand-forest/10 rounded-full"
-      />
-      {/* Small square */}
-      <motion.div
-        style={{ y: y2 }}
-        className="absolute top-[55%] right-[8%] w-8 h-8 bg-brand-deep/30 rounded-md rotate-12"
-      />
-    </div>
-  );
-}
-
+/**
+ * Editorial hero — bone paper, ink type, pistachio accent.
+ *
+ * The old dark video-hero is retired. The new hero leads with typography the
+ * way a cover page leads a magazine: oversized Fraunces display, left-aligned,
+ * mixed weight + italic for voice. A small mono "spec card" to the right
+ * carries the contractor/field-journal metaphor without leaning on stock
+ * imagery or jobsite clichés.
+ */
 export default function Hero() {
   return (
-    <section id="hero" className="relative overflow-hidden">
-      {/* ── Video background ── */}
-      <div className="absolute inset-0 z-0">
-        {/* Gradient base (behind video, visible as fallback) */}
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            background: [
-              "radial-gradient(ellipse 80% 60% at 70% 40%, rgba(82,121,111,0.18) 0%, transparent 60%)",
-              "radial-gradient(ellipse 50% 50% at 20% 80%, rgba(53,79,82,0.15) 0%, transparent 50%)",
-              "linear-gradient(180deg, #2f3e46 0%, #2b3940 50%, #2f3e46 100%)",
-            ].join(", "),
-          }}
-        />
-        {/* Video layer */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover z-[1]"
-        >
-          <source src="/videos/hero-construction.mp4" type="video/mp4" />
-        </video>
-        {/* Dark overlay on top of video */}
-        <div className="absolute inset-0 bg-brand-midnight/70 z-[2]" />
+    <section id="hero" className="relative overflow-hidden bg-bone">
+      {/* Thin top hairline + mono filing header — sets the journal tone */}
+      <div className="relative z-10 border-b border-ink/10">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-3 flex items-center justify-between font-mono text-[10.5px] tracking-[0.22em] uppercase text-ink-muted">
+          <span>Stroyka — The Field Journal</span>
+          <span className="hidden sm:inline">Vol. 01 · Est. 2026 · Austin TX</span>
+          <span className="sm:hidden">Vol. 01</span>
+        </div>
       </div>
 
-      {/* Geometric shapes */}
-      <FloatingShapes />
-
-      {/* Bottom gradient fade into next section */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-brand-midnight to-transparent z-[3]" />
-
-      {/* ── Content ── */}
-      <div className="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24 lg:pt-40 lg:pb-32 text-center">
-        {/* Announcement pill */}
+      {/* Content */}
+      <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 pt-16 pb-20 lg:pt-24 lg:pb-28">
+        {/* Announcement pill — minimalist, with pistachio marker */}
         <FadeIn delay={0}>
-          <div className="inline-flex items-center gap-2.5 bg-brand-forest/15 border border-brand-forest/30 backdrop-blur-sm rounded-full pl-3 pr-4 py-2 mb-8 shadow-lg shadow-brand-forest/10">
-            <span className="relative flex w-2.5 h-2.5">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-brand-forest opacity-75 animate-ping" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-forest" />
-            </span>
-            <span className="font-heading text-[13px] md:text-sm font-semibold tracking-wide text-white/90 flex items-center gap-2">
-              <span>Start free</span>
-              <span className="text-brand-sage-mist/30">·</span>
-              <span className="text-amber-300/90">$99/mo founding rate</span>
-              <span className="text-brand-sage-mist/30 hidden sm:inline">·</span>
-              <span className="hidden sm:inline">{FOUNDING_SPOTS_REMAINING} spots left</span>
-            </span>
-          </div>
+          <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-soft mb-10 inline-flex items-center gap-2.5">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-sage" aria-hidden />
+            Start free
+            <span className="text-ink-muted/60">/</span>
+            <span className="text-ink">$99/mo founding rate</span>
+            <span className="text-ink-muted/60">/</span>
+            {FOUNDING_SPOTS_REMAINING} spots left
+          </p>
         </FadeIn>
 
-        {/* Headline */}
-        <FadeIn delay={0.1}>
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold leading-[1.05] tracking-tight mb-6">
-            Construction
-            <br />
-            Management
-            <br />
-            {/* Two-stop gradient (sage → sage-mist) — reads cleaner on the
-                video than the previous 3-stop version, which dipped through
-                the darker forest token mid-phrase and lost contrast. */}
-            <span
-              className="bg-clip-text text-transparent"
-              style={{
-                backgroundImage:
-                  "linear-gradient(135deg, #84a98c 0%, #cad2c5 100%)",
-              }}
-            >
-              for Real Crews
+        {/* Editorial headline — mixed weights + italic, Fraunces display */}
+        <FadeIn delay={0.08}>
+          <h1 className="font-display font-light text-[clamp(3.5rem,10vw,9.5rem)] leading-[0.92] tracking-[-0.03em] text-ink mb-10 max-w-[16ch]">
+            <span className="block">Construction</span>
+            <span className="block">
+              management<span className="text-brand-forest">,</span>
+            </span>
+            <span className="block italic font-normal relative">
+              for real crews.
+              {/* Hand-drawn pistachio underline on the last phrase */}
+              <svg
+                aria-hidden
+                className="absolute left-0 -bottom-3 lg:-bottom-5 w-[62%] h-auto"
+                viewBox="0 0 400 16"
+                fill="none"
+                preserveAspectRatio="none"
+              >
+                <path
+                  d="M2 10 Q 100 2, 200 8 T 398 6"
+                  stroke="#84a98c"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  className="draw-underline"
+                />
+              </svg>
             </span>
           </h1>
         </FadeIn>
 
-        {/* Subtext */}
-        <FadeIn delay={0.2}>
-          <p className="text-base md:text-lg text-brand-sage-mist/70 leading-relaxed max-w-xl mx-auto mb-4">
-            One tool for the whole crew — boss and workers. Clock-in, job
-            costing, reports. Works on any phone, even with no signal.
-          </p>
-        </FadeIn>
+        {/* Split: left = body + CTAs, right = spec card */}
+        <div className="grid lg:grid-cols-[1fr_auto] gap-10 lg:gap-16 items-end">
+          {/* Left */}
+          <div className="max-w-xl">
+            <FadeIn delay={0.18}>
+              <p className="text-lg lg:text-xl text-ink-soft leading-[1.55] mb-2">
+                One tool for the whole crew — boss and workers. Clock-in, job costing, reports. Works on any phone, even with no signal.
+              </p>
+            </FadeIn>
+            <FadeIn delay={0.22}>
+              <p className="font-mono text-[12px] tracking-[0.15em] uppercase text-ink-muted mb-10 mt-6">
+                For crews of 5–25 · Works the day you sign up
+              </p>
+            </FadeIn>
 
-        {/* Who this is for */}
-        <FadeIn delay={0.25}>
-          <p className="text-sm font-heading font-medium text-brand-sage/80 mb-10">
-            For crews of 5–25. Works the day you sign up.
-          </p>
-        </FadeIn>
-
-        {/* CTAs */}
-        <FadeIn delay={0.3}>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
-            <Button variant="primary" size="lg" href="/#download">
-              Start free
-            </Button>
-            <Button variant="secondary" size="lg" href="/demo">
-              Book a demo
-            </Button>
+            <FadeIn delay={0.28}>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <Button variant="primary" size="lg" href="/#download">
+                  Start free
+                </Button>
+                <Button variant="secondary" size="lg" href="/demo">
+                  Book a demo
+                </Button>
+              </div>
+            </FadeIn>
           </div>
-        </FadeIn>
 
-        {/* Trust signals */}
-        <FadeIn delay={0.4}>
-          <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
-            <span className="inline-flex items-center gap-2 bg-brand-deep/40 border border-brand-forest/20 backdrop-blur-sm rounded-full px-4 py-2 text-[13px] md:text-sm font-heading font-medium text-brand-sage-mist/85">
-              <svg className="w-[18px] h-[18px] text-brand-forest shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-              Offline-first
-            </span>
-            <span className="inline-flex items-center gap-2 bg-brand-deep/40 border border-brand-forest/20 backdrop-blur-sm rounded-full px-4 py-2 text-[13px] md:text-sm font-heading font-medium text-brand-sage-mist/85">
-              <svg className="w-[18px] h-[18px] text-brand-forest shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
-              </svg>
-              Free for crews up to 5
-            </span>
-            <span className="inline-flex items-center gap-2 bg-brand-deep/40 border border-brand-forest/20 backdrop-blur-sm rounded-full px-4 py-2 text-[13px] md:text-sm font-heading font-medium text-brand-sage-mist/85">
-              <svg className="w-[18px] h-[18px] text-brand-forest shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Flat monthly pricing
-            </span>
-          </div>
-        </FadeIn>
+          {/* Right — Spec card, reads like a jobsite cover sheet */}
+          <FadeIn delay={0.35}>
+            <aside className="w-full lg:w-[320px] border border-ink/15 bg-bone-soft/70 rounded-sm p-6 font-mono text-[12px] tracking-[0.06em]">
+              <div className="flex items-center justify-between pb-3 mb-4 border-b border-ink/12">
+                <span className="uppercase tracking-[0.2em] text-ink-muted">Project sheet</span>
+                <span className="text-brand-forest">●</span>
+              </div>
+              <dl className="space-y-3 text-ink-soft">
+                <div className="flex justify-between">
+                  <dt className="text-ink-muted uppercase">Crew</dt>
+                  <dd className="tabular-nums text-ink">12 workers</dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt className="text-ink-muted uppercase">Job no.</dt>
+                  <dd className="tabular-nums text-ink">2411-JH</dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt className="text-ink-muted uppercase">Labor wk</dt>
+                  <dd className="tabular-nums text-ink">428.5 h</dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt className="text-ink-muted uppercase">Budget</dt>
+                  <dd className="tabular-nums text-ink">
+                    <span className="text-brand-forest">▲</span> on plan
+                  </dd>
+                </div>
+                <div className="flex justify-between pt-3 mt-3 border-t border-ink/12">
+                  <dt className="text-ink-muted uppercase">Offline</dt>
+                  <dd className="text-ink">Yes — any phone</dd>
+                </div>
+              </dl>
+            </aside>
+          </FadeIn>
+        </div>
       </div>
+
+      {/* Thin bottom hairline — transitions into next (ink) section */}
+      <div className="relative z-10 border-t border-ink/10" />
     </section>
   );
 }

@@ -72,37 +72,34 @@ function FlipperCard({ feature, isActive, onActivate }: FlipperCardProps) {
         flexGrow: { type: "spring", stiffness: 300, damping: 35 },
       }}
       className={[
-        "relative cursor-pointer rounded-2xl border overflow-hidden",
-        "flex-shrink-0 min-w-0",
+        "relative cursor-pointer rounded-sm border overflow-hidden",
+        "flex-shrink-0 min-w-0 transition-colors",
         isActive
-          ? "border-brand-forest bg-brand-deep/60 shadow-lg shadow-brand-forest/10 p-8"
-          : "border-brand-deep bg-brand-deep/30 p-6",
+          ? "border-ink bg-bone-soft p-8"
+          : "border-ink/15 bg-bone/60 p-6",
       ].join(" ")}
       style={{ flexBasis: 0 }}
     >
-      {/* Icon — always visible */}
       <div
         className={[
-          "w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0",
+          "w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 transition-colors",
           isActive
-            ? "bg-brand-forest/20 text-brand-sage"
-            : "bg-brand-forest/10 text-brand-sage/50",
+            ? "bg-ink text-bone"
+            : "bg-bone-soft text-ink-muted",
         ].join(" ")}
       >
         {feature.icon}
       </div>
 
-      {/* Title — always visible */}
       <h3
         className={[
-          "font-heading font-semibold leading-snug mt-4 min-w-0",
-          isActive ? "text-xl mb-3" : "text-sm mb-0 text-brand-sage-mist/70",
+          "font-display leading-snug mt-5 min-w-0 transition-colors",
+          isActive ? "text-2xl mb-3 text-ink" : "text-[15px] mb-0 text-ink-soft",
         ].join(" ")}
       >
         {feature.title}
       </h3>
 
-      {/* Description — only shown when active */}
       <AnimatePresence initial={false}>
         {isActive && (
           <motion.p
@@ -110,7 +107,7 @@ function FlipperCard({ feature, isActive, onActivate }: FlipperCardProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { delay: 0.12, duration: 0.25 } }}
             exit={{ opacity: 0, transition: { duration: 0.1 } }}
-            className="text-brand-sage-mist/65 text-sm leading-relaxed min-w-0"
+            className="text-ink-soft text-[14.5px] leading-relaxed min-w-0"
           >
             {feature.body}
           </motion.p>
@@ -124,21 +121,23 @@ export default function Features() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section id="features" className="py-16 lg:py-20">
-      <div className="max-w-6xl mx-auto px-6">
-        {/* Header */}
-        <div className="text-center mb-16">
+    <section id="features" className="bg-bone-deep py-24 lg:py-32">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+        <div className="max-w-3xl mb-16 lg:mb-20">
           <FadeIn>
             <SectionLabel>Features</SectionLabel>
           </FadeIn>
-          <TextReveal as="h2" className="text-4xl lg:text-5xl font-heading font-bold leading-tight">
+          <TextReveal
+            as="h2"
+            className="font-display font-light text-5xl lg:text-7xl leading-[0.95] tracking-[-0.02em] text-ink"
+          >
             Everything your crew needs. Nothing they don&apos;t.
           </TextReveal>
         </div>
 
         {/* Desktop: horizontal flipper row */}
         <FadeIn delay={0.1}>
-          <div className="hidden md:flex gap-4 h-64">
+          <div className="hidden md:flex gap-4 h-72">
             {FEATURES.map((feature, i) => (
               <FlipperCard
                 key={feature.title}
@@ -150,18 +149,18 @@ export default function Features() {
           </div>
         </FadeIn>
 
-        {/* Mobile: stacked cards, all show full content */}
+        {/* Mobile: stacked cards */}
         <div className="flex flex-col gap-4 md:hidden">
           {FEATURES.map((feature, i) => (
             <FadeIn key={feature.title} delay={0.08 * i}>
-              <div className="bg-brand-deep/40 border border-brand-deep rounded-2xl p-6">
-                <div className="w-12 h-12 bg-brand-forest/15 rounded-xl flex items-center justify-center text-brand-sage mb-5">
+              <div className="bg-bone-soft border border-ink/15 rounded-sm p-6">
+                <div className="w-11 h-11 bg-ink text-bone rounded-full flex items-center justify-center mb-5">
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-heading font-semibold mb-3">
+                <h3 className="font-display text-2xl leading-snug text-ink mb-3">
                   {feature.title}
                 </h3>
-                <p className="text-brand-sage-mist/65 text-sm leading-relaxed">
+                <p className="text-ink-soft text-[14.5px] leading-relaxed">
                   {feature.body}
                 </p>
               </div>

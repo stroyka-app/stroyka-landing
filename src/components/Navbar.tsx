@@ -23,21 +23,21 @@ export default function Navbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
         scrolled
-          ? "backdrop-blur-md bg-brand-midnight/80 border-b border-brand-deep"
+          ? "backdrop-blur-md bg-bone/85 border-b border-ink/10"
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 flex items-center justify-between h-16">
         <Link href="/" aria-label="Home">
-          <Logo variant="dark" size={32} />
+          <Logo variant="light" size={30} />
         </Link>
 
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-9">
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="font-heading text-[15px] font-medium text-brand-sage-mist/85 hover:text-white transition-colors duration-200"
+              className="font-mono text-[12px] tracking-[0.15em] uppercase text-ink-soft hover:text-ink transition-colors duration-200"
             >
               {link.label}
             </a>
@@ -57,15 +57,15 @@ export default function Navbar() {
           aria-expanded={mobileOpen}
         >
           <motion.span
-            className="block w-6 h-0.5 bg-white"
+            className="block w-6 h-0.5 bg-ink"
             animate={mobileOpen ? { rotate: 45, y: 4 } : { rotate: 0, y: 0 }}
           />
           <motion.span
-            className="block w-6 h-0.5 bg-white"
+            className="block w-6 h-0.5 bg-ink"
             animate={mobileOpen ? { opacity: 0 } : { opacity: 1 }}
           />
           <motion.span
-            className="block w-6 h-0.5 bg-white"
+            className="block w-6 h-0.5 bg-ink"
             animate={mobileOpen ? { rotate: -45, y: -4 } : { rotate: 0, y: 0 }}
           />
         </button>
@@ -78,14 +78,14 @@ export default function Navbar() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden overflow-hidden backdrop-blur-md bg-brand-midnight/95 border-b border-brand-deep"
+            className="md:hidden overflow-hidden backdrop-blur-md bg-bone/95 border-b border-ink/10"
           >
-            <div className="flex flex-col px-6 py-5 gap-5">
+            <div className="flex flex-col px-6 py-6 gap-5">
               {NAV_LINKS.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
-                  className="font-heading text-base font-medium text-brand-sage-mist/85 hover:text-white transition-colors"
+                  className="font-mono text-[12px] tracking-[0.15em] uppercase text-ink-soft hover:text-ink transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}

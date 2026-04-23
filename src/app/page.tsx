@@ -1,7 +1,6 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useSectionColors } from "@/lib/hooks/useSectionColors";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import TheShift from "@/components/TheShift";
@@ -26,30 +25,9 @@ import FAQ from "@/components/FAQ";
 import CTABanner from "@/components/CTABanner";
 import Footer from "@/components/Footer";
 
-const SECTION_IDS = [
-  "hero",
-  "the-shift",
-  "how-it-works",
-  "features",
-  "plan-to-done",
-  "comparison",
-  "founder",
-  "integrations",
-  "pricing",
-  "guarantee",
-  "faq",
-  "cta",
-  "footer",
-];
-
 export default function Home() {
-  const bgColor = useSectionColors(SECTION_IDS);
-
   return (
-    <main
-      style={{ backgroundColor: bgColor }}
-      className="relative transition-colors duration-500"
-    >
+    <main className="relative">
       <Navbar />
       <Hero />
       <TheShift />
