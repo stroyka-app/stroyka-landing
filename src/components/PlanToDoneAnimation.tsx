@@ -41,8 +41,12 @@ const COLORS = {
   sageMist:     "#cad2c5",
   sage:         "#84a98c",
   forest:       "#4B5F4E",
-  deep:         "#34453A",
-  midnight:     "#34453A",
+  // Section surface: sage-olive (was #34453A). Lighter + warmer so the
+  // handoff from/to sand doesn't register as a hard "entering a room"
+  // value-jump. Cards inside (midnight-dark/...) stay dark → they still
+  // read as inset elements.
+  deep:         "#4E6253",
+  midnight:     "#4E6253",
   midnightDark: "#2B3D30",
   amber:        "#d97706",
   amberBright:  "#f59e0b",
@@ -188,7 +192,7 @@ function PlanLabel({
       style={{
         pointerEvents: "none",
         whiteSpace: "nowrap",
-        opacity: "var(--ptd-label-opacity, 1)",
+        opacity: "var(--ptd-label-opacity, 0)",
         transition: "opacity 80ms linear",
       }}
     >
@@ -272,7 +276,11 @@ function FloorPlan({ scroll }: { scroll: ScrollRef }) {
 
   useFrame(() => {
     const p = scroll.current;
-    const opacity = 1 - ramp(p, 0.16, 0.30);
+    // Fade IN AFTER IntroTitle fully exits (~0.085) so lines + labels never
+    // overlap the section title. Fades OUT at Beat 2 handoff.
+    const fadeIn = ramp(p, 0.095, 0.15);
+    const fadeOut = 1 - ramp(p, 0.20, 0.30);
+    const opacity = fadeIn * fadeOut;
     if (matRef.current) matRef.current.opacity = opacity;
     if (dimMatRef.current) dimMatRef.current.opacity = opacity * 0.9;
     // Fade DOM-projected labels via shared CSS variable
@@ -284,10 +292,10 @@ function FloorPlan({ scroll }: { scroll: ScrollRef }) {
   return (
     <>
       <lineSegments geometry={planGeo}>
-        <lineBasicMaterial ref={matRef} color={COLORS.sage} transparent opacity={1} />
+        <lineBasicMaterial ref={matRef} color={COLORS.sage} transparent opacity={0} />
       </lineSegments>
       <lineSegments geometry={dimGeo}>
-        <lineBasicMaterial ref={dimMatRef} color={COLORS.amber} transparent opacity={0.95} />
+        <lineBasicMaterial ref={dimMatRef} color={COLORS.amber} transparent opacity={0} />
       </lineSegments>
 
       {/* In-3D room labels + dimension numbers via drei <Html> — DOM divs
@@ -935,9 +943,15 @@ function Walls({ scroll }: { scroll: ScrollRef }) {
 function CameraRig({ scroll }: { scroll: ScrollRef }) {
   const camRef = useRef<THREE.PerspectiveCamera>(null);
 
-  // Orbit radius/elevation for Beat 3 — camera circles the house
-  const ORBIT_R = 14;
+  // Orbit radius/elevation for Beat 3 — camera circles the house.
+  // Radius bumped slightly so the house reads smaller in frame (user
+  // requested a touch more breathing room). lookAt target Y is also
+  // raised (1.2 → 2.2) which pulls the viewing center up and pushes the
+  // rendered house lower in the viewport — gives the cost cards and
+  // title block more top-of-frame air.
+  const ORBIT_R = 15.5;
   const ORBIT_Y = 7;
+  const LOOK_Y = 2.2;
 
   useFrame(() => {
     if (!camRef.current) return;
@@ -947,7 +961,7 @@ function CameraRig({ scroll }: { scroll: ScrollRef }) {
     // degenerate; force camera UP to Z-back so "north" reads correctly.
     if (p < 0.18) {
       const t = ramp(p, 0.0, 0.18);
-      const camY = lerp(28, 24, t);
+      const camY = lerp(30, 26, t);
       const fov = lerp(24, 26, t);
       camRef.current.position.set(0.001, camY, 0.001);
       camRef.current.up.set(0, 0, -1);
@@ -960,13 +974,11 @@ function CameraRig({ scroll }: { scroll: ScrollRef }) {
     // Beat 2: lift up and rotate from top-down to 3-quarter (0.18 → 0.36)
     if (p < 0.36) {
       const t = easeInOut(ramp(p, 0.18, 0.36));
-      // Interpolate camera position from (0,24,0.01) to (12, 9, 12)
-      const cx = lerp(0.001, 12, t);
-      const cy = lerp(24, 9, t);
-      const cz = lerp(0.001, 12, t);
-      const ty = lerp(0, 1.2, t);
+      const cx = lerp(0.001, 13, t);
+      const cy = lerp(26, 9.5, t);
+      const cz = lerp(0.001, 13, t);
+      const ty = lerp(0, LOOK_Y, t);
       const fov = lerp(26, 34, t);
-      // Smoothly rotate up vector from (0,0,-1) back to (0,1,0)
       const upY = lerp(0, 1, t);
       const upZ = lerp(-1, 0, t);
       camRef.current.position.set(cx, cy, cz);
@@ -980,16 +992,15 @@ function CameraRig({ scroll }: { scroll: ScrollRef }) {
     // Beat 3: orbit around the house (0.36 → 0.66) — half-revolution + elevation drift
     if (p < 0.66) {
       const t = easeInOut(ramp(p, 0.36, 0.66));
-      // angle from 0 (front-right) to 1.2π (around the back side) so we see all sides
       const angle = lerp(Math.PI * 0.25, Math.PI * 1.45, t);
-      const r = lerp(ORBIT_R, ORBIT_R - 1.5, t);
+      const r = lerp(ORBIT_R, ORBIT_R - 1, t);
       const cx = Math.cos(angle) * r;
       const cz = Math.sin(angle) * r;
-      const cy = lerp(ORBIT_Y, 6, t);
+      const cy = lerp(ORBIT_Y, 6.5, t);
       const fov = lerp(34, 36, t);
       camRef.current.position.set(cx, cy, cz);
       camRef.current.up.set(0, 1, 0);
-      camRef.current.lookAt(0, 1.2, 0);
+      camRef.current.lookAt(0, LOOK_Y, 0);
       camRef.current.fov = fov;
       camRef.current.updateProjectionMatrix();
       return;
@@ -999,32 +1010,30 @@ function CameraRig({ scroll }: { scroll: ScrollRef }) {
     if (p < 0.78) {
       const t = easeInOut(ramp(p, 0.66, 0.78));
       const angle = lerp(Math.PI * 1.45, Math.PI * 1.7, t);
-      const r = lerp(ORBIT_R - 1.5, ORBIT_R + 2, t);
+      const r = lerp(ORBIT_R - 1, ORBIT_R + 2.5, t);
       const cx = Math.cos(angle) * r;
       const cz = Math.sin(angle) * r;
-      const cy = lerp(6, 7, t);
+      const cy = lerp(6.5, 7.5, t);
       const fov = 34;
       camRef.current.position.set(cx, cy, cz);
       camRef.current.up.set(0, 1, 0);
-      camRef.current.lookAt(0, 1.2, 0);
+      camRef.current.lookAt(0, LOOK_Y, 0);
       camRef.current.fov = fov;
       camRef.current.updateProjectionMatrix();
       return;
     }
 
-    // Beat 5 + 6: cinematic wide hero shot (0.78 → 1.0). Swing around so the
-    // camera lands on the FRONT-right three-quarter — door and front windows
-    // face the viewer instead of the back of the house.
+    // Beat 5 + 6: cinematic wide hero shot (0.78 → 1.0).
     const t = easeInOut(ramp(p, 0.78, 1.0));
     const angle = lerp(Math.PI * 1.7, Math.PI * 0.30, t);
-    const r = lerp(ORBIT_R + 2, ORBIT_R + 6, t);
+    const r = lerp(ORBIT_R + 2.5, ORBIT_R + 7, t);
     const cx = Math.cos(angle) * r;
     const cz = Math.sin(angle) * r;
-    const cy = lerp(7, 5.5, t);
+    const cy = lerp(7.5, 6, t);
     const fov = lerp(34, 30, t);
     camRef.current.position.set(cx, cy, cz);
     camRef.current.up.set(0, 1, 0);
-    camRef.current.lookAt(0, 1.2, 0);
+    camRef.current.lookAt(0, LOOK_Y, 0);
     camRef.current.fov = fov;
     camRef.current.updateProjectionMatrix();
   });
@@ -1142,7 +1151,14 @@ function HouseScene({
  * ──────────────────────────────────────────────────────────────────────── */
 
 function CADFrame({ progress }: { progress: MotionValue<number> }) {
-  const opacity = useTransform(progress, [0.78, 0.90], [1, 0.35]);
+  // Held invisible during IntroTitle window (the crosshair + crop marks +
+  // title block would otherwise form a busy frame behind the opening card).
+  // Appears with Beat 1, then dims during photoreal to let the house breathe.
+  const opacity = useTransform(
+    progress,
+    [0.095, 0.14, 0.78, 0.90],
+    [0, 1, 1, 0.35]
+  );
   return (
     <motion.div
       style={{ opacity }}
@@ -1187,10 +1203,24 @@ function CADFrame({ progress }: { progress: MotionValue<number> }) {
   );
 }
 
-function TelemetryPill({ frame, state }: { frame: number; state: string }) {
+function TelemetryPill({
+  frame,
+  state,
+  progress,
+}: {
+  frame: number;
+  state: string;
+  progress: MotionValue<number>;
+}) {
   const padded = String(frame).padStart(2, "0");
+  // Held at 0 opacity during the IntroTitle window so it doesn't
+  // crowd the opening title card. Appears AFTER title has fully exited.
+  const opacity = useTransform(progress, [0.095, 0.14], [0, 1]);
   return (
-    <div className="hidden md:flex absolute top-6 left-1/2 -translate-x-1/2 items-center gap-2.5 z-30 font-mono text-[10px] tracking-[0.12em] text-brand-sage-mist/85 bg-brand-midnight-dark/70 border border-brand-forest/30 px-3.5 py-1.5 rounded-sm backdrop-blur-md shadow-lg shadow-black/30">
+    <motion.div
+      style={{ opacity }}
+      className="hidden md:flex absolute top-6 left-1/2 -translate-x-1/2 items-center gap-2.5 z-30 font-mono text-[10px] tracking-[0.12em] text-brand-sage-mist/85 bg-brand-midnight-dark/70 border border-brand-forest/30 px-3.5 py-1.5 rounded-sm backdrop-blur-md shadow-lg shadow-black/30"
+    >
       <span className="text-brand-sage-mist/45">FRAME</span>
       <span className="text-brand-amber-bright font-semibold tabular-nums">{padded} / 60</span>
       <span className="text-brand-forest/40">·</span>
@@ -1203,15 +1233,30 @@ function TelemetryPill({ frame, state }: { frame: number; state: string }) {
           style={{ width: `${(frame / 60) * 100}%` }}
         />
       </div>
-    </div>
+    </motion.div>
   );
 }
 
-function HeadlineOverlay({ kicker, headline }: { kicker: string; headline: string }) {
+function HeadlineOverlay({
+  kicker,
+  headline,
+  progress,
+}: {
+  kicker: string;
+  headline: string;
+  progress: MotionValue<number>;
+}) {
   // Top-left anchored so it lives ABOVE the house in every beat (top-down plan,
   // 3/4-view wireframe, photoreal) rather than crossing over dimensions/labels.
+  // Held at 0 opacity for the first ~10% of scroll while IntroTitle is the
+  // star of the frame — fades in AFTER the intro title fully exits so the
+  // two headlines never stack.
+  const opacity = useTransform(progress, [0.095, 0.14], [0, 1]);
   return (
-    <div className="absolute top-14 md:top-16 left-6 md:left-12 lg:left-20 z-20 max-w-[75%] md:max-w-[42%] pointer-events-none">
+    <motion.div
+      style={{ opacity }}
+      className="absolute top-14 md:top-16 left-6 md:left-12 lg:left-20 z-20 max-w-[75%] md:max-w-[42%] pointer-events-none"
+    >
       <motion.div
         key={kicker + headline}
         initial={{ opacity: 0, x: -16 }}
@@ -1231,7 +1276,71 @@ function HeadlineOverlay({ kicker, headline }: { kicker: string; headline: strin
           <div className="mt-3 h-[2px] w-12 bg-brand-amber rounded-full" />
         )}
       </motion.div>
-    </div>
+    </motion.div>
+  );
+}
+
+/**
+ * IntroTitle — the section's opening card. Lives INSIDE the sticky 3D
+ * container and fades out as Beat 1's headline takes over, so the
+ * section's title and its animation read as one unified experience
+ * instead of a text block + a dead bridge + an animation.
+ */
+/**
+ * IntroVeil — solid dark-sage surface that sits above the R3F canvas and
+ * grid overlay during the opening title. Fades out as IntroTitle exits so
+ * Beat 1 elements appear on a clean handoff. Layered below IntroTitle
+ * (z-20) but above the canvas (default z) and grid overlay (z-[1]).
+ */
+function IntroVeil({ progress }: { progress: MotionValue<number> }) {
+  const opacity = useTransform(progress, [0.0, 0.06, 0.095], [1, 1, 0]);
+  return (
+    <motion.div
+      aria-hidden="true"
+      style={{ opacity, backgroundColor: "#4E6253" }}
+      className="absolute inset-0 z-[15] pointer-events-none"
+    />
+  );
+}
+
+function IntroTitle({ progress }: { progress: MotionValue<number> }) {
+  // Fully visible until 0.05, fully gone by 0.085 — gives Beat 1 a clean
+  // dark canvas to fade into with no text-on-text crowding.
+  const opacity = useTransform(progress, [0.0, 0.05, 0.085], [1, 1, 0]);
+  const y = useTransform(progress, [0.0, 0.085], [0, -24]);
+  return (
+    <motion.div
+      style={{ opacity, y }}
+      className="absolute inset-0 z-30 flex items-center pointer-events-none px-6 md:px-12 lg:px-20"
+    >
+      <div className="max-w-[640px] md:max-w-[680px]">
+        <p className="font-mono text-[11px] md:text-[12px] tracking-[0.22em] uppercase text-brand-sage-mist/85 mb-5 inline-flex items-center gap-2.5">
+          <span className="relative inline-flex w-1.5 h-1.5">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage opacity-60 animate-ping" />
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage" />
+          </span>
+          How Stroyka Sees Your Project
+        </p>
+        <h2
+          className="font-display font-light text-[clamp(2.25rem,6vw,4.75rem)] leading-[0.98] tracking-[-0.025em] text-bone mb-5"
+          style={{ textShadow: "0 8px 40px rgba(0,0,0,0.7)" }}
+        >
+          From plan to done — every dollar tracked.
+        </h2>
+        <p
+          className="text-base md:text-lg text-bone/80 leading-relaxed max-w-lg"
+          style={{ textShadow: "0 2px 16px rgba(0,0,0,0.6)" }}
+        >
+          Scroll to see a project unfold in Stroyka — every material, every
+          cost, in real time.
+        </p>
+        <div className="mt-8 inline-flex items-center gap-3 font-mono text-[11px] tracking-[0.18em] uppercase text-brand-sage-mist/70">
+          <span className="w-6 h-px bg-brand-amber" aria-hidden />
+          Scroll to begin
+          <span className="inline-block animate-bounce text-brand-amber">↓</span>
+        </div>
+      </div>
+    </motion.div>
   );
 }
 
@@ -1250,37 +1359,37 @@ function CostCard({
     [0, 1, 1, 0]
   );
   const y = useTransform(progress, [entry.showAt - 0.02, entry.showAt + 0.05], [20, 0]);
-  const topPx = 90 + index * 92;
+  const topPx = 92 + index * 104;
 
   return (
     <motion.div
       style={{ opacity, y, top: `${topPx}px` }}
-      className="hidden md:block absolute right-6 lg:right-10 w-[228px] z-20 font-heading"
+      className="hidden md:block absolute right-6 lg:right-10 w-[272px] z-20 font-heading"
     >
       <div
-        className="relative rounded-[3px] overflow-hidden"
+        className="relative rounded-[4px] overflow-hidden"
         style={{
           background:
-            "linear-gradient(180deg, rgba(15,21,24,0.88) 0%, rgba(26,36,40,0.82) 100%)",
+            "linear-gradient(180deg, rgba(15,21,24,0.90) 0%, rgba(26,36,40,0.84) 100%)",
           backdropFilter: "blur(16px) saturate(140%)",
           WebkitBackdropFilter: "blur(16px) saturate(140%)",
           boxShadow:
-            "0 22px 50px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04) inset",
+            "0 26px 60px rgba(0,0,0,0.60), 0 0 0 1px rgba(255,255,255,0.05) inset",
         }}
       >
         <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-brand-amber" />
-        <div className="px-4 py-3">
-          <div className="flex items-center justify-between mb-1.5">
-            <div className="font-mono text-[9px] tracking-[0.18em] text-brand-amber font-semibold">
+        <div className="px-5 py-4">
+          <div className="flex items-center justify-between mb-2">
+            <div className="font-mono text-[10px] tracking-[0.18em] text-brand-amber font-semibold">
               + {entry.label}
             </div>
             <div className="w-1.5 h-1.5 rounded-full bg-brand-sage shadow-[0_0_8px_#84a98c]" />
           </div>
-          <div className="text-white text-[22px] font-bold tracking-tighter leading-none tabular-nums">
+          <div className="text-white text-[28px] font-bold tracking-tighter leading-none tabular-nums">
             {entry.amount}
           </div>
-          <div className="text-[11px] text-brand-sage-mist/55 mt-1.5">{entry.subtitle}</div>
-          <div className="mt-2.5 pt-2 border-t border-brand-forest/15 flex justify-between font-mono text-[9px] text-brand-sage-mist/45">
+          <div className="text-[12px] text-brand-sage-mist/65 mt-2">{entry.subtitle}</div>
+          <div className="mt-3 pt-2.5 border-t border-brand-forest/15 flex justify-between font-mono text-[10px] text-brand-sage-mist/50">
             <span>JOB · #204</span>
             <span className="text-brand-sage">▲ logged</span>
           </div>
@@ -1365,13 +1474,13 @@ function ChartBar({
   const width = useTransform(fill, (v) => `${v * targetPct}%`);
   return (
     <div>
-      <div className="flex justify-between text-[11px] text-brand-sage-mist/85 mb-1 font-heading">
+      <div className="flex justify-between text-[12px] text-brand-sage-mist/90 mb-1.5 font-heading">
         <span className="font-medium">{bar.label}</span>
         <span className="font-mono tabular-nums">
           ${(bar.actual / 1000).toFixed(1)}k / ${(bar.plan / 1000).toFixed(1)}k
         </span>
       </div>
-      <div className="h-[6px] bg-brand-forest/15 rounded-sm relative overflow-hidden">
+      <div className="h-[7px] bg-brand-forest/15 rounded-sm relative overflow-hidden">
         <motion.div
           style={{ width }}
           className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-brand-sage to-brand-forest rounded-sm"
@@ -1388,10 +1497,10 @@ function ChartCard({ progress }: { progress: MotionValue<number> }) {
   return (
     <motion.div
       style={{ opacity, x }}
-      className="hidden md:block absolute top-1/2 -translate-y-1/2 right-6 lg:right-10 z-20 w-[280px]"
+      className="hidden md:block absolute top-1/2 -translate-y-1/2 right-6 lg:right-10 z-20 w-[340px]"
     >
       <div
-        className="rounded-[3px] p-4 font-heading"
+        className="rounded-[4px] p-5 font-heading"
         style={{
           background:
             "linear-gradient(180deg, rgba(15,21,24,0.92) 0%, rgba(26,36,40,0.86) 100%)",
@@ -1402,18 +1511,18 @@ function ChartCard({ progress }: { progress: MotionValue<number> }) {
             "0 28px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) inset",
         }}
       >
-        <div className="flex justify-between items-baseline mb-3.5">
-          <div className="font-mono text-[10px] tracking-[0.16em] text-brand-sage font-semibold">
+        <div className="flex justify-between items-baseline mb-4">
+          <div className="font-mono text-[11px] tracking-[0.16em] text-brand-sage font-semibold">
             PLAN VS ACTUAL
           </div>
-          <div className="font-mono text-[9px] text-brand-amber tracking-wider">JOB #204</div>
+          <div className="font-mono text-[10px] text-brand-amber tracking-wider">JOB #204</div>
         </div>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3.5">
           {CHART_BARS.map((bar) => (
             <ChartBar key={bar.label} bar={bar} fill={fill} />
           ))}
         </div>
-        <div className="mt-3.5 pt-3 border-t border-brand-forest/15 flex justify-between font-mono text-[9px] text-brand-sage-mist/55">
+        <div className="mt-4 pt-3 border-t border-brand-forest/15 flex justify-between font-mono text-[10px] text-brand-sage-mist/65">
           <span>ON BUDGET</span>
           <span className="text-brand-sage">● 89% TRACK</span>
         </div>
@@ -1493,7 +1602,7 @@ function StaticFallback() {
     <section
       id="plan-to-done"
       aria-label="Construction project lifecycle visualization"
-      className="relative bg-brand-midnight py-16 lg:py-24"
+      className="relative bg-[#4E6253] py-16 lg:py-24"
     >
       <div className="max-w-5xl mx-auto px-6">
         <div className="text-center mb-10">
@@ -1582,9 +1691,18 @@ export default function PlanToDoneAnimation() {
             setBeat(next);
           }
 
-          const ramp03 = clamp01((p - 0.36) / (0.66 - 0.36));
-          const eased = 1 - Math.pow(1 - ramp03, 3);
-          const total = Math.round(eased * RUNNING_TOTAL);
+          // Sync with CostCard appearances: each entry contributes its
+          // full numericValue during the 0.04-scroll window that starts
+          // at its own `showAt`. This keeps the Spent-To-Date number
+          // stepping up in lockstep with the cost cards that appear.
+          let running = 0;
+          for (const e of COST_ENTRIES) {
+            const w = clamp01((p - e.showAt) / 0.04);
+            running += w * e.numericValue;
+          }
+          // Hold at RUNNING_TOTAL through the chart beat, fade with cards
+          // (handled by card opacity — total value itself stays stable).
+          const total = Math.round(running);
           if (total !== lastTotal) {
             lastTotal = total;
             setTotalSpent(total);
@@ -1601,41 +1719,15 @@ export default function PlanToDoneAnimation() {
 
   return (
     <>
-      {/* Title on stone — continues Features' ramp so the heading
-          breathes on light before the 3D house enters on dark. Maks
-          called this out explicitly in v5 review. */}
-      <section
-        id="plan-to-done-intro"
-        aria-label="Project lifecycle — introduction"
-        className="relative bg-[#BFB49C] pt-20 lg:pt-28 pb-10 lg:pb-14"
-      >
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-soft mb-5 inline-flex items-center gap-2.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-sage" aria-hidden />
-            How Stroyka Sees Your Project
-          </p>
-          <h2 className="font-display font-light text-4xl md:text-5xl lg:text-6xl leading-[0.98] tracking-[-0.02em] text-ink max-w-3xl mx-auto mb-5">
-            From plan to done — every dollar tracked.
-          </h2>
-          <p className="text-base md:text-lg text-ink-soft leading-relaxed max-w-2xl mx-auto">
-            Scroll to see a project unfold in Stroyka — every material, every cost, in real&nbsp;time.
-          </p>
-        </div>
-      </section>
-
-      {/* Gradient bridge — stone → deep sage. Gives the title real
-          breathing room between its last line and the 3D canvas below. */}
-      <div
-        aria-hidden
-        className="h-40 w-full"
-        style={{ background: "linear-gradient(to bottom, #BFB49C, #34453A)" }}
-      />
-
-      {/* 3D canvas on dark teal-sage */}
+      {/* 3D canvas on dark teal-sage. The section's intro title + kicker
+          now live INSIDE the sticky container as IntroTitle — so the
+          headline, the animation, and the scroll all read as one
+          continuous experience instead of a text block, a dead bridge,
+          and a separate animation. */}
       <section
         id="plan-to-done"
-        aria-label="Construction project lifecycle — interactive scroll animation"
-        className="relative bg-brand-midnight"
+        aria-label="How Stroyka sees your project — interactive scroll animation"
+        className="relative bg-[#4E6253]"
         style={{ overflow: "clip" }}
       >
       <div
@@ -1643,18 +1735,32 @@ export default function PlanToDoneAnimation() {
         style={{ position: "relative", height: "500vh" }}
       >
         <div
-          className="sticky top-16 h-[calc(100vh-4rem)] min-h-[560px] bg-brand-midnight"
+          className="sticky top-16 h-[calc(100vh-4rem)] min-h-[560px] bg-[#4E6253]"
           style={{ overflow: "clip" }}
         >
           <div className="absolute inset-0 z-0">
             <Canvas
               dpr={[1, 2]}
+              flat
               gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
               camera={{ fov: 26, near: 0.1, far: 120, position: [0.001, 28, 0.001] }}
             >
               <HouseScene scroll={scrollRef} />
             </Canvas>
           </div>
+
+          {/* Top seam feather — hides any sub-pixel rendering difference
+              between the bridge gradient above and the canvas below. Pure
+              sage-olive at top → transparent so it dissolves into the
+              scene within 80px. */}
+          <div
+            aria-hidden
+            className="absolute top-0 left-0 right-0 h-20 z-[2] pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(to bottom, #4E6253 0%, rgba(78,98,83,0) 100%)",
+            }}
+          />
 
           {/* CAD grid backdrop — Fix 2: forest at 20% opacity */}
           <div
@@ -1674,9 +1780,24 @@ export default function PlanToDoneAnimation() {
               brand-midnight. Any extra darkening overlay re-introduced the
               seam with the page background. */}
 
+          {/* Intro veil — covers the R3F canvas + grid with a solid dark
+              surface during the opening title, then fades out as the title
+              exits so Beat 1 elements can appear. This is simpler and more
+              robust than individually gating every mesh's intro opacity. */}
+          <IntroVeil progress={scrollYProgress} />
+
           <CADFrame progress={scrollYProgress} />
-          <TelemetryPill frame={frame} state={beat.state} />
-          <HeadlineOverlay kicker={beat.kicker} headline={beat.headline} />
+          <TelemetryPill
+            frame={frame}
+            state={beat.state}
+            progress={scrollYProgress}
+          />
+          <IntroTitle progress={scrollYProgress} />
+          <HeadlineOverlay
+            kicker={beat.kicker}
+            headline={beat.headline}
+            progress={scrollYProgress}
+          />
 
           {COST_ENTRIES.map((entry, i) => (
             <CostCard

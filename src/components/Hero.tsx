@@ -91,15 +91,32 @@ export default function Hero() {
         className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 pt-24 pb-28 lg:pt-32 lg:pb-40 will-change-transform"
       >
         <FadeIn delay={0}>
-          <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-bone/80 mb-10 inline-flex items-center gap-2.5">
-            <span className="relative inline-flex w-2 h-2">
+          {/* Announcement eyebrow. Was three opacity-tiered text runs
+              ("80 / 30 / 100 / 30 / 80") over bare video — the light runs
+              washed out and the "/" separators at bone/30 were barely
+              rendering. Now a slim dark-glass chip, one unified bone weight,
+              amber-bright highlight on the commercial fact, and sage dot
+              separators that actually register. Slightly lighter than the
+              spec-tag chip below so the hierarchy stays intact (eyebrow
+              first, supporting tag second). */}
+          <p
+            className="inline-flex items-center gap-2.5 font-mono text-[11.5px] font-medium tracking-[0.2em] uppercase text-bone mb-10 px-3 py-1.5 rounded-full bg-[rgba(14,20,15,0.32)] backdrop-blur-md border border-bone/12 shadow-[0_4px_18px_-8px_rgba(0,0,0,0.45)]"
+            style={{ textShadow: "0 1px 2px rgba(10,16,12,0.7)" }}
+          >
+            <span className="relative inline-flex w-1.5 h-1.5">
               <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage-bright opacity-60 animate-ping" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-sage-bright" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage-bright" />
             </span>
             Start free
-            <span className="text-bone/30">/</span>
-            <span className="text-bone">$99/mo founding rate</span>
-            <span className="text-bone/30">/</span>
+            <span
+              aria-hidden
+              className="inline-block w-1 h-1 rounded-full bg-brand-sage-bright/55"
+            />
+            <span className="text-brand-amber-bright">$99/mo founding rate</span>
+            <span
+              aria-hidden
+              className="inline-block w-1 h-1 rounded-full bg-brand-sage-bright/55"
+            />
             {FOUNDING_SPOTS_REMAINING} spots left
           </p>
         </FadeIn>
@@ -137,9 +154,31 @@ export default function Hero() {
               </p>
             </FadeIn>
             <FadeIn delay={0.22}>
-              <p className="font-mono text-[12px] tracking-[0.15em] uppercase text-bone/55 mb-10 mt-6">
-                For crews of 5–25 · Works the day you sign up
-              </p>
+              {/* Spec tag. Was a plain bone/85 line with a soft text-shadow,
+                  which washed out over bright frames of the hero video.
+                  Now: dark glass chip (rgba #0e140f @ 38%, blurred) with a
+                  bone-at-full-opacity medium-weight line + subtle sage dot
+                  separator. Readable over any frame without fighting the
+                  editorial mono-uppercase voice. */}
+              <div className="mb-10 mt-6">
+                <p
+                  className="inline-flex items-center gap-2.5 font-mono text-[12.5px] font-medium tracking-[0.16em] uppercase text-bone px-3.5 py-1.5 rounded-full bg-[rgba(14,20,15,0.38)] backdrop-blur-md border border-bone/15 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.45)]"
+                  style={{
+                    textShadow: "0 1px 2px rgba(10,16,12,0.75)",
+                  }}
+                >
+                  <span
+                    aria-hidden
+                    className="inline-block w-3.5 h-px bg-brand-amber"
+                  />
+                  For crews of 5–25
+                  <span
+                    aria-hidden
+                    className="inline-block w-1 h-1 rounded-full bg-brand-sage-bright/80"
+                  />
+                  Works the day you sign up
+                </p>
+              </div>
             </FadeIn>
             <FadeIn delay={0.28}>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
@@ -157,10 +196,17 @@ export default function Hero() {
               Uses bone-soft bg (matches the mid-tone of the gradient around it)
               so it reads as an inset panel rather than a bright card. */}
           <FadeIn delay={0.35}>
-            <aside className="w-full lg:w-[320px] border border-bone/30 bg-bone/25 backdrop-blur-2xl rounded-2xl p-7 font-mono text-[12px] tracking-[0.06em] shadow-[0_30px_80px_-30px_rgba(20,30,20,0.6)]">
-              <div className="flex items-center justify-between pb-3 mb-4 border-b border-bone/20">
-                <span className="uppercase tracking-[0.2em] text-bone/60">Project sheet</span>
-                <span className="flex items-center gap-1.5 text-brand-sage-bright">
+            <aside
+              className="w-full lg:w-[320px] border border-bone/40 bg-[rgba(25,32,27,0.32)] backdrop-blur-2xl rounded-2xl p-7 font-mono text-[12.5px] tracking-[0.06em] shadow-[0_30px_80px_-30px_rgba(10,18,12,0.7)]"
+              style={{
+                textShadow: "0 1px 10px rgba(10,18,12,0.55)",
+              }}
+            >
+              <div className="flex items-center justify-between pb-3 mb-4 border-b border-bone/25">
+                <span className="uppercase tracking-[0.2em] text-bone/80 font-semibold">
+                  Project sheet
+                </span>
+                <span className="flex items-center gap-1.5 text-brand-sage-bright font-semibold">
                   <span className="relative inline-flex w-1.5 h-1.5">
                     <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage-bright opacity-60 animate-ping" />
                     <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage-bright" />
@@ -168,28 +214,28 @@ export default function Hero() {
                   live
                 </span>
               </div>
-              <dl className="space-y-3 text-bone/80">
+              <dl className="space-y-3">
                 <div className="flex justify-between">
-                  <dt className="text-bone/55 uppercase">Crew</dt>
-                  <dd className="tabular-nums text-bone">12 workers</dd>
+                  <dt className="text-bone/75 uppercase">Crew</dt>
+                  <dd className="tabular-nums text-bone font-semibold">12 workers</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-bone/55 uppercase">Job no.</dt>
-                  <dd className="tabular-nums text-bone">2411-JH</dd>
+                  <dt className="text-bone/75 uppercase">Job no.</dt>
+                  <dd className="tabular-nums text-bone font-semibold">2411-JH</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-bone/55 uppercase">Labor wk</dt>
-                  <dd className="tabular-nums text-bone">428.5 h</dd>
+                  <dt className="text-bone/75 uppercase">Labor wk</dt>
+                  <dd className="tabular-nums text-bone font-semibold">428.5 h</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-bone/55 uppercase">Budget</dt>
-                  <dd className="tabular-nums text-bone">
+                  <dt className="text-bone/75 uppercase">Budget</dt>
+                  <dd className="tabular-nums text-bone font-semibold">
                     <span className="text-brand-sage-bright">▲</span> on plan
                   </dd>
                 </div>
-                <div className="flex justify-between pt-3 mt-3 border-t border-bone/20">
-                  <dt className="text-bone/55 uppercase">Offline</dt>
-                  <dd className="text-bone">Yes — any phone</dd>
+                <div className="flex justify-between pt-3 mt-3 border-t border-bone/25">
+                  <dt className="text-bone/75 uppercase">Offline</dt>
+                  <dd className="text-bone font-semibold">Yes — any phone</dd>
                 </div>
               </dl>
             </aside>
