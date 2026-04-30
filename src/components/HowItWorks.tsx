@@ -99,21 +99,21 @@ export default function HowItWorks() {
   }, []);
 
   return (
-    <section id="how-it-works" className="relative py-24 lg:py-32">
-      <div className="max-w-6xl mx-auto px-6">
+    <section id="how-it-works" className="relative bg-gradient-to-b from-[#BFB49C] to-[#D4CBB4] py-28 lg:py-36">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         {/* Header */}
-        <div className="max-w-2xl mb-16 lg:mb-20">
+        <div className="max-w-2xl mb-20 lg:mb-24">
           <FadeIn>
             <SectionLabel>How it works</SectionLabel>
           </FadeIn>
           <TextReveal
             as="h2"
-            className="text-4xl lg:text-5xl font-heading font-bold leading-tight mb-4"
+            className="font-display font-light text-5xl lg:text-7xl leading-[0.95] tracking-[-0.02em] text-ink mb-6"
           >
             Four steps from signup to signed timesheet.
           </TextReveal>
           <FadeIn delay={0.1}>
-            <p className="text-base text-brand-sage-mist/75">
+            <p className="text-lg text-ink-soft leading-relaxed max-w-xl">
               No 30-day implementation. No &ldquo;customer success&rdquo; call.
               You and your crew are running in an afternoon.
             </p>
@@ -146,22 +146,22 @@ export default function HowItWorks() {
                     {/* Vertical rail */}
                     <span
                       aria-hidden
-                      className="absolute left-5 md:left-5 top-0 bottom-0 w-px bg-brand-sage-mist/10"
+                      className="absolute left-5 md:left-5 top-0 bottom-0 w-px bg-ink/15"
                     />
                     {/* Step number badge */}
                     <span
-                      className={`absolute left-0 top-0 w-[42px] h-[42px] rounded-full flex items-center justify-center font-heading font-bold text-sm border z-10 transition-all duration-300 ${
+                      className={`absolute left-0 top-0 w-[44px] h-[44px] rounded-full flex items-center justify-center font-mono text-[12px] tracking-[0.08em] z-10 transition-all duration-300 ${
                         isActive
-                          ? "bg-brand-amber text-[#1a1108] border-brand-amber shadow-[0_0_24px_rgba(217,119,6,0.45)]"
-                          : "bg-brand-midnight-dark text-brand-sage border-brand-sage/25"
+                          ? "bg-brand-forest text-bone border border-brand-forest shadow-[0_0_22px_-4px_rgba(63,78,53,0.6)]"
+                          : "bg-bone-soft text-ink-muted border border-ink/25"
                       }`}
                     >
                       {step.num}
                     </span>
-                    <h3 className="text-2xl lg:text-3xl font-heading font-bold text-white mb-3.5">
+                    <h3 className="font-display text-3xl lg:text-4xl leading-[1.05] text-ink mb-4">
                       {step.title}
                     </h3>
-                    <p className="text-brand-sage-mist/70 text-base leading-relaxed max-w-md">
+                    <p className="text-ink-soft text-[16px] leading-relaxed max-w-md">
                       {step.body}
                     </p>
                   </div>
@@ -191,10 +191,10 @@ export default function HowItWorks() {
           {/* Sticky phone — desktop only */}
           <div className="hidden md:flex sticky top-[120px] justify-center items-start">
             <div className="relative w-[360px] lg:w-[420px]">
-              {/* Amber progress rail on left edge of phone */}
-              <div className="absolute -left-4 top-2 bottom-2 w-0.5 rounded bg-brand-sage-mist/10 overflow-hidden">
+              {/* Ink progress rail on left edge of phone */}
+              <div className="absolute -left-4 top-2 bottom-2 w-0.5 rounded bg-ink/15 overflow-hidden">
                 <div
-                  className="absolute inset-x-0 top-0 bg-gradient-to-b from-brand-amber-bright to-brand-amber transition-[height] duration-[250ms] ease-linear"
+                  className="absolute inset-x-0 top-0 bg-gradient-to-b from-brand-forest to-brand-sage transition-[height] duration-[250ms] ease-linear"
                   style={{ height: `${progress}%` }}
                 />
               </div>

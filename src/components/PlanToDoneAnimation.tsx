@@ -27,11 +27,151 @@ import { PerspectiveCamera, Edges, Html } from "@react-three/drei";
 import {
   motion,
   useMotionValue,
+  useMotionValueEvent,
+  useSpring,
   useTransform,
   useReducedMotion,
   type MotionValue,
 } from "framer-motion";
 import * as THREE from "three";
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * Motion helpers
+ * ──────────────────────────────────────────────────────────────────────── */
+
+/**
+ * AnimatedCount — renders a number that smoothly counts up via spring as
+ * a `progress` MotionValue ramps 0→1 across [from, to] scroll points.
+ * Keeps the visible string in `tabular-nums` formatting.
+ */
+function AnimatedCount({
+  progress,
+  start,
+  end,
+  target,
+  format = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`,
+  className,
+}: {
+  progress: MotionValue<number>;
+  start: number;
+  end: number;
+  target: number;
+  format?: (n: number) => string;
+  className?: string;
+}) {
+  const t = useTransform(progress, [start, end], [0, 1], { clamp: true });
+  const raw = useTransform(t, (v) => v * target);
+  const sm = useSpring(raw, { stiffness: 95, damping: 22, mass: 0.45 });
+  const [display, setDisplay] = useState(format(0));
+  useMotionValueEvent(sm, "change", (v) => {
+    setDisplay(format(v));
+  });
+  return (
+    <span className={`tabular-nums ${className ?? ""}`}>{display}</span>
+  );
+}
+
+/**
+ * WordStagger — splits children string by spaces, animates each word
+ * up-from-below with a small stagger when `triggerKey` changes.
+ * Used by HeadlineOverlay so each new beat headline lands like a breath.
+ */
+function WordStagger({
+  text,
+  triggerKey,
+  className,
+  style,
+  delayBase = 0,
+}: {
+  text: string;
+  triggerKey: string;
+  className?: string;
+  style?: React.CSSProperties;
+  delayBase?: number;
+}) {
+  const prefersReduced = useReducedMotion();
+  const words = text.split(" ").filter(Boolean);
+  if (prefersReduced) {
+    return (
+      <span className={className} style={style}>
+        {text}
+      </span>
+    );
+  }
+  return (
+    <span className={className} style={style}>
+      {words.map((w, i) => (
+        <span
+          key={`${triggerKey}-${i}`}
+          className="inline-block overflow-hidden align-bottom"
+          style={{ paddingBottom: "0.22em", marginBottom: "-0.22em" }}
+        >
+          <motion.span
+            className="inline-block"
+            initial={{ y: "100%", opacity: 0 }}
+            animate={{ y: "0%", opacity: 1 }}
+            transition={{
+              duration: 0.55,
+              delay: delayBase + i * 0.06,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+          >
+            {w}
+          </motion.span>
+          {i < words.length - 1 && " "}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/**
+ * DigitRoll — renders a 0-padded number where each digit is a vertical
+ * tape that scrolls to the current value. Used for the FRAME counter.
+ */
+function DigitRoll({
+  value,
+  pad = 2,
+  className,
+}: {
+  value: number;
+  pad?: number;
+  className?: string;
+}) {
+  const padded = String(value).padStart(pad, "0");
+  const digits = padded.split("");
+  return (
+    <span className={`inline-flex tabular-nums ${className ?? ""}`}>
+      {digits.map((d, i) => {
+        const n = parseInt(d, 10);
+        return (
+          <span
+            key={i}
+            className="inline-block relative overflow-hidden align-bottom"
+            style={{ width: "0.62em", height: "1.05em" }}
+          >
+            <motion.span
+              animate={{ y: `${-n * 1.05}em` }}
+              transition={{
+                type: "spring",
+                stiffness: 320,
+                damping: 28,
+                mass: 0.4,
+              }}
+              className="absolute inset-x-0 top-0 flex flex-col items-center"
+            >
+              {Array.from({ length: 10 }).map((_, k) => (
+                <span key={k} style={{ height: "1.05em", lineHeight: "1.05em" }}>
+                  {k}
+                </span>
+              ))}
+            </motion.span>
+          </span>
+        );
+      })}
+    </span>
+  );
+}
 
 /* ────────────────────────────────────────────────────────────────────────────
  * Brand palette
@@ -40,10 +180,14 @@ import * as THREE from "three";
 const COLORS = {
   sageMist:     "#cad2c5",
   sage:         "#84a98c",
-  forest:       "#52796f",
-  deep:         "#354f52",
-  midnight:     "#2f3e46",
-  midnightDark: "#1a2428",
+  forest:       "#4B5F4E",
+  // Section surface: sage-olive (was #34453A). Lighter + warmer so the
+  // handoff from/to sand doesn't register as a hard "entering a room"
+  // value-jump. Cards inside (midnight-dark/...) stay dark → they still
+  // read as inset elements.
+  deep:         "#4E6253",
+  midnight:     "#4E6253",
+  midnightDark: "#2B3D30",
   amber:        "#d97706",
   amberBright:  "#f59e0b",
   cedar:        "#b8865f",
@@ -188,7 +332,7 @@ function PlanLabel({
       style={{
         pointerEvents: "none",
         whiteSpace: "nowrap",
-        opacity: "var(--ptd-label-opacity, 1)",
+        opacity: "var(--ptd-label-opacity, 0)",
         transition: "opacity 80ms linear",
       }}
     >
@@ -272,7 +416,11 @@ function FloorPlan({ scroll }: { scroll: ScrollRef }) {
 
   useFrame(() => {
     const p = scroll.current;
-    const opacity = 1 - ramp(p, 0.16, 0.30);
+    // Fade IN AFTER IntroTitle fully exits (~0.085) so lines + labels never
+    // overlap the section title. Fades OUT at Beat 2 handoff.
+    const fadeIn = ramp(p, 0.095, 0.15);
+    const fadeOut = 1 - ramp(p, 0.20, 0.30);
+    const opacity = fadeIn * fadeOut;
     if (matRef.current) matRef.current.opacity = opacity;
     if (dimMatRef.current) dimMatRef.current.opacity = opacity * 0.9;
     // Fade DOM-projected labels via shared CSS variable
@@ -284,10 +432,10 @@ function FloorPlan({ scroll }: { scroll: ScrollRef }) {
   return (
     <>
       <lineSegments geometry={planGeo}>
-        <lineBasicMaterial ref={matRef} color={COLORS.sage} transparent opacity={1} />
+        <lineBasicMaterial ref={matRef} color={COLORS.sage} transparent opacity={0} />
       </lineSegments>
       <lineSegments geometry={dimGeo}>
-        <lineBasicMaterial ref={dimMatRef} color={COLORS.amber} transparent opacity={0.95} />
+        <lineBasicMaterial ref={dimMatRef} color={COLORS.amber} transparent opacity={0} />
       </lineSegments>
 
       {/* In-3D room labels + dimension numbers via drei <Html> — DOM divs
@@ -935,9 +1083,15 @@ function Walls({ scroll }: { scroll: ScrollRef }) {
 function CameraRig({ scroll }: { scroll: ScrollRef }) {
   const camRef = useRef<THREE.PerspectiveCamera>(null);
 
-  // Orbit radius/elevation for Beat 3 — camera circles the house
-  const ORBIT_R = 14;
+  // Orbit radius/elevation for Beat 3 — camera circles the house.
+  // Radius bumped slightly so the house reads smaller in frame (user
+  // requested a touch more breathing room). lookAt target Y is also
+  // raised (1.2 → 2.2) which pulls the viewing center up and pushes the
+  // rendered house lower in the viewport — gives the cost cards and
+  // title block more top-of-frame air.
+  const ORBIT_R = 15.5;
   const ORBIT_Y = 7;
+  const LOOK_Y = 2.2;
 
   useFrame(() => {
     if (!camRef.current) return;
@@ -947,7 +1101,7 @@ function CameraRig({ scroll }: { scroll: ScrollRef }) {
     // degenerate; force camera UP to Z-back so "north" reads correctly.
     if (p < 0.18) {
       const t = ramp(p, 0.0, 0.18);
-      const camY = lerp(28, 24, t);
+      const camY = lerp(30, 26, t);
       const fov = lerp(24, 26, t);
       camRef.current.position.set(0.001, camY, 0.001);
       camRef.current.up.set(0, 0, -1);
@@ -960,13 +1114,11 @@ function CameraRig({ scroll }: { scroll: ScrollRef }) {
     // Beat 2: lift up and rotate from top-down to 3-quarter (0.18 → 0.36)
     if (p < 0.36) {
       const t = easeInOut(ramp(p, 0.18, 0.36));
-      // Interpolate camera position from (0,24,0.01) to (12, 9, 12)
-      const cx = lerp(0.001, 12, t);
-      const cy = lerp(24, 9, t);
-      const cz = lerp(0.001, 12, t);
-      const ty = lerp(0, 1.2, t);
+      const cx = lerp(0.001, 13, t);
+      const cy = lerp(26, 9.5, t);
+      const cz = lerp(0.001, 13, t);
+      const ty = lerp(0, LOOK_Y, t);
       const fov = lerp(26, 34, t);
-      // Smoothly rotate up vector from (0,0,-1) back to (0,1,0)
       const upY = lerp(0, 1, t);
       const upZ = lerp(-1, 0, t);
       camRef.current.position.set(cx, cy, cz);
@@ -980,16 +1132,15 @@ function CameraRig({ scroll }: { scroll: ScrollRef }) {
     // Beat 3: orbit around the house (0.36 → 0.66) — half-revolution + elevation drift
     if (p < 0.66) {
       const t = easeInOut(ramp(p, 0.36, 0.66));
-      // angle from 0 (front-right) to 1.2π (around the back side) so we see all sides
       const angle = lerp(Math.PI * 0.25, Math.PI * 1.45, t);
-      const r = lerp(ORBIT_R, ORBIT_R - 1.5, t);
+      const r = lerp(ORBIT_R, ORBIT_R - 1, t);
       const cx = Math.cos(angle) * r;
       const cz = Math.sin(angle) * r;
-      const cy = lerp(ORBIT_Y, 6, t);
+      const cy = lerp(ORBIT_Y, 6.5, t);
       const fov = lerp(34, 36, t);
       camRef.current.position.set(cx, cy, cz);
       camRef.current.up.set(0, 1, 0);
-      camRef.current.lookAt(0, 1.2, 0);
+      camRef.current.lookAt(0, LOOK_Y, 0);
       camRef.current.fov = fov;
       camRef.current.updateProjectionMatrix();
       return;
@@ -999,32 +1150,30 @@ function CameraRig({ scroll }: { scroll: ScrollRef }) {
     if (p < 0.78) {
       const t = easeInOut(ramp(p, 0.66, 0.78));
       const angle = lerp(Math.PI * 1.45, Math.PI * 1.7, t);
-      const r = lerp(ORBIT_R - 1.5, ORBIT_R + 2, t);
+      const r = lerp(ORBIT_R - 1, ORBIT_R + 2.5, t);
       const cx = Math.cos(angle) * r;
       const cz = Math.sin(angle) * r;
-      const cy = lerp(6, 7, t);
+      const cy = lerp(6.5, 7.5, t);
       const fov = 34;
       camRef.current.position.set(cx, cy, cz);
       camRef.current.up.set(0, 1, 0);
-      camRef.current.lookAt(0, 1.2, 0);
+      camRef.current.lookAt(0, LOOK_Y, 0);
       camRef.current.fov = fov;
       camRef.current.updateProjectionMatrix();
       return;
     }
 
-    // Beat 5 + 6: cinematic wide hero shot (0.78 → 1.0). Swing around so the
-    // camera lands on the FRONT-right three-quarter — door and front windows
-    // face the viewer instead of the back of the house.
+    // Beat 5 + 6: cinematic wide hero shot (0.78 → 1.0).
     const t = easeInOut(ramp(p, 0.78, 1.0));
     const angle = lerp(Math.PI * 1.7, Math.PI * 0.30, t);
-    const r = lerp(ORBIT_R + 2, ORBIT_R + 6, t);
+    const r = lerp(ORBIT_R + 2.5, ORBIT_R + 7, t);
     const cx = Math.cos(angle) * r;
     const cz = Math.sin(angle) * r;
-    const cy = lerp(7, 5.5, t);
+    const cy = lerp(7.5, 6, t);
     const fov = lerp(34, 30, t);
     camRef.current.position.set(cx, cy, cz);
     camRef.current.up.set(0, 1, 0);
-    camRef.current.lookAt(0, 1.2, 0);
+    camRef.current.lookAt(0, LOOK_Y, 0);
     camRef.current.fov = fov;
     camRef.current.updateProjectionMatrix();
   });
@@ -1116,10 +1265,63 @@ function SceneBackground({ scroll: _scroll }: { scroll: ScrollRef }) {
   return null;
 }
 
+/**
+ * AnchorProjector — projects 3D world positions to 2D screen pixels every
+ * frame, writing into shared MotionValues so a DOM SVG layer outside the
+ * Canvas can draw connection lines from the cost cards to their physical
+ * locations on the house. Lives INSIDE the Canvas so it has access to
+ * camera + size via useThree.
+ */
+const ANCHOR_POINTS: Array<[number, number, number]> = [
+  // Order matches COST_ENTRIES order: CONCRETE, LUMBER, ROOF, SIDING, WINDOWS
+  [0,    0.18, 0],                       // CONCRETE  — foundation slab top center
+  [HW / 2 + 0.1, WALL_H / 2, 0],         // LUMBER    — east wall midpoint
+  [0,    WALL_H + ROOF_H * 0.65, 0],     // ROOF      — ridge
+  [-(HW / 2) - 0.1, WALL_H * 0.5, HD / 2], // SIDING — front-west wall corner
+  [HW / 2 + 0.18, 1.5, 1.5],             // WINDOWS   — east-front window center
+];
+
+interface AnchorScreenStore {
+  x: MotionValue<number>;
+  y: MotionValue<number>;
+  visible: MotionValue<number>; // 0 or 1, smoothed
+}
+
+function AnchorProjector({
+  anchors,
+  store,
+}: {
+  anchors: Array<[number, number, number]>;
+  store: AnchorScreenStore[];
+}) {
+  const { camera, size } = useThree();
+  const v = useMemo(() => new THREE.Vector3(), []);
+  useFrame(() => {
+    for (let i = 0; i < anchors.length; i++) {
+      v.set(...anchors[i]).project(camera);
+      const x = (v.x * 0.5 + 0.5) * size.width;
+      const y = (-v.y * 0.5 + 0.5) * size.height;
+      // visible if in front of camera AND inside frustum bounds
+      const visible =
+        v.z >= -1 && v.z <= 1 &&
+        v.x >= -1.05 && v.x <= 1.05 &&
+        v.y >= -1.05 && v.y <= 1.05
+          ? 1
+          : 0;
+      store[i].x.set(x);
+      store[i].y.set(y);
+      store[i].visible.set(visible);
+    }
+  });
+  return null;
+}
+
 function HouseScene({
   scroll,
+  anchorStore,
 }: {
   scroll: ScrollRef;
+  anchorStore: AnchorScreenStore[];
 }) {
   return (
     <>
@@ -1133,7 +1335,166 @@ function HouseScene({
       <Roof scroll={scroll} />
       <WindowsAndDoor scroll={scroll} />
       <Landscape scroll={scroll} />
+      <AnchorProjector anchors={ANCHOR_POINTS} store={anchorStore} />
     </>
+  );
+}
+
+/**
+ * ConnectionLines — DOM SVG layer that reads projected anchor pixel
+ * coords from the AnchorProjector store and draws a sage line from each
+ * cost card's left edge to its anchor. Each line's opacity is gated by
+ * the corresponding card's scroll-window.
+ */
+function ConnectionLines({
+  store,
+  progress,
+  containerRef,
+}: {
+  store: AnchorScreenStore[];
+  progress: MotionValue<number>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
+}) {
+  // Cost card geometry — must mirror CostCard's positioning.
+  // right-6 lg:right-10, w-[272px], top: 92 + i*104
+  // Card left edge in container coords = containerWidth - rightOffset - cardWidth
+  const CARD_W = 272;
+  const CARD_H = 88; // approximate visual height; we anchor to its vertical center
+  const RIGHT_OFFSET = 40; // matches lg:right-10 (40px)
+
+  return (
+    <svg
+      aria-hidden
+      className="hidden md:block absolute inset-0 z-[19] pointer-events-none"
+      width="100%"
+      height="100%"
+    >
+      <defs>
+        <linearGradient id="conn-grad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#52796f" stopOpacity="0.85" />
+          <stop offset="100%" stopColor="#84a98c" stopOpacity="0.35" />
+        </linearGradient>
+      </defs>
+      {COST_ENTRIES.map((entry, i) => (
+        <ConnectionLine
+          key={entry.label}
+          index={i}
+          entry={entry}
+          store={store[i]}
+          progress={progress}
+          containerRef={containerRef}
+          cardW={CARD_W}
+          cardH={CARD_H}
+          rightOffset={RIGHT_OFFSET}
+        />
+      ))}
+    </svg>
+  );
+}
+
+function ConnectionLine({
+  index,
+  entry,
+  store,
+  progress,
+  containerRef,
+  cardW,
+  cardH,
+  rightOffset,
+}: {
+  index: number;
+  entry: CostEntry;
+  store: AnchorScreenStore;
+  progress: MotionValue<number>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
+  cardW: number;
+  cardH: number;
+  rightOffset: number;
+}) {
+  // Card-side endpoint: left edge of cost card, vertical mid.
+  // Computed each frame in case window resizes.
+  const cardX = useMotionValue(0);
+  const cardY = useMotionValue(0);
+  // Anchor-side endpoint comes from the projector store
+  const ax = store.x;
+  const ay = store.y;
+  const av = store.visible;
+
+  // Sync card coords to container size + index
+  useEffect(() => {
+    const update = () => {
+      const c = containerRef.current;
+      if (!c) return;
+      const w = c.clientWidth;
+      cardX.set(w - rightOffset - cardW);
+      cardY.set(92 + index * 104 + cardH / 2);
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    if (containerRef.current) ro.observe(containerRef.current);
+    return () => ro.disconnect();
+  }, [containerRef, index, cardW, cardH, rightOffset, cardX, cardY]);
+
+  // Card-window opacity — fades in just AFTER its CostCard, fades out at 0.78
+  const lineOpacity = useTransform(
+    progress,
+    [
+      entry.showAt + 0.005,
+      entry.showAt + 0.045,
+      0.72,
+      0.78,
+    ],
+    [0, 0.85, 0.85, 0],
+  );
+
+  // Build the path d-attribute as a gentle curve from card to anchor.
+  // We use a quadratic with the control point pulled toward the card's
+  // vertical level — it reads as a "wire" lifting off the card to the
+  // location on the house.
+  const d = useTransform<number, string>(
+    [cardX, cardY, ax, ay],
+    (vals: number[]) => {
+      const [cx, cy, axn, ayn] = vals;
+      const cpx = (cx + axn) / 2;
+      const cpy = cy; // pull control point to the card's y-line for a clean lift
+      return `M ${cx} ${cy} Q ${cpx} ${cpy}, ${axn} ${ayn}`;
+    }
+  );
+
+  const finalOpacity = useTransform<number, number>(
+    [lineOpacity, av],
+    (vals: number[]) => vals[0] * vals[1],
+  );
+
+  // Stroke dash for a sharper "wire" feel, plus a small dot at the anchor end
+  return (
+    <g>
+      <motion.path
+        d={d}
+        stroke="url(#conn-grad)"
+        strokeWidth="1"
+        strokeLinecap="round"
+        strokeDasharray="2 4"
+        fill="none"
+        style={{ opacity: finalOpacity }}
+      />
+      {/* Anchor dot */}
+      <motion.circle
+        cx={ax}
+        cy={ay}
+        r="3"
+        fill="#8AAA91"
+        style={{ opacity: finalOpacity }}
+      />
+      {/* Card-side tick */}
+      <motion.circle
+        cx={cardX}
+        cy={cardY}
+        r="2"
+        fill="#52796f"
+        style={{ opacity: finalOpacity }}
+      />
+    </g>
   );
 }
 
@@ -1142,7 +1503,14 @@ function HouseScene({
  * ──────────────────────────────────────────────────────────────────────── */
 
 function CADFrame({ progress }: { progress: MotionValue<number> }) {
-  const opacity = useTransform(progress, [0.78, 0.90], [1, 0.35]);
+  // Held invisible during IntroTitle window (the crosshair + crop marks +
+  // title block would otherwise form a busy frame behind the opening card).
+  // Appears with Beat 1, then dims during photoreal to let the house breathe.
+  const opacity = useTransform(
+    progress,
+    [0.095, 0.14, 0.78, 0.90],
+    [0, 1, 1, 0.35]
+  );
   return (
     <motion.div
       style={{ opacity }}
@@ -1187,51 +1555,176 @@ function CADFrame({ progress }: { progress: MotionValue<number> }) {
   );
 }
 
-function TelemetryPill({ frame, state }: { frame: number; state: string }) {
-  const padded = String(frame).padStart(2, "0");
+function TelemetryPill({
+  frame,
+  state,
+  progress,
+}: {
+  frame: number;
+  state: string;
+  progress: MotionValue<number>;
+}) {
+  // Held at 0 opacity during the IntroTitle window so it doesn't
+  // crowd the opening title card. Appears AFTER title has fully exited.
+  const opacity = useTransform(progress, [0.095, 0.14], [0, 1]);
   return (
-    <div className="hidden md:flex absolute top-6 left-1/2 -translate-x-1/2 items-center gap-2.5 z-30 font-mono text-[10px] tracking-[0.12em] text-brand-sage-mist/85 bg-brand-midnight-dark/70 border border-brand-forest/30 px-3.5 py-1.5 rounded-sm backdrop-blur-md shadow-lg shadow-black/30">
+    <motion.div
+      style={{ opacity }}
+      className="hidden md:flex absolute top-6 left-1/2 -translate-x-1/2 items-center gap-2.5 z-30 font-mono text-[10px] tracking-[0.12em] text-brand-sage-mist/85 bg-brand-midnight-dark/70 border border-brand-forest/30 px-3.5 py-1.5 rounded-sm backdrop-blur-md shadow-lg shadow-black/30"
+    >
       <span className="text-brand-sage-mist/45">FRAME</span>
-      <span className="text-brand-amber-bright font-semibold tabular-nums">{padded} / 60</span>
+      <span className="text-brand-amber-bright font-semibold inline-flex items-center gap-1">
+        <DigitRoll value={frame} pad={2} />
+        <span className="text-brand-sage-mist/35">/</span>
+        <span>60</span>
+      </span>
       <span className="text-brand-forest/40">·</span>
       <span className="text-brand-sage-mist/45">STATE</span>
-      <span className="text-brand-amber-bright font-semibold">{state}</span>
+      <motion.span
+        key={state}
+        initial={{ opacity: 0, y: 4 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        className="text-brand-amber-bright font-semibold"
+      >
+        {state}
+      </motion.span>
       <span className="text-brand-forest/40">·</span>
       <div className="w-24 h-[2px] bg-brand-forest/20 relative overflow-hidden rounded-full">
-        <div
+        <motion.div
           className="absolute left-0 top-0 bottom-0 bg-brand-amber-bright"
-          style={{ width: `${(frame / 60) * 100}%` }}
+          animate={{ width: `${(frame / 60) * 100}%` }}
+          transition={{ type: "spring", stiffness: 280, damping: 28, mass: 0.4 }}
         />
       </div>
-    </div>
+    </motion.div>
   );
 }
 
-function HeadlineOverlay({ kicker, headline }: { kicker: string; headline: string }) {
+function HeadlineOverlay({
+  kicker,
+  headline,
+  progress,
+}: {
+  kicker: string;
+  headline: string;
+  progress: MotionValue<number>;
+}) {
   // Top-left anchored so it lives ABOVE the house in every beat (top-down plan,
   // 3/4-view wireframe, photoreal) rather than crossing over dimensions/labels.
+  // Held at 0 opacity for the first ~10% of scroll while IntroTitle is the
+  // star of the frame — fades in AFTER the intro title fully exits so the
+  // two headlines never stack.
+  const opacity = useTransform(progress, [0.095, 0.14], [0, 1]);
   return (
-    <div className="absolute top-14 md:top-16 left-6 md:left-12 lg:left-20 z-20 max-w-[75%] md:max-w-[42%] pointer-events-none">
+    <motion.div
+      style={{ opacity }}
+      className="absolute top-14 md:top-16 left-6 md:left-12 lg:left-20 z-20 max-w-[75%] md:max-w-[42%] pointer-events-none"
+    >
       <motion.div
         key={kicker + headline}
-        initial={{ opacity: 0, x: -16 }}
+        initial={{ opacity: 0, x: -10 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="font-mono text-[10px] md:text-[11px] tracking-[0.18em] text-brand-amber font-semibold mb-2 md:mb-2.5">
+        <motion.div
+          key={`kicker-${kicker}`}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          className="font-mono text-[10px] md:text-[11px] tracking-[0.18em] text-brand-amber font-semibold mb-2 md:mb-2.5"
+        >
           {kicker}
-        </div>
+        </motion.div>
         <h3
           className="text-[24px] md:text-[38px] lg:text-[44px] font-heading font-bold tracking-tight text-white leading-[1.05]"
           style={{ textShadow: "0 6px 32px rgba(0,0,0,0.65)" }}
         >
-          {headline || " "}
+          {headline ? (
+            <WordStagger
+              text={headline}
+              triggerKey={kicker + headline}
+              delayBase={0.06}
+            />
+          ) : (
+            " "
+          )}
         </h3>
         {headline && (
-          <div className="mt-3 h-[2px] w-12 bg-brand-amber rounded-full" />
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.45, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            style={{ originX: 0 }}
+            className="mt-3 h-[2px] w-12 bg-brand-amber rounded-full"
+          />
         )}
       </motion.div>
-    </div>
+    </motion.div>
+  );
+}
+
+/**
+ * IntroTitle — the section's opening card. Lives INSIDE the sticky 3D
+ * container and fades out as Beat 1's headline takes over, so the
+ * section's title and its animation read as one unified experience
+ * instead of a text block + a dead bridge + an animation.
+ */
+/**
+ * IntroVeil — solid dark-sage surface that sits above the R3F canvas and
+ * grid overlay during the opening title. Fades out as IntroTitle exits so
+ * Beat 1 elements appear on a clean handoff. Layered below IntroTitle
+ * (z-20) but above the canvas (default z) and grid overlay (z-[1]).
+ */
+function IntroVeil({ progress }: { progress: MotionValue<number> }) {
+  const opacity = useTransform(progress, [0.0, 0.06, 0.095], [1, 1, 0]);
+  return (
+    <motion.div
+      aria-hidden="true"
+      style={{ opacity, backgroundColor: "#4E6253" }}
+      className="absolute inset-0 z-[15] pointer-events-none"
+    />
+  );
+}
+
+function IntroTitle({ progress }: { progress: MotionValue<number> }) {
+  // Fully visible until 0.05, fully gone by 0.085 — gives Beat 1 a clean
+  // dark canvas to fade into with no text-on-text crowding.
+  const opacity = useTransform(progress, [0.0, 0.05, 0.085], [1, 1, 0]);
+  const y = useTransform(progress, [0.0, 0.085], [0, -24]);
+  return (
+    <motion.div
+      style={{ opacity, y }}
+      className="absolute inset-0 z-30 flex items-center pointer-events-none px-6 md:px-12 lg:px-20"
+    >
+      <div className="max-w-[640px] md:max-w-[680px]">
+        <p className="font-mono text-[11px] md:text-[12px] tracking-[0.22em] uppercase text-brand-sage-mist/85 mb-5 inline-flex items-center gap-2.5">
+          <span className="relative inline-flex w-1.5 h-1.5">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage opacity-60 animate-ping" />
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage" />
+          </span>
+          How Stroyka Sees Your Project
+        </p>
+        <h2
+          className="font-display font-light text-[clamp(2.25rem,6vw,4.75rem)] leading-[0.98] tracking-[-0.025em] text-bone mb-5"
+          style={{ textShadow: "0 8px 40px rgba(0,0,0,0.7)" }}
+        >
+          From plan to done — every dollar tracked.
+        </h2>
+        <p
+          className="text-base md:text-lg text-bone/80 leading-relaxed max-w-lg"
+          style={{ textShadow: "0 2px 16px rgba(0,0,0,0.6)" }}
+        >
+          Scroll to see a project unfold in Stroyka — every material, every
+          cost, in real time.
+        </p>
+        <div className="mt-8 inline-flex items-center gap-3 font-mono text-[11px] tracking-[0.18em] uppercase text-brand-sage-mist/70">
+          <span className="w-6 h-px bg-brand-amber" aria-hidden />
+          Scroll to begin
+          <span className="inline-block animate-bounce text-brand-amber">↓</span>
+        </div>
+      </div>
+    </motion.div>
   );
 }
 
@@ -1249,38 +1742,81 @@ function CostCard({
     [entry.showAt - 0.02, entry.showAt + 0.025, 0.72, 0.78],
     [0, 1, 1, 0]
   );
-  const y = useTransform(progress, [entry.showAt - 0.02, entry.showAt + 0.05], [20, 0]);
-  const topPx = 90 + index * 92;
+  // Stamp-land: enter from a tilted/scaled-down starting pose, settle with
+  // a spring overshoot. Sage ring expands AT land moment.
+  const yMv = useTransform(
+    progress,
+    [entry.showAt - 0.02, entry.showAt + 0.05],
+    [22, 0]
+  );
+  const yPx = useSpring(yMv, { stiffness: 320, damping: 18, mass: 0.45 });
+  const scaleMv = useTransform(
+    progress,
+    [entry.showAt - 0.02, entry.showAt + 0.06],
+    [0.82, 1]
+  );
+  const scale = useSpring(scaleMv, { stiffness: 380, damping: 17, mass: 0.4 });
+  const rotateMv = useTransform(
+    progress,
+    [entry.showAt - 0.02, entry.showAt + 0.06],
+    [-3.5, 0]
+  );
+  const rotate = useSpring(rotateMv, { stiffness: 320, damping: 18, mass: 0.4 });
+
+  // Sage stamp-impact ring — fires AT the land moment.
+  const ringScale = useTransform(
+    progress,
+    [entry.showAt + 0.005, entry.showAt + 0.05],
+    [1, 1.85]
+  );
+  const ringOpacity = useTransform(
+    progress,
+    [entry.showAt + 0.005, entry.showAt + 0.025, entry.showAt + 0.05],
+    [0, 0.7, 0]
+  );
+
+  const topPx = 92 + index * 104;
 
   return (
     <motion.div
-      style={{ opacity, y, top: `${topPx}px` }}
-      className="hidden md:block absolute right-6 lg:right-10 w-[228px] z-20 font-heading"
+      style={{ opacity, y: yPx, scale, rotate, top: `${topPx}px` }}
+      className="hidden md:block absolute right-6 lg:right-10 w-[272px] z-20 font-heading"
     >
       <div
-        className="relative rounded-[3px] overflow-hidden"
+        className="relative rounded-[4px] overflow-hidden"
         style={{
           background:
-            "linear-gradient(180deg, rgba(15,21,24,0.88) 0%, rgba(26,36,40,0.82) 100%)",
+            "linear-gradient(180deg, rgba(15,21,24,0.90) 0%, rgba(26,36,40,0.84) 100%)",
           backdropFilter: "blur(16px) saturate(140%)",
           WebkitBackdropFilter: "blur(16px) saturate(140%)",
           boxShadow:
-            "0 22px 50px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04) inset",
+            "0 26px 60px rgba(0,0,0,0.60), 0 0 0 1px rgba(255,255,255,0.05) inset",
         }}
       >
+        {/* Stamp-impact ring */}
+        <motion.span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-[4px] border-[1.5px] border-brand-sage-bright"
+          style={{ scale: ringScale, opacity: ringOpacity }}
+        />
         <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-brand-amber" />
-        <div className="px-4 py-3">
-          <div className="flex items-center justify-between mb-1.5">
-            <div className="font-mono text-[9px] tracking-[0.18em] text-brand-amber font-semibold">
+        <div className="px-5 py-4">
+          <div className="flex items-center justify-between mb-2">
+            <div className="font-mono text-[10px] tracking-[0.18em] text-brand-amber font-semibold">
               + {entry.label}
             </div>
             <div className="w-1.5 h-1.5 rounded-full bg-brand-sage shadow-[0_0_8px_#84a98c]" />
           </div>
-          <div className="text-white text-[22px] font-bold tracking-tighter leading-none tabular-nums">
-            {entry.amount}
+          <div className="text-white text-[28px] font-bold tracking-tighter leading-none">
+            <AnimatedCount
+              progress={progress}
+              start={entry.showAt - 0.005}
+              end={entry.showAt + 0.06}
+              target={entry.numericValue}
+            />
           </div>
-          <div className="text-[11px] text-brand-sage-mist/55 mt-1.5">{entry.subtitle}</div>
-          <div className="mt-2.5 pt-2 border-t border-brand-forest/15 flex justify-between font-mono text-[9px] text-brand-sage-mist/45">
+          <div className="text-[12px] text-brand-sage-mist/65 mt-2">{entry.subtitle}</div>
+          <div className="mt-3 pt-2.5 border-t border-brand-forest/15 flex justify-between font-mono text-[10px] text-brand-sage-mist/50">
             <span>JOB · #204</span>
             <span className="text-brand-sage">▲ logged</span>
           </div>
@@ -1363,15 +1899,24 @@ function ChartBar({
 }) {
   const targetPct = (bar.actual / bar.plan) * 100;
   const width = useTransform(fill, (v) => `${v * targetPct}%`);
+  // Actual value counts up alongside the bar fill — they're driven by the
+  // same scroll-progress slice [0.70, 0.76] so the number and the bar move
+  // as a unit.
+  const actualMv = useTransform(fill, (v) => v * bar.actual);
+  const actualSm = useSpring(actualMv, { stiffness: 110, damping: 22, mass: 0.4 });
+  const [actualDisplay, setActualDisplay] = useState("0.0");
+  useMotionValueEvent(actualSm, "change", (v) => {
+    setActualDisplay((v / 1000).toFixed(1));
+  });
   return (
     <div>
-      <div className="flex justify-between text-[11px] text-brand-sage-mist/85 mb-1 font-heading">
+      <div className="flex justify-between text-[12px] text-brand-sage-mist/90 mb-1.5 font-heading">
         <span className="font-medium">{bar.label}</span>
         <span className="font-mono tabular-nums">
-          ${(bar.actual / 1000).toFixed(1)}k / ${(bar.plan / 1000).toFixed(1)}k
+          ${actualDisplay}k / ${(bar.plan / 1000).toFixed(1)}k
         </span>
       </div>
-      <div className="h-[6px] bg-brand-forest/15 rounded-sm relative overflow-hidden">
+      <div className="h-[7px] bg-brand-forest/15 rounded-sm relative overflow-hidden">
         <motion.div
           style={{ width }}
           className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-brand-sage to-brand-forest rounded-sm"
@@ -1388,10 +1933,10 @@ function ChartCard({ progress }: { progress: MotionValue<number> }) {
   return (
     <motion.div
       style={{ opacity, x }}
-      className="hidden md:block absolute top-1/2 -translate-y-1/2 right-6 lg:right-10 z-20 w-[280px]"
+      className="hidden md:block absolute top-1/2 -translate-y-1/2 right-6 lg:right-10 z-20 w-[340px]"
     >
       <div
-        className="rounded-[3px] p-4 font-heading"
+        className="rounded-[4px] p-5 font-heading"
         style={{
           background:
             "linear-gradient(180deg, rgba(15,21,24,0.92) 0%, rgba(26,36,40,0.86) 100%)",
@@ -1402,22 +1947,106 @@ function ChartCard({ progress }: { progress: MotionValue<number> }) {
             "0 28px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) inset",
         }}
       >
-        <div className="flex justify-between items-baseline mb-3.5">
-          <div className="font-mono text-[10px] tracking-[0.16em] text-brand-sage font-semibold">
+        <div className="flex justify-between items-baseline mb-4">
+          <div className="font-mono text-[11px] tracking-[0.16em] text-brand-sage font-semibold">
             PLAN VS ACTUAL
           </div>
-          <div className="font-mono text-[9px] text-brand-amber tracking-wider">JOB #204</div>
+          <div className="font-mono text-[10px] text-brand-amber tracking-wider">JOB #204</div>
         </div>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3.5">
           {CHART_BARS.map((bar) => (
             <ChartBar key={bar.label} bar={bar} fill={fill} />
           ))}
         </div>
-        <div className="mt-3.5 pt-3 border-t border-brand-forest/15 flex justify-between font-mono text-[9px] text-brand-sage-mist/55">
+        <div className="mt-4 pt-3 border-t border-brand-forest/15 flex justify-between font-mono text-[10px] text-brand-sage-mist/65">
           <span>ON BUDGET</span>
           <span className="text-brand-sage">● 89% TRACK</span>
         </div>
       </div>
+    </motion.div>
+  );
+}
+
+/**
+ * DeliveredStamp — sage seal that lands AT photoreal completion (~0.84).
+ * Reuses the Guarantee stamp visual language: scale-from-0 + slight rotate
+ * overshoot + sage ring impact pulse. Punctuates Beat 5 — currently the
+ * "house complete" moment had no visual exclamation point.
+ */
+function DeliveredStamp({
+  progress,
+  total,
+}: {
+  progress: MotionValue<number>;
+  total: number;
+}) {
+  // Land at 0.84, hold to 0.98 then fade to make room for HeroChip.
+  const opacity = useTransform(
+    progress,
+    [0.82, 0.86, 0.95, 0.98],
+    [0, 1, 1, 0]
+  );
+  const scaleMv = useTransform(progress, [0.82, 0.88], [0, 1]);
+  const scale = useSpring(scaleMv, { stiffness: 380, damping: 14, mass: 0.45 });
+  const rotateMv = useTransform(progress, [0.82, 0.88], [-12, 0]);
+  const rotate = useSpring(rotateMv, { stiffness: 380, damping: 14, mass: 0.45 });
+  // Impact ring fires at land
+  const ringScale = useTransform(progress, [0.84, 0.90], [1, 2.1]);
+  const ringOpacity = useTransform(
+    progress,
+    [0.84, 0.86, 0.90],
+    [0, 0.7, 0]
+  );
+
+  return (
+    <motion.div
+      style={{ opacity }}
+      className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none"
+    >
+      <motion.div
+        style={{ scale, rotate }}
+        className="relative"
+      >
+        {/* Sage impact ring */}
+        <motion.span
+          aria-hidden
+          className="absolute inset-0 rounded-full border-2 border-brand-sage-bright"
+          style={{ scale: ringScale, opacity: ringOpacity }}
+        />
+        {/* Stamp body — circular, sage-bordered */}
+        <div
+          className="relative w-[200px] h-[200px] rounded-full flex flex-col items-center justify-center text-center"
+          style={{
+            background:
+              "radial-gradient(circle at 35% 30%, rgba(132,169,140,0.18) 0%, rgba(43,61,48,0.85) 65%)",
+            border: "2.5px solid #8AAA91",
+            boxShadow:
+              "0 0 60px rgba(132,169,140,0.35), inset 0 0 20px rgba(132,169,140,0.15)",
+          }}
+        >
+          {/* Inner ring */}
+          <span
+            aria-hidden
+            className="absolute inset-3 rounded-full border border-brand-sage-bright/40"
+          />
+          <div className="font-mono text-[9px] tracking-[0.32em] text-brand-sage-bright font-bold mb-1">
+            JOHNSON · 2026
+          </div>
+          <div className="font-display font-light text-[26px] leading-none text-bone tracking-tight">
+            DELIVERED
+          </div>
+          <div
+            className="my-2 h-px w-10 bg-brand-sage-bright/60"
+            aria-hidden
+          />
+          <div className="font-mono text-[10px] tracking-[0.18em] text-brand-sage-mist/85">
+            ON BUDGET
+          </div>
+          <div className="mt-1.5 font-mono text-[11px] font-bold text-brand-sage-bright tabular-nums">
+            ${total.toLocaleString("en-US")}
+          </div>
+        </div>
+      </motion.div>
     </motion.div>
   );
 }
@@ -1493,7 +2122,7 @@ function StaticFallback() {
     <section
       id="plan-to-done"
       aria-label="Construction project lifecycle visualization"
-      className="relative bg-brand-midnight py-16 lg:py-24"
+      className="relative bg-[#4E6253] py-16 lg:py-24"
     >
       <div className="max-w-5xl mx-auto px-6">
         <div className="text-center mb-10">
@@ -1540,12 +2169,34 @@ function StaticFallback() {
 export default function PlanToDoneAnimation() {
   const prefersReduced = useReducedMotion();
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef(0);
   const scrollYProgress = useMotionValue(0);
 
   const [beat, setBeat] = useState<Beat>(BEATS[0]);
   const [frame, setFrame] = useState(0);
   const [totalSpent, setTotalSpent] = useState(0);
+
+  // Anchor screen-projection store — one slot per cost entry. Each slot
+  // is a triplet of MotionValues (x, y, visible) populated each frame by
+  // AnchorProjector inside the Canvas, read by ConnectionLines outside.
+  // COST_ENTRIES has fixed length 5; call hooks explicitly to satisfy
+  // the rules of hooks.
+  const a0x = useMotionValue(0); const a0y = useMotionValue(0); const a0v = useMotionValue(0);
+  const a1x = useMotionValue(0); const a1y = useMotionValue(0); const a1v = useMotionValue(0);
+  const a2x = useMotionValue(0); const a2y = useMotionValue(0); const a2v = useMotionValue(0);
+  const a3x = useMotionValue(0); const a3y = useMotionValue(0); const a3v = useMotionValue(0);
+  const a4x = useMotionValue(0); const a4y = useMotionValue(0); const a4v = useMotionValue(0);
+  const anchorStore: AnchorScreenStore[] = useMemo(
+    () => [
+      { x: a0x, y: a0y, visible: a0v },
+      { x: a1x, y: a1y, visible: a1v },
+      { x: a2x, y: a2y, visible: a2v },
+      { x: a3x, y: a3y, visible: a3v },
+      { x: a4x, y: a4y, visible: a4v },
+    ],
+    [a0x, a0y, a0v, a1x, a1y, a1v, a2x, a2y, a2v, a3x, a3y, a3v, a4x, a4y, a4v],
+  );
 
   // Manual scroll progress via bounding-rect math. Bulletproof against
   // framer-motion's useScroll target-resolution flakiness (container-
@@ -1582,9 +2233,18 @@ export default function PlanToDoneAnimation() {
             setBeat(next);
           }
 
-          const ramp03 = clamp01((p - 0.36) / (0.66 - 0.36));
-          const eased = 1 - Math.pow(1 - ramp03, 3);
-          const total = Math.round(eased * RUNNING_TOTAL);
+          // Sync with CostCard appearances: each entry contributes its
+          // full numericValue during the 0.04-scroll window that starts
+          // at its own `showAt`. This keeps the Spent-To-Date number
+          // stepping up in lockstep with the cost cards that appear.
+          let running = 0;
+          for (const e of COST_ENTRIES) {
+            const w = clamp01((p - e.showAt) / 0.04);
+            running += w * e.numericValue;
+          }
+          // Hold at RUNNING_TOTAL through the chart beat, fade with cards
+          // (handled by card opacity — total value itself stays stable).
+          const total = Math.round(running);
           if (total !== lastTotal) {
             lastTotal = total;
             setTotalSpent(total);
@@ -1600,48 +2260,50 @@ export default function PlanToDoneAnimation() {
   if (prefersReduced) return <StaticFallback />;
 
   return (
-    <section
-      id="plan-to-done"
-      aria-label="Construction project lifecycle — interactive scroll animation"
-      className="relative bg-brand-midnight"
-      style={{ overflow: "clip" }}
-    >
-      {/* No top or bottom gradient bridges — ground is brand-midnight
-          throughout, so the canvas edges already match the page background
-          on all sides. Bridges here were previously causing the "huge
-          fade" transition you saw at the end. */}
-      <div className="max-w-6xl mx-auto px-6 pt-16 lg:pt-24 pb-6 text-center">
-        <p className="font-heading text-xs font-semibold tracking-[0.2em] uppercase text-brand-forest mb-3">
-          How Stroyka Sees Your Project
-        </p>
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold tracking-tight text-white leading-tight max-w-2xl mx-auto">
-          From plan to done — every dollar tracked.
-        </h2>
-        <p className="text-sm md:text-base text-brand-sage-mist/65 mt-4 max-w-3xl mx-auto">
-          Scroll to see a project unfold in Stroyka — every material, every cost, in real&nbsp;time.
-        </p>
-      </div>
-
-      {/* NOTE: no overflow:hidden here — it would scope position:sticky to this
-          element, which breaks the pinning on the inner canvas wrapper. Fix 1's
-          containment is applied to the outer <section> and the sticky wrapper. */}
+    <>
+      {/* 3D canvas on dark teal-sage. The section's intro title + kicker
+          now live INSIDE the sticky container as IntroTitle — so the
+          headline, the animation, and the scroll all read as one
+          continuous experience instead of a text block, a dead bridge,
+          and a separate animation. */}
+      <section
+        id="plan-to-done"
+        aria-label="How Stroyka sees your project — interactive scroll animation"
+        className="relative bg-[#4E6253]"
+        style={{ overflow: "clip" }}
+      >
       <div
         ref={wrapperRef}
         style={{ position: "relative", height: "500vh" }}
       >
         <div
-          className="sticky top-16 h-[calc(100vh-4rem)] min-h-[560px] bg-brand-midnight"
+          ref={stickyRef}
+          className="sticky top-16 h-[calc(100vh-4rem)] min-h-[560px] bg-[#4E6253]"
           style={{ overflow: "clip" }}
         >
           <div className="absolute inset-0 z-0">
             <Canvas
               dpr={[1, 2]}
+              flat
               gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
               camera={{ fov: 26, near: 0.1, far: 120, position: [0.001, 28, 0.001] }}
             >
-              <HouseScene scroll={scrollRef} />
+              <HouseScene scroll={scrollRef} anchorStore={anchorStore} />
             </Canvas>
           </div>
+
+          {/* Top seam feather — hides any sub-pixel rendering difference
+              between the bridge gradient above and the canvas below. Pure
+              sage-olive at top → transparent so it dissolves into the
+              scene within 80px. */}
+          <div
+            aria-hidden
+            className="absolute top-0 left-0 right-0 h-20 z-[2] pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(to bottom, #4E6253 0%, rgba(78,98,83,0) 100%)",
+            }}
+          />
 
           {/* CAD grid backdrop — Fix 2: forest at 20% opacity */}
           <div
@@ -1661,9 +2323,33 @@ export default function PlanToDoneAnimation() {
               brand-midnight. Any extra darkening overlay re-introduced the
               seam with the page background. */}
 
+          {/* Intro veil — covers the R3F canvas + grid with a solid dark
+              surface during the opening title, then fades out as the title
+              exits so Beat 1 elements can appear. This is simpler and more
+              robust than individually gating every mesh's intro opacity. */}
+          <IntroVeil progress={scrollYProgress} />
+
           <CADFrame progress={scrollYProgress} />
-          <TelemetryPill frame={frame} state={beat.state} />
-          <HeadlineOverlay kicker={beat.kicker} headline={beat.headline} />
+          <TelemetryPill
+            frame={frame}
+            state={beat.state}
+            progress={scrollYProgress}
+          />
+          <IntroTitle progress={scrollYProgress} />
+          <HeadlineOverlay
+            kicker={beat.kicker}
+            headline={beat.headline}
+            progress={scrollYProgress}
+          />
+
+          {/* Connection lines from cost cards to 3D house anchors —
+              sage SVG paths drawn between card-left edge and projected
+              anchor pixel coords. Sits BELOW cost cards (z-19 < z-20). */}
+          <ConnectionLines
+            store={anchorStore}
+            progress={scrollYProgress}
+            containerRef={stickyRef}
+          />
 
           {COST_ENTRIES.map((entry, i) => (
             <CostCard
@@ -1676,6 +2362,7 @@ export default function PlanToDoneAnimation() {
 
           <RunningTotalCard total={totalSpent} progress={scrollYProgress} />
           <ChartCard progress={scrollYProgress} />
+          <DeliveredStamp progress={scrollYProgress} total={RUNNING_TOTAL} />
           <HeroChip progress={scrollYProgress} />
 
           <div className="md:hidden absolute bottom-4 left-4 right-4 z-20 flex flex-col gap-1.5">
@@ -1686,6 +2373,7 @@ export default function PlanToDoneAnimation() {
 
         </div>
       </div>
-    </section>
+      </section>
+    </>
   );
 }

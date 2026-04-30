@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, LayoutGroup, useReducedMotion } from "framer-motion";
 import {
   Check,
   ArrowRight,
@@ -73,32 +73,32 @@ const stepTransition = {
 
 /* ─── Helpers ──────────────────────────────────────────────────── */
 
-function AnnualPriceDisplay({ plan }: { plan: Plan }) {
+function AnnualPriceDisplay({ plan, tone = "light" }: { plan: Plan; tone?: "light" | "dark" }) {
   const monthly = PRICES[plan].monthly;
   const annual = PRICES[plan].annual;
   const fullAnnual = monthly * 12;
   const saved = fullAnnual - annual;
   const perMonth = Math.round(annual / 12);
+  const isDark = tone === "dark";
+
+  const primary = isDark ? "text-bone" : "text-ink";
+  const secondary = isDark ? "text-bone/75" : "text-ink";
+  const muted = isDark ? "text-bone/55" : "text-ink-muted";
+  const strike = isDark ? "text-bone/40" : "text-ink-muted/60";
+  const savings = isDark ? "text-brand-sage-bright" : "text-brand-forest";
 
   return (
     <div>
       <div className="flex items-baseline gap-1">
-        <span className="text-4xl font-heading font-bold">${perMonth}</span>
-        <span className="text-brand-sage-mist/60 ml-1">/ month</span>
+        <span className={`font-display text-5xl font-light ${primary} tabular-nums`}>${perMonth}</span>
+        <span className={`${muted} ml-2 font-mono text-[12px] tracking-[0.08em] uppercase`}>/ month</span>
       </div>
-      <p className="mt-2 text-[15px] font-heading font-semibold text-brand-sage-mist/90">
-        ${annual.toLocaleString()}{" "}
-        <span className="text-brand-sage-mist/60 font-medium">
-          billed annually
-        </span>
+      <p className={`mt-2 font-mono text-[12px] tracking-[0.08em] uppercase tabular-nums ${secondary}`}>
+        ${annual.toLocaleString()} <span className={muted}>billed annually</span>
       </p>
-      <div className="flex items-center gap-2 mt-1.5">
-        <span className="text-xs text-brand-sage-mist/40 line-through">
-          ${fullAnnual.toLocaleString()}
-        </span>
-        <span className="text-xs text-green-400 font-heading font-semibold">
-          Save ${saved}
-        </span>
+      <div className="flex items-center gap-2 mt-1.5 font-mono text-[11px] tracking-[0.08em] uppercase tabular-nums">
+        <span className={`${strike} line-through`}>${fullAnnual.toLocaleString()}</span>
+        <span className={`font-semibold ${savings}`}>Save ${saved}</span>
       </div>
     </div>
   );
@@ -237,27 +237,27 @@ export default function GetStartedFlow() {
   /* ─── Shared styles ─────────────────────────────────────────── */
 
   const inputCls = (field?: keyof FormData) =>
-    `w-full bg-brand-deep/50 border ${
+    `w-full bg-bone-soft/60 border ${
       field && fieldErrors[field]
-        ? "border-red-500/50"
-        : "border-brand-deep"
-    } rounded-xl px-4 py-3 text-white placeholder:text-brand-sage-mist/40 focus:outline-none focus:border-brand-forest transition-colors duration-200 font-body text-sm`;
+        ? "border-red-500/60"
+        : "border-ink/20"
+    } rounded-xl px-4 py-3 text-ink placeholder:text-ink-muted/70 focus:outline-none focus:border-brand-deep focus:bg-bone transition-colors duration-200 font-body text-sm`;
 
   /* ─── Render ────────────────────────────────────────────────── */
 
   return (
-    <div className="min-h-screen pt-24 pb-16">
+    <div className="min-h-screen bg-bone text-ink pt-24 pb-16">
       <div className="max-w-4xl mx-auto px-6">
         {/* Logo */}
         <div className="flex justify-center mb-10">
           <Link href="/">
-            <Logo variant="dark" size={40} showWordmark />
+            <Logo variant="light" size={40} showWordmark />
           </Link>
         </div>
 
         {/* Heading */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl lg:text-5xl font-heading font-bold leading-tight mb-3">
+          <h1 className="text-4xl lg:text-5xl font-display font-light leading-tight tracking-[-0.02em] text-ink mb-3">
             {step === 1
               ? "Choose your plan"
               : step === 2
@@ -265,12 +265,12 @@ export default function GetStartedFlow() {
                 : "Redirecting..."}
           </h1>
           {step === 1 && (
-            <p className="text-base text-brand-sage-mist/75 max-w-lg mx-auto">
+            <p className="text-base text-ink-soft max-w-lg mx-auto">
               No per-seat fees. Your entire crew is included.
             </p>
           )}
           {step === 2 && (
-            <p className="text-base text-brand-sage-mist/75 max-w-lg mx-auto">
+            <p className="text-base text-ink-soft max-w-lg mx-auto">
               Enter your details and we&apos;ll take you to secure checkout.
             </p>
           )}
@@ -284,8 +284,8 @@ export default function GetStartedFlow() {
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-heading font-semibold transition-colors duration-200 ${
                     step >= s
-                      ? "bg-brand-forest text-white"
-                      : "bg-brand-deep/50 text-brand-sage-mist/40 border border-brand-deep"
+                      ? "bg-brand-deep text-bone shadow-[0_0_18px_-4px_rgba(52,69,58,0.5)]"
+                      : "bg-bone-soft/80 text-ink-muted border border-ink/20"
                   }`}
                 >
                   {step > s ? <Check size={14} /> : s}
@@ -293,7 +293,7 @@ export default function GetStartedFlow() {
                 {s < 2 && (
                   <div
                     className={`w-12 h-0.5 transition-colors duration-200 ${
-                      step > s ? "bg-brand-forest" : "bg-brand-deep"
+                      step > s ? "bg-brand-deep" : "bg-ink/15"
                     }`}
                   />
                 )}
@@ -315,52 +315,73 @@ export default function GetStartedFlow() {
               exit="exit"
               transition={stepTransition}
             >
-              {/* Billing toggle */}
+              {/* Billing toggle — LayoutGroup sliding pill, matches the
+                  landing-page Pricing toggle exactly. Single shared
+                  motion.span pill animates between Monthly/Annual. */}
               <div className="flex items-center justify-center mb-8">
-                <div className="inline-flex items-center bg-brand-deep/80 border border-brand-deep rounded-full p-1">
-                  <button
-                    onClick={() => setBilling("monthly")}
-                    className={`font-heading text-sm px-5 py-2 rounded-full transition-all duration-200 ${
-                      billing === "monthly"
-                        ? "bg-brand-forest text-white shadow-lg shadow-brand-forest/20"
-                        : "text-brand-sage-mist/60 hover:text-white"
-                    }`}
-                  >
-                    Monthly
-                  </button>
-                  <button
-                    onClick={() => setBilling("annual")}
-                    className={`font-heading text-sm px-5 py-2 rounded-full transition-all duration-200 flex items-center gap-2 ${
-                      billing === "annual"
-                        ? "bg-brand-forest text-white shadow-lg shadow-brand-forest/20"
-                        : "text-brand-sage-mist/60 hover:text-white"
-                    }`}
-                  >
-                    Annual
-                    <span className="bg-green-500/20 text-green-400 text-[11px] font-semibold px-2 py-0.5 rounded-full leading-none">
-                      -17%
-                    </span>
-                  </button>
-                </div>
+                <LayoutGroup id="getstarted-billing-toggle">
+                  <div className="relative inline-flex items-center bg-bone-soft/80 border border-ink/20 backdrop-blur-md rounded-full p-1">
+                    {(["monthly", "annual"] as const).map((mode) => {
+                      const active = billing === mode;
+                      return (
+                        <button
+                          key={mode}
+                          type="button"
+                          onClick={() => setBilling(mode)}
+                          className={`relative z-[1] font-mono text-[12px] tracking-[0.15em] uppercase px-5 py-2 rounded-full transition-colors duration-200 flex items-center gap-2 ${
+                            active ? "text-bone" : "text-ink/60 hover:text-ink"
+                          }`}
+                        >
+                          {active && (
+                            <motion.span
+                              layoutId="getstarted-billing-pill"
+                              aria-hidden
+                              className="absolute inset-0 rounded-full bg-brand-forest shadow-[0_0_20px_-4px_rgba(63,78,53,0.5)] -z-[1]"
+                              transition={{
+                                type: "spring",
+                                stiffness: 380,
+                                damping: 30,
+                              }}
+                            />
+                          )}
+                          <span className="relative">
+                            {mode === "monthly" ? "Monthly" : "Annual"}
+                          </span>
+                          {mode === "annual" && (
+                            <span
+                              className={`relative text-[10px] font-semibold px-2 py-0.5 rounded-full leading-none transition-colors ${
+                                active
+                                  ? "bg-bone/30 text-bone"
+                                  : "bg-brand-sage/20 text-brand-forest"
+                              }`}
+                            >
+                              −17%
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </LayoutGroup>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto items-stretch">
-                {/* Starter card (hero) */}
+                {/* Starter card — sage-highlighted (matches main Pricing) */}
                 <motion.div
-                  whileHover={prefersReduced ? {} : { scale: 1.02 }}
+                  whileHover={prefersReduced ? {} : { y: -3 }}
                   transition={{ duration: 0.2 }}
-                  className="bg-brand-deep border border-brand-forest ring-1 ring-brand-forest/30 rounded-2xl p-8 relative cursor-pointer transition-colors duration-200 shadow-xl shadow-brand-forest/10 flex flex-col"
+                  className="card-stone-sage border border-brand-sage/45 rounded-2xl p-8 relative cursor-pointer flex flex-col shadow-[0_0_60px_-20px_rgba(138,170,145,0.35)]"
                   onClick={() => setPlan("starter")}
                 >
-                  <span className="absolute -top-3 left-8 bg-brand-forest text-white text-xs font-heading font-semibold px-3 py-1 rounded-full">
+                  <span className="absolute -top-3 left-8 bg-brand-deep text-bone font-mono text-[11px] tracking-[0.15em] uppercase font-semibold px-3 py-1 rounded-full">
                     Most Popular
                   </span>
 
                   <div className="flex items-center gap-2 mb-1">
                     <Zap size={18} className="text-brand-forest" />
-                    <h3 className="font-heading font-semibold text-xl">Starter</h3>
+                    <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-brand-forest">Starter</h3>
                   </div>
-                  <p className="text-brand-sage-mist/60 text-sm mb-5">
+                  <p className="text-ink-soft text-sm mb-5 mt-1">
                     For growing crews up to 15
                   </p>
 
@@ -368,16 +389,16 @@ export default function GetStartedFlow() {
                     {billing === "monthly" ? (
                       <div>
                         <div className="flex items-baseline gap-1">
-                          <span className="text-4xl font-heading font-bold">
+                          <span className="font-display text-5xl font-light text-ink tabular-nums">
                             ${PRICES.starter.monthly}
                           </span>
-                          <span className="text-brand-sage-mist/60 ml-1">/ month</span>
+                          <span className="text-ink-muted ml-2 font-mono text-[12px] tracking-[0.08em] uppercase">/ month</span>
                         </div>
                       </div>
                     ) : (
                       <AnnualPriceDisplay plan="starter" />
                     )}
-                    <p className="text-xs text-brand-sage-mist/50 mt-2">
+                    <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-ink-muted mt-2">
                       Up to 15 workers
                     </p>
                   </div>
@@ -386,7 +407,7 @@ export default function GetStartedFlow() {
                     {STARTER_FEATURES.map((f) => (
                       <li
                         key={f}
-                        className="flex items-start gap-2 text-sm text-brand-sage-mist/70"
+                        className="flex items-start gap-2 text-sm text-ink-soft"
                       >
                         <span className="text-brand-forest mt-0.5">
                           <Check size={14} />
@@ -401,25 +422,25 @@ export default function GetStartedFlow() {
                       e.stopPropagation();
                       goToStep2("starter");
                     }}
-                    className="mt-auto w-full relative inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-xl transition-colors duration-200 cursor-pointer bg-brand-forest text-white hover:bg-brand-deep active:scale-95 shadow-lg shadow-brand-forest/20 text-base px-6 py-3"
+                    className="mt-auto w-full relative inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-full transition-colors duration-200 cursor-pointer bg-brand-deep text-bone hover:bg-brand-midnight-dark active:scale-95 text-base px-6 py-3"
                   >
                     Continue
                     <ArrowRight size={16} />
                   </button>
                 </motion.div>
 
-                {/* Pro card (premium) */}
+                {/* Pro card — premium dark (matches main Pricing Pro) */}
                 <motion.div
-                  whileHover={prefersReduced ? {} : { scale: 1.02 }}
+                  whileHover={prefersReduced ? {} : { y: -3 }}
                   transition={{ duration: 0.2 }}
-                  className="bg-gradient-to-b from-brand-deep to-brand-deep/70 border border-amber-500/30 rounded-2xl p-8 relative cursor-pointer transition-colors duration-200 shadow-2xl shadow-amber-500/5 flex flex-col"
+                  className="card-stone-dark border border-brand-sage/30 rounded-2xl p-8 relative cursor-pointer flex flex-col shadow-[0_30px_80px_-30px_rgba(20,30,24,0.5)]"
                   onClick={() => setPlan("pro")}
                 >
                   <div className="flex items-center gap-2 mb-1">
-                    <Crown size={18} className="text-amber-400" />
-                    <h3 className="font-heading font-semibold text-xl">Pro</h3>
+                    <Crown size={18} className="text-brand-sage-bright" />
+                    <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-brand-sage-bright">Pro</h3>
                   </div>
-                  <p className="text-brand-sage-mist/60 text-sm mb-5">
+                  <p className="text-bone/70 text-sm mb-5 mt-1">
                     For larger operations, no limits
                   </p>
 
@@ -427,16 +448,16 @@ export default function GetStartedFlow() {
                     {billing === "monthly" ? (
                       <div>
                         <div className="flex items-baseline gap-1">
-                          <span className="text-4xl font-heading font-bold">
+                          <span className="font-display text-5xl font-light text-bone tabular-nums">
                             ${PRICES.pro.monthly}
                           </span>
-                          <span className="text-brand-sage-mist/60 ml-1">/ month</span>
+                          <span className="text-bone/60 ml-2 font-mono text-[12px] tracking-[0.08em] uppercase">/ month</span>
                         </div>
                       </div>
                     ) : (
-                      <AnnualPriceDisplay plan="pro" />
+                      <AnnualPriceDisplay plan="pro" tone="dark" />
                     )}
-                    <p className="text-xs text-amber-400/70 mt-2">
+                    <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-brand-sage-bright/85 mt-2">
                       Unlimited workers
                     </p>
                   </div>
@@ -445,9 +466,9 @@ export default function GetStartedFlow() {
                     {PRO_FEATURES.map((f) => (
                       <li
                         key={f}
-                        className="flex items-start gap-2 text-sm text-brand-sage-mist/70"
+                        className="flex items-start gap-2 text-sm text-bone/85"
                       >
-                        <span className="text-brand-forest mt-0.5">
+                        <span className="text-brand-sage-bright mt-0.5">
                           <Check size={14} />
                         </span>
                         {f}
@@ -460,7 +481,7 @@ export default function GetStartedFlow() {
                       e.stopPropagation();
                       goToStep2("pro");
                     }}
-                    className="mt-auto w-full relative inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-xl transition-colors duration-200 cursor-pointer border border-brand-forest text-brand-sage hover:bg-brand-forest/10 active:scale-95 text-base px-6 py-3"
+                    className="mt-auto w-full relative inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-full transition-colors duration-200 cursor-pointer bg-bone text-ink hover:bg-bone-deep active:scale-95 text-base px-6 py-3"
                   >
                     Continue
                     <ArrowRight size={16} />
@@ -468,24 +489,24 @@ export default function GetStartedFlow() {
                 </motion.div>
               </div>
 
-              {/* Founding member banner — always visible on step 1 */}
+              {/* Founding member banner */}
               <motion.div
                 initial={prefersReduced ? {} : { opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 className="max-w-3xl mx-auto mt-8"
               >
-                <div className="border border-dashed border-brand-sage/30 bg-brand-deep/30 rounded-2xl p-6 text-center">
-                  <p className="text-sm font-heading font-semibold flex items-center justify-center gap-2">
+                <div className="card-stone border border-brand-sage/35 rounded-2xl p-6 text-center">
+                  <p className="text-sm font-heading font-semibold flex items-center justify-center gap-2 text-ink">
                     <ShieldCheck size={16} className="text-brand-forest" />
                     Founding Member Rate — $99/month, locked forever
                   </p>
-                  <p className="text-xs text-brand-sage-mist/60 mt-2 mb-4">
+                  <p className="text-xs text-ink-soft mt-2 mb-4">
                     The first 20 companies lock in Starter at $99/month for life. $50 off every month, forever.
                   </p>
                   <button
                     onClick={claimFoundingSpot}
-                    className="inline-flex items-center gap-1.5 text-sm font-heading font-semibold text-brand-forest hover:text-brand-sage transition-colors duration-200 cursor-pointer"
+                    className="inline-flex items-center gap-1.5 text-sm font-heading font-semibold text-brand-forest hover:text-brand-deep transition-colors duration-200 cursor-pointer"
                   >
                     Claim a Founding Spot
                     <ArrowRight size={14} />
@@ -508,13 +529,13 @@ export default function GetStartedFlow() {
             >
               <div className="max-w-lg mx-auto">
                 {/* Selected plan summary */}
-                <div className="bg-brand-deep/50 border border-brand-deep rounded-xl p-5 mb-8">
+                <div className="card-stone border border-ink/15 rounded-2xl p-5 mb-8">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-xs text-brand-sage-mist/50 uppercase tracking-wider mb-1">Selected plan</p>
-                      <p className="font-heading font-semibold text-xl capitalize flex items-center gap-2">
+                      <p className="font-mono text-[11px] text-ink-muted uppercase tracking-[0.2em] mb-2">Selected plan</p>
+                      <p className="font-heading font-semibold text-xl capitalize flex items-center gap-2 text-ink">
                         {plan === "pro" ? (
-                          <Crown size={18} className="text-amber-400" />
+                          <Crown size={18} className="text-brand-deep" />
                         ) : (
                           <Zap size={18} className="text-brand-forest" />
                         )}
@@ -524,35 +545,35 @@ export default function GetStartedFlow() {
                     <div className="text-right">
                       {isFoundingMember && billing === "monthly" ? (
                         <div className="flex items-baseline gap-2">
-                          <span className="text-sm text-brand-sage-mist/40 line-through">$149</span>
-                          <span className="font-heading font-bold text-2xl">$99</span>
-                          <span className="text-brand-sage-mist/50 text-sm">/mo</span>
+                          <span className="text-sm text-ink-muted/75 line-through">$149</span>
+                          <span className="font-display text-3xl font-light text-ink tabular-nums">$99</span>
+                          <span className="text-ink-muted text-sm">/mo</span>
                         </div>
                       ) : billing === "annual" ? (
                         <div>
                           <div className="flex items-baseline gap-2 justify-end">
-                            <span className="font-heading font-bold text-2xl">
+                            <span className="font-display text-3xl font-light text-ink tabular-nums">
                               ${Math.round(PRICES[plan!].annual / 12)}
                             </span>
-                            <span className="text-brand-sage-mist/50 text-sm">/mo</span>
+                            <span className="text-ink-muted text-sm">/mo</span>
                           </div>
-                          <p className="text-xs text-brand-sage-mist/40 mt-0.5">
+                          <p className="text-xs text-ink-muted mt-0.5">
                             ${PRICES[plan!].annual.toLocaleString()}/yr billed annually
                           </p>
                         </div>
                       ) : (
                         <div className="flex items-baseline gap-1">
-                          <span className="font-heading font-bold text-2xl">
+                          <span className="font-display text-3xl font-light text-ink tabular-nums">
                             ${PRICES[plan!].monthly}
                           </span>
-                          <span className="text-brand-sage-mist/50 text-sm">/mo</span>
+                          <span className="text-ink-muted text-sm">/mo</span>
                         </div>
                       )}
                     </div>
                   </div>
                   {isFoundingMember && (
-                    <div className="mt-3 pt-3 border-t border-brand-deep">
-                      <span className="inline-flex items-center gap-1.5 text-xs font-heading font-semibold text-amber-400">
+                    <div className="mt-3 pt-3 border-t border-ink/15">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-heading font-semibold text-brand-forest">
                         <ShieldCheck size={13} />
                         Founding Member — $50 off every month, forever
                       </span>
@@ -564,7 +585,7 @@ export default function GetStartedFlow() {
                   <div>
                     <label
                       htmlFor="gs-name"
-                      className="block text-sm text-brand-sage mb-1.5"
+                      className="block text-sm font-medium text-ink mb-1.5"
                     >
                       Your name *
                     </label>
@@ -579,14 +600,14 @@ export default function GetStartedFlow() {
                       autoComplete="name"
                     />
                     {fieldErrors.name && (
-                      <p className="text-xs text-red-400 mt-1.5">{fieldErrors.name}</p>
+                      <p className="text-xs text-red-700 mt-1.5">{fieldErrors.name}</p>
                     )}
                   </div>
 
                   <div>
                     <label
                       htmlFor="gs-email"
-                      className="block text-sm text-brand-sage mb-1.5"
+                      className="block text-sm font-medium text-ink mb-1.5"
                     >
                       Work email *
                     </label>
@@ -601,14 +622,14 @@ export default function GetStartedFlow() {
                       autoComplete="email"
                     />
                     {fieldErrors.email && (
-                      <p className="text-xs text-red-400 mt-1.5">{fieldErrors.email}</p>
+                      <p className="text-xs text-red-700 mt-1.5">{fieldErrors.email}</p>
                     )}
                   </div>
 
                   <div>
                     <label
                       htmlFor="gs-companyName"
-                      className="block text-sm text-brand-sage mb-1.5"
+                      className="block text-sm font-medium text-ink mb-1.5"
                     >
                       Company name *
                     </label>
@@ -623,18 +644,18 @@ export default function GetStartedFlow() {
                       autoComplete="organization"
                     />
                     {fieldErrors.companyName && (
-                      <p className="text-xs text-red-400 mt-1.5">
+                      <p className="text-xs text-red-700 mt-1.5">
                         {fieldErrors.companyName}
                       </p>
                     )}
                   </div>
 
                   {submitError && (
-                    <div className="rounded-lg border border-red-500/30 bg-red-900/20 p-4 text-sm text-red-300">
+                    <div className="rounded-xl border border-red-400/40 bg-red-50 p-4 text-sm text-red-800">
                       {submitError}. Please try again or email us at{" "}
                       <a
                         href="mailto:hello@getstroyka.com"
-                        className="underline hover:text-red-200"
+                        className="underline hover:text-red-900"
                       >
                         hello@getstroyka.com
                       </a>
@@ -645,7 +666,7 @@ export default function GetStartedFlow() {
                     <button
                       type="button"
                       onClick={goBack}
-                      className="inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-xl transition-colors duration-200 cursor-pointer border border-brand-forest text-brand-sage hover:bg-brand-forest/10 active:scale-95 text-base px-6 py-3 sm:w-auto"
+                      className="inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-full transition-colors duration-200 cursor-pointer border border-ink/50 text-ink hover:bg-ink hover:text-bone hover:border-ink active:scale-95 text-base px-6 py-3 sm:w-auto"
                     >
                       <ArrowLeft size={16} />
                       Back
@@ -653,7 +674,7 @@ export default function GetStartedFlow() {
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="flex-1 relative inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-xl transition-colors duration-200 cursor-pointer bg-brand-forest text-white hover:bg-brand-deep active:scale-95 shadow-lg shadow-brand-forest/20 text-base px-6 py-3 disabled:opacity-60 disabled:cursor-not-allowed"
+                      className="flex-1 relative inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-full transition-colors duration-200 cursor-pointer bg-brand-deep text-bone hover:bg-brand-midnight-dark active:scale-95 text-base px-6 py-3 disabled:opacity-60 disabled:cursor-not-allowed"
                     >
                       {submitting ? (
                         <>
@@ -669,7 +690,7 @@ export default function GetStartedFlow() {
                     </button>
                   </div>
 
-                  <p className="text-xs text-brand-sage-mist/40 text-center mt-2">
+                  <p className="text-xs text-ink-muted/60 text-center mt-2">
                     Already have an account?{" "}
                     <a
                       href="https://getstroyka.com/account"
@@ -698,10 +719,10 @@ export default function GetStartedFlow() {
                 >
                   <Loader2 size={40} className="text-brand-forest" />
                 </motion.div>
-                <p className="font-heading text-lg text-brand-sage-mist/80">
+                <p className="font-heading text-lg text-ink-soft/80">
                   Taking you to secure checkout...
                 </p>
-                <p className="text-sm text-brand-sage-mist/40">
+                <p className="text-sm text-ink-muted/60">
                   Powered by Stripe. Your payment info is never stored on our servers.
                 </p>
               </div>

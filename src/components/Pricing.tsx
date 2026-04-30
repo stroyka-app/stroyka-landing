@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, type CSSProperties } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, LayoutGroup, useReducedMotion } from "framer-motion";
 import { Check, X, ShieldCheck, Zap, Crown, Download } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
 import Button from "@/components/ui/Button";
-
-/* ─── Pricing data ─────────────────────────────────────────────── */
+import { useCursorGlow } from "@/lib/hooks/useCursorGlow";
+import { useCountUp } from "@/lib/hooks/useCountUp";
 
 type Billing = "monthly" | "annual";
 
@@ -67,73 +67,22 @@ const PRO_FEATURES: Feature[] = [
   { label: "Dedicated onboarding call", included: true },
 ];
 
-/* ─── Price display ────────────────────────────────────────────── */
-
-interface PaidPriceProps {
-  plan: "starter" | "pro";
-  billing: Billing;
-}
-
-function PaidPrice({ plan, billing }: PaidPriceProps) {
-  const monthly = PRICES[plan].monthly;
-  const annualPerMonth = PRICES[plan].annualPerMonth;
-  const annualTotal = PRICES[plan].annual;
-  const fullAnnual = monthly * 12;
-  const saved = fullAnnual - annualTotal;
-
-  if (billing === "monthly") {
-    return (
-      <div className="flex items-baseline gap-1">
-        <span className="text-4xl font-heading font-bold">${monthly}</span>
-        <span className="text-brand-sage-mist/60 ml-1">/ month</span>
-      </div>
-    );
-  }
-
+function FeatureList({ features, sub }: { features: Feature[]; sub?: boolean }) {
   return (
-    <div>
-      <div className="flex items-baseline gap-1">
-        <span className="text-4xl font-heading font-bold">${annualPerMonth}</span>
-        <span className="text-brand-sage-mist/60 ml-1">/ month</span>
-      </div>
-      <p className="mt-2 text-[15px] font-heading font-semibold text-brand-sage-mist/90">
-        ${annualTotal.toLocaleString()}{" "}
-        <span className="text-brand-sage-mist/60 font-medium">
-          billed annually
-        </span>
-      </p>
-      <div className="flex items-center gap-2 mt-1.5">
-        <span className="text-xs text-brand-sage-mist/40 line-through">
-          ${fullAnnual.toLocaleString()}
-        </span>
-        <span className="text-xs font-heading font-semibold text-green-400">
-          Save ${saved}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-/* ─── Feature list ─────────────────────────────────────────────── */
-
-function FeatureList({ features }: { features: Feature[] }) {
-  return (
-    <ul className="flex flex-col gap-2.5 mb-8">
+    <ul className="flex flex-col gap-3 mb-8">
       {features.map((f) => (
         <li
           key={f.label}
-          className={`flex items-start gap-2 text-sm ${
-            f.included
-              ? "text-brand-sage-mist/70"
-              : "text-brand-sage-mist/35"
+          className={`flex items-start gap-2.5 text-[14px] ${
+            f.included ? (sub ? "text-ink/80" : "text-ink/75") : "text-ink/30 line-through"
           }`}
         >
           <span
-            className={`mt-0.5 ${
-              f.included ? "text-brand-forest" : "text-brand-sage-mist/30"
+            className={`mt-0.5 flex-shrink-0 ${
+              f.included ? "text-brand-forest" : "text-ink/25"
             }`}
           >
-            {f.included ? <Check size={14} /> : <X size={14} />}
+            {f.included ? <Check size={14} strokeWidth={2.5} /> : <X size={14} strokeWidth={2} />}
           </span>
           {f.label}
         </li>
@@ -142,106 +91,137 @@ function FeatureList({ features }: { features: Feature[] }) {
   );
 }
 
-/* ─── Component ────────────────────────────────────────────────── */
-
 export default function Pricing() {
   const [billing, setBilling] = useState<Billing>("monthly");
   const prefersReduced = useReducedMotion();
+  const freeGlow = useCursorGlow();
+  const starterGlow = useCursorGlow();
+  const proGlow = useCursorGlow();
+  const { ref: countRef, value: spotsCount } = useCountUp<HTMLSpanElement>({
+    to: FOUNDING_SPOTS_TAKEN,
+    duration: 1600,
+  });
 
   return (
-    <section id="pricing" className="py-16 lg:py-20">
-      <div className="max-w-6xl mx-auto px-6">
-        {/* Heading */}
-        <div className="text-center mb-10">
+    <section id="pricing" className="relative bg-gradient-to-b from-[#D4CBB4] to-[#BFB49C] py-24 lg:py-32 overflow-hidden">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute top-1/3 right-0 w-[50vw] h-[50vw] opacity-30"
+        style={{
+          background:
+            "radial-gradient(ellipse 50% 50% at 90% 30%, rgba(184,212,189,0.25), transparent 70%)",
+          filter: "blur(70px)",
+        }}
+      />
+
+      <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10">
+        <div className="max-w-2xl mb-14">
           <FadeIn>
             <SectionLabel>Pricing</SectionLabel>
           </FadeIn>
           <TextReveal
             as="h2"
-            className="text-4xl lg:text-5xl font-heading font-bold leading-tight mb-4"
+            className="font-display font-light text-5xl lg:text-7xl leading-[0.95] tracking-[-0.02em] text-ink mb-6"
           >
             Flat monthly. No per-seat games.
           </TextReveal>
           <FadeIn delay={0.1}>
-            <p className="text-base text-brand-sage-mist/75 max-w-2xl mx-auto">
+            <p className="text-lg text-ink/70 leading-relaxed max-w-xl">
               Per-seat = per-worker. We don&rsquo;t do that. Free forever for crews up to&nbsp;5.
             </p>
           </FadeIn>
         </div>
 
-        {/* Monthly / Annual toggle */}
+        {/* Billing toggle — LayoutGroup gives us a single sage "pill" that
+            slides between Monthly/Annual instead of two separate filled
+            buttons. The pill IS shared layout — Apple-style. */}
         <FadeIn delay={0.15}>
-          <div className="flex items-center justify-center mb-10">
-            <div className="inline-flex items-center bg-brand-deep/80 border border-brand-deep rounded-full p-1">
-              <button
-                type="button"
-                onClick={() => setBilling("monthly")}
-                className={`font-heading text-sm px-5 py-2 rounded-full transition-all duration-200 ${
-                  billing === "monthly"
-                    ? "bg-brand-forest text-white shadow-lg shadow-brand-forest/20"
-                    : "text-brand-sage-mist/60 hover:text-white"
-                }`}
-              >
-                Monthly
-              </button>
-              <button
-                type="button"
-                onClick={() => setBilling("annual")}
-                className={`font-heading text-sm px-5 py-2 rounded-full transition-all duration-200 flex items-center gap-2 ${
-                  billing === "annual"
-                    ? "bg-brand-forest text-white shadow-lg shadow-brand-forest/20"
-                    : "text-brand-sage-mist/60 hover:text-white"
-                }`}
-              >
-                Annual
-                <span className="bg-green-500/20 text-green-400 text-[11px] font-semibold px-2 py-0.5 rounded-full leading-none">
-                  -17%
-                </span>
-              </button>
-            </div>
+          <div className="flex items-center mb-12">
+            <LayoutGroup id="pricing-billing-toggle">
+              <div className="relative inline-flex items-center bg-bone-soft/60 border border-ink/20 backdrop-blur-md rounded-full p-1">
+                {(["monthly", "annual"] as const).map((mode) => {
+                  const active = billing === mode;
+                  return (
+                    <button
+                      key={mode}
+                      type="button"
+                      onClick={() => setBilling(mode)}
+                      className={`relative z-[1] font-mono text-[12px] tracking-[0.15em] uppercase px-5 py-2 rounded-full transition-colors duration-200 flex items-center gap-2 ${
+                        active ? "text-bone" : "text-ink/60 hover:text-ink"
+                      }`}
+                    >
+                      {active && (
+                        <motion.span
+                          layoutId="pricing-billing-pill"
+                          aria-hidden
+                          className="absolute inset-0 rounded-full bg-brand-forest shadow-[0_0_20px_-4px_rgba(63,78,53,0.5)] -z-[1]"
+                          transition={{
+                            type: "spring",
+                            stiffness: 380,
+                            damping: 30,
+                          }}
+                        />
+                      )}
+                      <span className="relative">
+                        {mode === "monthly" ? "Monthly" : "Annual"}
+                      </span>
+                      {mode === "annual" && (
+                        <span
+                          className={`relative text-[10px] font-semibold px-2 py-0.5 rounded-full leading-none transition-colors ${
+                            active
+                              ? "bg-bone/30 text-bone"
+                              : "bg-brand-sage/20 text-brand-forest"
+                          }`}
+                        >
+                          −17%
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </LayoutGroup>
           </div>
         </FadeIn>
 
         {/* Three-card grid */}
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12 items-stretch">
-          {/* ── Free ─────────────────────────────────────────────── */}
+        <div className="grid md:grid-cols-3 gap-5 max-w-5xl mb-16 items-stretch">
+          {/* Free */}
           <FadeIn>
-            <div className="bg-brand-deep/30 border border-brand-deep/60 rounded-2xl p-8 h-full flex flex-col">
+            <div
+              {...freeGlow}
+              className="card-stone cursor-glow border border-ink/18 backdrop-blur-sm rounded-2xl p-8 h-full flex flex-col relative hover:border-ink/35 transition-colors"
+            >
               <div className="flex items-center gap-2 mb-1">
-                <Download size={18} className="text-brand-sage-mist/60" />
-                <h3 className="font-heading font-semibold text-xl">Free</h3>
+                <Download size={16} className="text-ink-muted" />
+                <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-ink-muted">Free</h3>
               </div>
-              <p className="text-brand-sage-mist/60 text-sm mb-5">
-                For crews just getting started
-              </p>
-              <div className="mb-6">
+              <p className="text-ink/70 text-[14px] mb-6 mt-2">For crews just getting started</p>
+              <div className="mb-8">
                 <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-heading font-bold">$0</span>
-                  <span className="text-brand-sage-mist/60 ml-1">/ forever</span>
+                  <span className="font-display text-5xl font-light text-ink tabular-nums">$0</span>
+                  <span className="text-ink/55 ml-2 font-mono text-[12px] tracking-[0.08em] uppercase">forever</span>
                 </div>
-                <p className="text-xs text-brand-sage-mist/50 mt-1">
+                <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-ink/50 mt-1.5">
                   Up to 5 workers
                 </p>
               </div>
               <FeatureList features={FREE_FEATURES} />
               <div className="mt-auto">
-                <Button
-                  variant="secondary"
-                  href="/#download"
-                  className="w-full"
-                >
+                <Button variant="secondary" href="/#download" className="w-full">
                   Start free
                 </Button>
               </div>
             </div>
           </FadeIn>
 
-          {/* ── Starter (hero card) ──────────────────────────────── */}
+          {/* Starter (sage-bright highlight) */}
           <FadeIn delay={0.1}>
             <motion.div
-              whileHover={prefersReduced ? undefined : { scale: 1.02 }}
+              {...starterGlow}
+              whileHover={prefersReduced ? undefined : { y: -3 }}
               transition={{ duration: 0.2 }}
-              className="glow-border bg-brand-deep/90 border border-brand-forest/50 rounded-2xl p-8 relative h-full flex flex-col shadow-xl shadow-brand-forest/20 hover:shadow-brand-forest/40 transition-shadow"
+              className="card-stone-sage cursor-glow glow-border backdrop-blur-md border border-brand-sage/45 rounded-2xl p-8 h-full flex flex-col relative shadow-[0_0_60px_-20px_rgba(138,170,145,0.4)]"
             >
               {!prefersReduced && (
                 <span
@@ -251,18 +231,16 @@ export default function Pricing() {
                   <span className="glow-sweep" />
                 </span>
               )}
-              <span className="absolute -top-3 left-8 z-[3] bg-brand-forest text-white text-xs font-heading font-semibold px-3 py-1 rounded-full">
-                Most Popular
+              <span className="absolute -top-3 left-8 z-[3] bg-brand-forest text-bone font-mono text-[11px] tracking-[0.15em] uppercase font-semibold px-3 py-1 rounded-full">
+                Most popular
               </span>
               <div className="relative z-[1] flex flex-col h-full">
                 <div className="flex items-center gap-2 mb-1">
-                  <Zap size={18} className="text-brand-forest" />
-                  <h3 className="font-heading font-semibold text-xl">Starter</h3>
+                  <Zap size={16} className="text-brand-forest" />
+                  <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-brand-forest">Starter</h3>
                 </div>
-                <p className="text-brand-sage-mist/60 text-sm mb-5">
-                  For growing crews up to 15
-                </p>
-                <div className="mb-6 min-h-[112px]">
+                <p className="text-ink/70 text-[14px] mb-6 mt-2">For growing crews up to 15</p>
+                <div className="mb-8 min-h-[112px]">
                   <AnimatePresence mode="wait" initial={false}>
                     <motion.div
                       key={billing}
@@ -271,20 +249,26 @@ export default function Pricing() {
                       exit={prefersReduced ? {} : { opacity: 0, y: -6 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <PaidPrice plan="starter" billing={billing} />
+                      <div className="flex items-baseline gap-1">
+                        <span className="font-display text-5xl font-light text-ink tabular-nums">
+                          ${billing === "monthly" ? PRICES.starter.monthly : PRICES.starter.annualPerMonth}
+                        </span>
+                        <span className="text-ink/55 ml-2 font-mono text-[12px] tracking-[0.08em] uppercase">/ month</span>
+                      </div>
+                      {billing === "annual" && (
+                        <p className="mt-2 font-mono text-[12px] tracking-[0.08em] uppercase text-ink/65 tabular-nums">
+                          ${PRICES.starter.annual.toLocaleString()} billed annually
+                        </p>
+                      )}
                     </motion.div>
                   </AnimatePresence>
-                  <p className="text-xs text-brand-sage-mist/50 mt-2">
+                  <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-ink/50 mt-2">
                     Up to 15 workers
                   </p>
                 </div>
                 <FeatureList features={STARTER_FEATURES} />
                 <div className="mt-auto">
-                  <Button
-                    variant="primary"
-                    href={`/get-started?plan=starter&billing=${billing}`}
-                    className="w-full"
-                  >
+                  <Button variant="primary" href={`/get-started?plan=starter&billing=${billing}`} className="w-full">
                     Get Started
                   </Button>
                 </div>
@@ -292,47 +276,48 @@ export default function Pricing() {
             </motion.div>
           </FadeIn>
 
-          {/* ── Pro (premium) ────────────────────────────────────── */}
+          {/* Pro — dark premium card, distinct from Free and from the
+              sage Starter. Uses `card-stone-dark` gradient with cream
+              text and a brighter sage glow for high-end feel.
+              Breathing scale `[1, 1.005, 1]` over 5s — alive, never aggressive. */}
           <FadeIn delay={0.2}>
             <motion.div
-              whileHover={prefersReduced ? undefined : { scale: 1.02 }}
-              transition={{ duration: 0.2 }}
+              {...proGlow}
+              animate={
+                prefersReduced
+                  ? undefined
+                  : { scale: [1, 1.006, 1] }
+              }
+              whileHover={prefersReduced ? undefined : { y: -3, scale: 1.012 }}
+              transition={
+                prefersReduced
+                  ? { duration: 0.2 }
+                  : {
+                      scale: {
+                        duration: 5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      },
+                      y: { duration: 0.2 },
+                    }
+              }
               style={
                 {
-                  "--glow-c1": "#d97706",
-                  "--glow-c2": "#f59e0b",
-                  "--glow-c3": "#fbbf24",
+                  "--glow-c1": "#2B3D30",
+                  "--glow-c2": "#8AAA91",
+                  "--glow-c3": "#B8D4BD",
                   "--glow-duration": "7s",
                 } as CSSProperties
               }
-              className="glow-border bg-gradient-to-b from-brand-deep to-brand-deep/70 border border-amber-500/30 rounded-2xl p-8 relative h-full flex flex-col shadow-2xl shadow-amber-500/10 hover:shadow-amber-500/25 transition-shadow"
+              className="card-stone-dark cursor-glow glow-border backdrop-blur-md border border-brand-sage/30 rounded-2xl p-8 h-full flex flex-col relative"
             >
-              {!prefersReduced && (
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 rounded-2xl overflow-hidden"
-                >
-                  <span
-                    className="glow-sweep"
-                    style={
-                      {
-                        "--sweep-c1": "rgba(217, 119, 6, 0.28)",
-                        "--sweep-c2": "rgba(245, 158, 11, 0.22)",
-                        "--sweep-c3": "rgba(251, 191, 36, 0.18)",
-                      } as CSSProperties
-                    }
-                  />
-                </span>
-              )}
               <div className="relative z-[1] flex flex-col h-full">
                 <div className="flex items-center gap-2 mb-1">
-                  <Crown size={18} className="text-amber-400" />
-                  <h3 className="font-heading font-semibold text-xl">Pro</h3>
+                  <Crown size={16} className="text-brand-sage-bright" />
+                  <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-brand-sage-bright">Pro</h3>
                 </div>
-                <p className="text-brand-sage-mist/60 text-sm mb-5">
-                  For larger operations, no limits
-                </p>
-                <div className="mb-6 min-h-[112px]">
+                <p className="text-bone/70 text-[14px] mb-6 mt-2">For larger operations, no limits</p>
+                <div className="mb-8 min-h-[112px]">
                   <AnimatePresence mode="wait" initial={false}>
                     <motion.div
                       key={billing}
@@ -341,20 +326,40 @@ export default function Pricing() {
                       exit={prefersReduced ? {} : { opacity: 0, y: -6 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <PaidPrice plan="pro" billing={billing} />
+                      <div className="flex items-baseline gap-1">
+                        <span className="font-display text-5xl font-light text-bone tabular-nums">
+                          ${billing === "monthly" ? PRICES.pro.monthly : PRICES.pro.annualPerMonth}
+                        </span>
+                        <span className="text-bone/60 ml-2 font-mono text-[12px] tracking-[0.08em] uppercase">/ month</span>
+                      </div>
+                      {billing === "annual" && (
+                        <p className="mt-2 font-mono text-[12px] tracking-[0.08em] uppercase text-bone/70 tabular-nums">
+                          ${PRICES.pro.annual.toLocaleString()} billed annually
+                        </p>
+                      )}
                     </motion.div>
                   </AnimatePresence>
-                  <p className="text-xs text-amber-400/70 mt-2">
+                  <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-brand-sage-bright/85 mt-2">
                     Unlimited workers
                   </p>
                 </div>
-                <FeatureList features={PRO_FEATURES} />
+                <ul className="flex flex-col gap-3 mb-8">
+                  {PRO_FEATURES.map((f) => (
+                    <li
+                      key={f.label}
+                      className={`flex items-start gap-2.5 text-[14px] ${
+                        f.included ? "text-bone/85" : "text-bone/30 line-through"
+                      }`}
+                    >
+                      <span className={`mt-0.5 flex-shrink-0 ${f.included ? "text-brand-sage-bright" : "text-bone/25"}`}>
+                        {f.included ? <Check size={14} strokeWidth={2.5} /> : <X size={14} strokeWidth={2} />}
+                      </span>
+                      {f.label}
+                    </li>
+                  ))}
+                </ul>
                 <div className="mt-auto">
-                  <Button
-                    variant="secondary"
-                    href={`/get-started?plan=pro&billing=${billing}`}
-                    className="w-full"
-                  >
+                  <Button variant="invert" href={`/get-started?plan=pro&billing=${billing}`} className="w-full">
                     Get Pro
                   </Button>
                 </div>
@@ -363,74 +368,63 @@ export default function Pricing() {
           </FadeIn>
         </div>
 
-        {/* Founding Member — width matches the 3-card pricing grid above */}
+        {/* Founding Member band */}
         <FadeIn delay={0.3}>
-          <div className="relative overflow-hidden rounded-3xl mb-10 max-w-5xl mx-auto border border-brand-amber/20 bg-[linear-gradient(135deg,#1a1108_0%,#2a1a0a_50%,#1a2428_100%)] p-8 md:p-12 grid md:grid-cols-[1.4fr_1fr] gap-10 items-center">
+          <div className="relative overflow-hidden rounded-3xl mb-10 max-w-5xl border border-brand-sage/25 bg-[linear-gradient(135deg,#2B3D30_0%,#34453A_50%,#2B3D30_100%)] p-10 md:p-14 grid md:grid-cols-[1.4fr_1fr] gap-10 items-center">
             <span
               aria-hidden
-              className="pointer-events-none absolute -top-[30%] -right-[10%] w-[400px] h-[400px] rounded-full blur-[60px] bg-[radial-gradient(circle,rgba(245,158,11,0.15),transparent_70%)]"
+              className="pointer-events-none absolute -top-[30%] -right-[10%] w-[500px] h-[500px] rounded-full blur-[80px] bg-brand-sage-bright/18"
             />
-
-            {/* Left — headline & CTA (original copy preserved) */}
             <div className="relative">
-              <p className="font-heading text-[11.5px] font-semibold uppercase tracking-[0.16em] text-[#fbbf24] mb-4 flex items-center gap-2">
-                <ShieldCheck size={14} className="text-[#fbbf24]" />
+              <p className="font-mono text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-sage-bright mb-5 flex items-center gap-2">
+                <ShieldCheck size={14} className="text-brand-sage-bright" />
                 Founding Member — limited
               </p>
-              <h3 className="font-heading font-bold text-2xl md:text-3xl text-white mb-3 leading-tight">
-                Founding Member Rate — $99/month, locked forever
+              <h3 className="font-display text-3xl md:text-5xl leading-[1.02] text-bone mb-5">
+                $99 a month. <span className="italic">Locked forever.</span>
               </h3>
-              <p className="text-sm text-brand-sage-mist/75 mb-6 leading-relaxed max-w-lg">
-                The first 20 companies to subscribe lock in $99/month for life —
-                that&rsquo;s Starter plan at 34% off, forever. No matter what the
-                public rate becomes.
+              <p className="text-[15px] text-bone/75 mb-7 leading-relaxed max-w-lg">
+                The first 20 companies to subscribe lock in $99/month for life — Starter at 34% off, forever. No matter what the public rate becomes.
               </p>
-              <Button
-                variant="primary"
-                href="/get-started?plan=starter&coupon=FOUNDING99"
-              >
+              <Button variant="invert" href="/get-started?plan=starter&coupon=FOUNDING99">
                 Claim a Founding Spot →
               </Button>
             </div>
 
-            {/* Right — live meter */}
-            <div className="relative z-[1] rounded-2xl p-5 bg-black/30 border border-brand-amber/15">
-              <div className="flex justify-between items-baseline mb-2.5 font-heading">
-                <span className="text-[13px] text-brand-sage-mist/65">
+            <div className="relative z-[1] rounded-2xl p-6 bg-bone/5 border border-bone/15 backdrop-blur-sm">
+              <div className="flex justify-between items-baseline mb-3 font-mono">
+                <span className="text-[11px] tracking-[0.18em] uppercase text-bone/65">
                   Spots claimed
                 </span>
-                <span className="text-2xl font-bold text-white tabular-nums">
-                  {FOUNDING_SPOTS_TAKEN}
-                  <span className="text-sm font-medium text-brand-sage-mist/60">
-                    {" "}
-                    / {FOUNDING_SPOTS_TOTAL}
+                <span className="font-display text-3xl text-bone tabular-nums">
+                  <span ref={countRef}>{spotsCount}</span>
+                  <span className="text-[15px] text-bone/55 font-mono">
+                    {" "}/{" "}{FOUNDING_SPOTS_TOTAL}
                   </span>
                 </span>
               </div>
-              <div className="h-2 rounded bg-brand-sage-mist/10 overflow-hidden mb-4">
-                <div
-                  className={`h-full rounded bg-gradient-to-r from-brand-amber to-brand-amber-bright ${
-                    prefersReduced ? "" : "animate-pulse-amber"
-                  }`}
-                  style={{
+              <div className="h-[3px] rounded bg-bone/12 overflow-hidden mb-4 relative">
+                <motion.div
+                  initial={{ width: 0 }}
+                  whileInView={{
                     width: `${(FOUNDING_SPOTS_TAKEN / FOUNDING_SPOTS_TOTAL) * 100}%`,
                   }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+                  className="h-full rounded bg-gradient-to-r from-brand-sage to-brand-sage-bright"
                 />
               </div>
-              <p className="text-[12.5px] text-brand-sage-mist/60">
-                {FOUNDING_SPOTS_TAKEN} of {FOUNDING_SPOTS_TOTAL} spots taken
-                {FOUNDING_SPOTS_REMAINING > 0
-                  ? ` · ${FOUNDING_SPOTS_REMAINING} remaining`
-                  : ""}
+              <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-bone/55">
+                {FOUNDING_SPOTS_TAKEN} of {FOUNDING_SPOTS_TOTAL}
+                {FOUNDING_SPOTS_REMAINING > 0 && ` · ${FOUNDING_SPOTS_REMAINING} remaining`}
               </p>
             </div>
           </div>
         </FadeIn>
 
         <FadeIn delay={0.4}>
-          <p className="text-center text-sm text-brand-sage-mist/50">
-            Not sure which plan fits? Book a 20-minute demo and we&rsquo;ll
-            recommend the right one for your crew size.
+          <p className="font-mono text-[12px] tracking-[0.1em] uppercase text-ink/55 max-w-xl">
+            Not sure which plan fits? Book a 20-minute demo and we&rsquo;ll recommend the right one for your crew size.
           </p>
         </FadeIn>
       </div>
