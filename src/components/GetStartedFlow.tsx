@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, LayoutGroup, useReducedMotion } from "framer-motion";
 import {
   Check,
   ArrowRight,
@@ -315,33 +315,54 @@ export default function GetStartedFlow() {
               exit="exit"
               transition={stepTransition}
             >
-              {/* Billing toggle */}
+              {/* Billing toggle — LayoutGroup sliding pill, matches the
+                  landing-page Pricing toggle exactly. Single shared
+                  motion.span pill animates between Monthly/Annual. */}
               <div className="flex items-center justify-center mb-8">
-                <div className="inline-flex items-center bg-bone-soft/80 border border-ink/15 rounded-full p-1">
-                  <button
-                    onClick={() => setBilling("monthly")}
-                    className={`font-mono text-[12px] tracking-[0.15em] uppercase px-5 py-2 rounded-full transition-all duration-200 ${
-                      billing === "monthly"
-                        ? "bg-brand-deep text-bone shadow-[0_0_18px_-4px_rgba(52,69,58,0.5)]"
-                        : "text-ink-muted hover:text-ink"
-                    }`}
-                  >
-                    Monthly
-                  </button>
-                  <button
-                    onClick={() => setBilling("annual")}
-                    className={`font-mono text-[12px] tracking-[0.15em] uppercase px-5 py-2 rounded-full transition-all duration-200 flex items-center gap-2 ${
-                      billing === "annual"
-                        ? "bg-brand-deep text-bone shadow-[0_0_18px_-4px_rgba(52,69,58,0.5)]"
-                        : "text-ink-muted hover:text-ink"
-                    }`}
-                  >
-                    Annual
-                    <span className="bg-brand-sage/20 text-brand-forest text-[11px] font-semibold px-2 py-0.5 rounded-full leading-none">
-                      -17%
-                    </span>
-                  </button>
-                </div>
+                <LayoutGroup id="getstarted-billing-toggle">
+                  <div className="relative inline-flex items-center bg-bone-soft/80 border border-ink/20 backdrop-blur-md rounded-full p-1">
+                    {(["monthly", "annual"] as const).map((mode) => {
+                      const active = billing === mode;
+                      return (
+                        <button
+                          key={mode}
+                          type="button"
+                          onClick={() => setBilling(mode)}
+                          className={`relative z-[1] font-mono text-[12px] tracking-[0.15em] uppercase px-5 py-2 rounded-full transition-colors duration-200 flex items-center gap-2 ${
+                            active ? "text-bone" : "text-ink/60 hover:text-ink"
+                          }`}
+                        >
+                          {active && (
+                            <motion.span
+                              layoutId="getstarted-billing-pill"
+                              aria-hidden
+                              className="absolute inset-0 rounded-full bg-brand-forest shadow-[0_0_20px_-4px_rgba(63,78,53,0.5)] -z-[1]"
+                              transition={{
+                                type: "spring",
+                                stiffness: 380,
+                                damping: 30,
+                              }}
+                            />
+                          )}
+                          <span className="relative">
+                            {mode === "monthly" ? "Monthly" : "Annual"}
+                          </span>
+                          {mode === "annual" && (
+                            <span
+                              className={`relative text-[10px] font-semibold px-2 py-0.5 rounded-full leading-none transition-colors ${
+                                active
+                                  ? "bg-bone/30 text-bone"
+                                  : "bg-brand-sage/20 text-brand-forest"
+                              }`}
+                            >
+                              −17%
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </LayoutGroup>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto items-stretch">

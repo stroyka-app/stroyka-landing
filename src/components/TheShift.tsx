@@ -1,5 +1,13 @@
 "use client";
 
+import { useRef, useState } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+  useSpring,
+} from "framer-motion";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
@@ -62,12 +70,37 @@ const AFTER: ShiftItem[] = [
  *   - crosshatch "newsprint" texture overlay
  *   - clay accent ink
  *   - cluttered, slightly tilted time labels
+ *
+ * Motion: items enter LATE (80ms behind their AFTER twin), with a tiny
+ * lateral jitter that reads as ink-smear/flutter. The crosshatch texture
+ * itself drifts ~0.4° over 60s — never settles. Hover a row → the paired
+ * row in AFTER raises in sympathy (handled at parent level).
  */
-function BeforeColumn() {
+function BeforeColumn({
+  hoverIdx,
+  setHoverIdx,
+}: {
+  hoverIdx: number | null;
+  setHoverIdx: (i: number | null) => void;
+}) {
+  const prefersReduced = useReducedMotion();
   return (
     <div className="relative">
-      {/* Warm tan card with crosshatch noise */}
-      <div className="card-stone-warm texture-crosshatch rounded-2xl border border-ink-soft/25 p-8 lg:p-10 relative overflow-hidden">
+      {/* Warm tan card with crosshatch noise — texture itself wanders */}
+      <motion.div
+        animate={
+          prefersReduced
+            ? undefined
+            : { rotate: [0, 0.4, 0, -0.3, 0] }
+        }
+        transition={
+          prefersReduced
+            ? undefined
+            : { duration: 60, repeat: Infinity, ease: "linear" }
+        }
+        style={{ transformOrigin: "center center" }}
+        className="card-stone-warm texture-crosshatch rounded-2xl border border-ink-soft/25 p-8 lg:p-10 relative overflow-hidden"
+      >
         <span
           aria-hidden
           className="pointer-events-none absolute -top-20 -right-16 w-64 h-64 rounded-full opacity-30 blur-[60px]"
@@ -87,11 +120,35 @@ function BeforeColumn() {
 
         <ul className="space-y-0 border-t border-ink-soft/20">
           {BEFORE.map((item, i) => (
-            <li
+            <motion.li
               key={item.title}
+              onMouseEnter={() => setHoverIdx(i)}
+              onMouseLeave={() => setHoverIdx(null)}
+              initial={prefersReduced ? false : { opacity: 0, x: -6 }}
+              whileInView={
+                prefersReduced
+                  ? undefined
+                  : {
+                      opacity: 1,
+                      // jitter on entry — flutter, not slide
+                      x: [-6, 3, -2, 1, 0],
+                    }
+              }
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{
+                // Late by 0.08s relative to AFTER index → "chaos misses the beat"
+                delay: 0.08 + i * 0.12,
+                duration: 0.65,
+                ease: [0.34, 1.4, 0.64, 1],
+              }}
+              animate={
+                hoverIdx === i
+                  ? { scale: 1.01, x: 0 }
+                  : { scale: 1 }
+              }
               className="grid grid-cols-[88px_1fr] gap-5 py-5 border-b border-ink-soft/20 relative"
               style={{
-                transform: `rotate(${(i % 2 === 0 ? 0.2 : -0.15)}deg)`,
+                transform: `rotate(${i % 2 === 0 ? 0.2 : -0.15}deg)`,
               }}
             >
               <span className="font-mono text-[12px] tracking-[0.08em] uppercase text-ink-soft pt-1">
@@ -105,10 +162,10 @@ function BeforeColumn() {
                   {item.caption}
                 </p>
               </div>
-            </li>
+            </motion.li>
           ))}
         </ul>
-      </div>
+      </motion.div>
     </div>
   );
 }
@@ -118,11 +175,46 @@ function BeforeColumn() {
  *   - crisp cream card (warmer than section bg so it reads raised)
  *   - sage-bright accent ink, subtle sage glow halo
  *   - tight vertical alignment, no tilt
+ *
+ * Motion: items land ON the beat (zero delay relative to scroll-trigger),
+ * single ease, no jitter. A SAGE THROUGHLINE (motion.line, pathLength
+ * driven by section scroll) draws down the inner edge as the user reads —
+ * a literal through-line. Time-label sage dot pulses on enter.
  */
-function AfterColumn() {
+function AfterColumn({
+  hoverIdx,
+  setHoverIdx,
+  pathProgress,
+}: {
+  hoverIdx: number | null;
+  setHoverIdx: (i: number | null) => void;
+  pathProgress: import("framer-motion").MotionValue<number>;
+}) {
+  const prefersReduced = useReducedMotion();
   return (
     <div className="relative">
       <div className="card-stone-sage relative rounded-2xl border border-brand-sage/30 p-8 lg:p-10 overflow-hidden">
+        {/* Sage throughline — draws as the user scrolls the section */}
+        {!prefersReduced && (
+          <svg
+            aria-hidden
+            className="pointer-events-none absolute left-2 top-32 bottom-8 w-[2px]"
+            preserveAspectRatio="none"
+            viewBox="0 0 2 400"
+          >
+            <motion.line
+              x1="1"
+              y1="0"
+              x2="1"
+              y2="400"
+              stroke="#8AAA91"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              style={{ pathLength: pathProgress, opacity: 0.55 }}
+            />
+          </svg>
+        )}
+
         <span
           aria-hidden
           className="pointer-events-none absolute -top-20 -right-16 w-64 h-64 rounded-full opacity-35 blur-[60px]"
@@ -141,12 +233,46 @@ function AfterColumn() {
         </p>
 
         <ul className="space-y-0 border-t border-brand-sage/30">
-          {AFTER.map((item) => (
-            <li
+          {AFTER.map((item, i) => (
+            <motion.li
               key={item.title}
-              className="grid grid-cols-[88px_1fr] gap-5 py-5 border-b border-brand-sage/30"
+              onMouseEnter={() => setHoverIdx(i)}
+              onMouseLeave={() => setHoverIdx(null)}
+              initial={prefersReduced ? false : { opacity: 0, y: 8 }}
+              whileInView={
+                prefersReduced ? undefined : { opacity: 1, y: 0 }
+              }
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{
+                delay: i * 0.12,
+                duration: 0.5,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              animate={
+                hoverIdx === i
+                  ? { scale: 1.015, y: -2 }
+                  : { scale: 1, y: 0 }
+              }
+              className="grid grid-cols-[88px_1fr] gap-5 py-5 border-b border-brand-sage/30 relative"
             >
-              <span className="font-mono text-[12px] tracking-[0.08em] uppercase text-brand-forest pt-1">
+              <span className="font-mono text-[12px] tracking-[0.08em] uppercase text-brand-forest pt-1 inline-flex items-center gap-2">
+                {/* Sage dot pulses on enter — "this beat just landed" */}
+                <motion.span
+                  aria-hidden
+                  className="inline-block w-1 h-1 rounded-full bg-brand-sage-bright"
+                  initial={prefersReduced ? false : { scale: 0 }}
+                  whileInView={
+                    prefersReduced
+                      ? undefined
+                      : { scale: [0, 1.8, 1] }
+                  }
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{
+                    delay: i * 0.12 + 0.2,
+                    duration: 0.6,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                />
                 {item.time}
               </span>
               <div>
@@ -157,7 +283,7 @@ function AfterColumn() {
                   {item.caption}
                 </p>
               </div>
-            </li>
+            </motion.li>
           ))}
         </ul>
       </div>
@@ -166,8 +292,26 @@ function AfterColumn() {
 }
 
 export default function TheShift() {
+  // Shared hover state — links paired rows across columns by index
+  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+
+  // Section-bound scroll progress drives the AFTER throughline draw.
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start 80%", "end 20%"],
+  });
+  const pathProgress = useSpring(
+    useTransform(scrollYProgress, [0.05, 0.65], [0, 1]),
+    { stiffness: 100, damping: 28, mass: 0.5 },
+  );
+
   return (
-    <section id="the-shift" className="relative bg-gradient-to-b from-[#A89E85] to-[#BFB49C] py-24 lg:py-32">
+    <section
+      ref={sectionRef}
+      id="the-shift"
+      className="relative bg-gradient-to-b from-[#A89E85] to-[#BFB49C] py-24 lg:py-32"
+    >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <div className="max-w-3xl mb-20 lg:mb-24">
           <FadeIn>
@@ -191,10 +335,14 @@ export default function TheShift() {
             you read a line item. */}
         <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
           <FadeIn>
-            <BeforeColumn />
+            <BeforeColumn hoverIdx={hoverIdx} setHoverIdx={setHoverIdx} />
           </FadeIn>
           <FadeIn delay={0.12}>
-            <AfterColumn />
+            <AfterColumn
+              hoverIdx={hoverIdx}
+              setHoverIdx={setHoverIdx}
+              pathProgress={pathProgress}
+            />
           </FadeIn>
         </div>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Check, X, Minus, HardHat } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
@@ -27,31 +27,94 @@ const ROWS: Row[] = [
   { label: "Crew-facing mobile app", spreadsheets: "no", enterprise: "partial", stroyka: "yes" },
 ];
 
-function Cell({ value, highlight }: { value: CellValue; highlight: boolean }) {
+function Cell({
+  value,
+  highlight,
+  delay = 0,
+}: {
+  value: CellValue;
+  highlight: boolean;
+  delay?: number;
+}) {
+  const prefersReduced = useReducedMotion();
+
   if (value === "yes") {
     // Both highlighted (Stroyka) and un-highlighted "Yes" use the same sage
     // brand color — a tinted sage circle with a filled sage variant for
-    // the Stroyka column so it still visually bloo­ms.
+    // the Stroyka column so it still visually blooms.
     const cls = highlight
       ? "bg-brand-deep text-bone border-brand-deep shadow-[0_0_22px_-2px_rgba(52,69,58,0.5)]"
       : "bg-brand-sage/15 text-brand-deep border-brand-sage/60";
+
     return (
-      <span className={`flex items-center justify-center w-9 h-9 rounded-full border-[1.5px] ${cls}`}>
-        <Check size={14} strokeWidth={3} />
-      </span>
+      <motion.span
+        className={`relative flex items-center justify-center w-9 h-9 rounded-full border-[1.5px] ${cls}`}
+        initial={prefersReduced ? false : { scale: 0.6, opacity: 0 }}
+        whileInView={prefersReduced ? undefined : { scale: 1, opacity: 1 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{
+          delay,
+          type: "spring",
+          stiffness: 380,
+          damping: 16,
+        }}
+      >
+        {/* Stroyka column gets a one-shot sage ring pulse on land */}
+        {highlight && !prefersReduced && (
+          <motion.span
+            aria-hidden
+            className="absolute inset-0 rounded-full border-2 border-brand-sage-bright/70"
+            initial={{ scale: 1, opacity: 0 }}
+            whileInView={{ scale: [1, 1.7], opacity: [0.7, 0] }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ delay: delay + 0.18, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          />
+        )}
+        <motion.svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={3}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <motion.path
+            d="M5 13l4 4L19 7"
+            initial={prefersReduced ? false : { pathLength: 0 }}
+            whileInView={prefersReduced ? undefined : { pathLength: 1 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ delay: delay + 0.05, duration: 0.4, ease: "easeOut" }}
+          />
+        </motion.svg>
+      </motion.span>
     );
   }
   if (value === "partial") {
     return (
-      <span className="flex items-center justify-center w-9 h-9 rounded-full border-[1.5px] border-ink-muted/45 bg-ink-muted/10 text-ink-muted" title="Partial">
+      <motion.span
+        className="flex items-center justify-center w-9 h-9 rounded-full border-[1.5px] border-ink-muted/45 bg-ink-muted/10 text-ink-muted"
+        title="Partial"
+        initial={prefersReduced ? false : { scale: 0.7, opacity: 0 }}
+        whileInView={prefersReduced ? undefined : { scale: 1, opacity: 1 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ delay, type: "spring", stiffness: 380, damping: 18 }}
+      >
         <Minus size={14} strokeWidth={3} />
-      </span>
+      </motion.span>
     );
   }
   return (
-    <span className="flex items-center justify-center w-9 h-9 rounded-full border border-ink/15 text-ink/40">
+    <motion.span
+      className="flex items-center justify-center w-9 h-9 rounded-full border border-ink/15 text-ink/40"
+      initial={prefersReduced ? false : { scale: 0.7, opacity: 0 }}
+      whileInView={prefersReduced ? undefined : { scale: 1, opacity: 0.85 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ delay, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+    >
       <X size={14} strokeWidth={2.5} />
-    </span>
+    </motion.span>
   );
 }
 
@@ -165,9 +228,15 @@ export default function Comparison() {
                       </p>
                     )}
                   </div>
-                  <div className="flex justify-center"><Cell value={row.spreadsheets} highlight={false} /></div>
-                  <div className="flex justify-center"><Cell value={row.enterprise}   highlight={false} /></div>
-                  <div className="flex justify-center"><Cell value={row.stroyka}      highlight /></div>
+                  <div className="flex justify-center">
+                    <Cell value={row.spreadsheets} highlight={false} delay={i * 0.04 + 0.05} />
+                  </div>
+                  <div className="flex justify-center">
+                    <Cell value={row.enterprise} highlight={false} delay={i * 0.04 + 0.1} />
+                  </div>
+                  <div className="flex justify-center">
+                    <Cell value={row.stroyka} highlight delay={i * 0.04 + 0.18} />
+                  </div>
                 </motion.div>
               ))}
             </div>

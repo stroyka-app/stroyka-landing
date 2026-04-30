@@ -1,52 +1,176 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
 
 interface Feature {
-  icon: React.ReactNode;
+  icon: (active: boolean) => React.ReactNode;
   title: string;
   body: string;
 }
 
+/* ── Per-feature motion icons ──
+   Each icon has a static (un-active) and a live (active) variant. The
+   active variant runs a slow loop tied to the section's narrative beat
+   (signal-bars rebuilding for offline, two-roles handing off, dollar
+   ticking up, request being approved). All transform-only / stroke-only
+   so they stay GPU-cheap. */
+
+const SignalIcon = ({ active }: { active: boolean }) => {
+  const prefersReduced = useReducedMotion();
+  const bars = [4, 8, 12, 16];
+  return (
+    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round">
+      {bars.map((h, i) => (
+        <motion.line
+          key={i}
+          x1={5 + i * 4.5}
+          x2={5 + i * 4.5}
+          y1={20}
+          y2={20 - h}
+          initial={false}
+          animate={
+            active && !prefersReduced
+              ? { opacity: [0.25, 1, 1, 0.25], pathLength: [0.2, 1, 1, 0.2] }
+              : { opacity: 1, pathLength: 1 }
+          }
+          transition={
+            active && !prefersReduced
+              ? {
+                  duration: 2.4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: i * 0.18,
+                }
+              : { duration: 0.25 }
+          }
+        />
+      ))}
+    </svg>
+  );
+};
+
+const CrewIcon = ({ active }: { active: boolean }) => {
+  const prefersReduced = useReducedMotion();
+  return (
+    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+      <motion.g
+        animate={
+          active && !prefersReduced
+            ? { x: [-1.5, 0, -1.5] }
+            : { x: 0 }
+        }
+        transition={
+          active && !prefersReduced
+            ? { duration: 3, repeat: Infinity, ease: "easeInOut" }
+            : { duration: 0.3 }
+        }
+      >
+        <circle cx="8" cy="8" r="2.6" />
+        <path d="M3 19c.5-2.6 2.6-4.4 5-4.4s4.5 1.8 5 4.4" />
+      </motion.g>
+      <motion.g
+        animate={
+          active && !prefersReduced
+            ? { x: [1.5, 0, 1.5] }
+            : { x: 0 }
+        }
+        transition={
+          active && !prefersReduced
+            ? { duration: 3, repeat: Infinity, ease: "easeInOut" }
+            : { duration: 0.3 }
+        }
+      >
+        <circle cx="16" cy="9" r="2.2" />
+        <path d="M12 19c.4-2.1 2.1-3.6 4-3.6s3.6 1.5 4 3.6" />
+      </motion.g>
+    </svg>
+  );
+};
+
+const DollarIcon = ({ active }: { active: boolean }) => {
+  const prefersReduced = useReducedMotion();
+  return (
+    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round">
+      <motion.circle
+        cx="12"
+        cy="12"
+        r="9"
+        initial={false}
+        animate={active && !prefersReduced ? { rotate: 360 } : { rotate: 0 }}
+        transition={
+          active && !prefersReduced
+            ? { duration: 24, repeat: Infinity, ease: "linear" }
+            : { duration: 0.3 }
+        }
+        style={{ transformOrigin: "12px 12px" }}
+      />
+      <motion.path
+        d="M12 6v12"
+        initial={false}
+        animate={
+          active && !prefersReduced
+            ? { y: [0, -0.8, 0] }
+            : { y: 0 }
+        }
+        transition={
+          active && !prefersReduced
+            ? { duration: 1.6, repeat: Infinity, ease: "easeInOut" }
+            : { duration: 0.3 }
+        }
+      />
+      <path d="M9 15.18l.88.66c1.17.88 3.07.88 4.24 0 1.17-.88 1.17-2.3 0-3.18C13.54 12.22 12.77 12 12 12c-.73 0-1.45-.22-2-.66-1.1-.88-1.1-2.3 0-3.18s2.9-.88 4 0l.42.33" />
+    </svg>
+  );
+};
+
+const ApproveIcon = ({ active }: { active: boolean }) => {
+  const prefersReduced = useReducedMotion();
+  return (
+    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 4h9l3 3v13a1 1 0 01-1 1H6a1 1 0 01-1-1V5a1 1 0 011-1z" />
+      <path d="M9 11h6M9 14h4" />
+      <motion.path
+        d="M8.5 17l2.2 2.2 4.3-4.3"
+        stroke="#3F4E35"
+        strokeWidth={2}
+        initial={false}
+        animate={
+          active && !prefersReduced
+            ? { pathLength: [0, 1, 1, 0], opacity: [0, 1, 1, 0] }
+            : { pathLength: 0, opacity: 0 }
+        }
+        transition={
+          active && !prefersReduced
+            ? { duration: 2.6, repeat: Infinity, ease: "easeInOut", times: [0, 0.35, 0.75, 1] }
+            : { duration: 0.3 }
+        }
+      />
+    </svg>
+  );
+};
+
 const FEATURES: Feature[] = [
   {
-    icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8.288 15.038a5.25 5.25 0 017.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.008v.008H12V18z" />
-      </svg>
-    ),
+    icon: (active) => <SignalIcon active={active} />,
     title: "Works without cell service",
     body: "Stroyka stores everything locally on each device and syncs automatically when a connection returns. Workers can log time, submit requests, and check tasks at any job site — basement, rural, or underground.",
   },
   {
-    icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-      </svg>
-    ),
+    icon: (active) => <CrewIcon active={active} />,
     title: "Built for both sides of the crew",
     body: "Bosses get budget tracking, approval workflows, and real-time cost reports. Workers get a focused view of their tasks, time logging, and request submission. Same app, purpose-built for each role.",
   },
   {
-    icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    ),
+    icon: (active) => <DollarIcon active={active} />,
     title: "Know your numbers before month-end",
     body: "Every purchase, timesheet entry, and fuel trip rolls up automatically into a project P&L. See labor costs, material spend, and budget remaining at a glance — updated the moment a worker submits.",
   },
   {
-    icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15a2.25 2.25 0 012.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
-      </svg>
-    ),
+    icon: (active) => <ApproveIcon active={active} />,
     title: "No more \"did you approve that?\"",
     body: "Workers submit material or supply requests from the field. Bosses review and approve with one tap. Approved items auto-log to project costs. Full audit trail, no text message chains.",
   },
@@ -88,7 +212,7 @@ function FlipperCard({ feature, isActive, onActivate }: FlipperCardProps) {
             : "bg-bone text-ink-muted border border-ink/15",
         ].join(" ")}
       >
-        {feature.icon}
+        {feature.icon(isActive)}
       </div>
 
       <h3
@@ -155,7 +279,7 @@ export default function Features() {
             <FadeIn key={feature.title} delay={0.08 * i}>
               <div className="card-stone border border-ink/15 rounded-2xl p-6">
                 <div className="w-11 h-11 bg-ink text-bone rounded-full flex items-center justify-center mb-5">
-                  {feature.icon}
+                  {feature.icon(true)}
                 </div>
                 <h3 className="font-display text-2xl leading-snug text-ink mb-3">
                   {feature.title}

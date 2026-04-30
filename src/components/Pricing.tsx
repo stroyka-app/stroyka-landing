@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type CSSProperties } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, LayoutGroup, useReducedMotion } from "framer-motion";
 import { Check, X, ShieldCheck, Zap, Crown, Download } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
@@ -132,38 +132,55 @@ export default function Pricing() {
           </FadeIn>
         </div>
 
-        {/* Billing toggle */}
+        {/* Billing toggle — LayoutGroup gives us a single sage "pill" that
+            slides between Monthly/Annual instead of two separate filled
+            buttons. The pill IS shared layout — Apple-style. */}
         <FadeIn delay={0.15}>
           <div className="flex items-center mb-12">
-            <div className="inline-flex items-center bg-bone-soft/60 border border-ink/20 backdrop-blur-md rounded-full p-1">
-              <button
-                type="button"
-                onClick={() => setBilling("monthly")}
-                className={`font-mono text-[12px] tracking-[0.15em] uppercase px-5 py-2 rounded-full transition-all duration-200 ${
-                  billing === "monthly"
-                    ? "bg-brand-forest text-bone shadow-[0_0_20px_-4px_rgba(63,78,53,0.5)]"
-                    : "text-ink/60 hover:text-ink"
-                }`}
-              >
-                Monthly
-              </button>
-              <button
-                type="button"
-                onClick={() => setBilling("annual")}
-                className={`font-mono text-[12px] tracking-[0.15em] uppercase px-5 py-2 rounded-full transition-all duration-200 flex items-center gap-2 ${
-                  billing === "annual"
-                    ? "bg-brand-forest text-bone shadow-[0_0_20px_-4px_rgba(63,78,53,0.5)]"
-                    : "text-ink/60 hover:text-ink"
-                }`}
-              >
-                Annual
-                <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full leading-none ${
-                  billing === "annual" ? "bg-bone/30 text-bone" : "bg-brand-sage/20 text-brand-forest"
-                }`}>
-                  −17%
-                </span>
-              </button>
-            </div>
+            <LayoutGroup id="pricing-billing-toggle">
+              <div className="relative inline-flex items-center bg-bone-soft/60 border border-ink/20 backdrop-blur-md rounded-full p-1">
+                {(["monthly", "annual"] as const).map((mode) => {
+                  const active = billing === mode;
+                  return (
+                    <button
+                      key={mode}
+                      type="button"
+                      onClick={() => setBilling(mode)}
+                      className={`relative z-[1] font-mono text-[12px] tracking-[0.15em] uppercase px-5 py-2 rounded-full transition-colors duration-200 flex items-center gap-2 ${
+                        active ? "text-bone" : "text-ink/60 hover:text-ink"
+                      }`}
+                    >
+                      {active && (
+                        <motion.span
+                          layoutId="pricing-billing-pill"
+                          aria-hidden
+                          className="absolute inset-0 rounded-full bg-brand-forest shadow-[0_0_20px_-4px_rgba(63,78,53,0.5)] -z-[1]"
+                          transition={{
+                            type: "spring",
+                            stiffness: 380,
+                            damping: 30,
+                          }}
+                        />
+                      )}
+                      <span className="relative">
+                        {mode === "monthly" ? "Monthly" : "Annual"}
+                      </span>
+                      {mode === "annual" && (
+                        <span
+                          className={`relative text-[10px] font-semibold px-2 py-0.5 rounded-full leading-none transition-colors ${
+                            active
+                              ? "bg-bone/30 text-bone"
+                              : "bg-brand-sage/20 text-brand-forest"
+                          }`}
+                        >
+                          −17%
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </LayoutGroup>
           </div>
         </FadeIn>
 
@@ -261,12 +278,29 @@ export default function Pricing() {
 
           {/* Pro — dark premium card, distinct from Free and from the
               sage Starter. Uses `card-stone-dark` gradient with cream
-              text and a brighter sage glow for high-end feel. */}
+              text and a brighter sage glow for high-end feel.
+              Breathing scale `[1, 1.005, 1]` over 5s — alive, never aggressive. */}
           <FadeIn delay={0.2}>
             <motion.div
               {...proGlow}
-              whileHover={prefersReduced ? undefined : { y: -3 }}
-              transition={{ duration: 0.2 }}
+              animate={
+                prefersReduced
+                  ? undefined
+                  : { scale: [1, 1.006, 1] }
+              }
+              whileHover={prefersReduced ? undefined : { y: -3, scale: 1.012 }}
+              transition={
+                prefersReduced
+                  ? { duration: 0.2 }
+                  : {
+                      scale: {
+                        duration: 5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      },
+                      y: { duration: 0.2 },
+                    }
+              }
               style={
                 {
                   "--glow-c1": "#2B3D30",

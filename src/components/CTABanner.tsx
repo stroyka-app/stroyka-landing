@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import FadeIn from "@/components/ui/FadeIn";
 import Button from "@/components/ui/Button";
 
@@ -10,6 +11,7 @@ import Button from "@/components/ui/Button";
  * The oversized Fraunces type is the moment.
  */
 export default function CTABanner() {
+  const prefersReduced = useReducedMotion();
   return (
     <section id="cta" className="relative overflow-hidden">
       {/* Gradient shell — pistachio top → forest bottom. Same ramp family
@@ -41,14 +43,54 @@ export default function CTABanner() {
         }}
       />
 
-      {/* Soft sage glow top-right for the pistachio top edge */}
-      <div
+      {/* Soft sage glow top-right for the pistachio top edge — slowly drifts
+          across a 14s cycle so the section feels alive without being noisy. */}
+      <motion.div
         aria-hidden
         className="pointer-events-none absolute -top-40 right-0 w-[50vw] h-[50vw] opacity-30 z-[1]"
         style={{
           background: "radial-gradient(circle, #B8D4BD 0%, transparent 60%)",
           filter: "blur(80px)",
         }}
+        animate={
+          prefersReduced
+            ? undefined
+            : {
+                x: [0, -40, 20, 0],
+                y: [0, 30, -20, 0],
+                opacity: [0.3, 0.42, 0.28, 0.3],
+              }
+        }
+        transition={
+          prefersReduced
+            ? undefined
+            : { duration: 14, repeat: Infinity, ease: "easeInOut" }
+        }
+      />
+
+      {/* Counter-drift sage bloom on the opposite corner — different period
+          (19s) so the two never sync up. Reads as ambient atmosphere. */}
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-32 -left-32 w-[55vw] h-[55vw] opacity-25 z-[1]"
+        style={{
+          background: "radial-gradient(circle, #84a98c 0%, transparent 60%)",
+          filter: "blur(100px)",
+        }}
+        animate={
+          prefersReduced
+            ? undefined
+            : {
+                x: [0, 60, -20, 0],
+                y: [0, -40, 30, 0],
+                opacity: [0.2, 0.32, 0.18, 0.2],
+              }
+        }
+        transition={
+          prefersReduced
+            ? undefined
+            : { duration: 19, repeat: Infinity, ease: "easeInOut" }
+        }
       />
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 py-32 lg:py-44">

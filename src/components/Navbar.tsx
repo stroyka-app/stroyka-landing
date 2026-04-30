@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
 import { useScrollPosition } from "@/lib/hooks/useScrollPosition";
 import Logo from "@/components/Logo";
 
@@ -31,8 +32,22 @@ const NAV_LINKS = [
  */
 export default function Navbar() {
   const scrollY = useScrollPosition();
-  const scrolled = scrollY > 50;
+  const pathname = usePathname();
+  // Only the landing page has a dark hero behind the navbar — everywhere
+  // else the page surface is bone-tinted from the very top, so the
+  // transparent navbar would render bone-on-bone (invisible). Force the
+  // dark-glass "scrolled" treatment from scroll=0 on every non-home route.
+  const isHome = pathname === "/";
+  const scrolled = !isHome || scrollY > 50;
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Smooth scroll-bound height + logo-scale shrink. Anchored to first 320px
+  // of vertical scroll so the bar settles by the time the hero copy clears.
+  const { scrollY: rawY } = useScroll();
+  const heightMV = useTransform(rawY, [0, 320], [72, 56]);
+  const logoScaleMV = useTransform(rawY, [0, 320], [1, 0.86]);
+  const height = useSpring(heightMV, { stiffness: 220, damping: 30, mass: 0.4 });
+  const logoScale = useSpring(logoScaleMV, { stiffness: 220, damping: 30, mass: 0.4 });
 
   // Logo + nav text stay light across the whole page now — nav provides
   // its own dark surface once scrolled.
@@ -46,13 +61,18 @@ export default function Navbar() {
           : "bg-transparent border-b border-transparent"
       }`}
     >
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 flex items-center justify-between h-16">
+      <motion.div
+        style={{ height }}
+        className="max-w-[1400px] mx-auto px-6 lg:px-10 flex items-center justify-between"
+      >
         <Link href="/" aria-label="Home" className="flex items-center">
           {/* variant="dark" = "on dark bg" → renders bone text + sage-mist
               bracket. Our nav surface is always dark (transparent over
               the hero video, dark-sage glass when scrolled), so this
               stays fixed — no variant swap on scroll. */}
-          <Logo variant="dark" size={30} />
+          <motion.div style={{ scale: logoScale, transformOrigin: "left center" }}>
+            <Logo variant="dark" size={30} />
+          </motion.div>
         </Link>
 
         <div className="hidden md:flex items-center gap-9">
@@ -98,7 +118,7 @@ export default function Navbar() {
             animate={mobileOpen ? { rotate: -45, y: -4 } : { rotate: 0, y: 0 }}
           />
         </button>
-      </div>
+      </motion.div>
 
       <AnimatePresence>
         {mobileOpen && (

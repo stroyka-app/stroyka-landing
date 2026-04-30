@@ -113,13 +113,13 @@ export default function DemoForm() {
           transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.1 }}
           className="flex justify-center"
         >
-          <div className="w-20 h-20 rounded-2xl bg-brand-forest/15 border border-brand-forest/20 flex items-center justify-center">
+          <div className="w-20 h-20 rounded-full bg-brand-sage/15 border border-brand-sage/45 flex items-center justify-center shadow-[0_8px_24px_-10px_rgba(63,78,53,0.45)]">
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.4, type: "spring", stiffness: 300 }}
             >
-              <HardHat size={36} className="text-brand-forest" />
+              <HardHat size={32} strokeWidth={1.6} className="text-brand-forest" />
             </motion.div>
           </div>
         </motion.div>
@@ -129,9 +129,9 @@ export default function DemoForm() {
           variants={stagger}
           initial="hidden"
           animate="show"
-          className="font-heading text-3xl font-bold text-brand-sage-mist"
+          className="font-display font-light text-3xl lg:text-4xl leading-tight text-ink tracking-[-0.01em]"
         >
-          You&apos;re on the list
+          You&rsquo;re on the list
         </motion.h2>
 
         <motion.p
@@ -139,34 +139,34 @@ export default function DemoForm() {
           variants={stagger}
           initial="hidden"
           animate="show"
-          className="text-brand-sage max-w-md mx-auto text-lg"
+          className="text-ink-soft max-w-md mx-auto text-[15px] lg:text-base leading-relaxed"
         >
-          We&apos;ll reach out within 24 hours to schedule your demo
+          We&rsquo;ll reach out within 24 hours to schedule your demo.
         </motion.p>
 
-        {/* Email notice card */}
+        {/* Email notice card — bone stone surface */}
         <motion.div
           custom={3}
           variants={stagger}
           initial="hidden"
           animate="show"
-          className="bg-brand-deep/60 border border-brand-forest/15 rounded-2xl p-5 max-w-sm mx-auto"
+          className="card-stone border border-ink/15 rounded-2xl p-5 max-w-sm mx-auto"
         >
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-9 h-9 rounded-xl bg-brand-forest/10 flex items-center justify-center shrink-0">
-              <Mail size={18} className="text-brand-forest" />
+            <div className="w-9 h-9 rounded-full bg-brand-sage/15 border border-brand-sage/40 text-brand-forest flex items-center justify-center shrink-0">
+              <Mail size={16} strokeWidth={1.8} />
             </div>
             <div className="text-left">
-              <p className="text-brand-sage-mist text-sm font-medium">
+              <p className="text-ink text-sm font-medium">
                 Confirmation sent to your email
               </p>
-              <p className="text-brand-forest text-xs font-mono mt-0.5">
+              <p className="text-ink-muted text-[11px] font-mono tracking-[0.08em] mt-0.5">
                 from hello@getstroyka.com
               </p>
             </div>
           </div>
-          <p className="text-brand-sage/45 text-xs text-left">
-            Don&apos;t see it? Check your spam or promotions folder
+          <p className="text-ink-muted text-[11px] text-left font-mono tracking-[0.05em]">
+            Don&rsquo;t see it? Check your spam or promotions folder.
           </p>
         </motion.div>
 
@@ -178,10 +178,10 @@ export default function DemoForm() {
         >
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm text-brand-sage/60 hover:text-brand-forest transition-colors duration-200 group"
+            className="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.22em] uppercase text-ink-muted hover:text-brand-forest transition-colors duration-200 group"
           >
             Back to homepage
-            <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform duration-200" />
+            <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform duration-200" />
           </Link>
         </motion.div>
       </div>
@@ -189,18 +189,22 @@ export default function DemoForm() {
   }
 
   const inputCls = (field?: keyof FormData) =>
-    `w-full bg-brand-deep/50 border ${field && fieldErrors[field] ? "border-red-500/50" : "border-brand-deep"} rounded-xl px-4 py-3 text-white placeholder:text-brand-sage-mist/40 focus:outline-none focus:border-brand-forest transition-colors duration-200 font-body text-sm`;
+    `w-full bg-bone-soft/80 border ${
+      field && fieldErrors[field]
+        ? "border-red-500/60"
+        : "border-ink/20 hover:border-ink/35"
+    } rounded-xl px-4 py-3 text-ink placeholder:text-ink-muted/55 focus:outline-none focus:border-brand-forest focus:bg-bone transition-colors duration-200 font-body text-[15px]`;
 
   const FieldError = ({ field }: { field: keyof FormData }) =>
     fieldErrors[field] ? (
-      <p className="text-xs text-red-400 mt-1.5">{fieldErrors[field]}</p>
+      <p className="text-[12px] text-red-600 mt-1.5">{fieldErrors[field]}</p>
     ) : null;
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
       <div className="grid md:grid-cols-2 gap-5">
         <div>
-          <label htmlFor="name" className="block text-sm text-brand-sage mb-1.5">
+          <label htmlFor="name" className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2">
             Name *
           </label>
           <input
@@ -215,7 +219,7 @@ export default function DemoForm() {
           <FieldError field="name" />
         </div>
         <div>
-          <label htmlFor="company" className="block text-sm text-brand-sage mb-1.5">
+          <label htmlFor="company" className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2">
             Company name *
           </label>
           <input
@@ -232,7 +236,7 @@ export default function DemoForm() {
       </div>
       <div className="grid md:grid-cols-2 gap-5">
         <div>
-          <label htmlFor="crewSize" className="block text-sm text-brand-sage mb-1.5">
+          <label htmlFor="crewSize" className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2">
             Crew size *
           </label>
           <select
@@ -253,7 +257,7 @@ export default function DemoForm() {
           <FieldError field="crewSize" />
         </div>
         <div>
-          <label htmlFor="email" className="block text-sm text-brand-sage mb-1.5">
+          <label htmlFor="email" className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2">
             Email *
           </label>
           <input
@@ -269,7 +273,7 @@ export default function DemoForm() {
         </div>
       </div>
       <div>
-        <label htmlFor="phone" className="block text-sm text-brand-sage mb-1.5">
+        <label htmlFor="phone" className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2">
           Phone (optional)
         </label>
         <input
@@ -283,7 +287,7 @@ export default function DemoForm() {
         />
       </div>
       <div>
-        <label htmlFor="challenge" className="block text-sm text-brand-sage mb-1.5">
+        <label htmlFor="challenge" className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2">
           What&apos;s your biggest challenge?
         </label>
         <textarea
@@ -316,7 +320,7 @@ export default function DemoForm() {
       />
 
       {status === "error" && (
-        <div className="rounded-lg border border-red-500/30 bg-red-900/20 p-4 text-sm text-red-300">
+        <div className="rounded-xl border border-red-500/35 bg-red-50/70 p-4 text-sm text-red-700">
           {errorMsg.includes("Too many") || errorMsg.includes("429")
             ? "Too many requests. Please wait an hour and try again, or email us directly at hello@getstroyka.com."
             : "Something went wrong on our end. Please email us at hello@getstroyka.com and we\u2019ll get back to you quickly."}
@@ -326,7 +330,7 @@ export default function DemoForm() {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="w-full md:w-auto md:self-start relative inline-flex items-center justify-center font-heading font-semibold tracking-wide rounded-xl transition-colors duration-200 cursor-pointer bg-brand-forest text-white hover:bg-brand-deep active:scale-95 shadow-lg shadow-brand-forest/20 text-lg px-8 py-4 disabled:opacity-60 disabled:cursor-not-allowed gap-2"
+        className="w-full md:w-auto md:self-start relative inline-flex items-center justify-center font-heading font-semibold tracking-wide rounded-full transition-colors duration-200 cursor-pointer bg-brand-deep text-bone hover:bg-brand-midnight-dark active:scale-95 shadow-[0_10px_28px_-12px_rgba(43,61,48,0.5)] text-[15px] px-7 py-3.5 disabled:opacity-60 disabled:cursor-not-allowed gap-2"
       >
         {status === "sending" ? (
           <>

@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import FadeIn from "@/components/ui/FadeIn";
+import SectionLabel from "@/components/ui/SectionLabel";
 
 export interface LegalSection {
   id: string;
@@ -32,15 +34,37 @@ export default function LegalPageLayout({
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-28 pb-24">
-        <div className="max-w-6xl mx-auto px-6">
+      <main className="relative min-h-screen pt-28 pb-24 bg-gradient-to-b from-[#E3DCC9] to-[#D4CBB4] overflow-hidden">
+        {/* Soft sage vignette top-left */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute top-0 left-0 w-[55vw] h-[55vw] opacity-30"
+          style={{
+            background:
+              "radial-gradient(ellipse 50% 50% at 15% 15%, rgba(184,212,189,0.28), transparent 70%)",
+            filter: "blur(70px)",
+          }}
+        />
+
+        <div className="relative max-w-6xl mx-auto px-6">
           {/* Header */}
-          <div className="mb-12">
-            <h1 className="text-3xl lg:text-4xl font-heading font-bold text-brand-sage-mist mb-3">
-              {title}
-            </h1>
-            <p className="text-sm text-brand-sage/60">{subtitle}</p>
-            <p className="text-xs text-brand-sage/40 mt-1">{effectiveDate}</p>
+          <div className="mb-14">
+            <FadeIn>
+              <SectionLabel>Legal</SectionLabel>
+            </FadeIn>
+            <FadeIn delay={0.05}>
+              <h1 className="font-display font-light text-4xl lg:text-6xl leading-[0.98] tracking-[-0.02em] text-ink mb-3">
+                {title}
+              </h1>
+            </FadeIn>
+            <FadeIn delay={0.12}>
+              <p className="text-[15px] text-ink-soft mb-1.5 max-w-xl">
+                {subtitle}
+              </p>
+              <p className="font-mono text-[11px] tracking-[0.18em] uppercase text-ink-muted">
+                {effectiveDate}
+              </p>
+            </FadeIn>
           </div>
 
           {/* Mobile: Accordion layout */}
@@ -50,26 +74,30 @@ export default function LegalPageLayout({
               return (
                 <div
                   key={section.id}
-                  className="rounded-xl border border-brand-deep/60 overflow-hidden"
+                  className={`card-stone rounded-2xl border overflow-hidden transition-colors ${
+                    isActive ? "border-brand-sage/45" : "border-ink/15"
+                  }`}
                 >
                   <button
-                    onClick={() =>
-                      setActiveId(isActive ? "" : section.id)
-                    }
+                    onClick={() => setActiveId(isActive ? "" : section.id)}
                     className={`w-full flex items-center justify-between px-5 py-4 text-left transition-colors duration-200 ${
                       isActive
-                        ? "bg-brand-forest/10 text-brand-sage-mist"
-                        : "bg-brand-deep/20 text-brand-sage/70 hover:bg-brand-deep/30"
+                        ? "bg-brand-sage/8 text-ink"
+                        : "text-ink-soft hover:bg-ink/5"
                     }`}
                   >
-                    <span className="font-heading text-sm font-medium">
+                    <span className="font-display text-[16px] leading-snug">
                       {section.title}
                     </span>
-                    <ChevronRight
-                      className={`w-4 h-4 shrink-0 transition-transform duration-200 ${
-                        isActive ? "rotate-90" : ""
+                    <motion.span
+                      animate={{ rotate: isActive ? 90 : 0 }}
+                      transition={{ duration: 0.25 }}
+                      className={`shrink-0 ${
+                        isActive ? "text-brand-forest" : "text-ink/40"
                       }`}
-                    />
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </motion.span>
                   </button>
                   <AnimatePresence initial={false}>
                     {isActive && (
@@ -77,11 +105,13 @@ export default function LegalPageLayout({
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.25, ease: "easeInOut" }}
+                        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                         className="overflow-hidden"
                       >
-                        <div className="px-5 py-5 bg-brand-deep/10 border-t border-brand-deep/40">
-                          <div className="legal-content">{section.content}</div>
+                        <div className="px-5 py-5 border-t border-ink/10">
+                          <div className="legal-content text-ink-soft">
+                            {section.content}
+                          </div>
                         </div>
                       </motion.div>
                     )}
@@ -92,7 +122,7 @@ export default function LegalPageLayout({
           </div>
 
           {/* Desktop: Sidebar + Content */}
-          <div className="hidden lg:grid lg:grid-cols-[280px_1fr] gap-8">
+          <div className="hidden lg:grid lg:grid-cols-[280px_1fr] gap-10">
             {/* Sidebar */}
             <nav className="sticky top-28 self-start">
               <div className="space-y-1">
@@ -102,20 +132,21 @@ export default function LegalPageLayout({
                     <button
                       key={section.id}
                       onClick={() => setActiveId(section.id)}
-                      className={`group w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-200 ${
+                      className={`group relative w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-colors duration-200 ${
                         isActive
-                          ? "bg-brand-forest/15 text-brand-sage-mist"
-                          : "text-brand-sage/60 hover:text-brand-sage hover:bg-brand-deep/30"
+                          ? "bg-brand-sage/12 text-ink"
+                          : "text-ink-soft hover:text-ink hover:bg-ink/5"
                       }`}
                     >
-                      <div
-                        className={`w-1 h-5 rounded-full transition-all duration-200 ${
+                      <span
+                        aria-hidden
+                        className={`block w-1 h-5 rounded-full transition-colors duration-200 ${
                           isActive
                             ? "bg-brand-forest"
-                            : "bg-transparent group-hover:bg-brand-deep"
+                            : "bg-transparent group-hover:bg-ink/25"
                         }`}
                       />
-                      <span className="font-heading text-sm font-medium">
+                      <span className="font-display text-[15px] leading-tight">
                         {section.title}
                       </span>
                     </button>
@@ -132,14 +163,14 @@ export default function LegalPageLayout({
                     key={activeSection.id}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
-                    className="rounded-2xl border border-brand-deep/40 bg-brand-deep/10 p-8"
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                    className="card-stone rounded-2xl border border-ink/15 p-9 lg:p-10"
                   >
-                    <h2 className="text-xl font-heading font-semibold text-brand-sage-mist mb-6">
+                    <h2 className="font-display font-light text-[26px] lg:text-[30px] leading-tight text-ink mb-6 tracking-[-0.01em]">
                       {activeSection.title}
                     </h2>
-                    <div className="legal-content">
+                    <div className="legal-content text-ink-soft text-[15px] leading-[1.7]">
                       {activeSection.content}
                     </div>
                   </motion.div>
