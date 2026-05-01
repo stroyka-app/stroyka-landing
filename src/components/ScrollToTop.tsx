@@ -6,6 +6,7 @@ import { ArrowUp } from "lucide-react";
 
 export default function ScrollToTop() {
   const [visible, setVisible] = useState(false);
+  const [suppressed, setSuppressed] = useState(false);
   const { scrollYProgress } = useScroll();
   const [progress, setProgress] = useState(0);
 
@@ -22,6 +23,31 @@ export default function ScrollToTop() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Hide while inside the plan-to-done scroll story on mobile — its mobile
+  // cost-row stack at bottom-4 collides with the floating button, and the
+  // section already has its own progress affordance (telemetry pill).
+  useEffect(() => {
+    const target = document.getElementById("plan-to-done");
+    if (!target) return;
+    const mql = window.matchMedia("(max-width: 767px)");
+    let intersecting = false;
+    const update = () => setSuppressed(intersecting && mql.matches);
+    const obs = new IntersectionObserver(
+      (entries) => {
+        intersecting = entries[0]?.isIntersecting ?? false;
+        update();
+      },
+      { threshold: 0 }
+    );
+    obs.observe(target);
+    const mqlListener = () => update();
+    mql.addEventListener("change", mqlListener);
+    return () => {
+      obs.disconnect();
+      mql.removeEventListener("change", mqlListener);
+    };
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -35,7 +61,7 @@ export default function ScrollToTop() {
 
   return (
     <AnimatePresence>
-      {visible && (
+      {visible && !suppressed && (
         <motion.button
           initial={{ opacity: 0, scale: 0.8, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}

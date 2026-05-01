@@ -1082,6 +1082,7 @@ function Walls({ scroll }: { scroll: ScrollRef }) {
 
 function CameraRig({ scroll }: { scroll: ScrollRef }) {
   const camRef = useRef<THREE.PerspectiveCamera>(null);
+  const { size } = useThree();
 
   // Orbit radius/elevation for Beat 3 — camera circles the house.
   // Radius bumped slightly so the house reads smaller in frame (user
@@ -1092,6 +1093,22 @@ function CameraRig({ scroll }: { scroll: ScrollRef }) {
   const ORBIT_R = 15.5;
   const ORBIT_Y = 7;
   const LOOK_Y = 2.2;
+
+  // Aspect-aware FOV: vertical FOV is tuned for landscape (~16:9). On
+  // portrait viewports the horizontal FOV collapses, clipping floor-plan
+  // labels and house edges. Recompute vertical FOV so horizontal coverage
+  // stays roughly constant — clamp aspect to avoid extreme widening on
+  // very narrow screens.
+  const REF_ASPECT = 16 / 9;
+  const aspect = size.height > 0 ? size.width / size.height : REF_ASPECT;
+  const adjustFov = (fovDeg: number) => {
+    if (aspect >= REF_ASPECT) return fovDeg;
+    const effectiveAspect = Math.max(aspect, 0.45);
+    const hRad =
+      2 * Math.atan(Math.tan((fovDeg * Math.PI) / 360) * REF_ASPECT);
+    const vRad = 2 * Math.atan(Math.tan(hRad / 2) / effectiveAspect);
+    return (vRad * 180) / Math.PI;
+  };
 
   useFrame(() => {
     if (!camRef.current) return;
@@ -1106,7 +1123,7 @@ function CameraRig({ scroll }: { scroll: ScrollRef }) {
       camRef.current.position.set(0.001, camY, 0.001);
       camRef.current.up.set(0, 0, -1);
       camRef.current.lookAt(0, 0, 0);
-      camRef.current.fov = fov;
+      camRef.current.fov = adjustFov(fov);
       camRef.current.updateProjectionMatrix();
       return;
     }
@@ -1124,7 +1141,7 @@ function CameraRig({ scroll }: { scroll: ScrollRef }) {
       camRef.current.position.set(cx, cy, cz);
       camRef.current.up.set(0, upY, upZ).normalize();
       camRef.current.lookAt(0, ty, 0);
-      camRef.current.fov = fov;
+      camRef.current.fov = adjustFov(fov);
       camRef.current.updateProjectionMatrix();
       return;
     }
@@ -1141,7 +1158,7 @@ function CameraRig({ scroll }: { scroll: ScrollRef }) {
       camRef.current.position.set(cx, cy, cz);
       camRef.current.up.set(0, 1, 0);
       camRef.current.lookAt(0, LOOK_Y, 0);
-      camRef.current.fov = fov;
+      camRef.current.fov = adjustFov(fov);
       camRef.current.updateProjectionMatrix();
       return;
     }
@@ -1158,7 +1175,7 @@ function CameraRig({ scroll }: { scroll: ScrollRef }) {
       camRef.current.position.set(cx, cy, cz);
       camRef.current.up.set(0, 1, 0);
       camRef.current.lookAt(0, LOOK_Y, 0);
-      camRef.current.fov = fov;
+      camRef.current.fov = adjustFov(fov);
       camRef.current.updateProjectionMatrix();
       return;
     }
@@ -1174,7 +1191,7 @@ function CameraRig({ scroll }: { scroll: ScrollRef }) {
     camRef.current.position.set(cx, cy, cz);
     camRef.current.up.set(0, 1, 0);
     camRef.current.lookAt(0, LOOK_Y, 0);
-    camRef.current.fov = fov;
+    camRef.current.fov = adjustFov(fov);
     camRef.current.updateProjectionMatrix();
   });
 
@@ -1638,7 +1655,7 @@ function HeadlineOverlay({
         </motion.div>
         <h3
           className="text-[24px] md:text-[38px] lg:text-[44px] font-heading font-bold tracking-tight text-white leading-[1.05]"
-          style={{ textShadow: "0 6px 32px rgba(0,0,0,0.65)" }}
+          style={{ textShadow: "0 1px 3px rgba(0,0,0,0.55)" }}
         >
           {headline ? (
             <WordStagger
@@ -2057,10 +2074,10 @@ function HeroChip({ progress }: { progress: MotionValue<number> }) {
   return (
     <motion.div
       style={{ opacity, scale }}
-      className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20"
+      className="absolute bottom-12 left-0 right-0 z-20 flex justify-center px-4 pointer-events-none"
     >
       <div
-        className="flex items-center gap-3 px-5 py-3 rounded-full"
+        className="inline-flex items-center gap-1.5 md:gap-3 px-3 md:px-5 py-2 md:py-3 rounded-full whitespace-nowrap pointer-events-auto"
         style={{
           background: "rgba(15, 21, 24, 0.88)",
           backdropFilter: "blur(16px) saturate(160%)",
@@ -2070,17 +2087,17 @@ function HeroChip({ progress }: { progress: MotionValue<number> }) {
             "0 30px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05) inset",
         }}
       >
-        <span className="relative flex w-2.5 h-2.5">
+        <span className="relative flex w-2 h-2 md:w-2.5 md:h-2.5 flex-shrink-0">
           <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage opacity-75 animate-ping" />
-          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-sage" />
+          <span className="relative inline-flex rounded-full h-2 w-2 md:h-2.5 md:w-2.5 bg-brand-sage" />
         </span>
-        <span className="font-heading text-sm md:text-base font-semibold text-white tracking-tight">
+        <span className="font-heading text-[12px] md:text-base font-semibold text-white tracking-tight">
           Johnson Home
         </span>
-        <span className="text-brand-sage/40">·</span>
-        <span className="font-heading text-xs md:text-sm text-brand-sage-mist/85">On time</span>
-        <span className="text-brand-sage/40">·</span>
-        <span className="font-heading text-xs md:text-sm text-brand-sage-mist/85">On budget</span>
+        <span className="text-brand-sage/40 text-[10px] md:text-base">·</span>
+        <span className="font-heading text-[10px] md:text-sm text-brand-sage-mist/85">On time</span>
+        <span className="text-brand-sage/40 text-[10px] md:text-base">·</span>
+        <span className="font-heading text-[10px] md:text-sm text-brand-sage-mist/85">On budget</span>
       </div>
     </motion.div>
   );
@@ -2109,6 +2126,150 @@ function MobileCostRow({
       <span className="text-white text-sm font-heading font-bold tracking-tighter tabular-nums">
         {entry.amount}
       </span>
+    </motion.div>
+  );
+}
+
+/* Mobile-only spent-to-date pill — sits at the top of the cost-row stack
+   so the running total reads alongside the line items, just like the
+   desktop RunningTotalCard does on the left side. */
+function MobileSpentToDate({
+  total,
+  progress,
+}: {
+  total: number;
+  progress: MotionValue<number>;
+}) {
+  const opacity = useTransform(progress, [0.36, 0.42, 0.74, 0.80], [0, 1, 1, 0]);
+  return (
+    <motion.div
+      style={{
+        opacity,
+        background:
+          "linear-gradient(135deg, rgba(82,121,111,0.30), rgba(82,121,111,0.14))",
+        backdropFilter: "blur(14px)",
+        WebkitBackdropFilter: "blur(14px)",
+        border: "1px solid rgba(132,169,140,0.45)",
+        boxShadow: "0 14px 28px rgba(0,0,0,0.4)",
+      }}
+      className="rounded-[3px] px-3 py-2 mb-1 flex items-center justify-between"
+    >
+      <span className="font-mono text-[9px] tracking-[0.18em] text-brand-sage font-semibold">
+        SPENT TO DATE
+      </span>
+      <span
+        className="font-heading font-bold tracking-tighter leading-none tabular-nums text-[20px]"
+        style={{
+          color: "#d97706",
+          textShadow: "0 0 24px rgba(217,119,6,0.4)",
+        }}
+      >
+        {formatCurrency(total)}
+      </span>
+    </motion.div>
+  );
+}
+
+/* Mobile chart — bottom-anchored panel that fades in as the cost rows
+   fade out (~0.66 → 0.80). Same plan-vs-actual bars as the desktop
+   ChartCard but full-width and condensed. */
+function MobileChartCard({ progress }: { progress: MotionValue<number> }) {
+  const opacity = useTransform(progress, [0.66, 0.70, 0.76, 0.80], [0, 1, 1, 0]);
+  const fill = useTransform(progress, [0.70, 0.76], [0, 1]);
+  return (
+    <motion.div
+      style={{ opacity }}
+      className="md:hidden absolute bottom-4 left-4 right-4 z-[21] pointer-events-none"
+    >
+      <div
+        className="rounded-[4px] p-4 font-heading"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(15,21,24,0.92) 0%, rgba(26,36,40,0.88) 100%)",
+          backdropFilter: "blur(18px) saturate(140%)",
+          WebkitBackdropFilter: "blur(18px) saturate(140%)",
+          border: "1px solid rgba(132,169,140,0.32)",
+          boxShadow: "0 22px 48px rgba(0,0,0,0.55)",
+        }}
+      >
+        <div className="flex justify-between items-baseline mb-3">
+          <div className="font-mono text-[10px] tracking-[0.16em] text-brand-sage font-semibold">
+            PLAN VS ACTUAL
+          </div>
+          <div className="font-mono text-[9px] text-brand-amber tracking-wider">
+            JOB #204
+          </div>
+        </div>
+        <div className="flex flex-col gap-2.5">
+          {CHART_BARS.map((bar) => (
+            <ChartBar key={bar.label} bar={bar} fill={fill} />
+          ))}
+        </div>
+        <div className="mt-3 pt-2 border-t border-brand-forest/15 flex justify-between font-mono text-[9px] text-brand-sage-mist/65">
+          <span>ON BUDGET</span>
+          <span className="text-brand-sage">● 89% TRACK</span>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* Mobile delivered seal — same visual language as DeliveredStamp but
+   sized down (160px) so it fits inside a portrait viewport. */
+function MobileDeliveredStamp({
+  progress,
+  total,
+}: {
+  progress: MotionValue<number>;
+  total: number;
+}) {
+  const opacity = useTransform(progress, [0.82, 0.86, 0.95, 0.98], [0, 1, 1, 0]);
+  const scaleMv = useTransform(progress, [0.82, 0.88], [0, 1]);
+  const scale = useSpring(scaleMv, { stiffness: 380, damping: 14, mass: 0.45 });
+  const rotateMv = useTransform(progress, [0.82, 0.88], [-12, 0]);
+  const rotate = useSpring(rotateMv, { stiffness: 380, damping: 14, mass: 0.45 });
+  const ringScale = useTransform(progress, [0.84, 0.90], [1, 2.1]);
+  const ringOpacity = useTransform(progress, [0.84, 0.86, 0.90], [0, 0.7, 0]);
+  return (
+    <motion.div
+      style={{ opacity }}
+      className="md:hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none"
+    >
+      <motion.div style={{ scale, rotate }} className="relative">
+        <motion.span
+          aria-hidden
+          className="absolute inset-0 rounded-full border-2 border-brand-sage-bright"
+          style={{ scale: ringScale, opacity: ringOpacity }}
+        />
+        <div
+          className="relative w-[160px] h-[160px] rounded-full flex flex-col items-center justify-center text-center"
+          style={{
+            background:
+              "radial-gradient(circle at 35% 30%, rgba(132,169,140,0.18) 0%, rgba(43,61,48,0.85) 65%)",
+            border: "2px solid #8AAA91",
+            boxShadow:
+              "0 0 48px rgba(132,169,140,0.35), inset 0 0 16px rgba(132,169,140,0.15)",
+          }}
+        >
+          <span
+            aria-hidden
+            className="absolute inset-2.5 rounded-full border border-brand-sage-bright/40"
+          />
+          <div className="font-mono text-[8px] tracking-[0.32em] text-brand-sage-bright font-bold mb-1">
+            JOHNSON · 2026
+          </div>
+          <div className="font-display font-light text-[20px] leading-none text-bone tracking-tight">
+            DELIVERED
+          </div>
+          <div className="my-1.5 h-px w-8 bg-brand-sage-bright/60" aria-hidden />
+          <div className="font-mono text-[9px] tracking-[0.18em] text-brand-sage-mist/85">
+            ON BUDGET
+          </div>
+          <div className="mt-1 font-mono text-[10px] font-bold text-brand-sage-bright tabular-nums">
+            ${total.toLocaleString("en-US")}
+          </div>
+        </div>
+      </motion.div>
     </motion.div>
   );
 }
@@ -2366,10 +2527,14 @@ export default function PlanToDoneAnimation() {
           <HeroChip progress={scrollYProgress} />
 
           <div className="md:hidden absolute bottom-4 left-4 right-4 z-20 flex flex-col gap-1.5">
+            <MobileSpentToDate total={totalSpent} progress={scrollYProgress} />
             {COST_ENTRIES.map((entry) => (
               <MobileCostRow key={entry.label} entry={entry} progress={scrollYProgress} />
             ))}
           </div>
+
+          <MobileChartCard progress={scrollYProgress} />
+          <MobileDeliveredStamp progress={scrollYProgress} total={RUNNING_TOTAL} />
 
         </div>
       </div>

@@ -156,9 +156,9 @@ export default function Comparison() {
           </FadeIn>
         </div>
 
-        {/* Table */}
+        {/* Table — desktop / tablet (≥md) */}
         <FadeIn delay={0.15}>
-          <div className="card-stone relative rounded-3xl border border-ink/15 backdrop-blur-sm overflow-hidden">
+          <div className="hidden md:block card-stone relative rounded-3xl border border-ink/15 backdrop-blur-sm overflow-hidden">
             {/* Sage "Stroyka" column bloom — sits behind the cells */}
             <div
               aria-hidden
@@ -240,6 +240,66 @@ export default function Comparison() {
                 </motion.div>
               ))}
             </div>
+          </div>
+        </FadeIn>
+
+        {/* Mobile (<md) — stacked card per row, columns travel with the data */}
+        <FadeIn delay={0.15}>
+          <div className="md:hidden flex flex-col gap-3">
+            {ROWS.map((row, i) => (
+              <motion.div
+                key={row.label}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{
+                  duration: 0.5,
+                  delay: i * 0.04,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="card-stone relative rounded-2xl border border-ink/15 backdrop-blur-sm px-4 py-4 overflow-hidden"
+              >
+                <div className="relative">
+                  <p className="text-[15px] text-ink font-medium leading-snug">
+                    {row.label}
+                  </p>
+                  {row.note && (
+                    <p className="mt-1 font-mono text-[11px] tracking-[0.05em] text-ink/50 leading-snug">
+                      {row.note}
+                    </p>
+                  )}
+                  <div className="mt-3 grid grid-cols-3 gap-2">
+                    {COLS.map((col) => {
+                      const value = row[col.key];
+                      const isStroyka = col.key === "stroyka";
+                      return (
+                        <div
+                          key={col.key}
+                          className={`flex flex-col items-center text-center gap-2 rounded-xl px-2 py-2.5 ${
+                            isStroyka
+                              ? "bg-brand-sage/10 border border-brand-sage/30"
+                              : "bg-ink/[0.03] border border-ink/10"
+                          }`}
+                        >
+                          <Cell
+                            value={value}
+                            highlight={isStroyka}
+                            delay={i * 0.04 + 0.1}
+                          />
+                          <div
+                            className={`font-mono text-[9px] tracking-[0.12em] uppercase leading-tight ${
+                              isStroyka ? "text-brand-forest font-semibold" : "text-ink/55"
+                            }`}
+                          >
+                            {col.label}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </FadeIn>
 
