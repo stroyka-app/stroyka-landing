@@ -81,8 +81,8 @@ export default function Home() {
       <Bridge
         from="#4E6253"
         to="#BFB49C"
-        height="h-40 lg:h-52"
-        stops={["#647566 22%", "#868C70 48%", "#A59E7D 74%"]}
+        height="h-48 lg:h-64"
+        stops={["#4E6253 8%", "#566B5C 20%", "#647566 38%", "#868C70 58%", "#A59E7D 78%"]}
       />
       <Comparison />
       <FounderNote />
@@ -90,6 +90,11 @@ export default function Home() {
       <Pricing />
       <Guarantee />
       <FAQ />
+      {/* FAQ ends and CTA starts both on #BFB49C — but Tailwind's
+          bg-gradient-to-b vs the CTA's inline linear-gradient render
+          subtly differently and a sub-pixel seam shows up at certain
+          zooms. A short flat hold of the shared color masks it. */}
+      <Bridge from="#BFB49C" to="#BFB49C" height="h-10 lg:h-14" />
       <CTABanner />
       <Footer />
     </main>

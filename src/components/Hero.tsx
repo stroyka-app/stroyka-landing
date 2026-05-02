@@ -107,17 +107,17 @@ export default function Hero() {
               <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage-bright opacity-60 animate-ping" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage-bright" />
             </span>
-            Start free
-            <span
-              aria-hidden
-              className="inline-block w-1 h-1 rounded-full bg-brand-sage-bright/55"
-            />
-            <span className="text-brand-amber-bright">$99/mo founding rate</span>
-            <span
-              aria-hidden
-              className="inline-block w-1 h-1 rounded-full bg-brand-sage-bright/55"
-            />
-            {FOUNDING_SPOTS_REMAINING} spots left
+            <span className="text-brand-amber-bright">Start free</span>
+            <span className="relative inline-flex w-1.5 h-1.5">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage-bright opacity-60 animate-ping" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage-bright" />
+            </span>
+            <span>$99/mo founding rate</span>
+            <span className="relative inline-flex w-1.5 h-1.5">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage-bright opacity-60 animate-ping" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage-bright" />
+            </span>
+            <span className="text-brand-amber-bright">{FOUNDING_SPOTS_REMAINING} spots left</span>
           </p>
         </FadeIn>
 

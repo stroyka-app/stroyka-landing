@@ -349,11 +349,7 @@ export default function GetStartedFlow() {
                           </span>
                           {mode === "annual" && (
                             <span
-                              className={`relative text-[10px] font-semibold px-2 py-0.5 rounded-full leading-none transition-colors ${
-                                active
-                                  ? "bg-bone/30 text-bone"
-                                  : "bg-brand-sage/20 text-brand-forest"
-                              }`}
+                              className="relative text-[10px] font-bold px-2 py-0.5 rounded-full leading-none transition-colors bg-brand-sage-bright text-ink shadow-[0_2px_10px_-2px_rgba(184,212,189,0.55)]"
                             >
                               −17%
                             </span>

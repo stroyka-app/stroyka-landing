@@ -2074,7 +2074,7 @@ function HeroChip({ progress }: { progress: MotionValue<number> }) {
   return (
     <motion.div
       style={{ opacity, scale }}
-      className="absolute bottom-12 left-0 right-0 z-20 flex justify-center px-4 pointer-events-none"
+      className="absolute bottom-24 md:bottom-28 left-0 right-0 z-20 flex justify-center px-4 pointer-events-none"
     >
       <div
         className="inline-flex items-center gap-1.5 md:gap-3 px-3 md:px-5 py-2 md:py-3 rounded-full whitespace-nowrap pointer-events-auto"
@@ -2084,7 +2084,7 @@ function HeroChip({ progress }: { progress: MotionValue<number> }) {
           WebkitBackdropFilter: "blur(16px) saturate(160%)",
           border: "1px solid rgba(132, 169, 140, 0.4)",
           boxShadow:
-            "0 30px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05) inset",
+            "0 10px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05) inset",
         }}
       >
         <span className="relative flex w-2 h-2 md:w-2.5 md:h-2.5 flex-shrink-0">
@@ -2463,6 +2463,21 @@ export default function PlanToDoneAnimation() {
             style={{
               background:
                 "linear-gradient(to bottom, #4E6253 0%, rgba(78,98,83,0) 100%)",
+            }}
+          />
+
+          {/* Bottom seam feather — mirrors the top one. The R3F canvas
+              renders darker near the horizon/ground than the section's
+              nominal #4E6253, which created a hard step where the bridge
+              picks up. We overlay #4E6253 → transparent (bottom→up) so the
+              last ~120px lifts back up to match the bridge exactly. Sits
+              ABOVE the canvas (z-[18]) but BELOW cost cards/chip (z-20). */}
+          <div
+            aria-hidden
+            className="absolute bottom-0 left-0 right-0 h-32 md:h-40 z-[18] pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(to top, #4E6253 0%, rgba(78,98,83,0.85) 35%, rgba(78,98,83,0) 100%)",
             }}
           />
 

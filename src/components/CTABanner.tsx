@@ -21,7 +21,7 @@ export default function CTABanner() {
         className="absolute inset-0 z-0"
         style={{
           background:
-            "linear-gradient(180deg, #BFB49C 0%, #8A8A74 30%, #4B5F4E 60%, #34453A 85%, #2B3D30 100%)",
+            "linear-gradient(180deg, #BFB49C 0%, #8A8A74 28%, #4B5F4E 55%, #34453A 75%, #2B3D30 88%, #2B3D30 100%)",
         }}
       />
 
@@ -37,9 +37,9 @@ export default function CTABanner() {
             "linear-gradient(to right, #E3DCC9 1px, transparent 1px), linear-gradient(to bottom, #E3DCC9 1px, transparent 1px)",
           backgroundSize: "72px 72px",
           WebkitMaskImage:
-            "linear-gradient(to bottom, black 0%, black 55%, transparent 95%)",
+            "linear-gradient(to bottom, black 0%, black 45%, transparent 78%)",
           maskImage:
-            "linear-gradient(to bottom, black 0%, black 55%, transparent 95%)",
+            "linear-gradient(to bottom, black 0%, black 45%, transparent 78%)",
         }}
       />
 
