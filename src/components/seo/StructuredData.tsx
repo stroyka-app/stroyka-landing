@@ -19,7 +19,6 @@ function organizationSchema() {
     url: SITE_URL,
     logo: ORG_LOGO,
     email: SUPPORT_EMAIL,
-    sameAs: [],
   };
 }
 
@@ -68,12 +67,24 @@ function faqPageSchema() {
   };
 }
 
-function JsonLdScript({ schema }: { schema: object }) {
+type JsonLdObject = Record<string, unknown>;
+
+// Unicode-escape <, >, & so a literal </script> sequence inside any string
+// value cannot terminate this <script> block early. JSON.parse on the client
+// is unaffected by these \uXXXX escapes. Same defense Next.js applies to
+// __NEXT_DATA__.
+function escapeJsonLd(json: string): string {
+  return json
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026");
+}
+
+function JsonLdScript({ schema }: { schema: JsonLdObject }) {
   return (
     <script
       type="application/ld+json"
-      // Schema is a static, server-built object — no user input. Safe to inline.
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      dangerouslySetInnerHTML={{ __html: escapeJsonLd(JSON.stringify(schema)) }}
     />
   );
 }
