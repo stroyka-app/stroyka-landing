@@ -7,6 +7,13 @@ import TheShift from "@/components/TheShift";
 import HowItWorks from "@/components/HowItWorks";
 import Features from "@/components/Features";
 import Comparison from "@/components/Comparison";
+import FounderNote from "@/components/FounderNote";
+import Integrations from "@/components/Integrations";
+import Pricing from "@/components/Pricing";
+import Guarantee from "@/components/Guarantee";
+import FAQ from "@/components/FAQ";
+import CTABanner from "@/components/CTABanner";
+import Footer from "@/components/Footer";
 
 const PlanToDoneAnimation = dynamic(
   () => import("@/components/PlanToDoneAnimation"),
@@ -17,13 +24,6 @@ const PlanToDoneAnimation = dynamic(
     ),
   },
 );
-import FounderNote from "@/components/FounderNote";
-import Integrations from "@/components/Integrations";
-import Pricing from "@/components/Pricing";
-import Guarantee from "@/components/Guarantee";
-import FAQ from "@/components/FAQ";
-import CTABanner from "@/components/CTABanner";
-import Footer from "@/components/Footer";
 
 /**
  * Bridge — thin gradient div that sits between two sections with different

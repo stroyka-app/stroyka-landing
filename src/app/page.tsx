@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import HomeClient from "@/components/HomeClient";
 
 export const metadata: Metadata = {
-  title: "Stroyka — Construction Crew & Job Cost Management",
+  title: { absolute: "Stroyka — Construction Crew & Job Cost Management" },
   description:
     "Stroyka helps small construction crews track daily hours, job costs, and worker pay — all in one app. Built for US contractors with 5–25 workers.",
   alternates: { canonical: "/" },
