@@ -8,6 +8,7 @@ import SectionLabel from "@/components/ui/SectionLabel";
 export const metadata: Metadata = {
   title: "Request a Demo",
   description: "See Stroyka in action. Book a 20-minute demo with the founder.",
+  alternates: { canonical: "/demo" },
 };
 
 export default function DemoPage() {

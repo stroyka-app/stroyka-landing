@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Get Started",
   description:
     "Choose a Stroyka plan and start managing your construction crew today. No per-seat fees — your entire team is included.",
+  alternates: { canonical: "/get-started" },
 };
 
 export default function GetStartedPage() {

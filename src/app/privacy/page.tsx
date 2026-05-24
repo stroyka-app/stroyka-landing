@@ -4,6 +4,7 @@ import PrivacyContent from "./PrivacyContent";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description: "Privacy Policy for the Stroyka construction management platform.",
+  alternates: { canonical: "/privacy" },
 };
 
 export default function PrivacyPage() {
