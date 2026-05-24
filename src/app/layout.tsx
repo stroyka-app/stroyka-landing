@@ -7,6 +7,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import CursorDot from "@/components/CursorDot";
 import ScrollToTop from "@/components/ScrollToTop";
 import ScrollProgress from "@/components/ScrollProgress";
+import StructuredData from "@/components/seo/StructuredData";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -93,28 +94,7 @@ export default function RootLayout({
       className={`${inter.variable} ${fraunces.variable} ${jetbrainsMono.variable}`}
     >
       <body className="bg-bone text-ink antialiased font-body">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "SoftwareApplication",
-              name: "Stroyka",
-              applicationCategory: "BusinessApplication",
-              operatingSystem: "iOS, Android",
-              description:
-                "Construction crew and job cost management app for small US contractors.",
-              url: "https://getstroyka.com",
-              offers: {
-                "@type": "AggregateOffer",
-                lowPrice: "149",
-                highPrice: "249",
-                priceCurrency: "USD",
-                offerCount: "2",
-              },
-            }),
-          }}
-        />
+        <StructuredData />
         <ScrollProgress />
         <SmoothScroll>
           <CursorDot />
