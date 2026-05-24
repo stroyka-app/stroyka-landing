@@ -9,13 +9,9 @@ import TextReveal from "@/components/ui/TextReveal";
 import Button from "@/components/ui/Button";
 import { useCursorGlow } from "@/lib/hooks/useCursorGlow";
 import { useCountUp } from "@/lib/hooks/useCountUp";
+import { PRICES } from "@/data/pricing";
 
 type Billing = "monthly" | "annual";
-
-const PRICES = {
-  starter: { monthly: 149, annual: 1488, annualPerMonth: 124 },
-  pro: { monthly: 249, annual: 2484, annualPerMonth: 207 },
-} as const;
 
 const FOUNDING_SPOTS_TOTAL = 20;
 const FOUNDING_SPOTS_TAKEN = Number(
