@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Fraunces, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -37,11 +37,10 @@ export const metadata: Metadata = {
   description:
     "Stroyka helps small construction crews track daily hours, job costs, and worker pay — all in one app. Built for US contractors with 5–25 workers.",
   keywords: [
-    "construction management app",
-    "crew management",
-    "job costing",
-    "construction payroll",
-    "contractor app",
+    "construction crew management app",
+    "job costing app for contractors",
+    "construction timesheet app",
+    "foreman app",
   ],
   authors: [{ name: "Stroyka" }],
   creator: "Stroyka",
@@ -81,6 +80,11 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true },
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#2f3e46",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
