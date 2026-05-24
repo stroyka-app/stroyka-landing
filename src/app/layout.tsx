@@ -40,6 +40,7 @@ export const metadata: Metadata = {
     "construction crew management app",
     "job costing app for contractors",
     "construction timesheet app",
+    "construction time tracking app",
     "foreman app",
   ],
   authors: [{ name: "Stroyka" }],
