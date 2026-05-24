@@ -1,16 +1,18 @@
 // src/data/pricing.ts
 
-export interface PricingTier {
+export type PricingTier = {
   readonly name: "Free" | "Starter" | "Pro";
   readonly monthlyPrice: number;
   readonly description: string;
-}
+};
 
 export const PRICES = {
   starter: { monthly: 149, annual: 1488, annualPerMonth: 124 },
   pro: { monthly: 249, annual: 2484, annualPerMonth: 207 },
 } as const;
 
+// Plan-tier copy for the SoftwareApplication JSON-LD schema.
+// Keep aligned with the FREE_/STARTER_/PRO_FEATURES lists in Pricing.tsx when plans change.
 export const PRICING_TIERS: readonly PricingTier[] = [
   {
     name: "Free",

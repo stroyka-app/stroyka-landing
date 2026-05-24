@@ -1,9 +1,9 @@
 // src/data/faq.ts
-export interface FaqItem {
+export type FaqItem = {
   q: string;
   a: string;
   meta: string;
-}
+};
 
 export const QUESTIONS: FaqItem[] = [
   {
