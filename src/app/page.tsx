@@ -12,6 +12,14 @@ export const metadata: Metadata = {
     title: "Stroyka — Construction Crew & Job Cost Management",
     description:
       "Track hours, job costs, and worker pay for your construction crew. Simple. Fast. Built for the field.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Stroyka — Construction Management App",
+      },
+    ],
   },
 };
 

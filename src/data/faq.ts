@@ -1,11 +1,11 @@
 // src/data/faq.ts
 export type FaqItem = {
-  q: string;
-  a: string;
-  meta: string;
+  readonly q: string;
+  readonly a: string;
+  readonly meta: string;
 };
 
-export const QUESTIONS: FaqItem[] = [
+export const QUESTIONS: readonly FaqItem[] = [
   {
     q: "Does it work without internet?",
     a: "Yes. Stroyka is offline-first — all data is stored locally on each device and syncs automatically when a connection is restored. Workers in basements, rural areas, or anywhere with poor signal can still log time, submit requests, and view tasks.",

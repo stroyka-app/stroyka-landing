@@ -38,7 +38,7 @@ function softwareApplicationSchema() {
     "@type": "SoftwareApplication",
     name: "Stroyka",
     applicationCategory: "BusinessApplication",
-    operatingSystem: "iOS, Android",
+    operatingSystem: "iOS, Android, Web",
     description:
       "Construction crew and job cost management app for small US contractors. Track time, assign tasks, and monitor job costs offline.",
     url: SITE_URL,
