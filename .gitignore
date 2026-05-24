@@ -46,6 +46,9 @@ assets/ezgif-frames/
 assets/ezgif-frames-transparent/
 assets/ezgif-frames-cropped/
 
+# Cowork / agent prompt drafts (local-only working docs)
+assets/*_Prompt.md
+
 # Superpowers brainstorm sessions (local dev only)
 .superpowers/
 
