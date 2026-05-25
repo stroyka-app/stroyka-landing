@@ -5,6 +5,59 @@ import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion
 import FadeIn from "@/components/ui/FadeIn";
 import Button from "@/components/ui/Button";
 
+/**
+ * One line of word-mask reveals. Each word sits inside a clip box padded
+ * by 0.22em (with matching negative margin) so descenders like g/y/p/j/q
+ * are not chopped by overflow:hidden while baseline alignment is preserved
+ * in the surrounding text. Words slide up from y:100% with opacity, with
+ * a configurable per-word stagger continuing from `startDelay`.
+ *
+ * `inline` lets the line render without forcing a `<span class="block">`
+ * wrapper — useful when the parent already establishes the line context
+ * (e.g., the italic line that hosts a positioned SVG underline).
+ */
+function WordLine({
+  words,
+  startDelay,
+  stagger,
+  prefersReduced,
+  inline = false,
+}: {
+  words: string[];
+  startDelay: number;
+  stagger: number;
+  prefersReduced: boolean | null;
+  inline?: boolean;
+}) {
+  if (prefersReduced) {
+    return inline ? <>{words.join(" ")}</> : <span className="block">{words.join(" ")}</span>;
+  }
+
+  const content = words.map((word, i) => (
+    <span
+      key={i}
+      className="inline-block overflow-hidden align-bottom"
+      style={{ paddingBottom: "0.22em", marginBottom: "-0.22em" }}
+    >
+      <motion.span
+        className="inline-block"
+        initial={{ y: "100%", opacity: 0 }}
+        animate={{ y: "0%", opacity: 1 }}
+        transition={{
+          duration: 0.55,
+          delay: startDelay + i * stagger,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+      >
+        {word}
+      </motion.span>
+      {i < words.length - 1 && " "}
+    </span>
+  ));
+
+  return inline ? <>{content}</> : <span className="block">{content}</span>;
+}
+
 const FOUNDING_SPOTS_TOTAL = 20;
 const FOUNDING_SPOTS_TAKEN = Number(
   process.env.NEXT_PUBLIC_FOUNDING_SPOTS_TAKEN ?? 6,
@@ -52,11 +105,16 @@ export default function Hero() {
       {/* ── Video layer — natural tones at low opacity. No blend-luminosity
           (it was stripping color from the footage and forcing the green
           gradient onto it — reading as "obvious green video"). The video
-          now plays at its real hue, muted to 28% so it reads as atmosphere
-          behind the gradient rather than a tinted overlay. */}
+          now plays at its real hue, muted to 30% so it reads as atmosphere
+          behind the gradient rather than a tinted overlay. Opacity ramps
+          from 0 → 0.3 over 800ms on mount so fast connections don't get a
+          jarring pop. */}
       <motion.div
-        style={prefersReduced ? undefined : { y: videoY, scale: videoScale }}
-        className="absolute inset-0 z-[1] will-change-transform opacity-30"
+        style={prefersReduced ? { opacity: 0.3 } : { y: videoY, scale: videoScale }}
+        initial={prefersReduced ? undefined : { opacity: 0 }}
+        animate={prefersReduced ? undefined : { opacity: 0.3 }}
+        transition={prefersReduced ? undefined : { duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="absolute inset-0 z-[1] will-change-transform"
       >
         <video
           autoPlay
@@ -90,7 +148,7 @@ export default function Hero() {
         style={prefersReduced ? undefined : { y: headlineY, opacity: headlineOpacity }}
         className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 pt-24 pb-28 lg:pt-32 lg:pb-40 will-change-transform"
       >
-        <FadeIn delay={0}>
+        <FadeIn delay={0} triggerOnMount>
           {/* Announcement eyebrow. Was three opacity-tiered text runs
               ("80 / 30 / 100 / 30 / 80") over bare video — the light runs
               washed out and the "/" separators at bone/30 were barely
@@ -121,39 +179,52 @@ export default function Hero() {
           </p>
         </FadeIn>
 
-        <FadeIn delay={0.08}>
-          <h1 className="font-display font-light text-[clamp(3.5rem,10vw,9.5rem)] leading-[0.92] tracking-[-0.03em] text-bone mb-10 max-w-[16ch]">
-            <span className="block">Construction</span>
-            <span className="block">management,</span>
-            <span className="block italic font-normal relative">
-              for real crews.
-              <svg
-                aria-hidden
-                className="absolute left-0 -bottom-3 lg:-bottom-5 w-[62%] h-auto"
-                viewBox="0 0 400 16"
-                fill="none"
-                preserveAspectRatio="none"
-              >
-                <path
-                  d="M2 10 Q 100 2, 200 8 T 398 6"
-                  stroke="#B8D4BD"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  className="draw-underline"
-                />
-              </svg>
-            </span>
-          </h1>
-        </FadeIn>
+        {/* H1 — per-word mask reveal. Each word slides up from behind a clip
+            box (0.22em descender pad to protect g/y/p/j/q). Delays cascade
+            line-by-line so the three lines land in sequence rather than as
+            one block. Italic line keeps its sage SVG underline (CSS-driven
+            via .draw-underline, independent of word reveal).
+            CRITICAL — delays start at 0.7s so each word's 0.55s rise plays
+            *after* the LoadingCurtain has cleared at ~0.6s. If startDelay
+            drops below 0.6s the words finish behind the curtain and the
+            entire reveal is wasted (only the late ones would be visible). */}
+        <h1 className="font-display font-light text-[clamp(3.5rem,10vw,9.5rem)] leading-[0.92] tracking-[-0.03em] text-bone mb-10 max-w-[16ch]">
+          <WordLine words={["Construction"]} startDelay={0.7} stagger={0.06} prefersReduced={prefersReduced} />
+          <WordLine words={["management,"]} startDelay={0.85} stagger={0.06} prefersReduced={prefersReduced} />
+          <span className="block italic font-normal relative">
+            <WordLine
+              words={["for", "real", "crews."]}
+              startDelay={1.0}
+              stagger={0.08}
+              prefersReduced={prefersReduced}
+              inline
+            />
+            <svg
+              aria-hidden
+              className="absolute left-0 -bottom-3 lg:-bottom-5 w-[62%] h-auto"
+              viewBox="0 0 400 16"
+              fill="none"
+              preserveAspectRatio="none"
+            >
+              <path
+                d="M2 10 Q 100 2, 200 8 T 398 6"
+                stroke="#B8D4BD"
+                strokeWidth="3"
+                strokeLinecap="round"
+                className="draw-underline"
+              />
+            </svg>
+          </span>
+        </h1>
 
         <div className="grid lg:grid-cols-[1fr_auto] gap-10 lg:gap-16 items-end">
           <div className="max-w-xl">
-            <FadeIn delay={0.18}>
+            <FadeIn delay={0.18} triggerOnMount>
               <p className="text-lg lg:text-xl text-bone/85 leading-[1.55]">
                 One tool for the whole crew — boss and workers. Clock-in, job costing, reports. Works on any phone, even with no signal.
               </p>
             </FadeIn>
-            <FadeIn delay={0.22}>
+            <FadeIn delay={0.22} triggerOnMount>
               {/* Spec tag. Was a plain bone/85 line with a soft text-shadow,
                   which washed out over bright frames of the hero video.
                   Now: dark glass chip (rgba #0e140f @ 38%, blurred) with a
@@ -180,7 +251,7 @@ export default function Hero() {
                 </p>
               </div>
             </FadeIn>
-            <FadeIn delay={0.28}>
+            <FadeIn delay={0.28} triggerOnMount>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <Button variant="primary" size="lg" href="/#download">
                   Start free
@@ -194,9 +265,22 @@ export default function Hero() {
 
           {/* Project Sheet — floats on the mid-stone portion of the gradient.
               Uses bone-soft bg (matches the mid-tone of the gradient around it)
-              so it reads as an inset panel rather than a bright card. */}
-          <FadeIn delay={0.35}>
-            <aside
+              so it reads as an inset panel rather than a bright card. After
+              the entrance fade-in, the card breathes gently (3s y-bob ±3px,
+              whole pixels per motion rules so blur-transformed text stays
+              crisp). Reduced-motion users get the still card. */}
+          <FadeIn delay={0.35} triggerOnMount>
+            <motion.aside
+              animate={
+                prefersReduced
+                  ? undefined
+                  : { y: [0, -3, 0, 3, 0] }
+              }
+              transition={
+                prefersReduced
+                  ? undefined
+                  : { duration: 6, repeat: Infinity, ease: "easeInOut" }
+              }
               className="w-full lg:w-[320px] border border-bone/40 bg-[rgba(25,32,27,0.32)] backdrop-blur-2xl rounded-2xl p-7 font-mono text-[12.5px] tracking-[0.06em] shadow-[0_30px_80px_-30px_rgba(10,18,12,0.7)]"
               style={{
                 textShadow: "0 1px 10px rgba(10,18,12,0.55)",
@@ -238,7 +322,7 @@ export default function Hero() {
                   <dd className="text-bone font-semibold">Yes — any phone</dd>
                 </div>
               </dl>
-            </aside>
+            </motion.aside>
           </FadeIn>
         </div>
       </motion.div>

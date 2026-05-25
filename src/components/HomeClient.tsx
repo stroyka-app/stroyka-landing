@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import LoadingCurtain from "@/components/LoadingCurtain";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import TheShift from "@/components/TheShift";
@@ -61,6 +62,7 @@ function Bridge({
 export default function HomeClient() {
   return (
     <main className="relative">
+      <LoadingCurtain />
       <Navbar />
       <Hero />
       <TheShift />

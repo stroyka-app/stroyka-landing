@@ -58,17 +58,21 @@ export default function Button({
     setIsHovered(false);
   };
 
+  // Hover shadows: each variant gets a tint that matches its surface so
+  // the lift reads as the same material gaining depth, not a generic
+  // drop-shadow added on top. Ghost stays shadowless — it's a text button
+  // and a shadow would look like leftover artifact.
   const base =
-    "relative inline-flex items-center justify-center font-heading font-semibold tracking-wide rounded-full transition-colors duration-200 cursor-pointer";
+    "relative inline-flex items-center justify-center font-heading font-semibold tracking-wide rounded-full transition-[colors,box-shadow] duration-200 cursor-pointer";
   const variants = {
     primary:
-      "bg-brand-deep text-bone hover:bg-brand-midnight-dark active:scale-95",
+      "bg-brand-deep text-bone hover:bg-brand-midnight-dark hover:shadow-[0_14px_30px_-12px_rgba(47,62,70,0.55)] active:scale-95",
     secondary:
-      "border border-ink/50 text-ink hover:bg-ink hover:text-bone hover:border-ink active:scale-95",
+      "border border-ink/50 text-ink hover:bg-ink hover:text-bone hover:border-ink hover:shadow-[0_14px_30px_-12px_rgba(20,28,22,0.45)] active:scale-95",
     outline:
-      "bg-transparent border border-current/40 hover:border-current/80 hover:bg-current/[0.06] active:scale-95",
+      "bg-transparent border border-current/40 hover:border-current/80 hover:bg-current/[0.06] hover:shadow-[0_10px_24px_-12px_rgba(20,28,22,0.35)] active:scale-95",
     invert:
-      "bg-bone text-ink hover:bg-bone-deep active:scale-95",
+      "bg-bone text-ink hover:bg-bone-deep hover:shadow-[0_14px_30px_-12px_rgba(20,28,22,0.4)] active:scale-95",
     ghost:
       "text-ink hover:text-brand-forest active:scale-95",
   };
@@ -94,10 +98,17 @@ export default function Button({
     return inner;
   }
 
+  // Magnetic pull + hover scale compose on the same wrapper — framer-motion
+  // merges the spring-driven x/y MotionValues with the whileHover scale via
+  // its transform stack, so neither overrides the other. Subtle 1.02 lift
+  // pairs with the hover shadow on the inner button to make the whole
+  // surface feel like it rises ~2px toward the cursor.
   return (
     <motion.div
       ref={ref}
       style={{ x, y, display: "inline-block" }}
+      whileHover={{ scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 320, damping: 22 }}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}

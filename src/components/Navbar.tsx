@@ -90,12 +90,9 @@ export default function Navbar() {
         <div className="hidden md:block">
           <a
             href="/get-started"
-            className="group relative inline-flex items-center gap-2 rounded-full pl-4 pr-3 py-2 font-heading text-[13.5px] font-medium tracking-wide text-bone border border-brand-sage-bright/40 bg-brand-sage-bright/10 hover:bg-brand-sage-bright/20 hover:border-brand-sage-bright/70 transition-[background-color,border-color,transform] duration-200 active:scale-[0.97]"
+            className="group relative inline-flex items-center rounded-full px-5 py-2 font-heading text-[13.5px] font-medium tracking-wide text-bone border border-brand-sage-bright/40 bg-brand-sage-bright/10 hover:bg-brand-sage-bright/20 hover:border-brand-sage-bright/70 transition-[background-color,border-color,transform] duration-200 active:scale-[0.97]"
           >
-            <span>Get started</span>
-            <span className="flex items-center justify-center w-5 h-5 rounded-full bg-brand-sage-bright/90 text-brand-midnight-dark text-[11px] transition-transform duration-200 group-hover:translate-x-0.5">
-              →
-            </span>
+            Get started
           </a>
         </div>
 
@@ -142,13 +139,10 @@ export default function Navbar() {
               ))}
               <a
                 href="/get-started"
-                className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 font-heading text-[14px] font-medium text-bone border border-brand-sage-bright/50 bg-brand-sage-bright/15 hover:bg-brand-sage-bright/25"
+                className="inline-flex items-center justify-center rounded-full px-5 py-2.5 font-heading text-[14px] font-medium text-bone border border-brand-sage-bright/50 bg-brand-sage-bright/15 hover:bg-brand-sage-bright/25"
                 onClick={() => setMobileOpen(false)}
               >
                 Get started
-                <span className="flex items-center justify-center w-5 h-5 rounded-full bg-brand-sage-bright/90 text-brand-midnight-dark text-[11px]">
-                  →
-                </span>
               </a>
             </div>
           </motion.div>
