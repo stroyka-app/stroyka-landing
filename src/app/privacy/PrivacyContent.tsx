@@ -32,9 +32,18 @@ const sections: LegalSection[] = [
           <li><strong>IP address:</strong> collected as part of standard server logs and authentication</li>
         </ul>
 
-        <h3>1.3 Information We Do NOT Collect</h3>
+        <h3>1.3 Location Information</h3>
+        <p>If your company enables the optional GPS time-clock feature, Stroyka collects your device&apos;s precise location <strong>only at the moment you clock in or clock out</strong>, to verify you are at the assigned job site (geofence verification):</p>
         <ul>
-          <li>We do not collect precise GPS location data</li>
+          <li>Location is captured <strong>only at clock-in and clock-out</strong> &mdash; never continuously, and never in the background.</li>
+          <li>Each captured location (latitude, longitude, and accuracy) is stored with the corresponding time entry and is visible to your company&apos;s administrators (the &ldquo;Boss&rdquo; role) for job-site verification.</li>
+          <li>Location capture relies on your device permission. If you decline, you can still clock in and out &mdash; the entry is simply recorded as location-unverified.</li>
+          <li>We never use your location for advertising or for tracking you across other apps or websites.</li>
+        </ul>
+
+        <h3>1.4 Information We Do NOT Collect</h3>
+        <ul>
+          <li>We do not collect your location in the background, or at any time other than when you clock in or out</li>
           <li>We do not collect biometric data</li>
           <li>We do not collect financial account numbers, bank details, or credit card numbers (payment processing is handled entirely by Stripe)</li>
           <li>We do not collect Social Security numbers or government-issued ID numbers</li>
@@ -51,6 +60,7 @@ const sections: LegalSection[] = [
         <ul>
           <li><strong>To provide and operate the Service:</strong> storing your project data, processing time entries, generating reports, and enabling collaboration between Boss and Worker users</li>
           <li><strong>To authenticate users:</strong> verifying your identity when you log in and managing role-based access within your Company Account</li>
+          <li><strong>To verify job-site attendance:</strong> when the optional GPS time-clock feature is enabled, using the location captured at clock-in and clock-out to confirm a worker was at the assigned job site</li>
           <li><strong>To send transactional emails:</strong> account verification, password resets, worker invitations, and subscription-related notifications (sent via Resend)</li>
           <li><strong>To monitor and improve the Service:</strong> analyzing usage patterns to identify bugs, improve performance, and prioritize feature development</li>
           <li><strong>To provide customer support:</strong> responding to your questions, feedback, and support requests</li>
@@ -194,7 +204,7 @@ const sections: LegalSection[] = [
       <>
         <p>If you have questions about this Privacy Policy, want to exercise your data rights, or have concerns about how we handle your information, please contact us:</p>
         <p>
-          Stroyka LLC<br />
+          Dalen Meridian LLC (d/b/a Stroyka)<br />
           Email: <a href="mailto:support@getstroyka.com">support@getstroyka.com</a><br />
           Website: <a href="https://getstroyka.com">getstroyka.com</a>
         </p>
@@ -209,7 +219,7 @@ export default function PrivacyContent() {
     <LegalPageLayout
       title="Privacy Policy"
       subtitle="We respect your privacy and are committed to protecting your personal information."
-      effectiveDate="Effective Date: April 2026 · Last Updated: April 2026"
+      effectiveDate="Effective Date: April 2026 · Last Updated: June 2026"
       sections={sections}
     />
   );
