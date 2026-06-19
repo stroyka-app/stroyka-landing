@@ -44,7 +44,7 @@ function FAQItem({
   return (
     <li
       {...glow}
-      className={`group cursor-glow relative overflow-hidden rounded-2xl border transition-all duration-500 ${
+      className={`group cursor-glow relative overflow-hidden rounded-2xl border transition-[border-color,opacity] duration-300 ${
         isOpen
           ? "card-stone border-ink/60"
           : "card-stone border-ink/15 hover:border-ink/35 opacity-90 hover:opacity-100"
@@ -59,7 +59,7 @@ function FAQItem({
         className="relative flex w-full items-start gap-5 px-6 py-6 md:px-8 md:py-7 text-left cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-sage/40"
       >
         <span
-          className={`relative flex h-11 w-11 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-full border transition-all duration-500 ${
+          className={`relative flex h-11 w-11 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-full border transition-[background-color,color,border-color,box-shadow] duration-300 ${
             isOpen
               ? "bg-ink text-bone border-ink shadow-[0_0_22px_-4px_rgba(46,38,28,0.6)]"
               : "bg-bone-soft text-ink-muted border-ink/25 group-hover:border-ink/45 group-hover:text-ink"

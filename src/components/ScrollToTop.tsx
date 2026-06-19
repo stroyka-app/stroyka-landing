@@ -103,7 +103,7 @@ export default function ScrollToTop() {
             </svg>
 
             {/* Button body */}
-            <div className="w-10 h-10 rounded-full bg-bone-soft/90 backdrop-blur-sm border border-ink/20 flex items-center justify-center group-hover:border-brand-sage/50 transition-all duration-200">
+            <div className="w-10 h-10 rounded-full bg-bone-soft/90 backdrop-blur-sm border border-ink/20 flex items-center justify-center group-hover:border-brand-sage/50 transition-[border-color] duration-200">
               <ArrowUp
                 size={16}
                 className="text-ink/70 group-hover:text-brand-forest transition-colors duration-200"

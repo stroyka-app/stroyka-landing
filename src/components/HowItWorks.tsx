@@ -146,7 +146,7 @@ export default function HowItWorks() {
                     />
                     {/* Step number badge */}
                     <span
-                      className={`absolute left-0 top-0 w-[44px] h-[44px] rounded-full flex items-center justify-center font-mono text-[12px] tracking-[0.08em] z-10 transition-all duration-300 ${
+                      className={`absolute left-0 top-0 w-[44px] h-[44px] rounded-full flex items-center justify-center font-mono text-[12px] tracking-[0.08em] z-10 transition-[background-color,color,border-color,box-shadow] duration-300 ${
                         isActive
                           ? "bg-brand-forest text-bone border border-brand-forest shadow-[0_0_22px_-4px_rgba(63,78,53,0.6)]"
                           : "bg-bone-soft text-ink-muted border border-ink/25"

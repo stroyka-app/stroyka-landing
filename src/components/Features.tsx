@@ -205,7 +205,7 @@ function FlipperCard({ feature, isActive, onActivate }: FlipperCardProps) {
     >
       <div
         className={[
-          "w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300",
+          "w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 transition-[background-color,color,border-color,box-shadow] duration-300",
           isActive
             ? "bg-brand-deep text-bone shadow-[0_0_20px_-4px_rgba(61,88,67,0.55)]"
             : "bg-bone text-ink-muted border border-ink/15",
