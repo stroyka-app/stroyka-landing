@@ -21,7 +21,7 @@ const STEPS: Step[] = [
     body:
       "Name, address, plan number, and a rough budget. You're set up in under a minute — no onboarding call, no sales demo.",
     screenshot: "/screenshots/projects.jpeg",
-    alt: "Projects list screen",
+    alt: "Projects overview screen showing budgets and at-risk jobs",
   },
   {
     num: "02",
@@ -29,7 +29,7 @@ const STEPS: Step[] = [
     body:
       "Text them a link. They install in 30 seconds and tap their name. Workers only see what matters to them — their tasks, their hours, their paystub.",
     screenshot: "/screenshots/worker-view.jpeg",
-    alt: "Worker home screen",
+    alt: "Worker daily home screen with earnings, hours, and today's tasks",
   },
   {
     num: "03",
@@ -37,7 +37,7 @@ const STEPS: Step[] = [
     body:
       "Crew clocks in, logs materials and fuel, closes tasks. Everything works offline and syncs when signal comes back — no lost data, no duplicated entries.",
     screenshot: "/screenshots/tasks.jpeg",
-    alt: "Tasks and requests screen",
+    alt: "Task detail screen with progress and crew chat thread",
   },
   {
     num: "04",
@@ -45,7 +45,7 @@ const STEPS: Step[] = [
     body:
       "End of week, open the Report tab. Labor, materials, fuel, plan vs. actual — ready to export as PDF or CSV for your bookkeeper.",
     screenshot: "/screenshots/reports.jpeg",
-    alt: "Reports and P&L screen",
+    alt: "Project report screen with budget burn and plan vs. actual breakdown",
   },
 ];
 
@@ -171,7 +171,6 @@ export default function HowItWorks() {
                       handles the visual. */}
                   <div className="md:hidden mt-6 flex justify-center">
                     <div className="relative w-[240px] rounded-[36px] p-[8px] bg-gradient-to-br from-[#3a4a52] to-[#24313a] shadow-xl">
-                      <div className="absolute top-[12px] left-1/2 -translate-x-1/2 w-16 h-[15px] bg-[#0e1518] rounded-[10px] z-10" />
                       <div className="relative w-full aspect-[1206/2150] rounded-[28px] overflow-hidden bg-black/40">
                         <Image
                           src={step.screenshot}
@@ -201,9 +200,6 @@ export default function HowItWorks() {
 
               {/* Phone body */}
               <div className="relative rounded-[44px] p-[10px] bg-gradient-to-br from-[#3a4a52] to-[#24313a] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.7),0_0_0_1px_rgba(202,210,197,0.08),0_0_80px_rgba(82,121,111,0.18)]">
-                {/* Notch */}
-                <div className="absolute top-[18px] left-1/2 -translate-x-1/2 w-24 h-[22px] bg-[#0e1518] rounded-[14px] z-10" />
-
                 {/* Screen */}
                 <div className="relative w-full aspect-[1206/2150] rounded-[34px] overflow-hidden bg-black/40">
                   {STEPS.map((s, i) => (
