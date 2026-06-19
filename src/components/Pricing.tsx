@@ -364,13 +364,13 @@ export default function Pricing() {
 
         {/* Founding Member band */}
         <FadeIn delay={0.3}>
-          <div className="relative overflow-hidden rounded-3xl mb-10 max-w-5xl border border-brand-sage/25 bg-[linear-gradient(135deg,#2B3D30_0%,#34453A_50%,#2B3D30_100%)] p-10 md:p-14 grid md:grid-cols-[1.4fr_1fr] gap-10 items-center">
+          <div className="relative overflow-hidden rounded-3xl mb-10 max-w-5xl border border-brand-sage/25 bg-[linear-gradient(135deg,#2B3D30_0%,#34453A_50%,#2B3D30_100%)] p-10 md:p-14">
             <span
               aria-hidden
               className="pointer-events-none absolute -top-[30%] -right-[10%] w-[500px] h-[500px] rounded-full blur-[80px] bg-brand-sage-bright/18"
             />
             {/* inner core — concentric bezel, premium tiers only */}
-            <div className="md:col-span-2 grid md:grid-cols-[1.4fr_1fr] gap-10 items-center rounded-2xl ring-1 ring-brand-sage/15 shadow-[inset_0_1px_0_rgba(255,253,243,0.5)]">
+            <div className="grid md:grid-cols-[1.4fr_1fr] gap-10 items-center rounded-2xl ring-1 ring-brand-sage/15 shadow-[inset_0_1px_0_rgba(255,253,243,0.5)]">
             <div className="relative">
               <p className="font-mono text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-sage-bright mb-5 flex items-center gap-2">
                 <ShieldCheck size={14} className="text-brand-sage-bright" />
