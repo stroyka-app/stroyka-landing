@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent, useReducedMotion } from "framer-motion";
 import { ArrowUp } from "lucide-react";
 
 export default function ScrollToTop() {
+  const prefersReduced = useReducedMotion();
   const [visible, setVisible] = useState(false);
   const [suppressed, setSuppressed] = useState(false);
   const { scrollYProgress } = useScroll();
@@ -63,9 +64,10 @@ export default function ScrollToTop() {
     <AnimatePresence>
       {visible && !suppressed && (
         <motion.button
-          initial={{ opacity: 0, scale: 0.8, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.8, y: 20 }}
+          initial={prefersReduced ? { opacity: 0 } : { opacity: 0, scale: 0.8, y: 20 }}
+          animate={prefersReduced ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
+          exit={prefersReduced ? { opacity: 0 } : { opacity: 0, scale: 0.8, y: 20 }}
+          whileTap={prefersReduced ? undefined : { scale: 0.94 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
           onClick={scrollToTop}
           aria-label="Scroll to top"

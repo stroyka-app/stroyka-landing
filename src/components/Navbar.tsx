@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useReducedMotion } from "framer-motion";
 import { useScrollPosition } from "@/lib/hooks/useScrollPosition";
 import Logo from "@/components/Logo";
 
@@ -39,6 +39,7 @@ export default function Navbar() {
   // dark-glass "scrolled" treatment from scroll=0 on every non-home route.
   const isHome = pathname === "/";
   const scrolled = !isHome || scrollY > 50;
+  const prefersReduced = useReducedMotion();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   // Smooth scroll-bound height + logo-scale shrink. Anchored to first 320px
@@ -104,7 +105,9 @@ export default function Navbar() {
         >
           <motion.span
             className="block w-6 h-0.5 bg-bone"
-            animate={mobileOpen ? { rotate: 45, y: 4 } : { rotate: 0, y: 0 }}
+            animate={mobileOpen
+              ? prefersReduced ? { opacity: 0 } : { rotate: 45, y: 4 }
+              : prefersReduced ? { opacity: 1 } : { rotate: 0, y: 0 }}
           />
           <motion.span
             className="block w-6 h-0.5 bg-bone"
@@ -112,7 +115,9 @@ export default function Navbar() {
           />
           <motion.span
             className="block w-6 h-0.5 bg-bone"
-            animate={mobileOpen ? { rotate: -45, y: -4 } : { rotate: 0, y: 0 }}
+            animate={mobileOpen
+              ? prefersReduced ? { opacity: 0 } : { rotate: -45, y: -4 }
+              : prefersReduced ? { opacity: 1 } : { rotate: 0, y: 0 }}
           />
         </button>
       </motion.div>

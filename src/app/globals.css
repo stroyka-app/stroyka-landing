@@ -44,7 +44,7 @@
       transparent 60%
     );
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.4s cubic-bezier(0.23,1,0.32,1);
     pointer-events: none;
   }
   .cursor-glow:hover::before {

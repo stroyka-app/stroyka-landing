@@ -66,15 +66,15 @@ export default function Button({
     "relative inline-flex items-center justify-center font-heading font-semibold tracking-wide rounded-full transition-[colors,box-shadow] duration-200 cursor-pointer";
   const variants = {
     primary:
-      "bg-brand-deep text-bone hover:bg-brand-midnight-dark hover:shadow-[0_14px_30px_-12px_rgba(47,62,70,0.55)] active:scale-95",
+      "bg-brand-deep text-bone hover:bg-brand-midnight-dark hover:shadow-[0_14px_30px_-12px_rgba(47,62,70,0.55)]",
     secondary:
-      "border border-ink/50 text-ink hover:bg-ink hover:text-bone hover:border-ink hover:shadow-[0_14px_30px_-12px_rgba(20,28,22,0.45)] active:scale-95",
+      "border border-ink/50 text-ink hover:bg-ink hover:text-bone hover:border-ink hover:shadow-[0_14px_30px_-12px_rgba(20,28,22,0.45)]",
     outline:
-      "bg-transparent border border-current/40 hover:border-current/80 hover:bg-current/[0.06] hover:shadow-[0_10px_24px_-12px_rgba(20,28,22,0.35)] active:scale-95",
+      "bg-transparent border border-current/40 hover:border-current/80 hover:bg-current/[0.06] hover:shadow-[0_10px_24px_-12px_rgba(20,28,22,0.35)]",
     invert:
-      "bg-bone text-ink hover:bg-bone-deep hover:shadow-[0_14px_30px_-12px_rgba(20,28,22,0.4)] active:scale-95",
+      "bg-bone text-ink hover:bg-bone-deep hover:shadow-[0_14px_30px_-12px_rgba(20,28,22,0.4)]",
     ghost:
-      "text-ink hover:text-brand-forest active:scale-95",
+      "text-ink hover:text-brand-forest",
   };
   const sizes = {
     sm: "text-sm px-5 py-2",
@@ -108,6 +108,7 @@ export default function Button({
       ref={ref}
       style={{ x, y, display: "inline-block" }}
       whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.97 }}
       transition={{ type: "spring", stiffness: 320, damping: 22 }}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
