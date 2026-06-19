@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import GetStartedFlow from "@/components/GetStartedFlow";
 
 export const metadata: Metadata = {
@@ -11,8 +13,12 @@ export const metadata: Metadata = {
 
 export default function GetStartedPage() {
   return (
-    <Suspense>
-      <GetStartedFlow />
-    </Suspense>
+    <>
+      <Navbar />
+      <Suspense>
+        <GetStartedFlow />
+      </Suspense>
+      <Footer />
+    </>
   );
 }

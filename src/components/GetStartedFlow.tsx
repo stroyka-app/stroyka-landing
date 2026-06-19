@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence, LayoutGroup, useReducedMotion } from "framer-motion";
 import {
@@ -13,7 +12,6 @@ import {
   Zap,
   Crown,
 } from "lucide-react";
-import Logo from "@/components/Logo";
 import Button from "@/components/ui/Button";
 import TextReveal from "@/components/ui/TextReveal";
 
@@ -155,6 +153,10 @@ export default function GetStartedFlow() {
 
   const goToStep2 = (selectedPlan: Plan) => {
     setPlan(selectedPlan);
+    // Step 2 always opens clean — never carry a prior triggered validation
+    // state across a plan change (e.g. Continue → Back → Claim Founding Spot).
+    setFieldErrors({});
+    setSubmitError("");
     setDirection(1);
     setStep(2);
   };
@@ -170,6 +172,9 @@ export default function GetStartedFlow() {
     if (!urlCoupon) {
       setCoupon(undefined);
     }
+    // Reset any triggered validation so returning to plan-select is clean.
+    setFieldErrors({});
+    setSubmitError("");
     setDirection(-1);
     setStep(1);
   };
@@ -248,15 +253,8 @@ export default function GetStartedFlow() {
   /* ─── Render ────────────────────────────────────────────────── */
 
   return (
-    <div className="min-h-screen bg-bone text-ink pt-24 pb-16">
+    <div className="min-h-screen bg-bone text-ink pt-28 pb-16">
       <div className="max-w-4xl mx-auto px-6">
-        {/* Logo */}
-        <div className="flex justify-center mb-10">
-          <Link href="/">
-            <Logo variant="light" size={40} showWordmark />
-          </Link>
-        </div>
-
         {/* Heading */}
         <div className="text-center mb-8">
           <TextReveal as="h1" className="text-4xl lg:text-5xl font-display font-light leading-tight tracking-[-0.02em] text-ink mb-3">
