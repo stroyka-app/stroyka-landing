@@ -159,20 +159,6 @@
   animation: shimmer 3s ease-in-out infinite;
 }
 
-.device-glow {
-  isolation: isolate;
-}
-.device-glow::before {
-  content: '';
-  position: absolute;
-  inset: 15% 20%;
-  background: radial-gradient(ellipse at 50% 50%,
-    rgba(184, 120, 78, 0.18) 0%,
-    transparent 70%
-  );
-  filter: blur(50px);
-  z-index: -1;
-}
 
 @keyframes mask-reveal-keyframes {
   to { clip-path: inset(0 0 0 0); }
@@ -193,7 +179,7 @@
 
 .texture-crosshatch {
   background-image:
-    repeating-linear-gradient(45deg, rgba(184, 120, 78, 0.08) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(45deg, rgba(132, 169, 140, 0.08) 0 1px, transparent 1px 8px),
     repeating-linear-gradient(-45deg, rgba(74, 64, 51, 0.06) 0 1px, transparent 1px 8px);
 }
 
