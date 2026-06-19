@@ -3,6 +3,20 @@ import { headers } from "next/headers";
 import { ratelimit } from "@/lib/ratelimit";
 import { demoFormSchema } from "@/lib/schemas";
 
+/// Escape user-supplied values before interpolating into email HTML. Without
+/// this, a name/company/etc. like `"><a href=...>` would inject markup into
+/// the email that lands in our inbox (HTML injection — email clients sandbox
+/// JS, but link/content injection is still phishing-grade). Mirrors the
+/// escaping already applied on the Telegram path below.
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function buildDemoEmailHtml(data: {
   name: string;
   company: string;
@@ -16,6 +30,20 @@ function buildDemoEmailHtml(data: {
       <td style="padding:8px 12px;color:#84a98c;font-size:13px;font-weight:600;white-space:nowrap;vertical-align:top;">${label}</td>
       <td style="padding:8px 12px;color:#cad2c5;font-size:14px;">${value}</td>
     </tr>`;
+
+  // Escaped for HTML-text contexts; URL-encoded for the mailto: link.
+  const name = escapeHtml(data.name);
+  const company = escapeHtml(data.company);
+  const crewSize = escapeHtml(data.crewSize);
+  const email = escapeHtml(data.email);
+  const phone = escapeHtml(data.phone || "—");
+  const challenge = data.challenge ? escapeHtml(data.challenge) : "";
+  const emailHref = encodeURIComponent(data.email);
+  const replyParams = `subject=${encodeURIComponent(
+    "Re: Your Stroyka Demo Request"
+  )}&body=${encodeURIComponent(
+    `Hi ${data.name},\n\nThanks for your interest in Stroyka!\n\n`
+  )}`;
 
   return `<!DOCTYPE html>
 <html>
@@ -38,19 +66,19 @@ function buildDemoEmailHtml(data: {
     <!-- Body -->
     <div style="background:#354f52;border-radius:0 0 12px 12px;padding:24px 28px;">
       <table style="width:100%;border-collapse:collapse;">
-        ${row("Name", data.name)}
-        ${row("Company", data.company)}
-        ${row("Crew Size", data.crewSize)}
-        ${row("Email", `<a href="mailto:${data.email}" style="color:#52796f;text-decoration:underline;">${data.email}</a>`)}
-        ${row("Phone", data.phone || "—")}
-        ${data.challenge ? row("Challenge", data.challenge) : ""}
+        ${row("Name", name)}
+        ${row("Company", company)}
+        ${row("Crew Size", crewSize)}
+        ${row("Email", `<a href="mailto:${emailHref}" style="color:#52796f;text-decoration:underline;">${email}</a>`)}
+        ${row("Phone", phone)}
+        ${challenge ? row("Challenge", challenge) : ""}
       </table>
 
       <!-- Reply button -->
       <div style="margin-top:24px;text-align:center;">
-        <a href="mailto:${data.email}?subject=Re: Your Stroyka Demo Request&body=Hi ${data.name},%0A%0AThanks for your interest in Stroyka!%0A%0A"
+        <a href="mailto:${emailHref}?${replyParams}"
            style="display:inline-block;background:#52796f;color:#ffffff;padding:10px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600;">
-          Reply to ${data.name} →
+          Reply to ${name} →
         </a>
       </div>
     </div>
@@ -65,7 +93,8 @@ function buildDemoEmailHtml(data: {
 }
 
 function buildConfirmationEmailHtml(data: { name: string }): string {
-  const firstName = data.name.split(" ")[0];
+  // Escaped — interpolated into the HTML greeting below.
+  const firstName = escapeHtml(data.name.split(" ")[0]);
 
   return `<!DOCTYPE html>
 <html>
