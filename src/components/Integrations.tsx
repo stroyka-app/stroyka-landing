@@ -650,7 +650,7 @@ export default function Integrations() {
     <section
       ref={sectionRef}
       id="integrations"
-      className="relative bg-gradient-to-b from-[#E3DCC9] to-[#D4CBB4] py-20 lg:py-28 overflow-hidden"
+      className="relative bg-gradient-to-b from-[#E3DCC9] to-[#D4CBB4] py-24 lg:py-32 overflow-hidden"
     >
       {/* Faint paper-grain corkboard texture — kept very subtle so it reads
           as material, not pattern. */}
