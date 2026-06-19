@@ -105,7 +105,7 @@ export default function CTABanner() {
           {/* Headline spans the gradient — top lines are in dark ink on
               pistachio, bottom lines in cream on forest. The color flips
               mid-word for drama. */}
-          <h2 className="font-display font-light text-[clamp(3rem,12.5vw,13rem)] leading-[0.88] tracking-[-0.035em] max-w-[14ch] mb-12 lg:mb-16">
+          <h2 className="font-display font-light text-[clamp(3.25rem,10.5vw,11rem)] leading-[0.88] tracking-[-0.035em] max-w-[14ch] mb-12 lg:mb-16">
             <span className="block text-ink">Run a</span>
             <span className="block italic font-normal text-ink">cleaner</span>
             <span className="block text-bone">jobsite.</span>

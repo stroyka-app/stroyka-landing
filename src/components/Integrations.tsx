@@ -670,7 +670,7 @@ export default function Integrations() {
             <SectionLabel>Plays well with others</SectionLabel>
           </FadeIn>
           <FadeIn delay={0.1}>
-            <h2 className="font-display font-light text-4xl lg:text-6xl leading-[0.98] tracking-[-0.02em] text-ink mb-4">
+            <h2 className="font-display font-light text-5xl lg:text-7xl leading-[0.98] tracking-[-0.02em] text-ink mb-4">
               Send your numbers where they need to go.
             </h2>
           </FadeIn>

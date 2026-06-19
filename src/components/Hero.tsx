@@ -188,7 +188,7 @@ export default function Hero() {
             *after* the LoadingCurtain has cleared at ~0.6s. If startDelay
             drops below 0.6s the words finish behind the curtain and the
             entire reveal is wasted (only the late ones would be visible). */}
-        <h1 className="font-display font-light text-[clamp(3.5rem,10vw,9.5rem)] leading-[0.92] tracking-[-0.03em] text-bone mb-10 max-w-[16ch]">
+        <h1 className="font-display font-light text-[clamp(3.25rem,10.5vw,11rem)] leading-[0.92] tracking-[-0.03em] text-bone mb-10 max-w-[16ch]">
           <WordLine words={["Construction"]} startDelay={0.7} stagger={0.06} prefersReduced={prefersReduced} />
           <WordLine words={["management,"]} startDelay={0.85} stagger={0.06} prefersReduced={prefersReduced} />
           <span className="block italic font-normal relative">
