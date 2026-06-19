@@ -330,7 +330,7 @@ export default function DemoForm() {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="w-full md:w-auto md:self-start relative inline-flex items-center justify-center font-heading font-semibold tracking-wide rounded-full transition-colors duration-200 cursor-pointer bg-brand-deep text-bone hover:bg-brand-midnight-dark active:scale-95 shadow-[0_10px_28px_-12px_rgba(43,61,48,0.5)] text-[15px] px-7 py-3.5 disabled:opacity-60 disabled:cursor-not-allowed gap-2"
+        className="w-full md:w-auto md:self-start relative inline-flex items-center justify-center font-heading font-semibold tracking-wide rounded-full transition-colors transition-transform duration-200 cursor-pointer bg-brand-deep text-bone hover:bg-brand-midnight-dark active:scale-[0.97] shadow-[0_10px_28px_-12px_rgba(43,61,48,0.5)] text-[15px] px-7 py-3.5 disabled:opacity-60 disabled:cursor-not-allowed gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-forest/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bone"
       >
         {status === "sending" ? (
           <>

@@ -6,6 +6,7 @@ import Logo from "@/components/Logo";
 import Button from "@/components/ui/Button";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
+import TextReveal from "@/components/ui/TextReveal";
 
 export const metadata: Metadata = {
   title: "Checkout Cancelled",
@@ -43,9 +44,9 @@ export default function CancelPage() {
           </FadeIn>
 
           <FadeIn delay={0.1}>
-            <h1 className="font-display font-light text-4xl lg:text-5xl leading-[0.98] tracking-[-0.02em] text-ink mb-5">
-              Your plan hasn&rsquo;t changed.
-            </h1>
+            <TextReveal as="h1" className="font-display font-light text-4xl lg:text-5xl leading-[0.98] tracking-[-0.02em] text-ink mb-5">
+              {"Your plan hasn’t changed."}
+            </TextReveal>
           </FadeIn>
 
           <FadeIn delay={0.18}>

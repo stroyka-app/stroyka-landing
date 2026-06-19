@@ -14,6 +14,8 @@ import {
   Crown,
 } from "lucide-react";
 import Logo from "@/components/Logo";
+import Button from "@/components/ui/Button";
+import TextReveal from "@/components/ui/TextReveal";
 
 /* ─── Types ────────────────────────────────────────────────────── */
 
@@ -237,11 +239,11 @@ export default function GetStartedFlow() {
   /* ─── Shared styles ─────────────────────────────────────────── */
 
   const inputCls = (field?: keyof FormData) =>
-    `w-full bg-bone-soft/60 border ${
+    `w-full bg-bone-soft/80 border ${
       field && fieldErrors[field]
         ? "border-red-500/60"
-        : "border-ink/20"
-    } rounded-xl px-4 py-3 text-ink placeholder:text-ink-muted/70 focus:outline-none focus:border-brand-deep focus:bg-bone transition-colors duration-200 font-body text-sm`;
+        : "border-ink/20 hover:border-ink/35"
+    } rounded-xl px-4 py-3 text-ink placeholder:text-ink-muted/55 focus:outline-none focus:border-brand-forest focus:bg-bone transition-colors duration-200 font-body text-[15px]`;
 
   /* ─── Render ────────────────────────────────────────────────── */
 
@@ -257,13 +259,9 @@ export default function GetStartedFlow() {
 
         {/* Heading */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl lg:text-5xl font-display font-light leading-tight tracking-[-0.02em] text-ink mb-3">
-            {step === 1
-              ? "Choose your plan"
-              : step === 2
-                ? "Almost there"
-                : "Redirecting..."}
-          </h1>
+          <TextReveal as="h1" className="text-4xl lg:text-5xl font-display font-light leading-tight tracking-[-0.02em] text-ink mb-3">
+            {step === 1 ? "Choose your plan" : step === 2 ? "Almost there" : "Redirecting..."}
+          </TextReveal>
           {step === 1 && (
             <p className="text-base text-ink-soft max-w-lg mx-auto">
               No per-seat fees. Your entire crew is included.
@@ -413,16 +411,18 @@ export default function GetStartedFlow() {
                     ))}
                   </ul>
 
-                  <button
+                  <Button
+                    variant="primary"
+                    size="md"
+                    className="mt-auto w-full"
                     onClick={(e) => {
                       e.stopPropagation();
                       goToStep2("starter");
                     }}
-                    className="mt-auto w-full relative inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-full transition-colors duration-200 cursor-pointer bg-brand-deep text-bone hover:bg-brand-midnight-dark active:scale-95 text-base px-6 py-3"
                   >
                     Continue
                     <ArrowRight size={16} />
-                  </button>
+                  </Button>
                 </motion.div>
 
                 {/* Pro card — premium dark (matches main Pricing Pro) */}
@@ -472,16 +472,18 @@ export default function GetStartedFlow() {
                     ))}
                   </ul>
 
-                  <button
+                  <Button
+                    variant="invert"
+                    size="md"
+                    className="mt-auto w-full"
                     onClick={(e) => {
                       e.stopPropagation();
                       goToStep2("pro");
                     }}
-                    className="mt-auto w-full relative inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-full transition-colors duration-200 cursor-pointer bg-bone text-ink hover:bg-bone-deep active:scale-95 text-base px-6 py-3"
                   >
                     Continue
                     <ArrowRight size={16} />
-                  </button>
+                  </Button>
                 </motion.div>
               </div>
 
@@ -500,13 +502,15 @@ export default function GetStartedFlow() {
                   <p className="text-xs text-ink-soft mt-2 mb-4">
                     The first 20 companies lock in Starter at $99/month for life. $50 off every month, forever.
                   </p>
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={claimFoundingSpot}
-                    className="inline-flex items-center gap-1.5 text-sm font-heading font-semibold text-brand-forest hover:text-brand-deep transition-colors duration-200 cursor-pointer"
+                    className="text-brand-forest hover:text-brand-deep"
                   >
                     Claim a Founding Spot
                     <ArrowRight size={14} />
-                  </button>
+                  </Button>
                 </div>
               </motion.div>
             </motion.div>
@@ -581,7 +585,7 @@ export default function GetStartedFlow() {
                   <div>
                     <label
                       htmlFor="gs-name"
-                      className="block text-sm font-medium text-ink mb-1.5"
+                      className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2"
                     >
                       Your name *
                     </label>
@@ -603,7 +607,7 @@ export default function GetStartedFlow() {
                   <div>
                     <label
                       htmlFor="gs-email"
-                      className="block text-sm font-medium text-ink mb-1.5"
+                      className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2"
                     >
                       Work email *
                     </label>
@@ -625,7 +629,7 @@ export default function GetStartedFlow() {
                   <div>
                     <label
                       htmlFor="gs-companyName"
-                      className="block text-sm font-medium text-ink mb-1.5"
+                      className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2"
                     >
                       Company name *
                     </label>
@@ -659,18 +663,19 @@ export default function GetStartedFlow() {
                   )}
 
                   <div className="flex flex-col sm:flex-row gap-3 mt-2">
-                    <button
-                      type="button"
+                    <Button
+                      variant="secondary"
+                      size="md"
                       onClick={goBack}
-                      className="inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-full transition-colors duration-200 cursor-pointer border border-ink/50 text-ink hover:bg-ink hover:text-bone hover:border-ink active:scale-95 text-base px-6 py-3 sm:w-auto"
+                      className="sm:w-auto"
                     >
                       <ArrowLeft size={16} />
                       Back
-                    </button>
+                    </Button>
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="flex-1 relative inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-full transition-colors duration-200 cursor-pointer bg-brand-deep text-bone hover:bg-brand-midnight-dark active:scale-95 text-base px-6 py-3 disabled:opacity-60 disabled:cursor-not-allowed"
+                      className="flex-1 relative inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-full transition-colors duration-200 transition-transform cursor-pointer bg-brand-deep text-bone hover:bg-brand-midnight-dark active:scale-[0.97] text-base px-6 py-3 disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-forest/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bone"
                     >
                       {submitting ? (
                         <>

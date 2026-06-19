@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import DemoForm from "@/components/DemoForm";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
+import TextReveal from "@/components/ui/TextReveal";
 
 export const metadata: Metadata = {
   title: "Request a Demo",
@@ -30,9 +31,9 @@ export default function DemoPage() {
             <SectionLabel>Get started</SectionLabel>
           </FadeIn>
           <FadeIn delay={0.05}>
-            <h1 className="font-display font-light text-4xl lg:text-6xl leading-[0.98] tracking-[-0.02em] text-ink mb-5">
+            <TextReveal as="h1" className="font-display font-light text-4xl lg:text-6xl leading-[0.98] tracking-[-0.02em] text-ink mb-5">
               Request your demo
-            </h1>
+            </TextReveal>
           </FadeIn>
           <FadeIn delay={0.12}>
             <p className="text-[15px] lg:text-base text-ink-soft leading-relaxed mb-10 max-w-lg">
