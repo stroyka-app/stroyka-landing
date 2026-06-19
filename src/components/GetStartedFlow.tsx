@@ -675,7 +675,7 @@ export default function GetStartedFlow() {
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="flex-1 relative inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-full transition-colors duration-200 transition-transform cursor-pointer bg-brand-deep text-bone hover:bg-brand-midnight-dark active:scale-[0.97] text-base px-6 py-3 disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-forest/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bone"
+                      className="flex-1 relative inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-full transition duration-200 cursor-pointer bg-brand-deep text-bone hover:bg-brand-midnight-dark active:scale-[0.97] text-base px-6 py-3 disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-forest/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bone"
                     >
                       {submitting ? (
                         <>
