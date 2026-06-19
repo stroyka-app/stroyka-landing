@@ -226,8 +226,7 @@ export default function Pricing() {
               <span className="absolute -top-3 left-8 z-[3] bg-brand-forest text-bone font-mono text-[11px] tracking-[0.15em] uppercase font-semibold px-3 py-1 rounded-full">
                 Most popular
               </span>
-              {/* inner core — concentric bezel, premium tiers only */}
-              <div className="rounded-xl ring-1 ring-ink/10 shadow-[inset_0_1px_0_rgba(255,253,243,0.5)] relative z-[1] flex flex-col h-full">
+              <div className="relative z-[1] flex flex-col h-full">
                 <div className="flex items-center gap-2 mb-1">
                   <Zap size={16} className="text-brand-forest" />
                   <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-brand-forest">Starter</h3>
@@ -304,8 +303,7 @@ export default function Pricing() {
               }
               className="card-stone-dark cursor-glow glow-border backdrop-blur-md border border-brand-sage/30 rounded-2xl p-8 h-full flex flex-col relative"
             >
-              {/* inner core — concentric bezel, premium tiers only */}
-              <div className="rounded-xl ring-1 ring-brand-sage/15 shadow-[inset_0_1px_0_rgba(255,253,243,0.5)] relative z-[1] flex flex-col h-full">
+              <div className="relative z-[1] flex flex-col h-full">
                 <div className="flex items-center gap-2 mb-1">
                   <Crown size={16} className="text-brand-sage-bright" />
                   <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-brand-sage-bright">Pro</h3>
@@ -369,8 +367,7 @@ export default function Pricing() {
               aria-hidden
               className="pointer-events-none absolute -top-[30%] -right-[10%] w-[500px] h-[500px] rounded-full blur-[80px] bg-brand-sage-bright/18"
             />
-            {/* inner core — concentric bezel, premium tiers only */}
-            <div className="grid md:grid-cols-[1.4fr_1fr] gap-10 items-center rounded-2xl ring-1 ring-brand-sage/15 shadow-[inset_0_1px_0_rgba(255,253,243,0.5)]">
+            <div className="grid md:grid-cols-[1.4fr_1fr] gap-10 items-center">
             <div className="relative">
               <p className="font-mono text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-sage-bright mb-5 flex items-center gap-2">
                 <ShieldCheck size={14} className="text-brand-sage-bright" />
