@@ -1,7 +1,6 @@
 "use client";
 
 import FadeIn from "@/components/ui/FadeIn";
-import SectionLabel from "@/components/ui/SectionLabel";
 
 /**
  * FounderNote — the editorial letter.
@@ -22,10 +21,6 @@ export default function FounderNote() {
   return (
     <section id="founder" className="relative bg-gradient-to-b from-[#D4CBB4] to-[#E3DCC9] py-28 lg:py-36">
       <div className="max-w-2xl mx-auto px-6">
-        <FadeIn>
-          <SectionLabel>A letter</SectionLabel>
-        </FadeIn>
-
         {/* Dateline */}
         <FadeIn delay={0.05}>
           <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-muted mb-10 pb-6 border-b border-ink/12">

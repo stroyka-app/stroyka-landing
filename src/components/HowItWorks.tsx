@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import FadeIn from "@/components/ui/FadeIn";
-import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
 
 interface Step {
@@ -103,9 +102,6 @@ export default function HowItWorks() {
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         {/* Header */}
         <div className="max-w-2xl mb-20 lg:mb-24">
-          <FadeIn>
-            <SectionLabel>How it works</SectionLabel>
-          </FadeIn>
           <TextReveal
             as="h2"
             className="font-display font-light text-5xl lg:text-7xl leading-[0.95] tracking-[-0.02em] text-ink mb-6"

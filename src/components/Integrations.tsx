@@ -11,7 +11,6 @@ import {
 } from "framer-motion";
 import { Pin } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
-import SectionLabel from "@/components/ui/SectionLabel";
 
 /* ────────────────────────────────────────────────────────────────────────────
  * Workshop Pinboard — each integration is a tactile sticker pinned to a
@@ -666,9 +665,6 @@ export default function Integrations() {
 
       <div className="relative max-w-5xl mx-auto px-6 lg:px-10">
         <div className="max-w-2xl mb-14">
-          <FadeIn>
-            <SectionLabel>Plays well with others</SectionLabel>
-          </FadeIn>
           <FadeIn delay={0.1}>
             <h2 className="font-display font-light text-5xl lg:text-7xl leading-[0.98] tracking-[-0.02em] text-ink mb-4">
               Send your numbers where they need to go.

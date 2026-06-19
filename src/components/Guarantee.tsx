@@ -12,7 +12,6 @@ import {
 } from "framer-motion";
 import { Download, XCircle } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
-import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
 import { useCursorGlow } from "@/lib/hooks/useCursorGlow";
 
@@ -208,9 +207,6 @@ export default function Guarantee() {
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <div className="max-w-2xl mb-16">
-          <FadeIn>
-            <SectionLabel>Zero surprises</SectionLabel>
-          </FadeIn>
           <TextReveal
             as="h2"
             className="font-display font-light text-5xl lg:text-7xl leading-[0.95] tracking-[-0.02em] text-ink mb-6"

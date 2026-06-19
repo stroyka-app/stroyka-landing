@@ -3,7 +3,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { Check, X, Minus, HardHat } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
-import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
 
 type CellValue = "yes" | "no" | "partial";
@@ -140,9 +139,6 @@ export default function Comparison() {
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-10">
         <div className="max-w-2xl mb-16">
-          <FadeIn>
-            <SectionLabel>The alternatives</SectionLabel>
-          </FadeIn>
           <TextReveal
             as="h2"
             className="font-display font-light text-5xl lg:text-7xl leading-[0.95] tracking-[-0.02em] text-ink mb-6"

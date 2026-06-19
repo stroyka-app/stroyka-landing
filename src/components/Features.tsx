@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import FadeIn from "@/components/ui/FadeIn";
-import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
 
 interface Feature {
@@ -248,9 +247,6 @@ export default function Features() {
     <section id="features" className="bg-gradient-to-b from-[#D4CBB4] to-[#BFB49C] py-24 lg:py-32">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <div className="max-w-3xl mb-16 lg:mb-20">
-          <FadeIn>
-            <SectionLabel>Features</SectionLabel>
-          </FadeIn>
           <TextReveal
             as="h2"
             className="font-display font-light text-5xl lg:text-7xl leading-[0.95] tracking-[-0.02em] text-ink"

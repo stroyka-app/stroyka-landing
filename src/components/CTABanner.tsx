@@ -94,13 +94,6 @@ export default function CTABanner() {
       />
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 py-32 lg:py-44">
-        <FadeIn>
-          <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink mb-10 inline-flex items-center gap-2.5">
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-sage" aria-hidden />
-            The invitation
-          </p>
-        </FadeIn>
-
         <FadeIn delay={0.05}>
           {/* Headline spans the gradient — top lines are in dark ink on
               pistachio, bottom lines in cream on forest. The color flips
