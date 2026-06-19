@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import FadeIn from "@/components/ui/FadeIn";
 import Button from "@/components/ui/Button";
+import { Counter, Sparkline } from "@/components/ui/LiveSheet";
 
 /**
  * One line of word-mask reveals. Each word sits inside a clip box padded
@@ -77,6 +78,13 @@ const FOUNDING_SPOTS_REMAINING = Math.max(
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
   const prefersReduced = useReducedMotion();
+
+  const [sheetLive, setSheetLive] = useState(false);
+  useEffect(() => {
+    const id = window.setTimeout(() => setSheetLive(true), 1300);
+    return () => window.clearTimeout(id);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -309,13 +317,25 @@ export default function Hero() {
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-bone/75 uppercase">Labor wk</dt>
-                  <dd className="tabular-nums text-bone font-semibold">428.5 h</dd>
+                  <dd>
+                    <Counter to={428.5} start={sheetLive} delay={0}
+                      format={(n) => `${n.toFixed(1)} h`} className="text-bone font-semibold" />
+                  </dd>
+                </div>
+                <div className="flex justify-between items-center">
+                  <dt className="text-bone/75 uppercase">Trend</dt>
+                  <dd><Sparkline points={[8,10,9,12,11,14,13]} start={sheetLive} delay={250} /></dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-bone/75 uppercase">Budget</dt>
-                  <dd className="tabular-nums text-bone font-semibold">
+                  <motion.dd
+                    className="tabular-nums text-bone font-semibold"
+                    initial={prefersReduced ? false : { scale: 0.8, opacity: 0 }}
+                    animate={sheetLive || prefersReduced ? { scale: 1, opacity: 1 } : undefined}
+                    transition={{ type: "spring", stiffness: 380, damping: 16 }}
+                  >
                     <span className="text-brand-sage-bright">▲</span> on plan
-                  </dd>
+                  </motion.dd>
                 </div>
                 <div className="flex justify-between pt-3 mt-3 border-t border-bone/25">
                   <dt className="text-bone/75 uppercase">Offline</dt>
