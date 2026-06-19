@@ -170,7 +170,7 @@ export default function HowItWorks() {
                       at the bottom. Hidden on desktop where the sticky phone
                       handles the visual. */}
                   <div className="md:hidden mt-6 flex justify-center">
-                    <div className="relative w-[240px] rounded-[36px] p-[8px] bg-gradient-to-br from-[#3a4a52] to-[#24313a] shadow-xl">
+                    <div className="relative w-[240px] rounded-[36px] p-[8px] bg-gradient-to-br from-[#3a4a52] to-[#24313a] shadow-[0_20px_40px_-16px_rgba(46,38,28,0.35)]">
                       <div className="relative w-full aspect-[1206/2150] rounded-[28px] overflow-hidden bg-black/40">
                         <Image
                           src={step.screenshot}

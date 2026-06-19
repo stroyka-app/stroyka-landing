@@ -281,7 +281,7 @@ function PdfFanDemo({ active }: { active: boolean }) {
       {sheets.map((s, i) => (
         <motion.div
           key={i}
-          className="absolute w-9 h-12 rounded-[3px] bg-bone border border-ink/30 shadow-sm"
+          className="absolute w-9 h-12 rounded-[3px] bg-bone border border-ink/30 shadow-[0_6px_16px_-8px_rgba(46,38,28,0.3)]"
           style={{ transformOrigin: "bottom center" }}
           initial={false}
           animate={
