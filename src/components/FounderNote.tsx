@@ -30,7 +30,7 @@ export default function FounderNote() {
 
         {/* Opening pull line — oversized italic Fraunces */}
         <FadeIn delay={0.1}>
-          <p className="font-display italic font-light text-[clamp(1.75rem,4.2vw,3rem)] leading-[1.12] tracking-[-0.01em] text-ink mb-12">
+          <p className="font-display italic font-light text-[clamp(1.75rem,4.2vw,3rem)] leading-[1.12] tracking-[-0.01em] text-ink mb-12 pb-[0.12em]">
             I grew up on jobsites.
           </p>
         </FadeIn>
@@ -50,7 +50,7 @@ export default function FounderNote() {
               Works offline. Takes an afternoon to learn. Built for the crew,
               not the back office. Nothing more, nothing less.
             </p>
-            <p className="font-display italic text-[22px] text-ink leading-snug">
+            <p className="font-display italic text-[22px] text-ink leading-snug pb-[0.12em]">
               If it doesn&rsquo;t make your Tuesday easier, it has no business
               being on your phone.
             </p>
@@ -61,7 +61,7 @@ export default function FounderNote() {
         <FadeIn delay={0.24}>
           <div className="mt-14 pt-10 border-t border-ink/12">
             <p
-              className="font-display italic text-4xl text-ink mb-3"
+              className="font-display italic text-4xl text-ink mb-3 pb-[0.12em]"
               style={{ transform: "rotate(-2deg)", transformOrigin: "left center" }}
             >
               — {FOUNDER.signatureName}

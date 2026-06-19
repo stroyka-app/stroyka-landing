@@ -100,7 +100,7 @@ export default function CTABanner() {
               mid-word for drama. */}
           <h2 className="font-display font-light text-[clamp(3.25rem,10.5vw,11rem)] leading-[0.88] tracking-[-0.035em] max-w-[14ch] mb-12 lg:mb-16">
             <span className="block text-ink">Run a</span>
-            <span className="block italic font-normal text-ink">cleaner</span>
+            <span className="block italic font-normal text-ink pb-[0.12em]">cleaner</span>
             <span className="block text-bone">jobsite.</span>
           </h2>
         </FadeIn>
