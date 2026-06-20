@@ -692,10 +692,10 @@ export default function GetStartedFlow() {
                   <p className="text-xs text-ink-muted/60 text-center mt-2">
                     Already have an account?{" "}
                     <a
-                      href="https://getstroyka.com/account"
+                      href="https://app.getstroyka.com"
                       className="text-brand-forest hover:text-brand-sage transition-colors duration-200 underline"
                     >
-                      Sign in at getstroyka.com/account
+                      Log in &rarr;
                     </a>
                   </p>
                 </form>
