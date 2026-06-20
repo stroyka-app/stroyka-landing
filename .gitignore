@@ -52,16 +52,8 @@ assets/*_Prompt.md
 # Superpowers brainstorm sessions (local dev only)
 .superpowers/
 
-# Local-only docs (personal reference, not for repo)
-docs/reference/what-we-added-explained.md
-docs/reference/infrastructure-and-security.md
-
-# Security & internal docs (never publish)
-docs/features/
-docs/superpowers/
-
-# Internal design/architecture reviews (drafts kept local, not for repo)
-docs/reviews/
+# All docs are local-only working references — never committed.
+docs/
 
 # Local skills (Claude Code workflow, not production code)
 skills/
