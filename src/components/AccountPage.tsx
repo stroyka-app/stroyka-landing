@@ -146,13 +146,13 @@ function DirectVisitView() {
         as="h1"
         className="font-display font-light text-4xl lg:text-5xl leading-[0.98] tracking-[-0.02em] text-ink mb-5"
       >
-        Manage your subscription
+        Manage your subscription in the app
       </TextReveal>
       <FadeIn delay={0.15}>
         <p className="text-[15px] lg:text-base text-ink-soft leading-relaxed mb-10 max-w-md mx-auto">
-          To access billing, open the Stroyka app and tap{" "}
-          <span className="text-ink font-medium">Manage</span> on your
-          subscription card.
+          Your subscription is managed inside Stroyka. Open the app and go to{" "}
+          <span className="text-ink font-medium">Settings &rarr; your plan</span>{" "}
+          to update your card, view invoices, or change your plan.
         </p>
       </FadeIn>
       <FadeIn delay={0.22}>
