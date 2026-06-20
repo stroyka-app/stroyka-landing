@@ -21,8 +21,14 @@ const PlanToDoneAnimation = dynamic(
   () => import("@/components/PlanToDoneAnimation"),
   {
     ssr: false,
+    // Reserve the section's REAL height (the live section is `height: 500vh`,
+    // see PlanToDoneAnimation.tsx). The old 60vh placeholder let every
+    // anchor target below this section sit ~440vh too high until the R3F
+    // chunk mounted — which is why /#pricing and footer links landed short.
+    // Matching the height means the layout never shifts on mount, so hash
+    // scrolling is correct from the first paint.
     loading: () => (
-      <div className="bg-[#4E6253]" style={{ minHeight: "60vh" }} aria-hidden="true" />
+      <div className="bg-[#4E6253]" style={{ height: "500vh" }} aria-hidden="true" />
     ),
   },
 );

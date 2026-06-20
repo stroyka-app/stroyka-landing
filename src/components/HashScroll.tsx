@@ -4,72 +4,91 @@ import { useEffect } from "react";
 import { getLenis } from "@/lib/lenis";
 
 /**
- * HashScroll — corrects anchor navigation to `/#section` on the home route.
+ * HashScroll — makes `/#section` anchor navigation land exactly on target,
+ * smoothly, on the first click — from the navbar, the footer, in-page CTAs,
+ * and cross-route (e.g. /demo or /get-started → /#pricing).
  *
- * The home page lazy-mounts a tall R3F section (#plan-to-done) behind a
- * ~60vh placeholder. A native hash jump fires before that section expands,
- * so the browser scrolls to a position computed against the short
- * placeholder — landing short of any target *below* it (Pricing → into the
- * R3F frame, FAQ → into FounderNote). This waits until the document height
- * settles (R3F expanded), then scrolls once to the real target via Lenis
- * (falling back to native), so the landing position is correct. It also
- * smooths same-page hash changes from the navbar.
+ * Three things were breaking it:
+ *  1. The lazy R3F section (#plan-to-done, height:500vh) reserved only 60vh
+ *     while loading, so targets below it sat ~440vh too high until it
+ *     mounted — native hash jumps landed on the hero. Fixed at the source by
+ *     reserving the real height in HomeClient's loading placeholder.
+ *  2. The browser's native hash jump fought Lenis on same-page clicks
+ *     ("works on the second click"). Fixed here by intercepting in-page
+ *     anchor clicks and driving Lenis directly — no native jump.
+ *  3. Browser scroll restoration on reload fought our positioning. Fixed by
+ *     taking manual control while mounted.
  *
- * Mounted only on the home route, where the lazy R3F section lives.
+ * Mounted only on the home route, where the hash targets live.
  */
 const NAV_OFFSET = 80;
 
+function idFromHref(href: string | null | undefined): string | null {
+  if (!href) return null;
+  const match = href.match(/^\/?#(.+)$/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
 export default function HashScroll() {
   useEffect(() => {
-    const scrollToHash = () => {
-      const hash = window.location.hash;
-      if (hash.length < 2) return;
-      const id = decodeURIComponent(hash.slice(1));
+    const prevRestoration = history.scrollRestoration;
+    history.scrollRestoration = "manual";
 
-      let tries = 0;
-      let lastHeight = -1;
-      let stableTicks = 0;
-
-      const tick = () => {
-        const el = document.getElementById(id);
-        const height = document.documentElement.scrollHeight;
-
-        if (height === lastHeight) {
-          stableTicks += 1;
-        } else {
-          stableTicks = 0;
-          lastHeight = height;
-        }
-
-        // Scroll once the layout has settled (R3F expanded) or we give up.
-        if (el && (stableTicks >= 3 || tries >= 40)) {
-          const lenis = getLenis();
-          if (lenis) {
-            lenis.scrollTo(el, { offset: -NAV_OFFSET });
-          } else {
-            const top =
-              el.getBoundingClientRect().top + window.scrollY - NAV_OFFSET;
-            window.scrollTo({ top, behavior: "smooth" });
-          }
-          return;
-        }
-
-        if (tries < 60) {
-          tries += 1;
-          window.setTimeout(tick, 50);
-        }
-      };
-
-      tick();
+    const scrollToId = (id: string) => {
+      const el = document.getElementById(id);
+      if (!el) return false;
+      const lenis = getLenis();
+      if (lenis) {
+        lenis.scrollTo(el, { offset: -NAV_OFFSET });
+      } else {
+        const top =
+          el.getBoundingClientRect().top + window.scrollY - NAV_OFFSET;
+        window.scrollTo({ top, behavior: "smooth" });
+      }
+      return true;
     };
 
-    // Run once on mount (covers cross-route landing on /#hash) after a tick,
-    // then on every same-page hash change (navbar clicks while on home).
-    const initial = window.setTimeout(scrollToHash, 60);
-    window.addEventListener("hashchange", scrollToHash);
+    // Landing on /#hash (cross-route load, hashchange, back/forward). The
+    // R3F height is reserved now, so one scroll lands correctly; a single
+    // corrective pass covers any minor late shift (web fonts, images).
+    const settleToHash = () => {
+      const id = idFromHref(window.location.hash);
+      if (!id) return;
+      scrollToId(id);
+      window.setTimeout(() => scrollToId(id), 250);
+    };
+
+    // Intercept in-page anchor clicks so Lenis owns the scroll (no native
+    // jump to fight). Cross-route hash links (when NOT on home) fall through
+    // to a normal navigation; settleToHash then handles the landing.
+    const onClick = (e: MouseEvent) => {
+      if (
+        e.defaultPrevented ||
+        e.button !== 0 ||
+        e.metaKey ||
+        e.ctrlKey ||
+        e.shiftKey ||
+        e.altKey
+      ) {
+        return;
+      }
+      const anchor = (e.target as HTMLElement | null)?.closest("a");
+      const id = idFromHref(anchor?.getAttribute("href"));
+      if (!id || window.location.pathname !== "/") return;
+      if (!document.getElementById(id)) return;
+      e.preventDefault();
+      history.pushState(null, "", `/#${id}`);
+      scrollToId(id);
+    };
+
+    const initial = window.setTimeout(settleToHash, 60);
+    window.addEventListener("hashchange", settleToHash);
+    document.addEventListener("click", onClick);
     return () => {
       window.clearTimeout(initial);
-      window.removeEventListener("hashchange", scrollToHash);
+      window.removeEventListener("hashchange", settleToHash);
+      document.removeEventListener("click", onClick);
+      history.scrollRestoration = prevRestoration;
     };
   }, []);
 
