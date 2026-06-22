@@ -73,8 +73,8 @@ const sections: LegalSection[] = [
     title: "6. Subscription & Billing",
     content: (
       <>
-        <p>6.1. Stroyka offers a 14-day free trial. No credit card is required to start a trial. During the trial, you have full access to all features of your selected plan.</p>
-        <p>6.2. After the trial period, you must subscribe to a paid plan to continue using the Service. If you do not subscribe, your account will enter a read-only state. You will still be able to export your data for 30 days.</p>
+        <p>6.1. Stroyka offers a free plan that is available indefinitely for crews of up to 5 workers. No credit card is required to use the free plan. Paid plans (Starter and Pro) unlock additional features and higher worker limits.</p>
+        <p>6.2. Paid subscriptions are optional. If you do not subscribe to a paid plan, you may continue using the free plan for as long as you like. If you cancel a paid plan, your account reverts to the free plan; features exclusive to paid plans become unavailable, but your data remains accessible and exportable at any time.</p>
         <p>6.3. Subscription fees are billed monthly or annually in advance, depending on the billing cycle you select. All fees are quoted and charged in US Dollars (USD).</p>
         <p>6.4. We use Stripe as our payment processor. Your payment information is handled directly by Stripe and is never stored on our servers.</p>
         <p>6.5. We reserve the right to change our pricing with 30 days&apos; written notice. Price changes will not apply to your current billing cycle. Grandfathered pricing (e.g., early adopter rates) will be honored for as long as your subscription remains active and in good standing.</p>
