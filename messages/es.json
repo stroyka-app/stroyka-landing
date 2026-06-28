@@ -332,5 +332,48 @@
         "body": "Los planes de pago son mes a mes, sin contratos. Exporta cada registro como CSV o PDF antes de irte. 30 días de gracia para tus datos."
       }
     }
+  },
+  "cta": {
+    "run": "Dirige",
+    "cleaner": "una obra",
+    "jobsite": "más limpia.",
+    "subhead": "Empieza gratis con hasta cinco trabajadores, o agenda una demo de veinte minutos y te mostramos Stroyka en vivo. Sin tarjeta de crédito en ningún caso.",
+    "startFree": "Empieza gratis",
+    "bookDemo": "Agenda una demo →",
+    "freeUpTo5": "Gratis para cuadrillas de hasta 5",
+    "foundingRate": "$99/mo tarifa fundadora",
+    "cancelAnytime": "Cancela cuando quieras"
+  },
+  "founderNote": {
+    "location": "Austin, Texas",
+    "eyebrow": "Una carta del fundador · Vol. 01",
+    "openingLine": "Crecí en obras de construcción.",
+    "para1": "Mi familia llevaba una cuadrilla de encofrado con una hoja de cálculo, un bloc de notas y un grupo de chat que nadie tenía energía para mantener ordenado al final de la semana. Los presupuestos se descontrolaban. Los recibos desaparecían. La respuesta a \"¿cómo vamos en Johnson Home?\" era un encogimiento de hombros.",
+    "para2": "Stroyka es la herramienta que quería poner en manos de mi viejo. Precio fijo. Funciona sin señal. Se aprende en una tarde. Hecha para la cuadrilla, no para la oficina. Nada más, nada menos.",
+    "para3italic": "Si no te hace el martes más fácil, no tiene nada que hacer en tu teléfono.",
+    "signature": "— Maks",
+    "name": "Maks Dalen",
+    "role": "Fundador, Stroyka"
+  },
+  "testimonials": {
+    "heading": "Lo que dicen las cuadrillas",
+    "subhead": "La confianza de equipos reales de construcción",
+    "items": {
+      "0": {
+        "name": "Mike R.",
+        "role": "Contratista general, Denver",
+        "quote": "Stroyka reemplazó tres apps que usábamos. La cuadrilla lo usa de verdad porque funciona sin señal en cualquier obra."
+      },
+      "1": {
+        "name": "Sarah K.",
+        "role": "Gerente de proyecto, Austin",
+        "quote": "Por fin sé adónde va cada dólar antes de que termine el proyecto. Nada de pesadillas con hojas de cálculo."
+      },
+      "2": {
+        "name": "Carlos M.",
+        "role": "Líder de cuadrilla, Phoenix",
+        "quote": "Mis muchachos registran tiempo y solicitudes desde el teléfono en 30 segundos. Incluso en el sótano sin señal."
+      }
+    }
   }
 }

@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
@@ -12,30 +13,6 @@ interface Testimonial {
   quote: string;
   stars: number;
 }
-
-const TESTIMONIALS: Testimonial[] = [
-  {
-    name: "Mike R.",
-    role: "General Contractor, Denver",
-    quote:
-      "Stroyka replaced three different apps we were using. The crew actually uses it because it works offline at every site.",
-    stars: 5,
-  },
-  {
-    name: "Sarah K.",
-    role: "Project Manager, Austin",
-    quote:
-      "I finally know where every dollar goes before the project ends. No more spreadsheet nightmares.",
-    stars: 5,
-  },
-  {
-    name: "Carlos M.",
-    role: "Crew Lead, Phoenix",
-    quote:
-      "My guys submit time and requests from their phones in 30 seconds. Even in the basement with zero signal.",
-    stars: 5,
-  },
-];
 
 function StarRating({ count }: { count: number }) {
   return (
@@ -91,21 +68,31 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   );
 }
 
+const ITEM_KEYS = [0, 1, 2] as const;
+
 export default function Testimonials() {
+  const t = useTranslations("testimonials");
   const trackRef = useRef<HTMLDivElement>(null);
   const prefersReduced = useReducedMotion();
+
+  const items: Testimonial[] = ITEM_KEYS.map((i) => ({
+    name: t(`items.${i}.name` as `items.${number}.name`),
+    role: t(`items.${i}.role` as `items.${number}.role`),
+    quote: t(`items.${i}.quote` as `items.${number}.quote`),
+    stars: 5,
+  }));
 
   return (
     <section id="testimonials" className="py-16 lg:py-20 overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 mb-12 text-center">
         <FadeIn>
-          <SectionLabel>What Crews Are Saying</SectionLabel>
+          <SectionLabel>{t("heading")}</SectionLabel>
         </FadeIn>
         <TextReveal
           as="h2"
           className="text-4xl lg:text-5xl font-heading font-bold leading-tight"
         >
-          Trusted by real construction teams
+          {t("subhead")}
         </TextReveal>
       </div>
 
@@ -133,7 +120,7 @@ export default function Testimonials() {
         {prefersReduced ? (
           /* Static layout for users who prefer reduced motion */
           <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory px-8 pb-4 scrollbar-hide">
-            {TESTIMONIALS.map((t) => (
+            {items.map((t) => (
               <TestimonialCard key={t.name} testimonial={t} />
             ))}
           </div>
@@ -149,8 +136,8 @@ export default function Testimonials() {
               repeat: Infinity,
             }}
           >
-            {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
-              <TestimonialCard key={`${t.name}-${i}`} testimonial={t} />
+            {[...items, ...items].map((item, i) => (
+              <TestimonialCard key={`${item.name}-${i}`} testimonial={item} />
             ))}
           </motion.div>
         )}

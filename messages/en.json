@@ -331,5 +331,48 @@
         "body": "Paid plans are month-to-month, no contracts. Export every record as CSV or PDF before you go. 30-day grace window on your data."
       }
     }
+  },
+  "cta": {
+    "run": "Run a",
+    "cleaner": "cleaner",
+    "jobsite": "jobsite.",
+    "subhead": "Start free for up to five workers, or book a twenty-minute demo and we'll walk you through Stroyka live. No credit card either way.",
+    "startFree": "Start free",
+    "bookDemo": "Book a demo →",
+    "freeUpTo5": "Free for crews up to 5",
+    "foundingRate": "$99/mo founding rate",
+    "cancelAnytime": "Cancel anytime"
+  },
+  "founderNote": {
+    "location": "Austin, Texas",
+    "eyebrow": "A letter from the founder · Vol. 01",
+    "openingLine": "I grew up on jobsites.",
+    "para1": "My family ran a framing crew out of a spreadsheet, a clipboard, and a group chat nobody had the energy to keep clean by the end of the week. Budgets drifted. Receipts vanished. The answer to \"where are we on Johnson Home?\" was usually a shrug.",
+    "para2": "Stroyka is the tool I wanted to hand my old man. Flat pricing. Works offline. Takes an afternoon to learn. Built for the crew, not the back office. Nothing more, nothing less.",
+    "para3italic": "If it doesn't make your Tuesday easier, it has no business being on your phone.",
+    "signature": "— Maks",
+    "name": "Maks Dalen",
+    "role": "Founder, Stroyka"
+  },
+  "testimonials": {
+    "heading": "What Crews Are Saying",
+    "subhead": "Trusted by real construction teams",
+    "items": {
+      "0": {
+        "name": "Mike R.",
+        "role": "General Contractor, Denver",
+        "quote": "Stroyka replaced three different apps we were using. The crew actually uses it because it works offline at every site."
+      },
+      "1": {
+        "name": "Sarah K.",
+        "role": "Project Manager, Austin",
+        "quote": "I finally know where every dollar goes before the project ends. No more spreadsheet nightmares."
+      },
+      "2": {
+        "name": "Carlos M.",
+        "role": "Crew Lead, Phoenix",
+        "quote": "My guys submit time and requests from their phones in 30 seconds. Even in the basement with zero signal."
+      }
+    }
   }
 }
