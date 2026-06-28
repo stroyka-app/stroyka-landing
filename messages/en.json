@@ -31,6 +31,65 @@
     "getStarted": "Get started",
     "toggleMenu": "Toggle menu"
   },
+  "theShift": {
+    "eyebrow": "The shift",
+    "heading": "Tuesday morning, before and after.",
+    "subhead": "Same crew of twelve. Same week. One of them is running on receipts and group chats; the other one is running Stroyka.",
+    "beforeLabel": "Before",
+    "beforeTitle": "Duct-taped out of four apps.",
+    "beforeBody": "Hours in WhatsApp. Receipts in the truck. Budgets in a spreadsheet no one has opened since bid day.",
+    "afterLabel": "After",
+    "afterTitle": "One app. Every number aligned.",
+    "afterBody": "Crew clocks in. Budget moves. Materials approve. You open the phone at 6am and know exactly where Johnson Home stands.",
+    "before": {
+      "items": {
+        "0": {
+          "time": "06:15",
+          "title": "Timesheet dispute in WhatsApp",
+          "caption": "Jose logged 9h. The foreman remembers 7. Someone is getting shorted."
+        },
+        "1": {
+          "time": "07:12",
+          "title": "Material request buried in a thread",
+          "caption": "“need 20 QUIKRETE” scrolled past the morning check-in messages."
+        },
+        "2": {
+          "time": "Thu.",
+          "title": "Budget drift caught days late",
+          "caption": "Johnson Home is 18% over and no one noticed until Friday payroll."
+        },
+        "3": {
+          "time": "Month-end",
+          "title": "Receipts unaccounted",
+          "caption": "A $340 concrete receipt lived in the truck’s center console."
+        }
+      }
+    },
+    "after": {
+      "items": {
+        "0": {
+          "time": "06:15",
+          "title": "Timesheets sign themselves",
+          "caption": "Crew taps to clock in. Boss approves the day in one swipe. No thread."
+        },
+        "1": {
+          "time": "07:12",
+          "title": "Requests approved in two taps",
+          "caption": "Photo, quantity, approve — the line item attaches itself to the job."
+        },
+        "2": {
+          "time": "Anytime",
+          "title": "Budget moves in real time",
+          "caption": "Every labor hour and bag of QUIKRETE updates the dashboard live."
+        },
+        "3": {
+          "time": "One click",
+          "title": "Monthly report, ready",
+          "caption": "Labor, materials, fuel — exportable, for your bookkeeper."
+        }
+      }
+    }
+  },
   "footer": {
     "tagline": "Job costing, crew management, and supply tracking built for small construction teams.",
     "colophonLeft": "Stroyka — The Field Journal · Vol. 01",

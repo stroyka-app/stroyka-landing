@@ -8,61 +8,12 @@ import {
   useReducedMotion,
   useSpring,
 } from "framer-motion";
+import { useTranslations } from "next-intl";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
 
-interface ShiftItem {
-  time: string;
-  title: string;
-  caption: string;
-}
-
-const BEFORE: ShiftItem[] = [
-  {
-    time: "06:15",
-    title: "Timesheet dispute in WhatsApp",
-    caption: "Jose logged 9h. The foreman remembers 7. Someone is getting shorted.",
-  },
-  {
-    time: "07:12",
-    title: "Material request buried in a thread",
-    caption: "“need 20 QUIKRETE” scrolled past the morning check-in messages.",
-  },
-  {
-    time: "Thu.",
-    title: "Budget drift caught days late",
-    caption: "Johnson Home is 18% over and no one noticed until Friday payroll.",
-  },
-  {
-    time: "Month-end",
-    title: "Receipts unaccounted",
-    caption: "A $340 concrete receipt lived in the truck’s center console.",
-  },
-];
-
-const AFTER: ShiftItem[] = [
-  {
-    time: "06:15",
-    title: "Timesheets sign themselves",
-    caption: "Crew taps to clock in. Boss approves the day in one swipe. No thread.",
-  },
-  {
-    time: "07:12",
-    title: "Requests approved in two taps",
-    caption: "Photo, quantity, approve — the line item attaches itself to the job.",
-  },
-  {
-    time: "Anytime",
-    title: "Budget moves in real time",
-    caption: "Every labor hour and bag of QUIKRETE updates the dashboard live.",
-  },
-  {
-    time: "One click",
-    title: "Monthly report, ready",
-    caption: "Labor, materials, fuel — exportable, for your bookkeeper.",
-  },
-];
+const ITEM_INDICES = [0, 1, 2, 3];
 
 /**
  * Before column — literally warmer/messier.
@@ -83,6 +34,7 @@ function BeforeColumn({
   hoverIdx: number | null;
   setHoverIdx: (i: number | null) => void;
 }) {
+  const t = useTranslations("theShift");
   const prefersReduced = useReducedMotion();
   return (
     <div className="relative">
@@ -109,19 +61,19 @@ function BeforeColumn({
 
         <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-soft mb-4 flex items-center gap-2">
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-ink-soft" aria-hidden />
-          Before
+          {t("beforeLabel")}
         </p>
         <h3 className="font-display font-light text-3xl lg:text-[42px] leading-[1.05] text-ink mb-3">
-          Duct-taped out of four apps.
+          {t("beforeTitle")}
         </h3>
         <p className="text-[15px] text-ink-soft leading-relaxed mb-10 max-w-md">
-          Hours in WhatsApp. Receipts in the truck. Budgets in a spreadsheet no one has opened since bid day.
+          {t("beforeBody")}
         </p>
 
         <ul className="space-y-0 border-t border-ink-soft/20">
-          {BEFORE.map((item, i) => (
+          {ITEM_INDICES.map((i) => (
             <motion.li
-              key={item.title}
+              key={i}
               onMouseEnter={() => setHoverIdx(i)}
               onMouseLeave={() => setHoverIdx(null)}
               initial={prefersReduced ? false : { opacity: 0, x: -6 }}
@@ -152,14 +104,14 @@ function BeforeColumn({
               }}
             >
               <span className="font-mono text-[12px] tracking-[0.08em] uppercase text-ink-soft pt-1">
-                {item.time}
+                {t(`before.items.${i}.time` as `before.items.${number}.time`)}
               </span>
               <div>
                 <p className="font-display text-[19px] leading-snug text-ink mb-1.5">
-                  {item.title}
+                  {t(`before.items.${i}.title` as `before.items.${number}.title`)}
                 </p>
                 <p className="text-[13.5px] text-ink-muted leading-relaxed">
-                  {item.caption}
+                  {t(`before.items.${i}.caption` as `before.items.${number}.caption`)}
                 </p>
               </div>
             </motion.li>
@@ -190,6 +142,7 @@ function AfterColumn({
   setHoverIdx: (i: number | null) => void;
   pathProgress: import("framer-motion").MotionValue<number>;
 }) {
+  const t = useTranslations("theShift");
   const prefersReduced = useReducedMotion();
   return (
     <div className="relative">
@@ -223,19 +176,19 @@ function AfterColumn({
 
         <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-brand-forest mb-4 flex items-center gap-2">
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-sage-bright" aria-hidden />
-          After
+          {t("afterLabel")}
         </p>
         <h3 className="font-display font-light text-3xl lg:text-[42px] leading-[1.05] text-ink mb-3">
-          One app. Every number aligned.
+          {t("afterTitle")}
         </h3>
         <p className="text-[15px] text-ink-soft leading-relaxed mb-10 max-w-md">
-          Crew clocks in. Budget moves. Materials approve. You open the phone at 6am and know exactly where Johnson Home stands.
+          {t("afterBody")}
         </p>
 
         <ul className="space-y-0 border-t border-brand-sage/30">
-          {AFTER.map((item, i) => (
+          {ITEM_INDICES.map((i) => (
             <motion.li
-              key={item.title}
+              key={i}
               onMouseEnter={() => setHoverIdx(i)}
               onMouseLeave={() => setHoverIdx(null)}
               initial={prefersReduced ? false : { opacity: 0, y: 8 }}
@@ -273,14 +226,14 @@ function AfterColumn({
                     ease: [0.22, 1, 0.36, 1],
                   }}
                 />
-                {item.time}
+                {t(`after.items.${i}.time` as `after.items.${number}.time`)}
               </span>
               <div>
                 <p className="font-display text-[19px] leading-snug text-ink mb-1.5">
-                  {item.title}
+                  {t(`after.items.${i}.title` as `after.items.${number}.title`)}
                 </p>
                 <p className="text-[13.5px] text-ink-soft/80 leading-relaxed">
-                  {item.caption}
+                  {t(`after.items.${i}.caption` as `after.items.${number}.caption`)}
                 </p>
               </div>
             </motion.li>
@@ -292,6 +245,7 @@ function AfterColumn({
 }
 
 export default function TheShift() {
+  const t = useTranslations("theShift");
   // Shared hover state — links paired rows across columns by index
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
 
@@ -315,17 +269,17 @@ export default function TheShift() {
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <div className="max-w-3xl mb-20 lg:mb-24">
           <FadeIn>
-            <SectionLabel>The shift</SectionLabel>
+            <SectionLabel>{t("eyebrow")}</SectionLabel>
           </FadeIn>
           <TextReveal
             as="h2"
             className="font-display font-light text-5xl lg:text-7xl leading-[0.95] tracking-[-0.02em] text-ink mb-6"
           >
-            Tuesday morning, before and after.
+            {t("heading")}
           </TextReveal>
           <FadeIn delay={0.1}>
             <p className="text-lg text-ink-soft leading-relaxed max-w-xl">
-              Same crew of twelve. Same week. One of them is running on receipts and group chats; the other one is running Stroyka.
+              {t("subhead")}
             </p>
           </FadeIn>
         </div>

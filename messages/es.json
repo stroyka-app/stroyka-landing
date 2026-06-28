@@ -32,6 +32,65 @@
     "getStarted": "Empezar",
     "toggleMenu": "Abrir menú"
   },
+  "theShift": {
+    "eyebrow": "El cambio",
+    "heading": "Martes por la mañana, antes y después.",
+    "subhead": "Misma cuadrilla de doce. Misma semana. Uno trabaja con recibos y grupos de chat; el otro usa Stroyka.",
+    "beforeLabel": "Antes",
+    "beforeTitle": "Apañado con cuatro apps.",
+    "beforeBody": "Horas en WhatsApp. Recibos en el camión. Presupuestos en una hoja que nadie abrió desde el día de la oferta.",
+    "afterLabel": "Después",
+    "afterTitle": "Una app. Todos los números cuadrados.",
+    "afterBody": "La cuadrilla marca entrada. El presupuesto avanza. Los materiales se aprueban. Abres el teléfono a las 6am y sabes exactamente cómo está Johnson Home.",
+    "before": {
+      "items": {
+        "0": {
+          "time": "06:15",
+          "title": "Disputa de parte de horas en WhatsApp",
+          "caption": "Jose registró 9h. El capataz recuerda 7. Alguien se va a quedar corto."
+        },
+        "1": {
+          "time": "07:12",
+          "title": "Solicitud de material perdida en el chat",
+          "caption": "«necesito 20 QUIKRETE» se fue entre los mensajes del turno de la mañana."
+        },
+        "2": {
+          "time": "Jue.",
+          "title": "Desvío de presupuesto detectado días tarde",
+          "caption": "Johnson Home está 18% sobre presupuesto y nadie lo vio hasta la nómina del viernes."
+        },
+        "3": {
+          "time": "Fin de mes",
+          "title": "Recibos sin registrar",
+          "caption": "Un recibo de concreto de $340 vivía en la guantera del camión."
+        }
+      }
+    },
+    "after": {
+      "items": {
+        "0": {
+          "time": "06:15",
+          "title": "Las partes de horas se aprueban solas",
+          "caption": "La cuadrilla marca entrada. El jefe aprueba el día de un desliz. Sin chat."
+        },
+        "1": {
+          "time": "07:12",
+          "title": "Solicitudes aprobadas en dos toques",
+          "caption": "Foto, cantidad, aprobado — la línea se adjunta sola a la obra."
+        },
+        "2": {
+          "time": "En cualquier momento",
+          "title": "El presupuesto se mueve en tiempo real",
+          "caption": "Cada hora de trabajo y bolsa de QUIKRETE actualiza el panel al instante."
+        },
+        "3": {
+          "time": "Un clic",
+          "title": "Reporte mensual, listo",
+          "caption": "Mano de obra, materiales, combustible — exportable para tu contador."
+        }
+      }
+    }
+  },
   "footer": {
     "tagline": "Costos de obra, gestión de cuadrilla y control de materiales para equipos de construcción.",
     "colophonLeft": "Stroyka — The Field Journal · Vol. 01",
