@@ -375,5 +375,38 @@
         "quote": "Mis muchachos registran tiempo y solicitudes desde el teléfono en 30 segundos. Incluso en el sótano sin señal."
       }
     }
+  },
+  "planToDone": {
+    "_note": "pending native pass",
+    "beats": {
+      "0": { "kicker": "MÓDULO · 01", "headline": "Todo proyecto empieza en papel.", "state": "PLAN" },
+      "1": { "kicker": "MÓDULO · 02", "headline": "Ahora puedes ver todo el conjunto.", "state": "ESTRUCTURA" },
+      "2": { "kicker": "MÓDULO · 03", "headline": "Cada material se registra solo.", "state": "CONSTRUYENDO" },
+      "3": { "kicker": "MÓDULO · 04", "headline": "Siempre sabes cómo vas.", "state": "CONTROL" },
+      "4": { "kicker": "CERRADO · JOHNSON", "headline": "", "state": "COMPLETO" },
+      "5": { "kicker": "CERRADO · JOHNSON", "headline": "", "state": "COMPLETO" }
+    },
+    "rooms": {
+      "living": "SALA",
+      "kitchen": "COCINA",
+      "bedroom1": "CUARTO 1",
+      "bedroom2": "CUARTO 2",
+      "bath": "BAÑO"
+    },
+    "floorPlan": "PLANO DE PLANTA · A-04",
+    "scale": "ESCALA 1/4\"=1'",
+    "costEntries": {
+      "0": { "label": "CONCRETO", "subtitle": "14 yardas · colado 04/15" },
+      "1": { "label": "MADERA", "subtitle": "320 pies-tabla · roble" },
+      "2": { "label": "TECHO", "subtitle": "Tejas arquitectónicas" },
+      "3": { "label": "FACHADA", "subtitle": "Cedro solapado · tinte" },
+      "4": { "label": "VENTANAS", "subtitle": "12 unid. · doble vidrio" }
+    },
+    "chartBars": {
+      "0": { "label": "Mano de obra" },
+      "1": { "label": "Materiales" },
+      "2": { "label": "Combustible" }
+    },
+    "delivered": "ENTREGADO"
   }
 }

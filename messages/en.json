@@ -374,5 +374,37 @@
         "quote": "My guys submit time and requests from their phones in 30 seconds. Even in the basement with zero signal."
       }
     }
+  },
+  "planToDone": {
+    "beats": {
+      "0": { "kicker": "MODULE · 01", "headline": "Every project starts on paper.", "state": "PLAN" },
+      "1": { "kicker": "MODULE · 02", "headline": "Now you can see the whole thing.", "state": "WIREFRAME" },
+      "2": { "kicker": "MODULE · 03", "headline": "Every material logs itself.", "state": "BUILDING" },
+      "3": { "kicker": "MODULE · 04", "headline": "So you always know where you stand.", "state": "TRACKING" },
+      "4": { "kicker": "CLOSED · JOHNSON", "headline": "", "state": "COMPLETE" },
+      "5": { "kicker": "CLOSED · JOHNSON", "headline": "", "state": "COMPLETE" }
+    },
+    "rooms": {
+      "living": "LIVING",
+      "kitchen": "KITCHEN",
+      "bedroom1": "BEDROOM 1",
+      "bedroom2": "BEDROOM 2",
+      "bath": "BATH"
+    },
+    "floorPlan": "FLOOR PLAN · A-04",
+    "scale": "SCALE 1/4\"=1'",
+    "costEntries": {
+      "0": { "label": "CONCRETE", "subtitle": "14 yards · poured 04/15" },
+      "1": { "label": "LUMBER", "subtitle": "320 board-ft · oak frame" },
+      "2": { "label": "ROOF", "subtitle": "Architectural shingles" },
+      "3": { "label": "SIDING", "subtitle": "Cedar lap · stained" },
+      "4": { "label": "WINDOWS", "subtitle": "12 units · double-pane" }
+    },
+    "chartBars": {
+      "0": { "label": "Labor" },
+      "1": { "label": "Materials" },
+      "2": { "label": "Fuel" }
+    },
+    "delivered": "DELIVERED"
   }
 }
