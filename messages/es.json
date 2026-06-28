@@ -554,7 +554,9 @@
     "trackPct": "89% CONTROL",
     "introEyebrow": "Cómo Stroyka ve tu proyecto",
     "introTitle": "Del plano a la entrega — cada peso rastreado.",
-    "onTimeBudget": "A tiempo · En presupuesto"
+    "onTimeBudget": "A tiempo · En presupuesto",
+    "spentToDate": "GASTADO A LA FECHA",
+    "onTime": "A tiempo"
   },
   "getStarted": {
     "chooseYourPlan": "Elige tu plan",
@@ -657,7 +659,8 @@
     "changesSaved": "Los cambios de facturación se guardaron.",
     "couldntVerify": "No pudimos verificar tu sesión",
     "tryFromApp": "Vuelve a intentarlo desde la app Stroyka, o contáctanos en <email>hello@getstroyka.com</email>.",
-    "loading": "cargando"
+    "loading": "cargando",
+    "backToSite": "← Volver a getstroyka.com"
   },
   "errors": {
     "eyebrow": "• Algo salió del plan",

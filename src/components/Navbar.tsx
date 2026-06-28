@@ -81,12 +81,12 @@ export default function Navbar() {
           </motion.div>
         </Link>
 
-        <div className="hidden md:flex items-center gap-9">
+        <div className="hidden md:flex items-center gap-5 lg:gap-9">
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className={`font-mono text-[12px] tracking-[0.15em] uppercase transition-colors duration-200 ${textBase}`}
+              className={`font-mono text-[12px] tracking-[0.12em] lg:tracking-[0.15em] uppercase transition-colors duration-200 ${textBase}`}
             >
               {t(link.key)}
             </a>

@@ -1863,6 +1863,7 @@ function RunningTotalCard({
   total: number;
   progress: MotionValue<number>;
 }) {
+  const t = useTranslations("planToDone");
   const opacity = useTransform(progress, [0.36, 0.42, 0.74, 0.80], [0, 1, 1, 0]);
   return (
     <motion.div
@@ -1887,7 +1888,7 @@ function RunningTotalCard({
           style={{ width: "48px", height: "1px", background: "#d97706" }}
         />
         <div className="font-mono text-[10px] tracking-[0.18em] text-brand-sage font-semibold">
-          SPENT TO DATE
+          {t("spentToDate")}
         </div>
         {/* Fix 5: 56–64px amber number with glow */}
         <div
@@ -2088,6 +2089,7 @@ function DeliveredStamp({
 }
 
 function HeroChip({ progress }: { progress: MotionValue<number> }) {
+  const t = useTranslations("planToDone");
   const opacity = useTransform(progress, [0.94, 0.98], [0, 1]);
   const scale = useTransform(progress, [0.94, 0.98], [0.86, 1]);
   return (
@@ -2114,9 +2116,9 @@ function HeroChip({ progress }: { progress: MotionValue<number> }) {
           Johnson Home
         </span>
         <span className="text-brand-sage/40 text-[10px] md:text-base">·</span>
-        <span className="font-heading text-[10px] md:text-sm text-brand-sage-mist/85">On time</span>
+        <span className="font-heading text-[10px] md:text-sm text-brand-sage-mist/85">{t("onTime")}</span>
         <span className="text-brand-sage/40 text-[10px] md:text-base">·</span>
-        <span className="font-heading text-[10px] md:text-sm text-brand-sage-mist/85">On budget</span>
+        <span className="font-heading text-[10px] md:text-sm text-brand-sage-mist/85">{t("onBudget")}</span>
       </div>
     </motion.div>
   );
@@ -2159,6 +2161,7 @@ function MobileSpentToDate({
   total: number;
   progress: MotionValue<number>;
 }) {
+  const t = useTranslations("planToDone");
   const opacity = useTransform(progress, [0.36, 0.42, 0.74, 0.80], [0, 1, 1, 0]);
   return (
     <motion.div
@@ -2174,7 +2177,7 @@ function MobileSpentToDate({
       className="rounded-[3px] px-3 py-2 mb-1 flex items-center justify-between"
     >
       <span className="font-mono text-[9px] tracking-[0.18em] text-brand-sage font-semibold">
-        SPENT TO DATE
+        {t("spentToDate")}
       </span>
       <span
         className="font-heading font-bold tracking-tighter leading-none tabular-nums text-[20px]"

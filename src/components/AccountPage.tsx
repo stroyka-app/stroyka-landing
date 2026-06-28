@@ -237,7 +237,7 @@ function SuccessView() {
             href="/"
             className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-muted hover:text-brand-forest transition-colors"
           >
-            ← Back to getstroyka.com
+            {t("backToSite")}
           </Link>
         </div>
       </FadeIn>

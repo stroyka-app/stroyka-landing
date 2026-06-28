@@ -554,7 +554,9 @@
     "trackPct": "89% НОРМ",
     "introEyebrow": "Как Stroyka видит ваш проект",
     "introTitle": "От плана до сдачи — каждый доллар под контролем.",
-    "onTimeBudget": "В срок · В бюджете"
+    "onTimeBudget": "В срок · В бюджете",
+    "spentToDate": "ИТОГО ПОТРАЧЕНО",
+    "onTime": "В срок"
   },
   "getStarted": {
     "chooseYourPlan": "Выбери тариф",
@@ -657,7 +659,8 @@
     "changesSaved": "Изменения оплаты сохранены.",
     "couldntVerify": "Не удалось подтвердить сеанс",
     "tryFromApp": "Попробуйте снова из приложения Stroyka или напишите нам: <email>hello@getstroyka.com</email>.",
-    "loading": "загрузка"
+    "loading": "загрузка",
+    "backToSite": "← Назад на getstroyka.com"
   },
   "errors": {
     "eyebrow": "• Что-то пошло не по плану",

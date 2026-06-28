@@ -129,7 +129,7 @@
     }
   },
   "features": {
-    "heading": "Everything your crew needs. Nothing they don't.",
+    "heading": "Everything your crew needs. Nothing they don’t.",
     "items": {
       "0": {
         "title": "Works without cell service",
@@ -229,17 +229,17 @@
       },
       "1": {
         "q": "How do workers join?",
-        "a": "The boss sends email invites directly from the app. Workers click the link, create a password, and they're in. No app store download required for web — it runs in the browser on any phone.",
+        "a": "The boss sends email invites directly from the app. Workers click the link, create a password, and they’re in. No app store download required for web — it runs in the browser on any phone.",
         "meta": "Setup"
       },
       "2": {
         "q": "What happens if a worker leaves?",
-        "a": "You can deactivate a worker's account instantly from the app. They immediately lose access. Their historical timesheet and cost data stays in your account.",
+        "a": "You can deactivate a worker’s account instantly from the app. They immediately lose access. Their historical timesheet and cost data stays in your account.",
         "meta": "Admin"
       },
       "3": {
         "q": "Is my data secure?",
-        "a": "Your company's data is siloed from every other company's data at the database level — we don't mingle it, don't share it, don't sell it. Encrypted at rest and in transit, hosted on battle-tested infrastructure. See our Privacy Policy for the specifics.",
+        "a": "Your company’s data is siloed from every other company’s data at the database level — we don’t mingle it, don’t share it, don’t sell it. Encrypted at rest and in transit, hosted on battle-tested infrastructure. See our Privacy Policy for the specifics.",
         "meta": "Security"
       },
       "4": {
@@ -254,7 +254,7 @@
       },
       "6": {
         "q": "Is there a free trial?",
-        "a": "Yes — start free for up to 5 workers, forever. Need more? Claim a founding spot at $99/mo locked for life, or book a 20-minute demo and we'll walk you through the app live with your own sample data.",
+        "a": "Yes — start free for up to 5 workers, forever. Need more? Claim a founding spot at $99/mo locked for life, or book a 20-minute demo and we’ll walk you through the app live with your own sample data.",
         "meta": "Pricing"
       }
     }
@@ -262,7 +262,7 @@
   "pricing": {
     "eyebrow": "Pricing",
     "heading": "Flat monthly. No per-seat games.",
-    "subhead": "Per-seat = per-worker. We don't do that. Free forever for crews up to 5.",
+    "subhead": "Per-seat = per-worker. We don’t do that. Free forever for crews up to 5.",
     "monthly": "Monthly",
     "annual": "Annual",
     "annualSave": "−17%",
@@ -272,7 +272,7 @@
     "spotsClaimed": "Spots claimed",
     "spotsCounter": "{taken} of {total}",
     "spotsRemaining": "{count} remaining",
-    "notSure": "Not sure which plan fits? Book a 20-minute demo and we'll recommend the right one for your crew size.",
+    "notSure": "Not sure which plan fits? Book a 20-minute demo and we’ll recommend the right one for your crew size.",
     "free": {
       "name": "Free",
       "description": "For crews just getting started",
@@ -373,7 +373,7 @@
   },
   "guarantee": {
     "heading": "The fine print, in plain English.",
-    "subhead": "No trial clock. No credit card to try it. No lock-in if you decide it's not for you.",
+    "subhead": "No trial clock. No credit card to try it. No lock-in if you decide it’s not for you.",
     "promises": {
       "0": {
         "title": "Free forever for crews up to 5",
@@ -381,7 +381,7 @@
       },
       "1": {
         "title": "Free data import",
-        "body": "Send us your current spreadsheets or a CSV export from whatever you're using. We'll get your first job in the app for you — on us."
+        "body": "Send us your current spreadsheets or a CSV export from whatever you’re using. We’ll get your first job in the app for you — on us."
       },
       "2": {
         "title": "Cancel anytime",
@@ -393,7 +393,7 @@
     "run": "Run a",
     "cleaner": "cleaner",
     "jobsite": "jobsite.",
-    "subhead": "Start free for up to five workers, or book a twenty-minute demo and we'll walk you through Stroyka live. No credit card either way.",
+    "subhead": "Start free for up to five workers, or book a twenty-minute demo and we’ll walk you through Stroyka live. No credit card either way.",
     "startFree": "Start free",
     "bookDemo": "Book a demo →",
     "freeUpTo5": "Free for crews up to 5",
@@ -406,7 +406,7 @@
     "openingLine": "I grew up on jobsites.",
     "para1": "My family ran a framing crew out of a spreadsheet, a clipboard, and a group chat nobody had the energy to keep clean by the end of the week. Budgets drifted. Receipts vanished. The answer to \"where are we on Johnson Home?\" was usually a shrug.",
     "para2": "Stroyka is the tool I wanted to hand my old man. Flat pricing. Works offline. Takes an afternoon to learn. Built for the crew, not the back office. Nothing more, nothing less.",
-    "para3italic": "If it doesn't make your Tuesday easier, it has no business being on your phone.",
+    "para3italic": "If it doesn’t make your Tuesday easier, it has no business being on your phone.",
     "signature": "— Maks",
     "name": "Maks Dalen",
     "role": "Founder, Stroyka"
@@ -435,39 +435,39 @@
   "demo": {
     "eyebrow": "Get started",
     "title": "Request your demo",
-    "subtitle": "Fill out the form and we'll schedule a 20-minute personalized demo with your own sample data. No commitment, no credit card.",
+    "subtitle": "Fill out the form and we’ll schedule a 20-minute personalized demo with your own sample data. No commitment, no credit card.",
     "name": "Name",
     "company": "Company name",
     "crewSize": "Crew size",
     "email": "Email",
     "phone": "Phone (optional)",
-    "challenge": "What's your biggest challenge?",
+    "challenge": "What’s your biggest challenge?",
     "namePlaceholder": "John Smith",
     "companyPlaceholder": "Smith Construction LLC",
     "crewSizePlaceholder": "Select crew size",
     "emailPlaceholder": "john@smithconstruction.com",
     "phonePlaceholder": "(555) 123-4567",
-    "challengePlaceholder": "Tell us about your current process and what's not working...",
+    "challengePlaceholder": "Tell us about your current process and what’s not working...",
     "crew1to5": "1–5 workers",
     "crew5to10": "5–10 workers",
     "crew10to25": "10–25 workers",
     "crew25plus": "25+ workers",
     "submit": "Request Your Demo →",
     "submitting": "Sending...",
-    "successTitle": "You're on the list",
-    "successBody": "We'll reach out within 24 hours to schedule your demo.",
+    "successTitle": "You’re on the list",
+    "successBody": "We’ll reach out within 24 hours to schedule your demo.",
     "confirmSent": "Confirmation sent to your email",
     "fromEmail": "from hello@getstroyka.com",
-    "checkSpam": "Don't see it? Check your spam or promotions folder.",
+    "checkSpam": "Don’t see it? Check your spam or promotions folder.",
     "backHome": "Back to homepage",
     "errors": {
       "nameRequired": "Please enter your name so we know who to reach out to.",
-      "companyRequired": "We'd love to know your company name.",
+      "companyRequired": "We’d love to know your company name.",
       "crewSizeRequired": "Pick a crew size so we can tailor the demo to your team.",
       "emailRequired": "We need your email to send demo details.",
-      "emailInvalid": "That doesn't look like a valid email — double-check it?",
+      "emailInvalid": "That doesn’t look like a valid email — double-check it?",
       "tooManyRequests": "Too many requests. Please wait an hour and try again, or email us directly at hello@getstroyka.com.",
-      "genericError": "Something went wrong on our end. Please email us at hello@getstroyka.com and we'll get back to you quickly."
+      "genericError": "Something went wrong on our end. Please email us at hello@getstroyka.com and we’ll get back to you quickly."
     }
   },
   "planToDone": {
@@ -552,14 +552,16 @@
     "trackPct": "89% TRACK",
     "introEyebrow": "How Stroyka Sees Your Project",
     "introTitle": "From plan to done — every dollar tracked.",
-    "onTimeBudget": "On time · On budget"
+    "onTimeBudget": "On time · On budget",
+    "spentToDate": "SPENT TO DATE",
+    "onTime": "On time"
   },
   "getStarted": {
     "chooseYourPlan": "Choose your plan",
     "almostThere": "Almost there",
     "redirecting": "Redirecting...",
     "noPerSeatFees": "No per-seat fees. Your entire crew is included.",
-    "enterDetails": "Enter your details and we'll take you to secure checkout.",
+    "enterDetails": "Enter your details and we’ll take you to secure checkout.",
     "monthly": "Monthly",
     "annual": "Annual",
     "perMonth": "/ month",
@@ -613,7 +615,7 @@
       "errors": {
         "nameRequired": "Please enter your name.",
         "emailRequired": "We need your work email.",
-        "emailInvalid": "That doesn't look like a valid email.",
+        "emailInvalid": "That doesn’t look like a valid email.",
         "companyRequired": "Please enter your company name.",
         "somethingWentWrong": "Something went wrong"
       }
@@ -627,7 +629,7 @@
     "takingYouToCheckout": "Taking you to secure checkout...",
     "poweredByStripe": "Powered by Stripe. Your payment info is never stored on our servers.",
     "subscriptionActive": "Subscription active",
-    "welcome": "You're in. Welcome to Stroyka.",
+    "welcome": "You’re in. Welcome to Stroyka.",
     "planActive": "Your {plan} plan is active",
     "planActiveGeneric": "Your plan is active",
     "haveApp": "Already have the app?",
@@ -638,7 +640,7 @@
     "googlePlay": "Google Play",
     "questions": "Questions?",
     "noWorries": "No worries",
-    "planUnchanged": "Your plan hasn't changed.",
+    "planUnchanged": "Your plan hasn’t changed.",
     "subscribeAnytime": "You can subscribe anytime from the pricing page.",
     "backToPricing": "← Back to pricing"
   },
@@ -655,7 +657,8 @@
     "changesSaved": "Your billing changes have been saved.",
     "couldntVerify": "We couldn’t verify your session",
     "tryFromApp": "Please try again from the Stroyka app, or contact us at <email>hello@getstroyka.com</email>.",
-    "loading": "loading"
+    "loading": "loading",
+    "backToSite": "← Back to getstroyka.com"
   },
   "errors": {
     "eyebrow": "• Something went off plan",
@@ -664,7 +667,7 @@
     "tryAgain": "Try again",
     "backHome": "← Back to home",
     "nfEyebrow": "Off plan",
-    "nfTitle": "This page doesn't exist",
+    "nfTitle": "This page doesn’t exist",
     "nfBody": "Looks like this one got buried under a pile of blueprints.",
     "nfBackHome": "Back to home",
     "nfBookDemo": "Or book a demo →",
