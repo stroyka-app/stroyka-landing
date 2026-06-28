@@ -2,7 +2,7 @@
 
 import { Globe } from "lucide-react";
 import { LayoutGroup, motion, useReducedMotion } from "framer-motion";
-import { useTransition } from "react";
+import { useId, useTransition } from "react";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { useLocale } from "next-intl";
@@ -23,6 +23,7 @@ export default function LanguageSwitcher({ variant = "bar" }: LanguageSwitcherPr
   const active = useLocale();
   const reduce = useReducedMotion();
   const [isPending, startTransition] = useTransition();
+  const uid = useId();
 
   const switchTo = (locale: string) => {
     if (locale === active) return;
@@ -41,6 +42,7 @@ export default function LanguageSwitcher({ variant = "bar" }: LanguageSwitcherPr
             key={loc}
             onClick={() => switchTo(loc)}
             aria-current={loc === active ? "true" : undefined}
+            aria-label={LABELS[loc].name}
             disabled={isPending}
             className={`flex items-center gap-3 rounded-xl px-4 py-2.5 font-mono text-[12px] tracking-[0.15em] uppercase transition-colors ${
               loc === active ? "bg-brand-sage-bright/20 text-bone" : "text-bone/70 hover:text-bone"
@@ -57,7 +59,7 @@ export default function LanguageSwitcher({ variant = "bar" }: LanguageSwitcherPr
   }
 
   return (
-    <LayoutGroup id="lang-switch">
+    <LayoutGroup id={`lang-switch-${uid}`}>
       <div
         role="group"
         aria-label="Language"
@@ -77,7 +79,7 @@ export default function LanguageSwitcher({ variant = "bar" }: LanguageSwitcherPr
             >
               {isActive && (
                 <motion.span
-                  layoutId="lang-pill"
+                  layoutId={`lang-pill-${uid}`}
                   className="absolute inset-0 rounded-full bg-brand-sage-bright/25"
                   transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 380, damping: 30 }}
                 />
