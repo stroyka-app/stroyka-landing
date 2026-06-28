@@ -1,5 +1,7 @@
 {
-  "meta": { "smokeKey": "Built for the field" },
+  "meta": {
+    "smokeKey": "Built for the field"
+  },
   "hero": {
     "startFree": "Start free",
     "foundingRate": "$99/mo founding rate",
@@ -143,19 +145,46 @@
     "whatMatters": "What matters",
     "onJobsite": "on the jobsite",
     "cols": {
-      "0": { "name": "Spreadsheets + WhatsApp", "sub": "The default" },
-      "1": { "name": "Enterprise software", "sub": "For 50+ person GCs" },
-      "2": { "name": "Stroyka", "sub": "For crews of 5–25" }
+      "0": {
+        "name": "Spreadsheets + WhatsApp",
+        "sub": "The default"
+      },
+      "1": {
+        "name": "Enterprise software",
+        "sub": "For 50+ person GCs"
+      },
+      "2": {
+        "name": "Stroyka",
+        "sub": "For crews of 5–25"
+      }
     },
     "rows": {
-      "0": { "label": "Flat monthly pricing", "note": "$0 / $149 / $249. No per-worker fees." },
-      "1": { "label": "Setup in under an afternoon" },
-      "2": { "label": "No training required" },
-      "3": { "label": "Export to QuickBooks / Xero", "note": "CSV + PDF now, direct integrations on the roadmap." },
-      "4": { "label": "Real-time job costing" },
-      "5": { "label": "Approval workflows + audit trail" },
-      "6": { "label": "Works offline at the jobsite" },
-      "7": { "label": "Crew-facing mobile app" }
+      "0": {
+        "label": "Flat monthly pricing",
+        "note": "$0 / $149 / $249. No per-worker fees."
+      },
+      "1": {
+        "label": "Setup in under an afternoon"
+      },
+      "2": {
+        "label": "No training required"
+      },
+      "3": {
+        "label": "Export to QuickBooks / Xero",
+        "note": "CSV + PDF now, direct integrations on the roadmap."
+      },
+      "4": {
+        "label": "Real-time job costing"
+      },
+      "5": {
+        "label": "Approval workflows + audit trail"
+      },
+      "6": {
+        "label": "Works offline at the jobsite"
+      },
+      "7": {
+        "label": "Crew-facing mobile app"
+      }
     },
     "legendYes": "Yes",
     "legendPartial": "Partial",
@@ -299,12 +328,30 @@
     "subhead": "CSV and PDF export today. Native integrations rolling out in 2026 — email us to move yours up the list.",
     "soon": "Soon",
     "tools": {
-      "0": { "name": "QuickBooks", "caption": "CSV export today · direct sync on roadmap" },
-      "1": { "name": "Xero", "caption": "CSV export today · direct sync on roadmap" },
-      "2": { "name": "Excel / Sheets", "caption": "CSV export — every project, every timesheet" },
-      "3": { "name": "Stripe", "caption": "Your Stroyka subscription, billed through Stripe" },
-      "4": { "name": "PDF reports", "caption": "Timesheet, P&L, materials — one click" },
-      "5": { "name": "Cloud backup", "caption": "Encrypted backup on Supabase storage" }
+      "0": {
+        "name": "QuickBooks",
+        "caption": "CSV export today · direct sync on roadmap"
+      },
+      "1": {
+        "name": "Xero",
+        "caption": "CSV export today · direct sync on roadmap"
+      },
+      "2": {
+        "name": "Excel / Sheets",
+        "caption": "CSV export — every project, every timesheet"
+      },
+      "3": {
+        "name": "Stripe",
+        "caption": "Your Stroyka subscription, billed through Stripe"
+      },
+      "4": {
+        "name": "PDF reports",
+        "caption": "Timesheet, P&L, materials — one click"
+      },
+      "5": {
+        "name": "Cloud backup",
+        "caption": "Encrypted backup on Supabase storage"
+      }
     },
     "demo": {
       "concrete": "concrete",
@@ -415,12 +462,36 @@
   },
   "planToDone": {
     "beats": {
-      "0": { "kicker": "MODULE · 01", "headline": "Every project starts on paper.", "state": "PLAN" },
-      "1": { "kicker": "MODULE · 02", "headline": "Now you can see the whole thing.", "state": "WIREFRAME" },
-      "2": { "kicker": "MODULE · 03", "headline": "Every material logs itself.", "state": "BUILDING" },
-      "3": { "kicker": "MODULE · 04", "headline": "So you always know where you stand.", "state": "TRACKING" },
-      "4": { "kicker": "CLOSED · JOHNSON", "headline": "", "state": "COMPLETE" },
-      "5": { "kicker": "CLOSED · JOHNSON", "headline": "", "state": "COMPLETE" }
+      "0": {
+        "kicker": "MODULE · 01",
+        "headline": "Every project starts on paper.",
+        "state": "PLAN"
+      },
+      "1": {
+        "kicker": "MODULE · 02",
+        "headline": "Now you can see the whole thing.",
+        "state": "WIREFRAME"
+      },
+      "2": {
+        "kicker": "MODULE · 03",
+        "headline": "Every material logs itself.",
+        "state": "BUILDING"
+      },
+      "3": {
+        "kicker": "MODULE · 04",
+        "headline": "So you always know where you stand.",
+        "state": "TRACKING"
+      },
+      "4": {
+        "kicker": "CLOSED · JOHNSON",
+        "headline": "",
+        "state": "COMPLETE"
+      },
+      "5": {
+        "kicker": "CLOSED · JOHNSON",
+        "headline": "",
+        "state": "COMPLETE"
+      }
     },
     "rooms": {
       "living": "LIVING",
@@ -432,16 +503,37 @@
     "floorPlan": "FLOOR PLAN · A-04",
     "scale": "SCALE 1/4\"=1'",
     "costEntries": {
-      "0": { "label": "CONCRETE", "subtitle": "14 yards · poured 04/15" },
-      "1": { "label": "LUMBER", "subtitle": "320 board-ft · oak frame" },
-      "2": { "label": "ROOF", "subtitle": "Architectural shingles" },
-      "3": { "label": "SIDING", "subtitle": "Cedar lap · stained" },
-      "4": { "label": "WINDOWS", "subtitle": "12 units · double-pane" }
+      "0": {
+        "label": "CONCRETE",
+        "subtitle": "14 yards · poured 04/15"
+      },
+      "1": {
+        "label": "LUMBER",
+        "subtitle": "320 board-ft · oak frame"
+      },
+      "2": {
+        "label": "ROOF",
+        "subtitle": "Architectural shingles"
+      },
+      "3": {
+        "label": "SIDING",
+        "subtitle": "Cedar lap · stained"
+      },
+      "4": {
+        "label": "WINDOWS",
+        "subtitle": "12 units · double-pane"
+      }
     },
     "chartBars": {
-      "0": { "label": "Labor" },
-      "1": { "label": "Materials" },
-      "2": { "label": "Fuel" }
+      "0": {
+        "label": "Labor"
+      },
+      "1": {
+        "label": "Materials"
+      },
+      "2": {
+        "label": "Fuel"
+      }
     },
     "delivered": "DELIVERED",
     "chartTitle": "PLAN VS ACTUAL",
@@ -539,5 +631,20 @@
     "planUnchanged": "Your plan hasn't changed.",
     "subscribeAnytime": "You can subscribe anytime from the pricing page.",
     "backToPricing": "← Back to pricing"
+  },
+  "account": {
+    "title": "Account",
+    "manageInApp": "Manage your subscription in the app",
+    "managedInside": "Your subscription is managed inside Stroyka. Open the app and go to <highlight>Settings → your plan</highlight> to update your card, view invoices, or change your plan.",
+    "openStroyka": "Open Stroyka",
+    "needHelp": "Need help? hello@getstroyka.com",
+    "redirectingBilling": "Redirecting to billing",
+    "verifying": "Verifying your session",
+    "updated": "UPDATED",
+    "allSet": "You’re all set",
+    "changesSaved": "Your billing changes have been saved.",
+    "couldntVerify": "We couldn’t verify your session",
+    "tryFromApp": "Please try again from the Stroyka app, or contact us at <email>hello@getstroyka.com</email>.",
+    "loading": "loading"
   }
 }

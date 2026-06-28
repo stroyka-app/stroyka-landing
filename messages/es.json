@@ -1,6 +1,8 @@
 {
   "_note": "pending native pass",
-  "meta": { "smokeKey": "Hecho para la obra" },
+  "meta": {
+    "smokeKey": "Hecho para la obra"
+  },
   "hero": {
     "startFree": "Empieza gratis",
     "foundingRate": "$99/mo tarifa fundadora",
@@ -144,19 +146,46 @@
     "whatMatters": "Lo que importa",
     "onJobsite": "en la obra",
     "cols": {
-      "0": { "name": "Hojas de cálculo + WhatsApp", "sub": "El estándar" },
-      "1": { "name": "Software enterprise", "sub": "Para GCs de 50+ personas" },
-      "2": { "name": "Stroyka", "sub": "Para cuadrillas de 5–25" }
+      "0": {
+        "name": "Hojas de cálculo + WhatsApp",
+        "sub": "El estándar"
+      },
+      "1": {
+        "name": "Software enterprise",
+        "sub": "Para GCs de 50+ personas"
+      },
+      "2": {
+        "name": "Stroyka",
+        "sub": "Para cuadrillas de 5–25"
+      }
     },
     "rows": {
-      "0": { "label": "Precio mensual fijo", "note": "$0 / $149 / $249. Sin cobro por trabajador." },
-      "1": { "label": "Listo en una tarde" },
-      "2": { "label": "Sin capacitación" },
-      "3": { "label": "Exportar a QuickBooks / Xero", "note": "CSV + PDF ahora, integraciones directas en la hoja de ruta." },
-      "4": { "label": "Costos de obra en tiempo real" },
-      "5": { "label": "Flujos de aprobación + historial" },
-      "6": { "label": "Funciona sin conexión en la obra" },
-      "7": { "label": "App móvil para la cuadrilla" }
+      "0": {
+        "label": "Precio mensual fijo",
+        "note": "$0 / $149 / $249. Sin cobro por trabajador."
+      },
+      "1": {
+        "label": "Listo en una tarde"
+      },
+      "2": {
+        "label": "Sin capacitación"
+      },
+      "3": {
+        "label": "Exportar a QuickBooks / Xero",
+        "note": "CSV + PDF ahora, integraciones directas en la hoja de ruta."
+      },
+      "4": {
+        "label": "Costos de obra en tiempo real"
+      },
+      "5": {
+        "label": "Flujos de aprobación + historial"
+      },
+      "6": {
+        "label": "Funciona sin conexión en la obra"
+      },
+      "7": {
+        "label": "App móvil para la cuadrilla"
+      }
     },
     "legendYes": "Sí",
     "legendPartial": "Parcial",
@@ -300,12 +329,30 @@
     "subhead": "Exportación CSV y PDF hoy. Integraciones nativas en 2026 — escríbenos para subir la tuya en la lista.",
     "soon": "Pronto",
     "tools": {
-      "0": { "name": "QuickBooks", "caption": "Exportación CSV hoy · sincronización directa en la hoja de ruta" },
-      "1": { "name": "Xero", "caption": "Exportación CSV hoy · sincronización directa en la hoja de ruta" },
-      "2": { "name": "Excel / Sheets", "caption": "Exportación CSV — cada proyecto, cada parte de horas" },
-      "3": { "name": "Stripe", "caption": "Tu suscripción a Stroyka, cobrada por Stripe" },
-      "4": { "name": "PDF reports", "caption": "Parte de horas, P&L, materiales — un clic" },
-      "5": { "name": "Respaldo en la nube", "caption": "Respaldo cifrado en almacenamiento Supabase" }
+      "0": {
+        "name": "QuickBooks",
+        "caption": "Exportación CSV hoy · sincronización directa en la hoja de ruta"
+      },
+      "1": {
+        "name": "Xero",
+        "caption": "Exportación CSV hoy · sincronización directa en la hoja de ruta"
+      },
+      "2": {
+        "name": "Excel / Sheets",
+        "caption": "Exportación CSV — cada proyecto, cada parte de horas"
+      },
+      "3": {
+        "name": "Stripe",
+        "caption": "Tu suscripción a Stroyka, cobrada por Stripe"
+      },
+      "4": {
+        "name": "PDF reports",
+        "caption": "Parte de horas, P&L, materiales — un clic"
+      },
+      "5": {
+        "name": "Respaldo en la nube",
+        "caption": "Respaldo cifrado en almacenamiento Supabase"
+      }
     },
     "demo": {
       "concrete": "concreto",
@@ -417,12 +464,36 @@
   "planToDone": {
     "_note": "pending native pass",
     "beats": {
-      "0": { "kicker": "MÓDULO · 01", "headline": "Todo proyecto empieza en papel.", "state": "PLAN" },
-      "1": { "kicker": "MÓDULO · 02", "headline": "Ahora puedes ver todo el conjunto.", "state": "ESTRUCTURA" },
-      "2": { "kicker": "MÓDULO · 03", "headline": "Cada material se registra solo.", "state": "CONSTRUYENDO" },
-      "3": { "kicker": "MÓDULO · 04", "headline": "Siempre sabes cómo vas.", "state": "CONTROL" },
-      "4": { "kicker": "CERRADO · JOHNSON", "headline": "", "state": "COMPLETO" },
-      "5": { "kicker": "CERRADO · JOHNSON", "headline": "", "state": "COMPLETO" }
+      "0": {
+        "kicker": "MÓDULO · 01",
+        "headline": "Todo proyecto empieza en papel.",
+        "state": "PLAN"
+      },
+      "1": {
+        "kicker": "MÓDULO · 02",
+        "headline": "Ahora puedes ver todo el conjunto.",
+        "state": "ESTRUCTURA"
+      },
+      "2": {
+        "kicker": "MÓDULO · 03",
+        "headline": "Cada material se registra solo.",
+        "state": "CONSTRUYENDO"
+      },
+      "3": {
+        "kicker": "MÓDULO · 04",
+        "headline": "Siempre sabes cómo vas.",
+        "state": "CONTROL"
+      },
+      "4": {
+        "kicker": "CERRADO · JOHNSON",
+        "headline": "",
+        "state": "COMPLETO"
+      },
+      "5": {
+        "kicker": "CERRADO · JOHNSON",
+        "headline": "",
+        "state": "COMPLETO"
+      }
     },
     "rooms": {
       "living": "SALA",
@@ -434,16 +505,37 @@
     "floorPlan": "PLANO DE PLANTA · A-04",
     "scale": "ESCALA 1/4\"=1'",
     "costEntries": {
-      "0": { "label": "CONCRETO", "subtitle": "14 yardas · colado 04/15" },
-      "1": { "label": "MADERA", "subtitle": "320 pies-tabla · roble" },
-      "2": { "label": "TECHO", "subtitle": "Tejas arquitectónicas" },
-      "3": { "label": "FACHADA", "subtitle": "Cedro solapado · tinte" },
-      "4": { "label": "VENTANAS", "subtitle": "12 unid. · doble vidrio" }
+      "0": {
+        "label": "CONCRETO",
+        "subtitle": "14 yardas · colado 04/15"
+      },
+      "1": {
+        "label": "MADERA",
+        "subtitle": "320 pies-tabla · roble"
+      },
+      "2": {
+        "label": "TECHO",
+        "subtitle": "Tejas arquitectónicas"
+      },
+      "3": {
+        "label": "FACHADA",
+        "subtitle": "Cedro solapado · tinte"
+      },
+      "4": {
+        "label": "VENTANAS",
+        "subtitle": "12 unid. · doble vidrio"
+      }
     },
     "chartBars": {
-      "0": { "label": "Mano de obra" },
-      "1": { "label": "Materiales" },
-      "2": { "label": "Combustible" }
+      "0": {
+        "label": "Mano de obra"
+      },
+      "1": {
+        "label": "Materiales"
+      },
+      "2": {
+        "label": "Combustible"
+      }
     },
     "delivered": "ENTREGADO",
     "chartTitle": "PLAN VS REAL",
@@ -541,5 +633,20 @@
     "planUnchanged": "Tu plan no ha cambiado.",
     "subscribeAnytime": "Puedes suscribirte cuando quieras desde la página de precios.",
     "backToPricing": "← Volver a precios"
+  },
+  "account": {
+    "title": "Cuenta",
+    "manageInApp": "Administra tu suscripción en la app",
+    "managedInside": "Tu suscripción se gestiona dentro de Stroyka. Abre la app y ve a <highlight>Configuración → tu plan</highlight> para actualizar tu tarjeta, ver facturas o cambiar tu plan.",
+    "openStroyka": "Abrir Stroyka",
+    "needHelp": "¿Necesitas ayuda? hello@getstroyka.com",
+    "redirectingBilling": "Redirigiendo a facturación",
+    "verifying": "Verificando tu sesión",
+    "updated": "ACTUALIZADO",
+    "allSet": "Todo listo",
+    "changesSaved": "Los cambios de facturación se guardaron.",
+    "couldntVerify": "No pudimos verificar tu sesión",
+    "tryFromApp": "Vuelve a intentarlo desde la app Stroyka, o contáctanos en <email>hello@getstroyka.com</email>.",
+    "loading": "cargando"
   }
 }
