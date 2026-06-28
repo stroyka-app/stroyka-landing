@@ -659,5 +659,10 @@
     "nfBackHome": "Back to home",
     "nfBookDemo": "Or book a demo →",
     "loading": "Loading"
+  },
+  "legal": {
+    "eyebrow": "Legal",
+    "englishOnlyTitle": "Available in English",
+    "englishOnlyBody": "This document is provided in English. As a US product, the English version is authoritative."
   }
 }

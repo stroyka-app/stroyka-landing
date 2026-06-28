@@ -661,5 +661,11 @@
     "nfBackHome": "Volver al inicio",
     "nfBookDemo": "O agenda una demo →",
     "loading": "Cargando"
+  },
+  "legal": {
+    "_note": "pending native pass",
+    "eyebrow": "Legal",
+    "englishOnlyTitle": "Disponible en inglés",
+    "englishOnlyBody": "Este documento se proporciona en inglés. Como producto de EE. UU., la versión en inglés es la oficial."
   }
 }

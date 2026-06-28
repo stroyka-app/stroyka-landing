@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FadeIn from "@/components/ui/FadeIn";
@@ -27,6 +28,9 @@ export default function LegalPageLayout({
   effectiveDate,
   sections,
 }: LegalPageLayoutProps) {
+  const t = useTranslations("legal");
+  const locale = useLocale();
+  const showNotice = locale !== "en";
   const [activeId, setActiveId] = useState(sections[0]?.id ?? "");
 
   const activeSection = sections.find((s) => s.id === activeId);
@@ -50,7 +54,7 @@ export default function LegalPageLayout({
           {/* Header */}
           <div className="mb-14">
             <FadeIn>
-              <SectionLabel>Legal</SectionLabel>
+              <SectionLabel>{t("eyebrow")}</SectionLabel>
             </FadeIn>
             <FadeIn delay={0.05}>
               <h1 className="font-display font-light text-4xl lg:text-6xl leading-[0.98] tracking-[-0.02em] text-ink mb-3">
@@ -66,6 +70,18 @@ export default function LegalPageLayout({
               </p>
             </FadeIn>
           </div>
+
+          {/* English-only notice for non-en locales */}
+          {showNotice && (
+            <div className="mb-10 rounded-2xl border border-brand-sage/40 bg-brand-sage/8 px-6 py-5">
+              <p className="font-display text-[15px] font-medium text-ink mb-1.5">
+                {t("englishOnlyTitle")}
+              </p>
+              <p className="text-[14px] text-ink-soft leading-relaxed">
+                {t("englishOnlyBody")}
+              </p>
+            </div>
+          )}
 
           {/* Mobile: Accordion layout */}
           <div className="lg:hidden space-y-2">
