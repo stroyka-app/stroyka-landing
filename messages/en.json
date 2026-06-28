@@ -293,5 +293,23 @@
       "body": "The first 20 companies to subscribe lock in $99/month for life — Starter at 34% off, forever. No matter what the public rate becomes.",
       "cta": "Claim a Founding Spot →"
     }
+  },
+  "guarantee": {
+    "heading": "The fine print, in plain English.",
+    "subhead": "No trial clock. No credit card to try it. No lock-in if you decide it's not for you.",
+    "promises": {
+      "0": {
+        "title": "Free forever for crews up to 5",
+        "body": "Download the app and use it with up to 5 workers as long as you want. No trial timer, no credit card, no nagging upgrade modals."
+      },
+      "1": {
+        "title": "Free data import",
+        "body": "Send us your current spreadsheets or a CSV export from whatever you're using. We'll get your first job in the app for you — on us."
+      },
+      "2": {
+        "title": "Cancel anytime",
+        "body": "Paid plans are month-to-month, no contracts. Export every record as CSV or PDF before you go. 30-day grace window on your data."
+      }
+    }
   }
 }

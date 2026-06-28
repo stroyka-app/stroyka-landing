@@ -294,5 +294,23 @@
       "body": "Las primeras 20 empresas en suscribirse fijan $99/mes de por vida — Starter con 34% de descuento, para siempre. Sin importar cuánto suba la tarifa pública.",
       "cta": "Reclamar un lugar fundador →"
     }
+  },
+  "guarantee": {
+    "heading": "La letra pequeña, en español claro.",
+    "subhead": "Sin reloj de prueba. Sin tarjeta de crédito para probarlo. Sin ataduras si decides que no es para ti.",
+    "promises": {
+      "0": {
+        "title": "Gratis para siempre en cuadrillas de hasta 5",
+        "body": "Descarga la app y úsala con hasta 5 trabajadores todo el tiempo que quieras. Sin cronómetro de prueba, sin tarjeta de crédito, sin modales molestos de actualización."
+      },
+      "1": {
+        "title": "Importación de datos gratis",
+        "body": "Envíanos tus hojas de cálculo actuales o un CSV de lo que estés usando. Nosotros ponemos tu primera obra en la app — sin costo para ti."
+      },
+      "2": {
+        "title": "Cancela cuando quieras",
+        "body": "Los planes de pago son mes a mes, sin contratos. Exporta cada registro como CSV o PDF antes de irte. 30 días de gracia para tus datos."
+      }
+    }
   }
 }

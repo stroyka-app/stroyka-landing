@@ -11,6 +11,7 @@ import {
   useInView,
 } from "framer-motion";
 import { Download, XCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import FadeIn from "@/components/ui/FadeIn";
 import TextReveal from "@/components/ui/TextReveal";
 import { useCursorGlow } from "@/lib/hooks/useCursorGlow";
@@ -19,26 +20,12 @@ interface PromiseItem {
   // Each promise renders its own stamp icon — Infinity gets a bespoke
   // stroke-draw lemniscate so we can't share a single lucide component.
   iconKind: "infinity" | "download" | "cancel";
-  title: string;
-  body: string;
 }
 
 const PROMISES: PromiseItem[] = [
-  {
-    iconKind: "infinity",
-    title: "Free forever for crews up to 5",
-    body: "Download the app and use it with up to 5 workers as long as you want. No trial timer, no credit card, no nagging upgrade modals.",
-  },
-  {
-    iconKind: "download",
-    title: "Free data import",
-    body: "Send us your current spreadsheets or a CSV export from whatever you're using. We'll get your first job in the app for you — on us.",
-  },
-  {
-    iconKind: "cancel",
-    title: "Cancel anytime",
-    body: "Paid plans are month-to-month, no contracts. Export every record as CSV or PDF before you go. 30-day grace window on your data.",
-  },
+  { iconKind: "infinity" },
+  { iconKind: "download" },
+  { iconKind: "cancel" },
 ];
 
 /**
@@ -78,6 +65,7 @@ function PromiseCard({
   promise: PromiseItem;
   index: number;
 }) {
+  const t = useTranslations("guarantee");
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const glow = useCursorGlow();
@@ -174,16 +162,17 @@ function PromiseCard({
         </span>
       </motion.span>
       <h3 className="font-display text-[22px] leading-snug text-ink mb-3">
-        {promise.title}
+        {t(`promises.${index}.title`)}
       </h3>
       <p className="text-[14.5px] text-ink/70 leading-relaxed">
-        {promise.body}
+        {t(`promises.${index}.body`)}
       </p>
     </motion.div>
   );
 }
 
 export default function Guarantee() {
+  const t = useTranslations("guarantee");
   const sectionRef = useRef<HTMLElement>(null);
   const prefersReduced = useReducedMotion();
 
@@ -211,11 +200,11 @@ export default function Guarantee() {
             as="h2"
             className="font-display font-light text-5xl lg:text-7xl leading-[0.95] tracking-[-0.02em] text-ink mb-6"
           >
-            The fine print, in plain English.
+            {t("heading")}
           </TextReveal>
           <FadeIn delay={0.1}>
             <p className="text-lg text-ink/70 leading-relaxed max-w-xl">
-              No trial clock. No credit card to try it. No lock-in if you decide it&rsquo;s not for you.
+              {t("subhead")}
             </p>
           </FadeIn>
         </div>
@@ -226,7 +215,7 @@ export default function Guarantee() {
             style={{ perspective: "1200px" }}
           >
             {PROMISES.map((promise, i) => (
-              <FadeIn key={promise.title} delay={i * 0.08}>
+              <FadeIn key={promise.iconKind} delay={i * 0.08}>
                 <PromiseCard promise={promise} index={i} />
               </FadeIn>
             ))}
