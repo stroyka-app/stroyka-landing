@@ -376,6 +376,44 @@
       }
     }
   },
+  "demo": {
+    "eyebrow": "Начать",
+    "title": "Запросить демо",
+    "subtitle": "Заполни форму, и мы назначим персонализированное 20-минутное демо с твоими примерными данными. Никаких обязательств, без карты.",
+    "name": "Имя",
+    "company": "Название компании",
+    "crewSize": "Размер бригады",
+    "email": "Email",
+    "phone": "Телефон (необязательно)",
+    "challenge": "В чём твоя главная трудность?",
+    "namePlaceholder": "Иван Петров",
+    "companyPlaceholder": "ООО «Петров Строй»",
+    "crewSizePlaceholder": "Выбери размер бригады",
+    "emailPlaceholder": "ivan@petrovstroy.com",
+    "phonePlaceholder": "(555) 123-4567",
+    "challengePlaceholder": "Расскажи, как ты работаешь сейчас и что не устраивает...",
+    "crew1to5": "1–5 рабочих",
+    "crew5to10": "5–10 рабочих",
+    "crew10to25": "10–25 рабочих",
+    "crew25plus": "25+ рабочих",
+    "submit": "Записаться на демо →",
+    "submitting": "Отправка…",
+    "successTitle": "Ты в списке",
+    "successBody": "Свяжемся в течение 24 часов, чтобы назначить демо.",
+    "confirmSent": "Подтверждение отправлено на твой email",
+    "fromEmail": "от hello@getstroyka.com",
+    "checkSpam": "Не видишь? Проверь папку «Спам» или «Промоакции».",
+    "backHome": "На главную",
+    "errors": {
+      "nameRequired": "Укажи имя, чтобы мы знали, с кем связаться.",
+      "companyRequired": "Будем рады узнать название твоей компании.",
+      "crewSizeRequired": "Выбери размер бригады, чтобы настроить демо под твою команду.",
+      "emailRequired": "Нам нужен твой email, чтобы выслать детали демо.",
+      "emailInvalid": "Этот email выглядит неправильно — проверь, пожалуйста?",
+      "tooManyRequests": "Слишком много запросов. Подожди час и попробуй снова, или напиши нам напрямую: hello@getstroyka.com.",
+      "genericError": "Что-то пошло не так с нашей стороны. Напиши на hello@getstroyka.com — ответим быстро."
+    }
+  },
   "planToDone": {
     "_note": "pending Maks review",
     "beats": {

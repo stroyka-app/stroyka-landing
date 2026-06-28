@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { HardHat, Mail, ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface FormData {
   name: string;
@@ -26,6 +27,7 @@ const INITIAL: FormData = {
 };
 
 export default function DemoForm() {
+  const t = useTranslations("demo");
   const [form, setForm] = useState<FormData>(INITIAL);
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
@@ -45,18 +47,18 @@ export default function DemoForm() {
     const errors: Partial<Record<keyof FormData, string>> = {};
 
     if (!form.name.trim()) {
-      errors.name = "Please enter your name so we know who to reach out to.";
+      errors.name = t("errors.nameRequired");
     }
     if (!form.company.trim()) {
-      errors.company = "We'd love to know your company name.";
+      errors.company = t("errors.companyRequired");
     }
     if (!form.crewSize) {
-      errors.crewSize = "Pick a crew size so we can tailor the demo to your team.";
+      errors.crewSize = t("errors.crewSizeRequired");
     }
     if (!form.email.trim()) {
-      errors.email = "We need your email to send demo details.";
+      errors.email = t("errors.emailRequired");
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      errors.email = "That doesn't look like a valid email — double-check it?";
+      errors.email = t("errors.emailInvalid");
     }
 
     setFieldErrors(errors);
@@ -131,7 +133,7 @@ export default function DemoForm() {
           animate="show"
           className="font-display font-light text-3xl lg:text-4xl leading-tight text-ink tracking-[-0.01em]"
         >
-          You&rsquo;re on the list
+          {t("successTitle")}
         </motion.h2>
 
         <motion.p
@@ -141,7 +143,7 @@ export default function DemoForm() {
           animate="show"
           className="text-ink-soft max-w-md mx-auto text-[15px] lg:text-base leading-relaxed"
         >
-          We&rsquo;ll reach out within 24 hours to schedule your demo.
+          {t("successBody")}
         </motion.p>
 
         {/* Email notice card — bone stone surface */}
@@ -158,15 +160,15 @@ export default function DemoForm() {
             </div>
             <div className="text-left">
               <p className="text-ink text-sm font-medium">
-                Confirmation sent to your email
+                {t("confirmSent")}
               </p>
               <p className="text-ink-muted text-[11px] font-mono tracking-[0.08em] mt-0.5">
-                from hello@getstroyka.com
+                {t("fromEmail")}
               </p>
             </div>
           </div>
           <p className="text-ink-muted text-[11px] text-left font-mono tracking-[0.05em]">
-            Don&rsquo;t see it? Check your spam or promotions folder.
+            {t("checkSpam")}
           </p>
         </motion.div>
 
@@ -180,7 +182,7 @@ export default function DemoForm() {
             href="/"
             className="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.22em] uppercase text-ink-muted hover:text-brand-forest transition-colors duration-200 group"
           >
-            Back to homepage
+            {t("backHome")}
             <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform duration-200" />
           </Link>
         </motion.div>
@@ -205,7 +207,7 @@ export default function DemoForm() {
       <div className="grid md:grid-cols-2 gap-5">
         <div>
           <label htmlFor="name" className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2">
-            Name *
+            {t("name")} *
           </label>
           <input
             id="name"
@@ -214,13 +216,13 @@ export default function DemoForm() {
             value={form.name}
             onChange={handleChange}
             className={inputCls("name")}
-            placeholder="John Smith"
+            placeholder={t("namePlaceholder")}
           />
           <FieldError field="name" />
         </div>
         <div>
           <label htmlFor="company" className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2">
-            Company name *
+            {t("company")} *
           </label>
           <input
             id="company"
@@ -229,7 +231,7 @@ export default function DemoForm() {
             value={form.company}
             onChange={handleChange}
             className={inputCls("company")}
-            placeholder="Smith Construction LLC"
+            placeholder={t("companyPlaceholder")}
           />
           <FieldError field="company" />
         </div>
@@ -237,7 +239,7 @@ export default function DemoForm() {
       <div className="grid md:grid-cols-2 gap-5">
         <div>
           <label htmlFor="crewSize" className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2">
-            Crew size *
+            {t("crewSize")} *
           </label>
           <select
             id="crewSize"
@@ -247,18 +249,18 @@ export default function DemoForm() {
             className={inputCls("crewSize")}
           >
             <option value="" disabled>
-              Select crew size
+              {t("crewSizePlaceholder")}
             </option>
-            <option value="1-5">1–5 workers</option>
-            <option value="5-10">5–10 workers</option>
-            <option value="10-25">10–25 workers</option>
-            <option value="25+">25+ workers</option>
+            <option value="1-5">{t("crew1to5")}</option>
+            <option value="5-10">{t("crew5to10")}</option>
+            <option value="10-25">{t("crew10to25")}</option>
+            <option value="25+">{t("crew25plus")}</option>
           </select>
           <FieldError field="crewSize" />
         </div>
         <div>
           <label htmlFor="email" className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2">
-            Email *
+            {t("email")} *
           </label>
           <input
             id="email"
@@ -267,14 +269,14 @@ export default function DemoForm() {
             value={form.email}
             onChange={handleChange}
             className={inputCls("email")}
-            placeholder="john@smithconstruction.com"
+            placeholder={t("emailPlaceholder")}
           />
           <FieldError field="email" />
         </div>
       </div>
       <div>
         <label htmlFor="phone" className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2">
-          Phone (optional)
+          {t("phone")}
         </label>
         <input
           id="phone"
@@ -283,12 +285,12 @@ export default function DemoForm() {
           value={form.phone}
           onChange={handleChange}
           className={inputCls()}
-          placeholder="(555) 123-4567"
+          placeholder={t("phonePlaceholder")}
         />
       </div>
       <div>
         <label htmlFor="challenge" className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2">
-          What&apos;s your biggest challenge?
+          {t("challenge")}
         </label>
         <textarea
           id="challenge"
@@ -297,7 +299,7 @@ export default function DemoForm() {
           value={form.challenge}
           onChange={handleChange}
           className={inputCls()}
-          placeholder="Tell us about your current process and what's not working..."
+          placeholder={t("challengePlaceholder")}
         />
       </div>
 
@@ -322,8 +324,8 @@ export default function DemoForm() {
       {status === "error" && (
         <div className="rounded-xl border border-red-500/35 bg-red-50/70 p-4 text-sm text-red-700">
           {errorMsg.includes("Too many") || errorMsg.includes("429")
-            ? "Too many requests. Please wait an hour and try again, or email us directly at hello@getstroyka.com."
-            : "Something went wrong on our end. Please email us at hello@getstroyka.com and we\u2019ll get back to you quickly."}
+            ? t("errors.tooManyRequests")
+            : t("errors.genericError")}
         </div>
       )}
 
@@ -349,10 +351,10 @@ export default function DemoForm() {
                 d="M4 12a8 8 0 018-8v8H4z"
               />
             </svg>
-            Sending...
+            {t("submitting")}
           </>
         ) : (
-          "Request Your Demo →"
+          t("submit")
         )}
       </button>
     </form>

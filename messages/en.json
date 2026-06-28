@@ -375,6 +375,44 @@
       }
     }
   },
+  "demo": {
+    "eyebrow": "Get started",
+    "title": "Request your demo",
+    "subtitle": "Fill out the form and we'll schedule a 20-minute personalized demo with your own sample data. No commitment, no credit card.",
+    "name": "Name",
+    "company": "Company name",
+    "crewSize": "Crew size",
+    "email": "Email",
+    "phone": "Phone (optional)",
+    "challenge": "What's your biggest challenge?",
+    "namePlaceholder": "John Smith",
+    "companyPlaceholder": "Smith Construction LLC",
+    "crewSizePlaceholder": "Select crew size",
+    "emailPlaceholder": "john@smithconstruction.com",
+    "phonePlaceholder": "(555) 123-4567",
+    "challengePlaceholder": "Tell us about your current process and what's not working...",
+    "crew1to5": "1–5 workers",
+    "crew5to10": "5–10 workers",
+    "crew10to25": "10–25 workers",
+    "crew25plus": "25+ workers",
+    "submit": "Request Your Demo →",
+    "submitting": "Sending...",
+    "successTitle": "You're on the list",
+    "successBody": "We'll reach out within 24 hours to schedule your demo.",
+    "confirmSent": "Confirmation sent to your email",
+    "fromEmail": "from hello@getstroyka.com",
+    "checkSpam": "Don't see it? Check your spam or promotions folder.",
+    "backHome": "Back to homepage",
+    "errors": {
+      "nameRequired": "Please enter your name so we know who to reach out to.",
+      "companyRequired": "We'd love to know your company name.",
+      "crewSizeRequired": "Pick a crew size so we can tailor the demo to your team.",
+      "emailRequired": "We need your email to send demo details.",
+      "emailInvalid": "That doesn't look like a valid email — double-check it?",
+      "tooManyRequests": "Too many requests. Please wait an hour and try again, or email us directly at hello@getstroyka.com.",
+      "genericError": "Something went wrong on our end. Please email us at hello@getstroyka.com and we'll get back to you quickly."
+    }
+  },
   "planToDone": {
     "beats": {
       "0": { "kicker": "MODULE · 01", "headline": "Every project starts on paper.", "state": "PLAN" },

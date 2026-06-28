@@ -376,6 +376,44 @@
       }
     }
   },
+  "demo": {
+    "eyebrow": "Empezar",
+    "title": "Solicita tu demo",
+    "subtitle": "Rellena el formulario y programaremos una demo personalizada de 20 minutos con tus propios datos de muestra. Sin compromisos, sin tarjeta de crédito.",
+    "name": "Nombre",
+    "company": "Nombre de empresa",
+    "crewSize": "Tamaño de cuadrilla",
+    "email": "Correo electrónico",
+    "phone": "Teléfono (opcional)",
+    "challenge": "¿Cuál es tu mayor reto?",
+    "namePlaceholder": "Juan García",
+    "companyPlaceholder": "García Construcción LLC",
+    "crewSizePlaceholder": "Elige el tamaño",
+    "emailPlaceholder": "juan@garciaconstruccion.com",
+    "phonePlaceholder": "(555) 123-4567",
+    "challengePlaceholder": "Cuéntanos cómo trabajas ahora y qué no está funcionando...",
+    "crew1to5": "1–5 trabajadores",
+    "crew5to10": "5–10 trabajadores",
+    "crew10to25": "10–25 trabajadores",
+    "crew25plus": "25+ trabajadores",
+    "submit": "Solicitar mi demo →",
+    "submitting": "Enviando…",
+    "successTitle": "Estás en la lista",
+    "successBody": "Te escribiremos en 24 horas para agendar tu demo.",
+    "confirmSent": "Confirmación enviada a tu correo",
+    "fromEmail": "de hello@getstroyka.com",
+    "checkSpam": "¿No lo ves? Revisa tu carpeta de spam o promociones.",
+    "backHome": "Volver al inicio",
+    "errors": {
+      "nameRequired": "Ingresa tu nombre para saber a quién contactar.",
+      "companyRequired": "Nos encantaría saber el nombre de tu empresa.",
+      "crewSizeRequired": "Elige el tamaño de cuadrilla para personalizar la demo.",
+      "emailRequired": "Necesitamos tu correo para enviarte los detalles de la demo.",
+      "emailInvalid": "Ese correo no parece válido — ¿lo revisas?",
+      "tooManyRequests": "Demasiadas solicitudes. Espera una hora y vuelve a intentarlo, o escríbenos a hello@getstroyka.com.",
+      "genericError": "Algo salió mal de nuestro lado. Escríbenos a hello@getstroyka.com y te respondemos pronto."
+    }
+  },
   "planToDone": {
     "_note": "pending native pass",
     "beats": {
