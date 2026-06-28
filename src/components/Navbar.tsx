@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Link } from "@/i18n/navigation";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useReducedMotion } from "framer-motion";
 import { useScrollPosition } from "@/lib/hooks/useScrollPosition";

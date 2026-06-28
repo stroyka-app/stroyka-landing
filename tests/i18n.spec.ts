@@ -55,3 +55,16 @@ test("legal /es/privacy shows english-only notice", async ({ page }) => {
   // legal.englishOnlyTitle in es.json = "Disponible en inglés"
   await expect(page.getByText("Disponible en inglés")).toBeVisible();
 });
+
+// ── Regression: navbar stays transparent over the hero on EVERY locale home ───
+// (locale home is "/", "/es", "/ru" — usePathname must be locale-aware so the
+//  hero-transparent treatment isn't lost on /es and /ru.)
+
+for (const path of ["/", "/es", "/ru"]) {
+  test(`navbar transparent over hero at ${path}`, async ({ page }) => {
+    await page.goto(path);
+    await page.evaluate(() => window.scrollTo(0, 0));
+    const nav = page.locator("nav").first();
+    await expect(nav).toHaveClass(/bg-transparent/);
+  });
+}
