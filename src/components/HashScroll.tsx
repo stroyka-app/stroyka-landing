@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { getLenis } from "@/lib/lenis";
 
 /**
- * HashScroll — makes `/#section` anchor navigation land exactly on target,
+ * HashScroll — makes hash anchor navigation land exactly on target,
  * smoothly, on the first click — from the navbar, the footer, in-page CTAs,
  * and cross-route (e.g. /demo or /get-started → /#pricing).
  *
@@ -19,14 +19,15 @@ import { getLenis } from "@/lib/lenis";
  *  3. Browser scroll restoration on reload fought our positioning. Fixed by
  *     taking manual control while mounted.
  *
- * Mounted only on the home route, where the hash targets live.
+ * Mounted on every locale home route (/  /es  /ru …), where the hash
+ * targets live. Works for any href containing a `#` — locale prefix agnostic.
  */
 const NAV_OFFSET = 80;
 
 function idFromHref(href: string | null | undefined): string | null {
   if (!href) return null;
-  const match = href.match(/^\/?#(.+)$/);
-  return match ? decodeURIComponent(match[1]) : null;
+  const m = href.match(/#(.+)$/);
+  return m ? decodeURIComponent(m[1]) : null;
 }
 
 export default function HashScroll() {
@@ -59,8 +60,9 @@ export default function HashScroll() {
     };
 
     // Intercept in-page anchor clicks so Lenis owns the scroll (no native
-    // jump to fight). Cross-route hash links (when NOT on home) fall through
-    // to a normal navigation; settleToHash then handles the landing.
+    // jump to fight). Only intercepts when the target section exists on the
+    // current page (locale home); falls through to normal navigation otherwise
+    // (cross-route: /demo → /es#pricing), then settleToHash handles landing.
     const onClick = (e: MouseEvent) => {
       if (
         e.defaultPrevented ||
@@ -74,10 +76,13 @@ export default function HashScroll() {
       }
       const anchor = (e.target as HTMLElement | null)?.closest("a");
       const id = idFromHref(anchor?.getAttribute("href"));
-      if (!id || window.location.pathname !== "/") return;
+      if (!id) return;
+      // Only intercept when the target section is present on THIS page.
+      // On locale homes (/  /es  /ru) the sections exist; on other pages
+      // they don't, so the click falls through to a full navigation.
       if (!document.getElementById(id)) return;
       e.preventDefault();
-      history.pushState(null, "", `/#${id}`);
+      history.pushState(null, "", `${window.location.pathname}#${id}`);
       scrollToId(id);
     };
 

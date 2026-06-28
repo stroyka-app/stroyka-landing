@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Apple, Play } from "lucide-react";
 import Logo from "@/components/Logo";
@@ -12,11 +12,11 @@ const ANDROID_URL = process.env.NEXT_PUBLIC_ANDROID_APP_URL ?? "#";
 type NavKey = "features" | "howItWorks" | "pricing" | "faq";
 type FooterCompanyKey = "requestDemo" | "privacy" | "terms";
 
-const PRODUCT_LINKS: Array<{ key: NavKey; href: string }> = [
-  { key: "features", href: "/#features" },
-  { key: "howItWorks", href: "/#how-it-works" },
-  { key: "pricing", href: "/#pricing" },
-  { key: "faq", href: "/#faq" },
+const PRODUCT_LINKS: Array<{ key: NavKey; hash: string }> = [
+  { key: "features", hash: "features" },
+  { key: "howItWorks", hash: "how-it-works" },
+  { key: "pricing", hash: "pricing" },
+  { key: "faq", hash: "faq" },
 ];
 
 const COMPANY_LINKS: Array<{ key: FooterCompanyKey; href: string }> = [
@@ -28,6 +28,9 @@ const COMPANY_LINKS: Array<{ key: FooterCompanyKey; href: string }> = [
 export default function Footer() {
   const t = useTranslations("footer");
   const tn = useTranslations("nav");
+  const active = useLocale();
+  const homeHash = (hash: string) =>
+    active === "en" ? `/#${hash}` : `/${active}#${hash}`;
 
   return (
     <footer id="footer" className="relative bg-[#2B3D30] text-bone">
@@ -54,7 +57,7 @@ export default function Footer() {
               {PRODUCT_LINKS.map((link) => (
                 <li key={link.key}>
                   <a
-                    href={link.href}
+                    href={homeHash(link.hash)}
                     className="text-[14.5px] text-bone/70 hover:text-brand-sage-bright transition-colors duration-200"
                   >
                     {tn(link.key)}

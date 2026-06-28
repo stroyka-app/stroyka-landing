@@ -556,6 +556,9 @@
     "trackPct": "89% CONTROL",
     "introEyebrow": "Cómo Stroyka ve tu proyecto",
     "introTitle": "Del plano a la entrega — cada peso rastreado.",
+    "introSubtitle": "Desplázate para ver cómo avanza un proyecto en Stroyka — cada material, cada costo, en tiempo real.",
+    "introScrollHint": "Desplázate para empezar",
+    "introAriaLabel": "Cómo Stroyka ve tu proyecto — animación interactiva de desplazamiento",
     "onTimeBudget": "A tiempo · En presupuesto",
     "spentToDate": "GASTADO A LA FECHA",
     "onTime": "A tiempo"
