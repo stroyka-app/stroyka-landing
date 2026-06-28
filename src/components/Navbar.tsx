@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { usePathname } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useReducedMotion } from "framer-motion";
 import { useScrollPosition } from "@/lib/hooks/useScrollPosition";
 import Logo from "@/components/Logo";
@@ -11,11 +11,11 @@ import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 
 type NavKey = "features" | "howItWorks" | "pricing" | "faq";
 
-const NAV_LINKS: Array<{ key: NavKey; href: string }> = [
-  { key: "features", href: "/#features" },
-  { key: "howItWorks", href: "/#how-it-works" },
-  { key: "pricing", href: "/#pricing" },
-  { key: "faq", href: "/#faq" },
+const NAV_LINKS: Array<{ key: NavKey; hash: string }> = [
+  { key: "features", hash: "features" },
+  { key: "howItWorks", hash: "how-it-works" },
+  { key: "pricing", hash: "pricing" },
+  { key: "faq", hash: "faq" },
 ];
 
 /**
@@ -36,6 +36,9 @@ const NAV_LINKS: Array<{ key: NavKey; href: string }> = [
  */
 export default function Navbar() {
   const t = useTranslations("nav");
+  const active = useLocale();
+  const homeHash = (hash: string) =>
+    active === "en" ? `/#${hash}` : `/${active}#${hash}`;
   const scrollY = useScrollPosition();
   const pathname = usePathname();
   // Only the landing page has a dark hero behind the navbar — everywhere
@@ -84,8 +87,8 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-5 lg:gap-9">
           {NAV_LINKS.map((link) => (
             <a
-              key={link.href}
-              href={link.href}
+              key={link.hash}
+              href={homeHash(link.hash)}
               className={`font-mono text-[12px] tracking-[0.12em] lg:tracking-[0.15em] uppercase transition-colors duration-200 ${textBase}`}
             >
               {t(link.key)}
@@ -140,8 +143,8 @@ export default function Navbar() {
             <div className="flex flex-col px-6 py-6 gap-5">
               {NAV_LINKS.map((link) => (
                 <a
-                  key={link.href}
-                  href={link.href}
+                  key={link.hash}
+                  href={homeHash(link.hash)}
                   className="font-mono text-[12px] tracking-[0.15em] uppercase text-bone/80 hover:text-bone transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >

@@ -1720,6 +1720,7 @@ function IntroVeil({ progress }: { progress: MotionValue<number> }) {
 function IntroTitle({ progress }: { progress: MotionValue<number> }) {
   // Fully visible until 0.05, fully gone by 0.085 — gives Beat 1 a clean
   // dark canvas to fade into with no text-on-text crowding.
+  const t = useTranslations("planToDone");
   const opacity = useTransform(progress, [0.0, 0.05, 0.085], [1, 1, 0]);
   const y = useTransform(progress, [0.0, 0.085], [0, -24]);
   return (
@@ -1733,24 +1734,23 @@ function IntroTitle({ progress }: { progress: MotionValue<number> }) {
             <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage opacity-60 animate-ping" />
             <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage" />
           </span>
-          How Stroyka Sees Your Project
+          {t("introEyebrow")}
         </p>
         <h2
           className="font-display font-light text-[clamp(2.25rem,6vw,4.75rem)] leading-[0.98] tracking-[-0.025em] text-bone mb-5"
           style={{ textShadow: "0 8px 40px rgba(0,0,0,0.7)" }}
         >
-          From plan to done — every dollar tracked.
+          {t("introTitle")}
         </h2>
         <p
           className="text-base md:text-lg text-bone/80 leading-relaxed max-w-lg"
           style={{ textShadow: "0 2px 16px rgba(0,0,0,0.6)" }}
         >
-          Scroll to see a project unfold in Stroyka — every material, every
-          cost, in real time.
+          {t("introSubtitle")}
         </p>
         <div className="mt-8 inline-flex items-center gap-3 font-mono text-[11px] tracking-[0.18em] uppercase text-brand-sage-mist/70">
           <span className="w-6 h-px bg-brand-amber" aria-hidden />
-          Scroll to begin
+          {t("introScrollHint")}
           <span className="inline-block animate-bounce text-brand-amber">↓</span>
         </div>
       </div>
@@ -2485,7 +2485,7 @@ export default function PlanToDoneAnimation() {
           and a separate animation. */}
       <section
         id="plan-to-done"
-        aria-label="How Stroyka sees your project — interactive scroll animation"
+        aria-label={t("introAriaLabel")}
         className="relative bg-[#4E6253]"
         style={{ overflow: "clip" }}
       >

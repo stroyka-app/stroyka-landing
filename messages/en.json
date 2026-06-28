@@ -554,6 +554,9 @@
     "trackPct": "89% TRACK",
     "introEyebrow": "How Stroyka Sees Your Project",
     "introTitle": "From plan to done — every dollar tracked.",
+    "introSubtitle": "Scroll to see a project unfold in Stroyka — every material, every cost, in real time.",
+    "introScrollHint": "Scroll to begin",
+    "introAriaLabel": "How Stroyka sees your project — interactive scroll animation",
     "onTimeBudget": "On time · On budget",
     "spentToDate": "SPENT TO DATE",
     "onTime": "On time"
