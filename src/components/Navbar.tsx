@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useReducedMotion } from "framer-motion";
 import { useScrollPosition } from "@/lib/hooks/useScrollPosition";
 import Logo from "@/components/Logo";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 
 const NAV_LINKS = [
   { label: "Features", href: "/#features" },
@@ -88,7 +89,8 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="hidden md:block">
+        <div className="hidden md:flex items-center gap-4">
+          <LanguageSwitcher variant="bar" />
           <Link
             href="/get-started"
             className="group relative inline-flex items-center rounded-full px-5 py-2 font-heading text-[13.5px] font-medium tracking-wide text-bone border border-brand-sage-bright/40 bg-brand-sage-bright/10 hover:bg-brand-sage-bright/20 hover:border-brand-sage-bright/70 transition-[background-color,border-color,transform] duration-200 active:scale-[0.97]"
@@ -149,6 +151,9 @@ export default function Navbar() {
               >
                 Get started
               </Link>
+              <div className="pt-2 border-t border-bone/10">
+                <LanguageSwitcher variant="stacked" />
+              </div>
             </div>
           </motion.div>
         )}

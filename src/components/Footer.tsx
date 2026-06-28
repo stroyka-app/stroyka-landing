@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Apple, Play } from "lucide-react";
 import Logo from "@/components/Logo";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 
 const IOS_URL = process.env.NEXT_PUBLIC_IOS_APP_URL ?? "#";
 const ANDROID_URL = process.env.NEXT_PUBLIC_ANDROID_APP_URL ?? "#";
@@ -138,7 +139,10 @@ export default function Footer() {
 
         <div className="pt-8 flex flex-col md:flex-row items-start md:items-center md:justify-between gap-3 font-mono text-[11px] tracking-[0.18em] uppercase text-bone/45">
           <p>&copy; {new Date().getFullYear()} Stroyka — All rights reserved</p>
-          <p>Made for crews who build things</p>
+          <div className="flex items-center gap-5">
+            <LanguageSwitcher variant="bar" />
+            <p className="hidden sm:block">Made for crews who build things</p>
+          </div>
         </div>
       </div>
     </footer>
