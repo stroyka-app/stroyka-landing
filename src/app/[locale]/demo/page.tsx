@@ -6,12 +6,37 @@ import DemoForm from "@/components/DemoForm";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
+import { localeAlternates, canonicalFor, ogLocale } from "@/i18n/alternates";
 
-export const metadata: Metadata = {
-  title: "Request a Demo",
-  description: "See Stroyka in action. Book a 20-minute demo with the founder.",
-  alternates: { canonical: "/demo" },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+  const canonical = canonicalFor(locale, "/demo");
+  return {
+    title: { absolute: t("demoTitle") },
+    description: t("demoDescription"),
+    alternates: { canonical, languages: localeAlternates("/demo") },
+    openGraph: {
+      type: "website",
+      url: canonical,
+      siteName: "Stroyka",
+      title: t("demoTitle"),
+      description: t("demoDescription"),
+      locale: ogLocale[locale],
+      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Stroyka — Construction Management App" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("demoTitle"),
+      description: t("demoDescription"),
+      images: ["/og-image.png"],
+    },
+  };
+}
 
 export default async function DemoPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

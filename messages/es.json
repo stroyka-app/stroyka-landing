@@ -1,7 +1,16 @@
 {
   "_note": "pending native pass",
   "meta": {
-    "smokeKey": "Hecho para la obra"
+    "homeTitle": "Stroyka — Gestión de Cuadrilla y Costos de Obra",
+    "homeDescription": "Stroyka ayuda a cuadrillas de construcción a rastrear horas, costos de obra y pago de trabajadores — todo en una app. Para contratistas de EE.UU. con 5–25 trabajadores.",
+    "demoTitle": "Solicitar una Demo — Stroyka",
+    "demoDescription": "Mira Stroyka en acción. Agenda una demo de 20 minutos con el fundador.",
+    "getStartedTitle": "Empezar — Stroyka",
+    "getStartedDescription": "Elige un plan de Stroyka y empieza a gestionar tu cuadrilla hoy. Sin cobro por usuario — todo el equipo está incluido.",
+    "privacyTitle": "Política de Privacidad — Stroyka",
+    "privacyDescription": "Política de Privacidad de la plataforma de gestión de construcción Stroyka.",
+    "termsTitle": "Términos de Servicio — Stroyka",
+    "termsDescription": "Términos de Servicio de la plataforma de gestión de construcción Stroyka."
   },
   "hero": {
     "startFree": "Empieza gratis",

@@ -1,28 +1,38 @@
 // src/app/[locale]/page.tsx
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import HomeClient from "@/components/HomeClient";
+import { localeAlternates, canonicalFor, ogLocale } from "@/i18n/alternates";
 
-export const metadata: Metadata = {
-  title: { absolute: "Stroyka — Construction Crew & Job Cost Management" },
-  description:
-    "Stroyka helps small construction crews track daily hours, job costs, and worker pay — all in one app. Built for US contractors with 5–25 workers.",
-  alternates: { canonical: "/" },
-  openGraph: {
-    url: "https://getstroyka.com",
-    title: "Stroyka — Construction Crew & Job Cost Management",
-    description:
-      "Track hours, job costs, and worker pay for your construction crew. Simple. Fast. Built for the field.",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Stroyka — Construction Management App",
-      },
-    ],
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+  const canonical = canonicalFor(locale, "/");
+  return {
+    title: { absolute: t("homeTitle") },
+    description: t("homeDescription"),
+    alternates: { canonical, languages: localeAlternates("/") },
+    openGraph: {
+      type: "website",
+      url: canonical,
+      siteName: "Stroyka",
+      title: t("homeTitle"),
+      description: t("homeDescription"),
+      locale: ogLocale[locale],
+      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Stroyka — Construction Management App" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("homeTitle"),
+      description: t("homeDescription"),
+      images: ["/og-image.png"],
+    },
+  };
+}
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

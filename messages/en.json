@@ -1,6 +1,15 @@
 {
   "meta": {
-    "smokeKey": "Built for the field"
+    "homeTitle": "Stroyka — Construction Crew & Job Cost Management",
+    "homeDescription": "Stroyka helps small construction crews track daily hours, job costs, and worker pay — all in one app. Built for US contractors with 5–25 workers.",
+    "demoTitle": "Request a Demo — Stroyka",
+    "demoDescription": "See Stroyka in action. Book a 20-minute demo with the founder.",
+    "getStartedTitle": "Get Started — Stroyka",
+    "getStartedDescription": "Choose a Stroyka plan and start managing your construction crew today. No per-seat fees — your entire team is included.",
+    "privacyTitle": "Privacy Policy — Stroyka",
+    "privacyDescription": "Privacy Policy for the Stroyka construction management platform.",
+    "termsTitle": "Terms of Service — Stroyka",
+    "termsDescription": "Terms of Service for the Stroyka construction management platform."
   },
   "hero": {
     "startFree": "Start free",
