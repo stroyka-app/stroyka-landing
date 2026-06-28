@@ -18,7 +18,7 @@ export function localeAlternates(pathname: string): Record<string, string> {
 export function canonicalFor(locale: string, pathname: string): string {
   const clean = pathname === "/" ? "" : pathname;
   const prefix = locale === routing.defaultLocale ? "" : `/${locale}`;
-  return `https://getstroyka.com${prefix}${clean || "/"}`;
+  return `https://getstroyka.com${prefix}${clean || (prefix ? "" : "/")}`;
 }
 
 /** Maps next-intl locale codes to Open Graph locale strings. */
