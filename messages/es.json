@@ -91,6 +91,32 @@
       }
     }
   },
+  "howItWorks": {
+    "heading": "Cuatro pasos del registro al parte de horas firmado.",
+    "subhead": "Sin implementación de 30 días. Sin llamada de «éxito del cliente». Tú y tu cuadrilla están listos en una tarde.",
+    "steps": {
+      "0": {
+        "title": "Crea tu primer proyecto",
+        "body": "Nombre, dirección, número de plano y un presupuesto aproximado. Listo en menos de un minuto — sin llamada de bienvenida, sin demo de ventas.",
+        "alt": "Vista general de proyectos con presupuestos y obras en riesgo"
+      },
+      "1": {
+        "title": "Invita a tu cuadrilla",
+        "body": "Mándales el enlace por texto. Se instala en 30 segundos y tocan su nombre. Los trabajadores solo ven lo que les importa — sus tareas, sus horas, su comprobante de pago.",
+        "alt": "Pantalla de inicio del trabajador con ganancias, horas y tareas del día"
+      },
+      "2": {
+        "title": "Gestiona el día desde el teléfono",
+        "body": "La cuadrilla marca entrada, registra materiales y combustible, cierra tareas. Todo funciona sin conexión y sincroniza cuando vuelve la señal — sin datos perdidos, sin entradas duplicadas.",
+        "alt": "Pantalla de detalle de tarea con progreso e hilo de chat de la cuadrilla"
+      },
+      "3": {
+        "title": "Revisa los números",
+        "body": "Al final de la semana, abre la pestaña Reporte. Mano de obra, materiales, combustible, plan vs. real — listo para exportar como PDF o CSV para tu contador.",
+        "alt": "Reporte de proyecto con quema de presupuesto y desglose plan vs. real"
+      }
+    }
+  },
   "features": {
     "heading": "Todo lo que tu cuadrilla necesita. Nada más.",
     "items": {

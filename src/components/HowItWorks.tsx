@@ -2,53 +2,24 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import FadeIn from "@/components/ui/FadeIn";
 import TextReveal from "@/components/ui/TextReveal";
 
 interface Step {
   num: string;
-  title: string;
-  body: string;
   screenshot: string;
-  alt: string;
 }
 
 const STEPS: Step[] = [
-  {
-    num: "01",
-    title: "Create your first project",
-    body:
-      "Name, address, plan number, and a rough budget. You're set up in under a minute — no onboarding call, no sales demo.",
-    screenshot: "/screenshots/projects.jpeg",
-    alt: "Projects overview screen showing budgets and at-risk jobs",
-  },
-  {
-    num: "02",
-    title: "Invite your crew",
-    body:
-      "Text them a link. They install in 30 seconds and tap their name. Workers only see what matters to them — their tasks, their hours, their paystub.",
-    screenshot: "/screenshots/worker-view.jpeg",
-    alt: "Worker daily home screen with earnings, hours, and today's tasks",
-  },
-  {
-    num: "03",
-    title: "Run the day, on the phone",
-    body:
-      "Crew clocks in, logs materials and fuel, closes tasks. Everything works offline and syncs when signal comes back — no lost data, no duplicated entries.",
-    screenshot: "/screenshots/tasks.jpeg",
-    alt: "Task detail screen with progress and crew chat thread",
-  },
-  {
-    num: "04",
-    title: "Run the numbers",
-    body:
-      "End of week, open the Report tab. Labor, materials, fuel, plan vs. actual — ready to export as PDF or CSV for your bookkeeper.",
-    screenshot: "/screenshots/reports.jpeg",
-    alt: "Project report screen with budget burn and plan vs. actual breakdown",
-  },
+  { num: "01", screenshot: "/screenshots/projects.jpeg" },
+  { num: "02", screenshot: "/screenshots/worker-view.jpeg" },
+  { num: "03", screenshot: "/screenshots/tasks.jpeg" },
+  { num: "04", screenshot: "/screenshots/reports.jpeg" },
 ];
 
 export default function HowItWorks() {
+  const t = useTranslations("howItWorks");
   const stepsRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -106,12 +77,11 @@ export default function HowItWorks() {
             as="h2"
             className="font-display font-light text-5xl lg:text-7xl leading-[0.95] tracking-[-0.02em] text-ink mb-6"
           >
-            Four steps from signup to signed timesheet.
+            {t("heading")}
           </TextReveal>
           <FadeIn delay={0.1}>
             <p className="text-lg text-ink-soft leading-relaxed max-w-xl">
-              No 30-day implementation. No &ldquo;customer success&rdquo; call.
-              You and your crew are running in an afternoon.
+              {t("subhead")}
             </p>
           </FadeIn>
         </div>
@@ -155,10 +125,10 @@ export default function HowItWorks() {
                       {step.num}
                     </span>
                     <h3 className="font-display text-3xl lg:text-4xl leading-[1.05] text-ink mb-4">
-                      {step.title}
+                      {t(`steps.${i}.title` as `steps.${number}.title`)}
                     </h3>
                     <p className="text-ink-soft text-[16px] leading-relaxed max-w-md">
-                      {step.body}
+                      {t(`steps.${i}.body` as `steps.${number}.body`)}
                     </p>
                   </div>
 
@@ -170,7 +140,7 @@ export default function HowItWorks() {
                       <div className="relative w-full aspect-[1206/2150] rounded-[28px] overflow-hidden bg-black/40">
                         <Image
                           src={step.screenshot}
-                          alt={step.alt}
+                          alt={t(`steps.${i}.alt` as `steps.${number}.alt`)}
                           fill
                           sizes="240px"
                           className="object-cover"
@@ -202,7 +172,7 @@ export default function HowItWorks() {
                     <Image
                       key={s.num}
                       src={s.screenshot}
-                      alt={s.alt}
+                      alt={t(`steps.${i}.alt` as `steps.${number}.alt`)}
                       fill
                       sizes="(min-width: 1024px) 420px, 360px"
                       priority={i === 0}

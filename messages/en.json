@@ -90,6 +90,32 @@
       }
     }
   },
+  "howItWorks": {
+    "heading": "Four steps from signup to signed timesheet.",
+    "subhead": "No 30-day implementation. No “customer success” call. You and your crew are running in an afternoon.",
+    "steps": {
+      "0": {
+        "title": "Create your first project",
+        "body": "Name, address, plan number, and a rough budget. You’re set up in under a minute — no onboarding call, no sales demo.",
+        "alt": "Projects overview screen showing budgets and at-risk jobs"
+      },
+      "1": {
+        "title": "Invite your crew",
+        "body": "Text them a link. They install in 30 seconds and tap their name. Workers only see what matters to them — their tasks, their hours, their paystub.",
+        "alt": "Worker daily home screen with earnings, hours, and today’s tasks"
+      },
+      "2": {
+        "title": "Run the day, on the phone",
+        "body": "Crew clocks in, logs materials and fuel, closes tasks. Everything works offline and syncs when signal comes back — no lost data, no duplicated entries.",
+        "alt": "Task detail screen with progress and crew chat thread"
+      },
+      "3": {
+        "title": "Run the numbers",
+        "body": "End of week, open the Report tab. Labor, materials, fuel, plan vs. actual — ready to export as PDF or CSV for your bookkeeper.",
+        "alt": "Project report screen with budget burn and plan vs. actual breakdown"
+      }
+    }
+  },
   "features": {
     "heading": "Everything your crew needs. Nothing they don't.",
     "items": {
