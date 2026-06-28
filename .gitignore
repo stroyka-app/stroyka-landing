@@ -62,6 +62,9 @@ skills/
 CLAUDE.md
 tasks/
 
+# Generated working artifacts (email kits, exports — local only)
+outputs/
+
 # Misc
 *.tsbuildinfo
 
