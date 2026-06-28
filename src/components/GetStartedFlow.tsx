@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { motion, AnimatePresence, LayoutGroup, useReducedMotion } from "framer-motion";
 import {
   Check,
@@ -33,25 +34,6 @@ const PRICES = {
   pro: { monthly: 249, annual: 2484 },
 } as const;
 
-const STARTER_FEATURES = [
-  "Everything in Free",
-  "Up to 15 workers",
-  "PDF reports (Timesheet, P&L, Materials)",
-  "Job costing & P&L dashboard",
-  "CSV export",
-  "Email support",
-];
-
-const PRO_FEATURES = [
-  "Everything in Starter",
-  "Unlimited workers",
-  "Excel export",
-  "Photo & file attachments in task messaging",
-  "Advanced analytics",
-  "Priority support",
-  "Dedicated onboarding call",
-];
-
 /* ─── Animations ───────────────────────────────────────────────── */
 
 const stepVariants = {
@@ -74,6 +56,7 @@ const stepTransition = {
 /* ─── Helpers ──────────────────────────────────────────────────── */
 
 function AnnualPriceDisplay({ plan, tone = "light" }: { plan: Plan; tone?: "light" | "dark" }) {
+  const t = useTranslations("getStarted");
   const monthly = PRICES[plan].monthly;
   const annual = PRICES[plan].annual;
   const fullAnnual = monthly * 12;
@@ -91,14 +74,14 @@ function AnnualPriceDisplay({ plan, tone = "light" }: { plan: Plan; tone?: "ligh
     <div>
       <div className="flex items-baseline gap-1">
         <span className={`font-display text-5xl font-light ${primary} tabular-nums`}>${perMonth}</span>
-        <span className={`${muted} ml-2 font-mono text-[12px] tracking-[0.08em] uppercase`}>/ month</span>
+        <span className={`${muted} ml-2 font-mono text-[12px] tracking-[0.08em] uppercase`}>{t("perMonth")}</span>
       </div>
       <p className={`mt-2 font-mono text-[12px] tracking-[0.08em] uppercase tabular-nums ${secondary}`}>
-        ${annual.toLocaleString()} <span className={muted}>billed annually</span>
+        ${annual.toLocaleString()} <span className={muted}>{t("billedAnnually")}</span>
       </p>
       <div className="flex items-center gap-2 mt-1.5 font-mono text-[11px] tracking-[0.08em] uppercase tabular-nums">
         <span className={`${strike} line-through`}>${fullAnnual.toLocaleString()}</span>
-        <span className={`font-semibold ${savings}`}>Save ${saved}</span>
+        <span className={`font-semibold ${savings}`}>{t("saveAmount", { amount: saved })}</span>
       </div>
     </div>
   );
@@ -107,6 +90,7 @@ function AnnualPriceDisplay({ plan, tone = "light" }: { plan: Plan; tone?: "ligh
 /* ─── Component ────────────────────────────────────────────────── */
 
 export default function GetStartedFlow() {
+  const t = useTranslations("getStarted");
   const searchParams = useSearchParams();
   const prefersReduced = useReducedMotion();
 
@@ -149,6 +133,26 @@ export default function GetStartedFlow() {
 
   const isFoundingMember = coupon === "FOUNDING99" && plan === "starter";
 
+  // Translated feature lists (explicit keys match message file indices)
+  const starterFeatures = [
+    t("starter.features.0"),
+    t("starter.features.1"),
+    t("starter.features.2"),
+    t("starter.features.3"),
+    t("starter.features.4"),
+    t("starter.features.5"),
+  ];
+
+  const proFeatures = [
+    t("pro.features.0"),
+    t("pro.features.1"),
+    t("pro.features.2"),
+    t("pro.features.3"),
+    t("pro.features.4"),
+    t("pro.features.5"),
+    t("pro.features.6"),
+  ];
+
   /* ─── Handlers ──────────────────────────────────────────────── */
 
   const goToStep2 = (selectedPlan: Plan) => {
@@ -189,14 +193,14 @@ export default function GetStartedFlow() {
 
   const validate = (): boolean => {
     const errors: Partial<Record<keyof FormData, string>> = {};
-    if (!form.name.trim()) errors.name = "Please enter your name.";
+    if (!form.name.trim()) errors.name = t("form.errors.nameRequired");
     if (!form.email.trim()) {
-      errors.email = "We need your work email.";
+      errors.email = t("form.errors.emailRequired");
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      errors.email = "That doesn't look like a valid email.";
+      errors.email = t("form.errors.emailInvalid");
     }
     if (!form.companyName.trim())
-      errors.companyName = "Please enter your company name.";
+      errors.companyName = t("form.errors.companyRequired");
     setFieldErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -224,7 +228,7 @@ export default function GetStartedFlow() {
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || "Something went wrong");
+        throw new Error(data.error || t("form.errors.somethingWentWrong"));
       }
 
       const { url } = await res.json();
@@ -236,7 +240,7 @@ export default function GetStartedFlow() {
     } catch (err) {
       setSubmitting(false);
       setSubmitError(
-        err instanceof Error ? err.message : "Something went wrong"
+        err instanceof Error ? err.message : t("form.errors.somethingWentWrong")
       );
     }
   };
@@ -258,16 +262,16 @@ export default function GetStartedFlow() {
         {/* Heading */}
         <div className="text-center mb-8">
           <TextReveal as="h1" className="text-4xl lg:text-5xl font-display font-light leading-tight tracking-[-0.02em] text-ink mb-3">
-            {step === 1 ? "Choose your plan" : step === 2 ? "Almost there" : "Redirecting..."}
+            {step === 1 ? t("chooseYourPlan") : step === 2 ? t("almostThere") : t("redirecting")}
           </TextReveal>
           {step === 1 && (
             <p className="text-base text-ink-soft max-w-lg mx-auto">
-              No per-seat fees. Your entire crew is included.
+              {t("noPerSeatFees")}
             </p>
           )}
           {step === 2 && (
             <p className="text-base text-ink-soft max-w-lg mx-auto">
-              Enter your details and we&apos;ll take you to secure checkout.
+              {t("enterDetails")}
             </p>
           )}
         </div>
@@ -341,7 +345,7 @@ export default function GetStartedFlow() {
                             />
                           )}
                           <span className="relative">
-                            {mode === "monthly" ? "Monthly" : "Annual"}
+                            {mode === "monthly" ? t("monthly") : t("annual")}
                           </span>
                           {mode === "annual" && (
                             <span
@@ -366,15 +370,15 @@ export default function GetStartedFlow() {
                   onClick={() => setPlan("starter")}
                 >
                   <span className="absolute -top-3 left-8 bg-brand-deep text-bone font-mono text-[11px] tracking-[0.15em] uppercase font-semibold px-3 py-1 rounded-full">
-                    Most Popular
+                    {t("mostPopular")}
                   </span>
 
                   <div className="flex items-center gap-2 mb-1">
                     <Zap size={18} className="text-brand-forest" />
-                    <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-brand-forest">Starter</h3>
+                    <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-brand-forest">{t("starter.name")}</h3>
                   </div>
                   <p className="text-ink-soft text-sm mb-5 mt-1">
-                    For growing crews up to 15
+                    {t("starter.description")}
                   </p>
 
                   <div className="mb-6 min-h-[112px]">
@@ -384,19 +388,19 @@ export default function GetStartedFlow() {
                           <span className="font-display text-5xl font-light text-ink tabular-nums">
                             ${PRICES.starter.monthly}
                           </span>
-                          <span className="text-ink-muted ml-2 font-mono text-[12px] tracking-[0.08em] uppercase">/ month</span>
+                          <span className="text-ink-muted ml-2 font-mono text-[12px] tracking-[0.08em] uppercase">{t("perMonth")}</span>
                         </div>
                       </div>
                     ) : (
                       <AnnualPriceDisplay plan="starter" />
                     )}
                     <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-ink-muted mt-2">
-                      Up to 15 workers
+                      {t("starter.workerLimit")}
                     </p>
                   </div>
 
                   <ul className="flex flex-col gap-2.5 mb-8">
-                    {STARTER_FEATURES.map((f) => (
+                    {starterFeatures.map((f) => (
                       <li
                         key={f}
                         className="flex items-start gap-2 text-sm text-ink-soft"
@@ -418,7 +422,7 @@ export default function GetStartedFlow() {
                       goToStep2("starter");
                     }}
                   >
-                    Continue
+                    {t("continue")}
                     <ArrowRight size={16} />
                   </Button>
                 </motion.div>
@@ -432,10 +436,10 @@ export default function GetStartedFlow() {
                 >
                   <div className="flex items-center gap-2 mb-1">
                     <Crown size={18} className="text-brand-sage-bright" />
-                    <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-brand-sage-bright">Pro</h3>
+                    <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-brand-sage-bright">{t("pro.name")}</h3>
                   </div>
                   <p className="text-bone/70 text-sm mb-5 mt-1">
-                    For larger operations, no limits
+                    {t("pro.description")}
                   </p>
 
                   <div className="mb-6 min-h-[112px]">
@@ -445,19 +449,19 @@ export default function GetStartedFlow() {
                           <span className="font-display text-5xl font-light text-bone tabular-nums">
                             ${PRICES.pro.monthly}
                           </span>
-                          <span className="text-bone/60 ml-2 font-mono text-[12px] tracking-[0.08em] uppercase">/ month</span>
+                          <span className="text-bone/60 ml-2 font-mono text-[12px] tracking-[0.08em] uppercase">{t("perMonth")}</span>
                         </div>
                       </div>
                     ) : (
                       <AnnualPriceDisplay plan="pro" tone="dark" />
                     )}
                     <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-brand-sage-bright/85 mt-2">
-                      Unlimited workers
+                      {t("pro.workerLimit")}
                     </p>
                   </div>
 
                   <ul className="flex flex-col gap-2.5 mb-8">
-                    {PRO_FEATURES.map((f) => (
+                    {proFeatures.map((f) => (
                       <li
                         key={f}
                         className="flex items-start gap-2 text-sm text-bone/85"
@@ -479,7 +483,7 @@ export default function GetStartedFlow() {
                       goToStep2("pro");
                     }}
                   >
-                    Continue
+                    {t("continue")}
                     <ArrowRight size={16} />
                   </Button>
                 </motion.div>
@@ -495,10 +499,10 @@ export default function GetStartedFlow() {
                 <div className="card-stone border border-brand-sage/35 rounded-2xl p-6 text-center">
                   <p className="text-sm font-heading font-semibold flex items-center justify-center gap-2 text-ink">
                     <ShieldCheck size={16} className="text-brand-forest" />
-                    Founding Member Rate — $99/month, locked forever
+                    {t("founding.title")}
                   </p>
                   <p className="text-xs text-ink-soft mt-2 mb-4">
-                    The first 20 companies lock in Starter at $99/month for life. $50 off every month, forever.
+                    {t("founding.body")}
                   </p>
                   <Button
                     variant="ghost"
@@ -506,7 +510,7 @@ export default function GetStartedFlow() {
                     onClick={claimFoundingSpot}
                     className="text-brand-forest hover:text-brand-deep"
                   >
-                    Claim a Founding Spot
+                    {t("founding.cta")}
                     <ArrowRight size={14} />
                   </Button>
                 </div>
@@ -530,14 +534,14 @@ export default function GetStartedFlow() {
                 <div className="card-stone border border-ink/15 rounded-2xl p-5 mb-8">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-mono text-[11px] text-ink-muted uppercase tracking-[0.2em] mb-2">Selected plan</p>
+                      <p className="font-mono text-[11px] text-ink-muted uppercase tracking-[0.2em] mb-2">{t("selectedPlan")}</p>
                       <p className="font-heading font-semibold text-xl capitalize flex items-center gap-2 text-ink">
                         {plan === "pro" ? (
                           <Crown size={18} className="text-brand-deep" />
                         ) : (
                           <Zap size={18} className="text-brand-forest" />
                         )}
-                        {plan}
+                        {plan === "starter" ? t("starter.name") : plan === "pro" ? t("pro.name") : plan}
                       </p>
                     </div>
                     <div className="text-right">
@@ -545,7 +549,7 @@ export default function GetStartedFlow() {
                         <div className="flex items-baseline gap-2">
                           <span className="text-sm text-ink-muted/75 line-through">$149</span>
                           <span className="font-display text-3xl font-light text-ink tabular-nums">$99</span>
-                          <span className="text-ink-muted text-sm">/mo</span>
+                          <span className="text-ink-muted text-sm">{t("perMonthShort")}</span>
                         </div>
                       ) : billing === "annual" ? (
                         <div>
@@ -553,10 +557,10 @@ export default function GetStartedFlow() {
                             <span className="font-display text-3xl font-light text-ink tabular-nums">
                               ${Math.round(PRICES[plan!].annual / 12)}
                             </span>
-                            <span className="text-ink-muted text-sm">/mo</span>
+                            <span className="text-ink-muted text-sm">{t("perMonthShort")}</span>
                           </div>
                           <p className="text-xs text-ink-muted mt-0.5">
-                            ${PRICES[plan!].annual.toLocaleString()}/yr billed annually
+                            ${PRICES[plan!].annual.toLocaleString()}{t("perYrBilledAnnually")}
                           </p>
                         </div>
                       ) : (
@@ -564,7 +568,7 @@ export default function GetStartedFlow() {
                           <span className="font-display text-3xl font-light text-ink tabular-nums">
                             ${PRICES[plan!].monthly}
                           </span>
-                          <span className="text-ink-muted text-sm">/mo</span>
+                          <span className="text-ink-muted text-sm">{t("perMonthShort")}</span>
                         </div>
                       )}
                     </div>
@@ -573,7 +577,7 @@ export default function GetStartedFlow() {
                     <div className="mt-3 pt-3 border-t border-ink/15">
                       <span className="inline-flex items-center gap-1.5 text-xs font-heading font-semibold text-brand-forest">
                         <ShieldCheck size={13} />
-                        Founding Member — $50 off every month, forever
+                        {t("founding.badge")}
                       </span>
                     </div>
                   )}
@@ -585,7 +589,7 @@ export default function GetStartedFlow() {
                       htmlFor="gs-name"
                       className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2"
                     >
-                      Your name *
+                      {t("form.nameLbl")}
                     </label>
                     <input
                       id="gs-name"
@@ -594,7 +598,7 @@ export default function GetStartedFlow() {
                       value={form.name}
                       onChange={handleChange}
                       className={inputCls("name")}
-                      placeholder="John Smith"
+                      placeholder={t("form.namePlaceholder")}
                       autoComplete="name"
                     />
                     {fieldErrors.name && (
@@ -607,7 +611,7 @@ export default function GetStartedFlow() {
                       htmlFor="gs-email"
                       className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2"
                     >
-                      Work email *
+                      {t("form.emailLbl")}
                     </label>
                     <input
                       id="gs-email"
@@ -616,7 +620,7 @@ export default function GetStartedFlow() {
                       value={form.email}
                       onChange={handleChange}
                       className={inputCls("email")}
-                      placeholder="john@smithconstruction.com"
+                      placeholder={t("form.emailPlaceholder")}
                       autoComplete="email"
                     />
                     {fieldErrors.email && (
@@ -629,7 +633,7 @@ export default function GetStartedFlow() {
                       htmlFor="gs-companyName"
                       className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2"
                     >
-                      Company name *
+                      {t("form.companyLbl")}
                     </label>
                     <input
                       id="gs-companyName"
@@ -638,7 +642,7 @@ export default function GetStartedFlow() {
                       value={form.companyName}
                       onChange={handleChange}
                       className={inputCls("companyName")}
-                      placeholder="Smith Construction LLC"
+                      placeholder={t("form.companyPlaceholder")}
                       autoComplete="organization"
                     />
                     {fieldErrors.companyName && (
@@ -650,7 +654,7 @@ export default function GetStartedFlow() {
 
                   {submitError && (
                     <div className="rounded-xl border border-red-400/40 bg-red-50 p-4 text-sm text-red-800">
-                      {submitError}. Please try again or email us at{" "}
+                      {submitError}{t("form.retryHint")}{" "}
                       <a
                         href="mailto:hello@getstroyka.com"
                         className="underline hover:text-red-900"
@@ -668,7 +672,7 @@ export default function GetStartedFlow() {
                       className="sm:w-auto"
                     >
                       <ArrowLeft size={16} />
-                      Back
+                      {t("back")}
                     </Button>
                     <button
                       type="submit"
@@ -678,11 +682,11 @@ export default function GetStartedFlow() {
                       {submitting ? (
                         <>
                           <Loader2 size={16} className="animate-spin" />
-                          Processing...
+                          {t("processing")}
                         </>
                       ) : (
                         <>
-                          Continue to Payment
+                          {t("continueToPayment")}
                           <ArrowRight size={16} />
                         </>
                       )}
@@ -690,12 +694,12 @@ export default function GetStartedFlow() {
                   </div>
 
                   <p className="text-xs text-ink-muted/60 text-center mt-2">
-                    Already have an account?{" "}
+                    {t("alreadyHaveAccount")}{" "}
                     <a
                       href="https://app.getstroyka.com"
                       className="text-brand-forest hover:text-brand-sage transition-colors duration-200 underline"
                     >
-                      Log in &rarr;
+                      {t("login")}
                     </a>
                   </p>
                 </form>
@@ -719,10 +723,10 @@ export default function GetStartedFlow() {
                   <Loader2 size={40} className="text-brand-forest" />
                 </motion.div>
                 <p className="font-heading text-lg text-ink-soft/80">
-                  Taking you to secure checkout...
+                  {t("takingYouToCheckout")}
                 </p>
                 <p className="text-sm text-ink-muted/60">
-                  Powered by Stripe. Your payment info is never stored on our servers.
+                  {t("poweredByStripe")}
                 </p>
               </div>
             </motion.div>

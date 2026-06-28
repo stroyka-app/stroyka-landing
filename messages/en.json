@@ -451,5 +451,93 @@
     "introEyebrow": "How Stroyka Sees Your Project",
     "introTitle": "From plan to done — every dollar tracked.",
     "onTimeBudget": "On time · On budget"
+  },
+  "getStarted": {
+    "chooseYourPlan": "Choose your plan",
+    "almostThere": "Almost there",
+    "redirecting": "Redirecting...",
+    "noPerSeatFees": "No per-seat fees. Your entire crew is included.",
+    "enterDetails": "Enter your details and we'll take you to secure checkout.",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "perMonth": "/ month",
+    "perMonthShort": "/mo",
+    "billedAnnually": "billed annually",
+    "perYrBilledAnnually": "/yr billed annually",
+    "saveAmount": "Save ${amount}",
+    "mostPopular": "Most Popular",
+    "selectedPlan": "Selected plan",
+    "starter": {
+      "name": "Starter",
+      "description": "For growing crews up to 15",
+      "workerLimit": "Up to 15 workers",
+      "features": {
+        "0": "Everything in Free",
+        "1": "Up to 15 workers",
+        "2": "PDF reports (Timesheet, P&L, Materials)",
+        "3": "Job costing & P&L dashboard",
+        "4": "CSV export",
+        "5": "Email support"
+      }
+    },
+    "pro": {
+      "name": "Pro",
+      "description": "For larger operations, no limits",
+      "workerLimit": "Unlimited workers",
+      "features": {
+        "0": "Everything in Starter",
+        "1": "Unlimited workers",
+        "2": "Excel export",
+        "3": "Photo & file attachments in task messaging",
+        "4": "Advanced analytics",
+        "5": "Priority support",
+        "6": "Dedicated onboarding call"
+      }
+    },
+    "founding": {
+      "title": "Founding Member Rate — $99/month, locked forever",
+      "body": "The first 20 companies lock in Starter at $99/month for life. $50 off every month, forever.",
+      "cta": "Claim a Founding Spot",
+      "badge": "Founding Member — $50 off every month, forever"
+    },
+    "form": {
+      "nameLbl": "Your name *",
+      "emailLbl": "Work email *",
+      "companyLbl": "Company name *",
+      "namePlaceholder": "John Smith",
+      "emailPlaceholder": "john@smithconstruction.com",
+      "companyPlaceholder": "Smith Construction LLC",
+      "retryHint": ". Please try again or email us at",
+      "errors": {
+        "nameRequired": "Please enter your name.",
+        "emailRequired": "We need your work email.",
+        "emailInvalid": "That doesn't look like a valid email.",
+        "companyRequired": "Please enter your company name.",
+        "somethingWentWrong": "Something went wrong"
+      }
+    },
+    "back": "Back",
+    "continue": "Continue",
+    "continueToPayment": "Continue to Payment",
+    "processing": "Processing...",
+    "alreadyHaveAccount": "Already have an account?",
+    "login": "Log in →",
+    "takingYouToCheckout": "Taking you to secure checkout...",
+    "poweredByStripe": "Powered by Stripe. Your payment info is never stored on our servers.",
+    "subscriptionActive": "Subscription active",
+    "welcome": "You're in. Welcome to Stroyka.",
+    "planActive": "Your {plan} plan is active",
+    "planActiveGeneric": "Your plan is active",
+    "haveApp": "Already have the app?",
+    "openSignIn": "Open Stroyka and sign in — your plan is already upgraded.",
+    "newToStroyka": "New to Stroyka?",
+    "downloadSignUp": "Download the app and sign up with the same email. Your plan activates automatically.",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "questions": "Questions?",
+    "noWorries": "No worries",
+    "planUnchanged": "Your plan hasn't changed.",
+    "subscribeAnytime": "You can subscribe anytime from the pricing page.",
+    "backToPricing": "← Back to pricing"
   }
 }

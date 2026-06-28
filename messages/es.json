@@ -453,5 +453,93 @@
     "introEyebrow": "Cómo Stroyka ve tu proyecto",
     "introTitle": "Del plano a la entrega — cada peso rastreado.",
     "onTimeBudget": "A tiempo · En presupuesto"
+  },
+  "getStarted": {
+    "chooseYourPlan": "Elige tu plan",
+    "almostThere": "Ya casi",
+    "redirecting": "Redirigiendo...",
+    "noPerSeatFees": "Sin cobro por usuario. Toda tu cuadrilla incluida.",
+    "enterDetails": "Ingresa tus datos y te llevamos al pago seguro.",
+    "monthly": "Mensual",
+    "annual": "Anual",
+    "perMonth": "/ mes",
+    "perMonthShort": "/mes",
+    "billedAnnually": "facturado anualmente",
+    "perYrBilledAnnually": "/año, facturado anualmente",
+    "saveAmount": "Ahorras ${amount}",
+    "mostPopular": "Más popular",
+    "selectedPlan": "Plan seleccionado",
+    "starter": {
+      "name": "Starter",
+      "description": "Para cuadrillas en crecimiento, hasta 15",
+      "workerLimit": "Hasta 15 trabajadores",
+      "features": {
+        "0": "Todo lo de Gratis",
+        "1": "Hasta 15 trabajadores",
+        "2": "Reportes PDF (Parte de horas, P&L, Materiales)",
+        "3": "Costos de obra y panel P&L",
+        "4": "Exportación CSV",
+        "5": "Soporte por email"
+      }
+    },
+    "pro": {
+      "name": "Pro",
+      "description": "Para operaciones más grandes, sin límites",
+      "workerLimit": "Trabajadores ilimitados",
+      "features": {
+        "0": "Todo lo de Starter",
+        "1": "Trabajadores ilimitados",
+        "2": "Exportación Excel",
+        "3": "Fotos y archivos adjuntos en mensajes de tareas",
+        "4": "Analítica avanzada",
+        "5": "Soporte prioritario",
+        "6": "Llamada de incorporación dedicada"
+      }
+    },
+    "founding": {
+      "title": "Tarifa de Miembro Fundador — $99/mes, fija para siempre",
+      "body": "Las primeras 20 empresas fijan Starter a $99/mes de por vida. $50 de ahorro cada mes, para siempre.",
+      "cta": "Reclamar un lugar fundador",
+      "badge": "Miembro Fundador — $50 de ahorro cada mes, para siempre"
+    },
+    "form": {
+      "nameLbl": "Tu nombre *",
+      "emailLbl": "Correo de trabajo *",
+      "companyLbl": "Nombre de empresa *",
+      "namePlaceholder": "Juan García",
+      "emailPlaceholder": "juan@garciaconstruccion.com",
+      "companyPlaceholder": "García Construcción LLC",
+      "retryHint": ". Intenta de nuevo o escríbenos a",
+      "errors": {
+        "nameRequired": "Ingresa tu nombre.",
+        "emailRequired": "Necesitamos tu correo de trabajo.",
+        "emailInvalid": "Ese correo no parece válido.",
+        "companyRequired": "Ingresa el nombre de tu empresa.",
+        "somethingWentWrong": "Algo salió mal"
+      }
+    },
+    "back": "Atrás",
+    "continue": "Continuar",
+    "continueToPayment": "Continuar al pago",
+    "processing": "Procesando...",
+    "alreadyHaveAccount": "¿Ya tienes cuenta?",
+    "login": "Inicia sesión →",
+    "takingYouToCheckout": "Llevándote al pago seguro...",
+    "poweredByStripe": "Procesado por Stripe. Tu información de pago nunca se guarda en nuestros servidores.",
+    "subscriptionActive": "Suscripción activa",
+    "welcome": "Estás dentro. Bienvenido a Stroyka.",
+    "planActive": "Tu plan {plan} está activo",
+    "planActiveGeneric": "Tu plan está activo",
+    "haveApp": "¿Ya tienes la app?",
+    "openSignIn": "Abre Stroyka e inicia sesión — tu plan ya está actualizado.",
+    "newToStroyka": "¿Nuevo en Stroyka?",
+    "downloadSignUp": "Descarga la app y regístrate con el mismo correo. Tu plan se activa automáticamente.",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "questions": "¿Preguntas?",
+    "noWorries": "Sin problema",
+    "planUnchanged": "Tu plan no ha cambiado.",
+    "subscribeAnytime": "Puedes suscribirte cuando quieras desde la página de precios.",
+    "backToPricing": "← Volver a precios"
   }
 }
