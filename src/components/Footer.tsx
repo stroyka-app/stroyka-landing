@@ -140,7 +140,7 @@ export default function Footer() {
         <div className="pt-8 flex flex-col md:flex-row items-start md:items-center md:justify-between gap-3 font-mono text-[11px] tracking-[0.18em] uppercase text-bone/45">
           <p>&copy; {new Date().getFullYear()} Stroyka — All rights reserved</p>
           <div className="flex items-center gap-5">
-            <LanguageSwitcher variant="bar" />
+            <LanguageSwitcher placement="top" />
             <p className="hidden sm:block">Made for crews who build things</p>
           </div>
         </div>
