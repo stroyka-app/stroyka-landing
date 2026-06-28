@@ -4,7 +4,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, useReducedMotion } from "framer-motion";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FadeIn from "@/components/ui/FadeIn";
@@ -19,12 +20,12 @@ type PageState = "loading" | "success" | "error" | "direct";
  * Bone-editorial palette pieces — sage atoms used across the four states.
  * ──────────────────────────────────────────────────────────────────────── */
 
-function LoadingDots() {
+function LoadingDots({ label }: { label: string }) {
   const prefersReduced = useReducedMotion();
   if (prefersReduced) {
     return (
       <div className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-muted">
-        loading
+        {label}
       </div>
     );
   }
@@ -132,6 +133,7 @@ function PageShell({ children }: { children: React.ReactNode }) {
 }
 
 function DirectVisitView() {
+  const t = useTranslations("account");
   return (
     <PageShell>
       <FadeIn>
@@ -140,31 +142,33 @@ function DirectVisitView() {
         </div>
       </FadeIn>
       <FadeIn delay={0.05}>
-        <SectionLabel>Account</SectionLabel>
+        <SectionLabel>{t("title")}</SectionLabel>
       </FadeIn>
       <TextReveal
         as="h1"
         className="font-display font-light text-4xl lg:text-5xl leading-[0.98] tracking-[-0.02em] text-ink mb-5"
       >
-        Manage your subscription in the app
+        {t("manageInApp")}
       </TextReveal>
       <FadeIn delay={0.15}>
         <p className="text-[15px] lg:text-base text-ink-soft leading-relaxed mb-10 max-w-md mx-auto">
-          Your subscription is managed inside Stroyka. Open the app and go to{" "}
-          <span className="text-ink font-medium">Settings &rarr; your plan</span>{" "}
-          to update your card, view invoices, or change your plan.
+          {t.rich("managedInside", {
+            highlight: (chunks) => (
+              <span className="text-ink font-medium">{chunks}</span>
+            ),
+          })}
         </p>
       </FadeIn>
       <FadeIn delay={0.22}>
         <div className="flex flex-col items-center gap-5">
           <Button variant="primary" size="lg" href="https://app.getstroyka.com">
-            Open Stroyka
+            {t("openStroyka")}
           </Button>
           <a
             href="mailto:hello@getstroyka.com"
             className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-muted hover:text-brand-forest transition-colors"
           >
-            Need help? hello@getstroyka.com
+            {t("needHelp")}
           </a>
         </div>
       </FadeIn>
@@ -173,6 +177,7 @@ function DirectVisitView() {
 }
 
 function LoadingView() {
+  const t = useTranslations("account");
   return (
     <PageShell>
       <FadeIn>
@@ -181,19 +186,19 @@ function LoadingView() {
         </div>
       </FadeIn>
       <FadeIn delay={0.05}>
-        <SectionLabel>Account</SectionLabel>
+        <SectionLabel>{t("title")}</SectionLabel>
       </FadeIn>
       <FadeIn delay={0.1}>
         <h1 className="font-display font-light text-3xl lg:text-4xl leading-tight text-ink mb-6">
-          Redirecting to billing
+          {t("redirectingBilling")}
         </h1>
       </FadeIn>
       <FadeIn delay={0.18}>
         <div className="flex justify-center mb-4">
-          <LoadingDots />
+          <LoadingDots label={t("loading")} />
         </div>
         <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-muted">
-          Verifying your session
+          {t("verifying")}
         </p>
       </FadeIn>
     </PageShell>
@@ -201,37 +206,38 @@ function LoadingView() {
 }
 
 function SuccessView() {
+  const t = useTranslations("account");
   return (
     <PageShell>
       <FadeIn>
-        <StampSeal label="UPDATED" />
+        <StampSeal label={t("updated")} />
       </FadeIn>
       <FadeIn delay={0.1}>
         <div className="mt-10">
-          <SectionLabel>Account</SectionLabel>
+          <SectionLabel>{t("title")}</SectionLabel>
         </div>
       </FadeIn>
       <TextReveal
         as="h1"
         className="font-display font-light text-4xl lg:text-5xl leading-[0.98] tracking-[-0.02em] text-ink mb-5"
       >
-        You&rsquo;re all set
+        {t("allSet")}
       </TextReveal>
       <FadeIn delay={0.18}>
         <p className="text-[15px] lg:text-base text-ink-soft leading-relaxed mb-10 max-w-md mx-auto">
-          Your billing changes have been saved.
+          {t("changesSaved")}
         </p>
       </FadeIn>
       <FadeIn delay={0.25}>
         <div className="flex flex-col items-center gap-5">
           <Button variant="primary" size="lg" href="https://app.getstroyka.com">
-            Open Stroyka
+            {t("openStroyka")}
           </Button>
           <Link
             href="/"
             className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-muted hover:text-brand-forest transition-colors"
           >
-            ← Back to getstroyka.com
+            {t("backToSite")}
           </Link>
         </div>
       </FadeIn>
@@ -240,6 +246,7 @@ function SuccessView() {
 }
 
 function ErrorView() {
+  const t = useTranslations("account");
   return (
     <PageShell>
       <FadeIn>
@@ -248,29 +255,31 @@ function ErrorView() {
         </div>
       </FadeIn>
       <FadeIn delay={0.05}>
-        <SectionLabel>Account</SectionLabel>
+        <SectionLabel>{t("title")}</SectionLabel>
       </FadeIn>
       <TextReveal
         as="h1"
         className="font-display font-light text-4xl lg:text-5xl leading-[0.98] tracking-[-0.02em] text-ink mb-5"
       >
-        We couldn&rsquo;t verify your session
+        {t("couldntVerify")}
       </TextReveal>
       <FadeIn delay={0.15}>
         <p className="text-[15px] lg:text-base text-ink-soft leading-relaxed mb-10 max-w-md mx-auto">
-          Please try again from the Stroyka app, or contact us at{" "}
-          <a
-            href="mailto:hello@getstroyka.com"
-            className="text-brand-forest hover:text-brand-deep underline underline-offset-2 transition-colors"
-          >
-            hello@getstroyka.com
-          </a>
-          .
+          {t.rich("tryFromApp", {
+            email: (chunks) => (
+              <a
+                href="mailto:hello@getstroyka.com"
+                className="text-brand-forest hover:text-brand-deep underline underline-offset-2 transition-colors"
+              >
+                {chunks}
+              </a>
+            ),
+          })}
         </p>
       </FadeIn>
       <FadeIn delay={0.22}>
         <Button variant="primary" size="lg" href="https://app.getstroyka.com">
-          Open Stroyka
+          {t("openStroyka")}
         </Button>
       </FadeIn>
     </PageShell>

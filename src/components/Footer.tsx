@@ -1,53 +1,66 @@
-import Link from "next/link";
+"use client";
+
+import { useTranslations, useLocale } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { Apple, Play } from "lucide-react";
 import Logo from "@/components/Logo";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 
 const IOS_URL = process.env.NEXT_PUBLIC_IOS_APP_URL ?? "#";
 const ANDROID_URL = process.env.NEXT_PUBLIC_ANDROID_APP_URL ?? "#";
 
-const PRODUCT_LINKS = [
-  { label: "Features", href: "/#features" },
-  { label: "How It Works", href: "/#how-it-works" },
-  { label: "Pricing", href: "/#pricing" },
-  { label: "FAQ", href: "/#faq" },
+type NavKey = "features" | "howItWorks" | "pricing" | "faq";
+type FooterCompanyKey = "requestDemo" | "privacy" | "terms";
+
+const PRODUCT_LINKS: Array<{ key: NavKey; hash: string }> = [
+  { key: "features", hash: "features" },
+  { key: "howItWorks", hash: "how-it-works" },
+  { key: "pricing", hash: "pricing" },
+  { key: "faq", hash: "faq" },
 ];
 
-const COMPANY_LINKS = [
-  { label: "Request Demo", href: "/demo" },
-  { label: "Privacy Policy", href: "/privacy" },
-  { label: "Terms of Service", href: "/terms" },
+const COMPANY_LINKS: Array<{ key: FooterCompanyKey; href: string }> = [
+  { key: "requestDemo", href: "/demo" },
+  { key: "privacy", href: "/privacy" },
+  { key: "terms", href: "/terms" },
 ];
 
 export default function Footer() {
+  const t = useTranslations("footer");
+  const tn = useTranslations("nav");
+  const active = useLocale();
+  const homeHash = (hash: string) =>
+    active === "en" ? `/#${hash}` : `/${active}#${hash}`;
+
   return (
     <footer id="footer" className="relative bg-[#2B3D30] text-bone">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 pt-20 pb-10">
         {/* Colophon line — mono, Paysages-style */}
         <div className="flex flex-wrap items-center justify-between gap-4 pb-10 mb-16 border-b border-bone/12 font-mono text-[11px] tracking-[0.22em] uppercase text-bone/50">
-          <span>Stroyka — The Field Journal · Vol. 01</span>
-          <span>Austin, Texas · Est. 2026</span>
+          <span>{t("colophonLeft")}</span>
+          <span>{t("colophonRight")}</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           <div className="flex flex-col">
             <Logo variant="dark" size={30} />
             <p className="mt-5 text-[14px] text-bone/65 leading-relaxed max-w-xs">
-              Job costing, crew management, and supply tracking built for small construction teams.
+              {t("tagline")}
             </p>
           </div>
 
           <div className="flex flex-col">
             <h3 className="font-mono text-[11px] font-medium text-bone mb-5 tracking-[0.22em] uppercase">
-              Product
+              {t("product")}
             </h3>
             <ul className="space-y-3">
               {PRODUCT_LINKS.map((link) => (
-                <li key={link.label}>
+                <li key={link.key}>
                   <a
-                    href={link.href}
+                    href={homeHash(link.hash)}
                     className="text-[14.5px] text-bone/70 hover:text-brand-sage-bright transition-colors duration-200"
                   >
-                    {link.label}
+                    {tn(link.key)}
                   </a>
                 </li>
               ))}
@@ -56,16 +69,16 @@ export default function Footer() {
 
           <div className="flex flex-col">
             <h3 className="font-mono text-[11px] font-medium text-bone mb-5 tracking-[0.22em] uppercase">
-              Company
+              {t("company")}
             </h3>
             <ul className="space-y-3">
               {COMPANY_LINKS.map((link) => (
-                <li key={link.label}>
+                <li key={link.key}>
                   <Link
                     href={link.href}
                     className="text-[14.5px] text-bone/70 hover:text-brand-sage-bright transition-colors duration-200"
                   >
-                    {link.label}
+                    {t(link.key)}
                   </Link>
                 </li>
               ))}
@@ -74,7 +87,7 @@ export default function Footer() {
 
           <div id="download" className="scroll-mt-24 flex flex-col">
             <h3 className="font-mono text-[11px] font-medium text-bone mb-5 tracking-[0.22em] uppercase">
-              Contact
+              {t("contact")}
             </h3>
             <ul className="space-y-3 mb-7">
               <li>
@@ -88,7 +101,7 @@ export default function Footer() {
             </ul>
 
             <h3 className="font-mono text-[11px] font-medium text-bone mb-5 tracking-[0.22em] uppercase">
-              Get the app
+              {t("getTheApp")}
             </h3>
             <ul className="space-y-3">
               <li>
@@ -99,10 +112,10 @@ export default function Footer() {
                 >
                   <Apple size={15} className="shrink-0" />
                   <span>
-                    App Store
+                    {t("appStore")}
                     {IOS_URL === "#" && (
                       <span className="text-bone/35 ml-1.5">
-                        (soon)
+                        ({t("soon")})
                       </span>
                     )}
                   </span>
@@ -116,10 +129,10 @@ export default function Footer() {
                 >
                   <Play size={15} className="shrink-0" />
                   <span>
-                    Google Play
+                    {t("googlePlay")}
                     {ANDROID_URL === "#" && (
                       <span className="text-bone/35 ml-1.5">
-                        (soon)
+                        ({t("soon")})
                       </span>
                     )}
                   </span>
@@ -137,8 +150,11 @@ export default function Footer() {
         </div>
 
         <div className="pt-8 flex flex-col md:flex-row items-start md:items-center md:justify-between gap-3 font-mono text-[11px] tracking-[0.18em] uppercase text-bone/45">
-          <p>&copy; {new Date().getFullYear()} Stroyka — All rights reserved</p>
-          <p>Made for crews who build things</p>
+          <p>&copy; {new Date().getFullYear()} Stroyka — {t("rights")}</p>
+          <div className="flex items-center gap-5">
+            <LanguageSwitcher placement="top" />
+            <p className="hidden sm:block">{t("madeFor")}</p>
+          </div>
         </div>
       </div>
     </footer>

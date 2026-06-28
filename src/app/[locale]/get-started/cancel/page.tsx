@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
@@ -14,7 +15,10 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function CancelPage() {
+export default async function CancelPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "getStarted" });
   return (
     <>
       <Navbar />
@@ -40,24 +44,24 @@ export default function CancelPage() {
           </FadeIn>
 
           <FadeIn delay={0.05}>
-            <SectionLabel>No worries</SectionLabel>
+            <SectionLabel>{t("noWorries")}</SectionLabel>
           </FadeIn>
 
           <FadeIn delay={0.1}>
             <TextReveal as="h1" className="font-display font-light text-4xl lg:text-5xl leading-[0.98] tracking-[-0.02em] text-ink mb-5">
-              {"Your plan hasn’t changed."}
+              {t("planUnchanged")}
             </TextReveal>
           </FadeIn>
 
           <FadeIn delay={0.18}>
             <p className="text-[15px] lg:text-base text-ink-soft leading-relaxed mb-10 max-w-md mx-auto">
-              You can subscribe anytime from the pricing page.
+              {t("subscribeAnytime")}
             </p>
           </FadeIn>
 
           <FadeIn delay={0.25}>
             <Button variant="secondary" size="lg" href="/#pricing">
-              ← Back to pricing
+              {t("backToPricing")}
             </Button>
           </FadeIn>
         </div>

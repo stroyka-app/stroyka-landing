@@ -1,6 +1,7 @@
-// src/app/account/page.tsx
+// src/app/[locale]/account/page.tsx
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { setRequestLocale } from "next-intl/server";
 import AccountPage from "@/components/AccountPage";
 
 export const metadata: Metadata = {
@@ -12,7 +13,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AccountRoute() {
+export default async function AccountRoute({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   return (
     <Suspense>
       <AccountPage />

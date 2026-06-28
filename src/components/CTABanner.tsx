@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import FadeIn from "@/components/ui/FadeIn";
 import Button from "@/components/ui/Button";
 
@@ -11,6 +12,7 @@ import Button from "@/components/ui/Button";
  * The oversized Fraunces type is the moment.
  */
 export default function CTABanner() {
+  const t = useTranslations("cta");
   const prefersReduced = useReducedMotion();
   return (
     <section id="cta" className="relative overflow-hidden">
@@ -99,26 +101,26 @@ export default function CTABanner() {
               pistachio, bottom lines in cream on forest. The color flips
               mid-word for drama. */}
           <h2 className="font-display font-light text-[clamp(3.25rem,10.5vw,11rem)] leading-[0.88] tracking-[-0.035em] max-w-[14ch] mb-12 lg:mb-16">
-            <span className="block text-ink">Run a</span>
-            <span className="block italic font-normal text-ink pb-[0.12em]">cleaner</span>
-            <span className="block text-bone">jobsite.</span>
+            <span className="block text-ink">{t("run")}</span>
+            <span className="block italic font-normal text-ink pb-[0.12em]">{t("cleaner")}</span>
+            <span className="block text-bone">{t("jobsite")}</span>
           </h2>
         </FadeIn>
 
         <div className="grid lg:grid-cols-[1fr_auto] gap-10 lg:gap-16 items-end max-w-5xl">
           <FadeIn delay={0.15}>
             <p className="font-display italic text-xl lg:text-2xl leading-[1.4] text-bone/85 max-w-xl">
-              Start free for up to five workers, or book a twenty-minute demo and we&rsquo;ll walk you through Stroyka live. No credit card either way.
+              {t("subhead")}
             </p>
           </FadeIn>
 
           <FadeIn delay={0.22}>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <Button variant="invert" size="lg" href="/#download">
-                Start free
+                {t("startFree")}
               </Button>
               <Button variant="ghost" size="lg" href="/demo" className="text-bone hover:text-brand-sage-bright">
-                Book a demo →
+                {t("bookDemo")}
               </Button>
             </div>
           </FadeIn>
@@ -126,11 +128,11 @@ export default function CTABanner() {
 
         <FadeIn delay={0.3}>
           <p className="mt-20 pt-10 border-t border-bone/15 font-mono text-[11px] tracking-[0.22em] uppercase text-bone/55">
-            Free for crews up to 5
+            {t("freeUpTo5")}
             <span className="text-bone/25 mx-3">/</span>
-            $99/mo founding rate
+            {t("foundingRate")}
             <span className="text-bone/25 mx-3">/</span>
-            Cancel anytime
+            {t("cancelAnytime")}
           </p>
         </FadeIn>
       </div>

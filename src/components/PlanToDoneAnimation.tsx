@@ -34,6 +34,7 @@ import {
   type MotionValue,
 } from "framer-motion";
 import * as THREE from "three";
+import { useTranslations } from "next-intl";
 
 /* ────────────────────────────────────────────────────────────────────────────
  * Motion helpers
@@ -343,11 +344,21 @@ function PlanLabel({
   );
 }
 
+interface FloorPlanLabels {
+  living: string;
+  kitchen: string;
+  bedroom1: string;
+  bedroom2: string;
+  bath: string;
+  floorPlan: string;
+  scale: string;
+}
+
 /**
  * Floor plan — sage outline + amber dimensions + room labels.
  * Visible only during Beat 1; fades during Beat 2.
  */
-function FloorPlan({ scroll }: { scroll: ScrollRef }) {
+function FloorPlan({ scroll, labels }: { scroll: ScrollRef; labels: FloorPlanLabels }) {
   const matRef = useRef<THREE.LineBasicMaterial>(null);
   const dimMatRef = useRef<THREE.LineBasicMaterial>(null);
   const labelGroupRef = useRef<THREE.Group>(null);
@@ -441,16 +452,16 @@ function FloorPlan({ scroll }: { scroll: ScrollRef }) {
       {/* In-3D room labels + dimension numbers via drei <Html> — DOM divs
           projected to 3D positions (no workers, no troika). */}
       <group ref={labelGroupRef}>
-        <PlanLabel position={[-2.0, 0.04,  1.6]} variant="room" size="lg">LIVING</PlanLabel>
-        <PlanLabel position={[ 2.0, 0.04,  1.6]} variant="room" size="lg">KITCHEN</PlanLabel>
-        <PlanLabel position={[-2.4, 0.04, -1.5]} variant="room" size="md">BEDROOM 1</PlanLabel>
-        <PlanLabel position={[ 1.2, 0.04, -1.0]} variant="room" size="md">BEDROOM 2</PlanLabel>
-        <PlanLabel position={[ 2.6, 0.04, -2.2]} variant="room" size="sm">BATH</PlanLabel>
+        <PlanLabel position={[-2.0, 0.04,  1.6]} variant="room" size="lg">{labels.living}</PlanLabel>
+        <PlanLabel position={[ 2.0, 0.04,  1.6]} variant="room" size="lg">{labels.kitchen}</PlanLabel>
+        <PlanLabel position={[-2.4, 0.04, -1.5]} variant="room" size="md">{labels.bedroom1}</PlanLabel>
+        <PlanLabel position={[ 1.2, 0.04, -1.0]} variant="room" size="md">{labels.bedroom2}</PlanLabel>
+        <PlanLabel position={[ 2.6, 0.04, -2.2]} variant="room" size="sm">{labels.bath}</PlanLabel>
 
         <PlanLabel position={[0,    0.04, -HD / 2 - 0.9 - 0.35]} variant="dim">32&apos;-0&quot;</PlanLabel>
         <PlanLabel position={[-HW / 2 - 0.9 - 0.55, 0.04, 0]}    variant="dim">24&apos;-0&quot;</PlanLabel>
-        <PlanLabel position={[-HW / 2 + 1.0, 0.04, HD / 2 + 0.9 + 0.95]} variant="meta">SCALE 1/4&quot;=1&apos;</PlanLabel>
-        <PlanLabel position={[ HW / 2 - 0.4, 0.04, HD / 2 + 0.9 + 0.95]} variant="hint">FLOOR PLAN · A-04</PlanLabel>
+        <PlanLabel position={[-HW / 2 + 1.0, 0.04, HD / 2 + 0.9 + 0.95]} variant="meta">{labels.scale}</PlanLabel>
+        <PlanLabel position={[ HW / 2 - 0.4, 0.04, HD / 2 + 0.9 + 0.95]} variant="hint">{labels.floorPlan}</PlanLabel>
       </group>
     </>
   );
@@ -1336,9 +1347,11 @@ function AnchorProjector({
 function HouseScene({
   scroll,
   anchorStore,
+  floorPlanLabels,
 }: {
   scroll: ScrollRef;
   anchorStore: AnchorScreenStore[];
+  floorPlanLabels: FloorPlanLabels;
 }) {
   return (
     <>
@@ -1346,7 +1359,7 @@ function HouseScene({
       <Lights scroll={scroll} />
       <CameraRig scroll={scroll} />
       <Ground scroll={scroll} />
-      <FloorPlan scroll={scroll} />
+      <FloorPlan scroll={scroll} labels={floorPlanLabels} />
       <Foundation scroll={scroll} />
       <Walls scroll={scroll} />
       <Roof scroll={scroll} />
@@ -1707,6 +1720,7 @@ function IntroVeil({ progress }: { progress: MotionValue<number> }) {
 function IntroTitle({ progress }: { progress: MotionValue<number> }) {
   // Fully visible until 0.05, fully gone by 0.085 — gives Beat 1 a clean
   // dark canvas to fade into with no text-on-text crowding.
+  const t = useTranslations("planToDone");
   const opacity = useTransform(progress, [0.0, 0.05, 0.085], [1, 1, 0]);
   const y = useTransform(progress, [0.0, 0.085], [0, -24]);
   return (
@@ -1720,24 +1734,23 @@ function IntroTitle({ progress }: { progress: MotionValue<number> }) {
             <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage opacity-60 animate-ping" />
             <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage" />
           </span>
-          How Stroyka Sees Your Project
+          {t("introEyebrow")}
         </p>
         <h2
           className="font-display font-light text-[clamp(2.25rem,6vw,4.75rem)] leading-[0.98] tracking-[-0.025em] text-bone mb-5"
           style={{ textShadow: "0 8px 40px rgba(0,0,0,0.7)" }}
         >
-          From plan to done — every dollar tracked.
+          {t("introTitle")}
         </h2>
         <p
           className="text-base md:text-lg text-bone/80 leading-relaxed max-w-lg"
           style={{ textShadow: "0 2px 16px rgba(0,0,0,0.6)" }}
         >
-          Scroll to see a project unfold in Stroyka — every material, every
-          cost, in real time.
+          {t("introSubtitle")}
         </p>
         <div className="mt-8 inline-flex items-center gap-3 font-mono text-[11px] tracking-[0.18em] uppercase text-brand-sage-mist/70">
           <span className="w-6 h-px bg-brand-amber" aria-hidden />
-          Scroll to begin
+          {t("introScrollHint")}
           <span className="inline-block animate-bounce text-brand-amber">↓</span>
         </div>
       </div>
@@ -1850,6 +1863,7 @@ function RunningTotalCard({
   total: number;
   progress: MotionValue<number>;
 }) {
+  const t = useTranslations("planToDone");
   const opacity = useTransform(progress, [0.36, 0.42, 0.74, 0.80], [0, 1, 1, 0]);
   return (
     <motion.div
@@ -1874,7 +1888,7 @@ function RunningTotalCard({
           style={{ width: "48px", height: "1px", background: "#d97706" }}
         />
         <div className="font-mono text-[10px] tracking-[0.18em] text-brand-sage font-semibold">
-          SPENT TO DATE
+          {t("spentToDate")}
         </div>
         {/* Fix 5: 56–64px amber number with glow */}
         <div
@@ -1944,6 +1958,7 @@ function ChartBar({
 }
 
 function ChartCard({ progress }: { progress: MotionValue<number> }) {
+  const t = useTranslations("planToDone");
   const opacity = useTransform(progress, [0.66, 0.70, 0.76, 0.80], [0, 1, 1, 0]);
   const x = useTransform(progress, [0.66, 0.70], [40, 0]);
   const fill = useTransform(progress, [0.70, 0.76], [0, 1]);
@@ -1966,18 +1981,22 @@ function ChartCard({ progress }: { progress: MotionValue<number> }) {
       >
         <div className="flex justify-between items-baseline mb-4">
           <div className="font-mono text-[11px] tracking-[0.16em] text-brand-sage font-semibold">
-            PLAN VS ACTUAL
+            {t("chartTitle")}
           </div>
-          <div className="font-mono text-[10px] text-brand-amber tracking-wider">JOB #204</div>
+          <div className="font-mono text-[10px] text-brand-amber tracking-wider">{t("jobLabel")} #204</div>
         </div>
         <div className="flex flex-col gap-3.5">
-          {CHART_BARS.map((bar) => (
-            <ChartBar key={bar.label} bar={bar} fill={fill} />
+          {CHART_BARS.map((bar, i) => (
+            <ChartBar
+              key={bar.label}
+              bar={{ ...bar, label: t(`chartBars.${i}.label` as `chartBars.${number}.label`) }}
+              fill={fill}
+            />
           ))}
         </div>
         <div className="mt-4 pt-3 border-t border-brand-forest/15 flex justify-between font-mono text-[10px] text-brand-sage-mist/65">
-          <span>ON BUDGET</span>
-          <span className="text-brand-sage">● 89% TRACK</span>
+          <span>{t("onBudget")}</span>
+          <span className="text-brand-sage">● {t("trackPct")}</span>
         </div>
       </div>
     </motion.div>
@@ -1997,6 +2016,7 @@ function DeliveredStamp({
   progress: MotionValue<number>;
   total: number;
 }) {
+  const t = useTranslations("planToDone");
   // Land at 0.84, hold to 0.98 then fade to make room for HeroChip.
   const opacity = useTransform(
     progress,
@@ -2050,14 +2070,14 @@ function DeliveredStamp({
             JOHNSON · 2026
           </div>
           <div className="font-display font-light text-[26px] leading-none text-bone tracking-tight">
-            DELIVERED
+            {t("delivered")}
           </div>
           <div
             className="my-2 h-px w-10 bg-brand-sage-bright/60"
             aria-hidden
           />
           <div className="font-mono text-[10px] tracking-[0.18em] text-brand-sage-mist/85">
-            ON BUDGET
+            {t("onBudget")}
           </div>
           <div className="mt-1.5 font-mono text-[11px] font-bold text-brand-sage-bright tabular-nums">
             ${total.toLocaleString("en-US")}
@@ -2069,6 +2089,7 @@ function DeliveredStamp({
 }
 
 function HeroChip({ progress }: { progress: MotionValue<number> }) {
+  const t = useTranslations("planToDone");
   const opacity = useTransform(progress, [0.94, 0.98], [0, 1]);
   const scale = useTransform(progress, [0.94, 0.98], [0.86, 1]);
   return (
@@ -2095,9 +2116,9 @@ function HeroChip({ progress }: { progress: MotionValue<number> }) {
           Johnson Home
         </span>
         <span className="text-brand-sage/40 text-[10px] md:text-base">·</span>
-        <span className="font-heading text-[10px] md:text-sm text-brand-sage-mist/85">On time</span>
+        <span className="font-heading text-[10px] md:text-sm text-brand-sage-mist/85">{t("onTime")}</span>
         <span className="text-brand-sage/40 text-[10px] md:text-base">·</span>
-        <span className="font-heading text-[10px] md:text-sm text-brand-sage-mist/85">On budget</span>
+        <span className="font-heading text-[10px] md:text-sm text-brand-sage-mist/85">{t("onBudget")}</span>
       </div>
     </motion.div>
   );
@@ -2140,6 +2161,7 @@ function MobileSpentToDate({
   total: number;
   progress: MotionValue<number>;
 }) {
+  const t = useTranslations("planToDone");
   const opacity = useTransform(progress, [0.36, 0.42, 0.74, 0.80], [0, 1, 1, 0]);
   return (
     <motion.div
@@ -2155,7 +2177,7 @@ function MobileSpentToDate({
       className="rounded-[3px] px-3 py-2 mb-1 flex items-center justify-between"
     >
       <span className="font-mono text-[9px] tracking-[0.18em] text-brand-sage font-semibold">
-        SPENT TO DATE
+        {t("spentToDate")}
       </span>
       <span
         className="font-heading font-bold tracking-tighter leading-none tabular-nums text-[20px]"
@@ -2174,6 +2196,7 @@ function MobileSpentToDate({
    fade out (~0.66 → 0.80). Same plan-vs-actual bars as the desktop
    ChartCard but full-width and condensed. */
 function MobileChartCard({ progress }: { progress: MotionValue<number> }) {
+  const t = useTranslations("planToDone");
   const opacity = useTransform(progress, [0.66, 0.70, 0.76, 0.80], [0, 1, 1, 0]);
   const fill = useTransform(progress, [0.70, 0.76], [0, 1]);
   return (
@@ -2194,20 +2217,24 @@ function MobileChartCard({ progress }: { progress: MotionValue<number> }) {
       >
         <div className="flex justify-between items-baseline mb-3">
           <div className="font-mono text-[10px] tracking-[0.16em] text-brand-sage font-semibold">
-            PLAN VS ACTUAL
+            {t("chartTitle")}
           </div>
           <div className="font-mono text-[9px] text-brand-amber tracking-wider">
-            JOB #204
+            {t("jobLabel")} #204
           </div>
         </div>
         <div className="flex flex-col gap-2.5">
-          {CHART_BARS.map((bar) => (
-            <ChartBar key={bar.label} bar={bar} fill={fill} />
+          {CHART_BARS.map((bar, i) => (
+            <ChartBar
+              key={bar.label}
+              bar={{ ...bar, label: t(`chartBars.${i}.label` as `chartBars.${number}.label`) }}
+              fill={fill}
+            />
           ))}
         </div>
         <div className="mt-3 pt-2 border-t border-brand-forest/15 flex justify-between font-mono text-[9px] text-brand-sage-mist/65">
-          <span>ON BUDGET</span>
-          <span className="text-brand-sage">● 89% TRACK</span>
+          <span>{t("onBudget")}</span>
+          <span className="text-brand-sage">● {t("trackPct")}</span>
         </div>
       </div>
     </motion.div>
@@ -2223,6 +2250,7 @@ function MobileDeliveredStamp({
   progress: MotionValue<number>;
   total: number;
 }) {
+  const t = useTranslations("planToDone");
   const opacity = useTransform(progress, [0.82, 0.86, 0.95, 0.98], [0, 1, 1, 0]);
   const scaleMv = useTransform(progress, [0.82, 0.88], [0, 1]);
   const scale = useSpring(scaleMv, { stiffness: 380, damping: 14, mass: 0.45 });
@@ -2259,11 +2287,11 @@ function MobileDeliveredStamp({
             JOHNSON · 2026
           </div>
           <div className="font-display font-light text-[20px] leading-none text-bone tracking-tight">
-            DELIVERED
+            {t("delivered")}
           </div>
           <div className="my-1.5 h-px w-8 bg-brand-sage-bright/60" aria-hidden />
           <div className="font-mono text-[9px] tracking-[0.18em] text-brand-sage-mist/85">
-            ON BUDGET
+            {t("onBudget")}
           </div>
           <div className="mt-1 font-mono text-[10px] font-bold text-brand-sage-bright tabular-nums">
             ${total.toLocaleString("en-US")}
@@ -2279,6 +2307,7 @@ function MobileDeliveredStamp({
  * ──────────────────────────────────────────────────────────────────────── */
 
 function StaticFallback() {
+  const t = useTranslations("planToDone");
   return (
     <section
       id="plan-to-done"
@@ -2288,25 +2317,25 @@ function StaticFallback() {
       <div className="max-w-5xl mx-auto px-6">
         <div className="text-center mb-10">
           <p className="font-heading text-xs font-semibold tracking-[0.2em] uppercase text-brand-forest mb-3">
-            How Stroyka Sees Your Project
+            {t("introEyebrow")}
           </p>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold tracking-tight text-white leading-tight max-w-2xl mx-auto">
-            From plan to done — every dollar tracked.
+            {t("introTitle")}
           </h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-3xl mx-auto">
-          {COST_ENTRIES.map((entry) => (
+          {COST_ENTRIES.map((entry, i) => (
             <div
               key={entry.label}
               className="bg-brand-midnight-dark/70 border border-brand-forest/25 border-l-[2px] border-l-brand-amber rounded-sm px-4 py-3"
             >
               <div className="font-mono text-[9px] tracking-[0.18em] text-brand-amber font-semibold mb-1">
-                + {entry.label}
+                + {t(`costEntries.${i}.label` as `costEntries.${number}.label`)}
               </div>
               <div className="text-white text-xl font-heading font-bold tracking-tighter">
                 {entry.amount}
               </div>
-              <div className="text-[11px] text-brand-sage-mist/55 mt-0.5">{entry.subtitle}</div>
+              <div className="text-[11px] text-brand-sage-mist/55 mt-0.5">{t(`costEntries.${i}.subtitle` as `costEntries.${number}.subtitle`)}</div>
             </div>
           ))}
         </div>
@@ -2315,7 +2344,7 @@ function StaticFallback() {
             <span className="w-2.5 h-2.5 rounded-full bg-brand-sage" />
             <span className="font-heading text-sm font-semibold text-white">Johnson Home</span>
             <span className="text-brand-sage/40">·</span>
-            <span className="text-sm text-brand-sage-mist/85">On time · On budget</span>
+            <span className="text-sm text-brand-sage-mist/85">{t("onTimeBudget")}</span>
           </div>
         </div>
       </div>
@@ -2329,6 +2358,7 @@ function StaticFallback() {
 
 export default function PlanToDoneAnimation() {
   const prefersReduced = useReducedMotion();
+  const t = useTranslations("planToDone");
   const wrapperRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef(0);
@@ -2358,6 +2388,32 @@ export default function PlanToDoneAnimation() {
     ],
     [a0x, a0y, a0v, a1x, a1y, a1v, a2x, a2y, a2v, a3x, a3y, a3v, a4x, a4y, a4v],
   );
+
+  // Pre-computed translations (static per locale) — memoized so 60fps scroll
+  // driver does not reconstruct these objects on every animation frame.
+  const floorPlanLabels: FloorPlanLabels = useMemo(() => ({
+    living:    t("rooms.living"),
+    kitchen:   t("rooms.kitchen"),
+    bedroom1:  t("rooms.bedroom1"),
+    bedroom2:  t("rooms.bedroom2"),
+    bath:      t("rooms.bath"),
+    floorPlan: t("floorPlan"),
+    scale:     t("scale"),
+  }), [t]);
+
+  const translatedCostEntries = useMemo(() => COST_ENTRIES.map((e, i) => ({
+    ...e,
+    label:    t(`costEntries.${i}.label`    as `costEntries.${number}.label`),
+    subtitle: t(`costEntries.${i}.subtitle` as `costEntries.${number}.subtitle`),
+  })), [t]);
+
+  // Beat index for translated beat text (beat state stores the raw BEATS item)
+  const beatIdx = BEATS.indexOf(beat);
+  const tBeatKicker   = t(`beats.${beatIdx}.kicker`   as `beats.${number}.kicker`);
+  const tBeatHeadline = beat.headline
+    ? t(`beats.${beatIdx}.headline` as `beats.${number}.headline`)
+    : "";
+  const tBeatState    = t(`beats.${beatIdx}.state`    as `beats.${number}.state`);
 
   // Manual scroll progress via bounding-rect math. Bulletproof against
   // framer-motion's useScroll target-resolution flakiness (container-
@@ -2429,7 +2485,7 @@ export default function PlanToDoneAnimation() {
           and a separate animation. */}
       <section
         id="plan-to-done"
-        aria-label="How Stroyka sees your project — interactive scroll animation"
+        aria-label={t("introAriaLabel")}
         className="relative bg-[#4E6253]"
         style={{ overflow: "clip" }}
       >
@@ -2449,7 +2505,7 @@ export default function PlanToDoneAnimation() {
               gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
               camera={{ fov: 26, near: 0.1, far: 120, position: [0.001, 28, 0.001] }}
             >
-              <HouseScene scroll={scrollRef} anchorStore={anchorStore} />
+              <HouseScene scroll={scrollRef} anchorStore={anchorStore} floorPlanLabels={floorPlanLabels} />
             </Canvas>
           </div>
 
@@ -2508,13 +2564,13 @@ export default function PlanToDoneAnimation() {
           <CADFrame progress={scrollYProgress} />
           <TelemetryPill
             frame={frame}
-            state={beat.state}
+            state={tBeatState}
             progress={scrollYProgress}
           />
           <IntroTitle progress={scrollYProgress} />
           <HeadlineOverlay
-            kicker={beat.kicker}
-            headline={beat.headline}
+            kicker={tBeatKicker}
+            headline={tBeatHeadline}
             progress={scrollYProgress}
           />
 
@@ -2527,9 +2583,9 @@ export default function PlanToDoneAnimation() {
             containerRef={stickyRef}
           />
 
-          {COST_ENTRIES.map((entry, i) => (
+          {translatedCostEntries.map((entry, i) => (
             <CostCard
-              key={entry.label}
+              key={COST_ENTRIES[i].label}
               entry={entry}
               index={i}
               progress={scrollYProgress}
@@ -2543,8 +2599,8 @@ export default function PlanToDoneAnimation() {
 
           <div className="md:hidden absolute bottom-4 left-4 right-4 z-20 flex flex-col gap-1.5">
             <MobileSpentToDate total={totalSpent} progress={scrollYProgress} />
-            {COST_ENTRIES.map((entry) => (
-              <MobileCostRow key={entry.label} entry={entry} progress={scrollYProgress} />
+            {translatedCostEntries.map((entry, i) => (
+              <MobileCostRow key={COST_ENTRIES[i].label} entry={entry} progress={scrollYProgress} />
             ))}
           </div>
 

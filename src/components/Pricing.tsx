@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type CSSProperties } from "react";
+import { useTranslations } from "next-intl";
 import { motion, AnimatePresence, LayoutGroup, useReducedMotion } from "framer-motion";
 import { Check, X, ShieldCheck, Zap, Crown, Download } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
@@ -27,48 +28,12 @@ interface Feature {
   included: boolean;
 }
 
-const FREE_FEATURES: Feature[] = [
-  { label: "Up to 5 workers", included: true },
-  { label: "Time tracking & daily logs", included: true },
-  { label: "Material & fuel requests", included: true },
-  { label: "Task management & messaging", included: true },
-  { label: "Worker earnings tracker", included: true },
-  { label: "Offline-first sync", included: true },
-  { label: "PDF & CSV reports (Starter+)", included: false },
-  { label: "Job costing & P&L (Starter+)", included: false },
-  { label: "Overtime alerts (Starter+)", included: false },
-];
-
-const STARTER_FEATURES: Feature[] = [
-  { label: "Everything in Free", included: true },
-  { label: "Up to 15 workers", included: true },
-  { label: "Per-worker hourly rates", included: true },
-  { label: "Overtime alerts (32h & 40h warnings)", included: true },
-  { label: "PDF reports — Timesheet, P&L, Materials", included: true },
-  { label: "Job costing & P&L dashboard", included: true },
-  { label: "CSV export", included: true },
-  { label: "Email support", included: true },
-  { label: "Client invoice generator (Pro)", included: false },
-  { label: "File & photo attachments (Pro)", included: false },
-];
-
-const PRO_FEATURES: Feature[] = [
-  { label: "Everything in Starter", included: true },
-  { label: "Unlimited workers", included: true },
-  { label: "Client invoice generator", included: true },
-  { label: "File & photo attachments in tasks", included: true },
-  { label: "Excel export", included: true },
-  { label: "Advanced analytics", included: true },
-  { label: "Priority support", included: true },
-  { label: "Dedicated onboarding call", included: true },
-];
-
 function FeatureList({ features, sub }: { features: Feature[]; sub?: boolean }) {
   return (
     <ul className="flex flex-col gap-3 mb-8">
-      {features.map((f) => (
+      {features.map((f, i) => (
         <li
-          key={f.label}
+          key={i}
           className={`flex items-start gap-2.5 text-[14px] ${
             f.included ? (sub ? "text-ink/80" : "text-ink/75") : "text-ink/30 line-through"
           }`}
@@ -88,6 +53,7 @@ function FeatureList({ features, sub }: { features: Feature[]; sub?: boolean }) 
 }
 
 export default function Pricing() {
+  const t = useTranslations("pricing");
   const [billing, setBilling] = useState<Billing>("monthly");
   const prefersReduced = useReducedMotion();
   const freeGlow = useCursorGlow();
@@ -97,6 +63,42 @@ export default function Pricing() {
     to: FOUNDING_SPOTS_TAKEN,
     duration: 1600,
   });
+
+  const FREE_FEATURES: Feature[] = [
+    { label: t("free.features.0"), included: true },
+    { label: t("free.features.1"), included: true },
+    { label: t("free.features.2"), included: true },
+    { label: t("free.features.3"), included: true },
+    { label: t("free.features.4"), included: true },
+    { label: t("free.features.5"), included: true },
+    { label: t("free.features.6"), included: false },
+    { label: t("free.features.7"), included: false },
+    { label: t("free.features.8"), included: false },
+  ];
+
+  const STARTER_FEATURES: Feature[] = [
+    { label: t("starter.features.0"), included: true },
+    { label: t("starter.features.1"), included: true },
+    { label: t("starter.features.2"), included: true },
+    { label: t("starter.features.3"), included: true },
+    { label: t("starter.features.4"), included: true },
+    { label: t("starter.features.5"), included: true },
+    { label: t("starter.features.6"), included: true },
+    { label: t("starter.features.7"), included: true },
+    { label: t("starter.features.8"), included: false },
+    { label: t("starter.features.9"), included: false },
+  ];
+
+  const PRO_FEATURES: Feature[] = [
+    { label: t("pro.features.0"), included: true },
+    { label: t("pro.features.1"), included: true },
+    { label: t("pro.features.2"), included: true },
+    { label: t("pro.features.3"), included: true },
+    { label: t("pro.features.4"), included: true },
+    { label: t("pro.features.5"), included: true },
+    { label: t("pro.features.6"), included: true },
+    { label: t("pro.features.7"), included: true },
+  ];
 
   return (
     <section id="pricing" className="relative bg-gradient-to-b from-[#D4CBB4] to-[#BFB49C] py-24 lg:py-32 overflow-hidden">
@@ -113,17 +115,17 @@ export default function Pricing() {
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10">
         <div className="max-w-2xl mb-14">
           <FadeIn>
-            <SectionLabel>Pricing</SectionLabel>
+            <SectionLabel>{t("eyebrow")}</SectionLabel>
           </FadeIn>
           <TextReveal
             as="h2"
             className="font-display font-light text-5xl lg:text-7xl leading-[0.95] tracking-[-0.02em] text-ink mb-6"
           >
-            Flat monthly. No per-seat games.
+            {t("heading")}
           </TextReveal>
           <FadeIn delay={0.1}>
             <p className="text-lg text-ink/70 leading-relaxed max-w-xl">
-              Per-seat = per-worker. We don&rsquo;t do that. Free forever for crews up to&nbsp;5.
+              {t("subhead")}
             </p>
           </FadeIn>
         </div>
@@ -159,13 +161,13 @@ export default function Pricing() {
                         />
                       )}
                       <span className="relative">
-                        {mode === "monthly" ? "Monthly" : "Annual"}
+                        {mode === "monthly" ? t("monthly") : t("annual")}
                       </span>
                       {mode === "annual" && (
                         <span
                           className="relative text-[10px] font-bold px-2 py-0.5 rounded-full leading-none transition-colors bg-brand-sage-bright text-ink shadow-[0_2px_10px_-2px_rgba(184,212,189,0.55)]"
                         >
-                          −17%
+                          {t("annualSave")}
                         </span>
                       )}
                     </button>
@@ -186,22 +188,22 @@ export default function Pricing() {
             >
               <div className="flex items-center gap-2 mb-1">
                 <Download size={16} className="text-ink-muted" />
-                <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-ink-muted">Free</h3>
+                <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-ink-muted">{t("free.name")}</h3>
               </div>
-              <p className="text-ink/70 text-[14px] mb-6 mt-2">For crews just getting started</p>
+              <p className="text-ink/70 text-[14px] mb-6 mt-2">{t("free.description")}</p>
               <div className="mb-8">
                 <div className="flex items-baseline gap-1">
                   <span className="font-display text-5xl font-light text-ink tabular-nums">$0</span>
-                  <span className="text-ink/55 ml-2 font-mono text-[12px] tracking-[0.08em] uppercase">forever</span>
+                  <span className="text-ink/55 ml-2 font-mono text-[12px] tracking-[0.08em] uppercase">{t("free.priceForever")}</span>
                 </div>
                 <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-ink/50 mt-1.5">
-                  Up to 5 workers
+                  {t("free.limit")}
                 </p>
               </div>
               <FeatureList features={FREE_FEATURES} />
               <div className="mt-auto">
                 <Button variant="secondary" href="/#download" className="w-full">
-                  Start free
+                  {t("free.cta")}
                 </Button>
               </div>
             </div>
@@ -224,14 +226,14 @@ export default function Pricing() {
                 </span>
               )}
               <span className="absolute -top-3 left-8 z-[3] bg-brand-forest text-bone font-mono text-[11px] tracking-[0.15em] uppercase font-semibold px-3 py-1 rounded-full">
-                Most popular
+                {t("mostPopular")}
               </span>
               <div className="relative z-[1] flex flex-col h-full">
                 <div className="flex items-center gap-2 mb-1">
                   <Zap size={16} className="text-brand-forest" />
-                  <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-brand-forest">Starter</h3>
+                  <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-brand-forest">{t("starter.name")}</h3>
                 </div>
-                <p className="text-ink/70 text-[14px] mb-6 mt-2">For growing crews up to 15</p>
+                <p className="text-ink/70 text-[14px] mb-6 mt-2">{t("starter.description")}</p>
                 <div className="mb-8 min-h-[112px]">
                   <AnimatePresence mode="wait" initial={false}>
                     <motion.div
@@ -245,23 +247,23 @@ export default function Pricing() {
                         <span className="font-display text-5xl font-light text-ink tabular-nums">
                           ${billing === "monthly" ? PRICES.starter.monthly : PRICES.starter.annualPerMonth}
                         </span>
-                        <span className="text-ink/55 ml-2 font-mono text-[12px] tracking-[0.08em] uppercase">/ month</span>
+                        <span className="text-ink/55 ml-2 font-mono text-[12px] tracking-[0.08em] uppercase">{t("perMonth")}</span>
                       </div>
                       {billing === "annual" && (
                         <p className="mt-2 font-mono text-[12px] tracking-[0.08em] uppercase text-ink/65 tabular-nums">
-                          ${PRICES.starter.annual.toLocaleString()} billed annually
+                          {t("billedAnnually", { total: `$${PRICES.starter.annual.toLocaleString()}` })}
                         </p>
                       )}
                     </motion.div>
                   </AnimatePresence>
                   <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-ink/50 mt-2">
-                    Up to 15 workers
+                    {t("starter.limit")}
                   </p>
                 </div>
                 <FeatureList features={STARTER_FEATURES} />
                 <div className="mt-auto">
                   <Button variant="primary" href={`/get-started?plan=starter&billing=${billing}`} className="w-full">
-                    Get Starter
+                    {t("starter.cta")}
                   </Button>
                 </div>
               </div>
@@ -306,9 +308,9 @@ export default function Pricing() {
               <div className="relative z-[1] flex flex-col h-full">
                 <div className="flex items-center gap-2 mb-1">
                   <Crown size={16} className="text-brand-sage-bright" />
-                  <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-brand-sage-bright">Pro</h3>
+                  <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-brand-sage-bright">{t("pro.name")}</h3>
                 </div>
-                <p className="text-bone/70 text-[14px] mb-6 mt-2">For larger operations, no limits</p>
+                <p className="text-bone/70 text-[14px] mb-6 mt-2">{t("pro.description")}</p>
                 <div className="mb-8 min-h-[112px]">
                   <AnimatePresence mode="wait" initial={false}>
                     <motion.div
@@ -322,23 +324,23 @@ export default function Pricing() {
                         <span className="font-display text-5xl font-light text-bone tabular-nums">
                           ${billing === "monthly" ? PRICES.pro.monthly : PRICES.pro.annualPerMonth}
                         </span>
-                        <span className="text-bone/60 ml-2 font-mono text-[12px] tracking-[0.08em] uppercase">/ month</span>
+                        <span className="text-bone/60 ml-2 font-mono text-[12px] tracking-[0.08em] uppercase">{t("perMonth")}</span>
                       </div>
                       {billing === "annual" && (
                         <p className="mt-2 font-mono text-[12px] tracking-[0.08em] uppercase text-bone/70 tabular-nums">
-                          ${PRICES.pro.annual.toLocaleString()} billed annually
+                          {t("billedAnnually", { total: `$${PRICES.pro.annual.toLocaleString()}` })}
                         </p>
                       )}
                     </motion.div>
                   </AnimatePresence>
                   <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-brand-sage-bright/85 mt-2">
-                    Unlimited workers
+                    {t("pro.limit")}
                   </p>
                 </div>
                 <ul className="flex flex-col gap-3 mb-8">
-                  {PRO_FEATURES.map((f) => (
+                  {PRO_FEATURES.map((f, i) => (
                     <li
-                      key={f.label}
+                      key={i}
                       className={`flex items-start gap-2.5 text-[14px] ${
                         f.included ? "text-bone/85" : "text-bone/30 line-through"
                       }`}
@@ -352,7 +354,7 @@ export default function Pricing() {
                 </ul>
                 <div className="mt-auto">
                   <Button variant="invert" href={`/get-started?plan=pro&billing=${billing}`} className="w-full">
-                    Get Pro
+                    {t("pro.cta")}
                   </Button>
                 </div>
               </div>
@@ -371,23 +373,23 @@ export default function Pricing() {
             <div className="relative">
               <p className="font-mono text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-sage-bright mb-5 flex items-center gap-2">
                 <ShieldCheck size={14} className="text-brand-sage-bright" />
-                Founding Member — limited
+                {t("founding.title")}
               </p>
               <h3 className="font-display text-3xl md:text-5xl leading-[1.02] text-bone mb-5">
-                $99 a month. <span className="italic">Locked forever.</span>
+                {t("founding.pricePart1")} <span className="italic">{t("founding.pricePart2")}</span>
               </h3>
               <p className="text-[15px] text-bone/75 mb-7 leading-relaxed max-w-lg">
-                The first 20 companies to subscribe lock in $99/month for life — Starter at 34% off, forever. No matter what the public rate becomes.
+                {t("founding.body")}
               </p>
               <Button variant="invert" href="/get-started?plan=starter&coupon=FOUNDING99">
-                Claim a Founding Spot →
+                {t("founding.cta")}
               </Button>
             </div>
 
             <div className="relative z-[1] rounded-2xl p-6 bg-bone/5 border border-bone/15 backdrop-blur-sm">
               <div className="flex justify-between items-baseline mb-3 font-mono">
                 <span className="text-[11px] tracking-[0.18em] uppercase text-bone/65">
-                  Spots claimed
+                  {t("spotsClaimed")}
                 </span>
                 <span className="font-display text-3xl text-bone tabular-nums">
                   <span ref={countRef}>{spotsCount}</span>
@@ -408,8 +410,8 @@ export default function Pricing() {
                 />
               </div>
               <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-bone/55">
-                {FOUNDING_SPOTS_TAKEN} of {FOUNDING_SPOTS_TOTAL}
-                {FOUNDING_SPOTS_REMAINING > 0 && ` · ${FOUNDING_SPOTS_REMAINING} remaining`}
+                {t("spotsCounter", { taken: FOUNDING_SPOTS_TAKEN, total: FOUNDING_SPOTS_TOTAL })}
+                {FOUNDING_SPOTS_REMAINING > 0 && ` · ${t("spotsRemaining", { count: FOUNDING_SPOTS_REMAINING })}`}
               </p>
             </div>
             </div>
@@ -418,7 +420,7 @@ export default function Pricing() {
 
         <FadeIn delay={0.4}>
           <p className="font-mono text-[12px] tracking-[0.1em] uppercase text-ink/55 max-w-xl">
-            Not sure which plan fits? Book a 20-minute demo and we&rsquo;ll recommend the right one for your crew size.
+            {t("notSure")}
           </p>
         </FadeIn>
       </div>

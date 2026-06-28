@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { motion, useReducedMotion } from "framer-motion";
 import { Check, X, Minus, HardHat } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
@@ -7,24 +8,27 @@ import TextReveal from "@/components/ui/TextReveal";
 
 type CellValue = "yes" | "no" | "partial";
 
-interface Row {
-  label: string;
+interface RowCells {
   spreadsheets: CellValue;
   enterprise: CellValue;
   stroyka: CellValue;
-  note?: string;
+  hasNote: boolean;
 }
 
-const ROWS: Row[] = [
-  { label: "Flat monthly pricing", spreadsheets: "yes", enterprise: "no", stroyka: "yes", note: "$0 / $149 / $249. No per-worker fees." },
-  { label: "Setup in under an afternoon", spreadsheets: "yes", enterprise: "no", stroyka: "yes" },
-  { label: "No training required", spreadsheets: "yes", enterprise: "no", stroyka: "yes" },
-  { label: "Export to QuickBooks / Xero", spreadsheets: "partial", enterprise: "yes", stroyka: "yes", note: "CSV + PDF now, direct integrations on the roadmap." },
-  { label: "Real-time job costing", spreadsheets: "no", enterprise: "yes", stroyka: "yes" },
-  { label: "Approval workflows + audit trail", spreadsheets: "no", enterprise: "yes", stroyka: "yes" },
-  { label: "Works offline at the jobsite", spreadsheets: "no", enterprise: "partial", stroyka: "yes" },
-  { label: "Crew-facing mobile app", spreadsheets: "no", enterprise: "partial", stroyka: "yes" },
+// Structural data only — translatable text lives in messages/comparison.*
+const ROW_CELLS: RowCells[] = [
+  { spreadsheets: "yes",     enterprise: "no",      stroyka: "yes", hasNote: true  },
+  { spreadsheets: "yes",     enterprise: "no",      stroyka: "yes", hasNote: false },
+  { spreadsheets: "yes",     enterprise: "no",      stroyka: "yes", hasNote: false },
+  { spreadsheets: "partial", enterprise: "yes",     stroyka: "yes", hasNote: true  },
+  { spreadsheets: "no",      enterprise: "yes",     stroyka: "yes", hasNote: false },
+  { spreadsheets: "no",      enterprise: "yes",     stroyka: "yes", hasNote: false },
+  { spreadsheets: "no",      enterprise: "partial", stroyka: "yes", hasNote: false },
+  { spreadsheets: "no",      enterprise: "partial", stroyka: "yes", hasNote: false },
 ];
+
+// Column keys in display order — "yes"/"partial"/"no" enum values stay in TS
+const COL_KEYS = ["spreadsheets", "enterprise", "stroyka"] as const;
 
 function Cell({
   value,
@@ -36,6 +40,7 @@ function Cell({
   delay?: number;
 }) {
   const prefersReduced = useReducedMotion();
+  const t = useTranslations("comparison");
 
   if (value === "yes") {
     // Both highlighted (Stroyka) and un-highlighted "Yes" use the same sage
@@ -94,7 +99,7 @@ function Cell({
     return (
       <motion.span
         className="flex items-center justify-center w-9 h-9 rounded-full border-[1.5px] border-ink-muted/45 bg-ink-muted/10 text-ink-muted"
-        title="Partial"
+        title={t("legendPartial")}
         initial={prefersReduced ? false : { scale: 0.7, opacity: 0 }}
         whileInView={prefersReduced ? undefined : { scale: 1, opacity: 1 }}
         viewport={{ once: true, margin: "-60px" }}
@@ -117,13 +122,9 @@ function Cell({
   );
 }
 
-const COLS = [
-  { key: "spreadsheets", label: "Spreadsheets + WhatsApp", sub: "The default" },
-  { key: "enterprise",   label: "Enterprise software",      sub: "For 50+ person GCs" },
-  { key: "stroyka",      label: "Stroyka",                  sub: "For crews of 5–25" },
-] as const;
-
 export default function Comparison() {
+  const t = useTranslations("comparison");
+
   return (
     <section id="comparison" className="relative bg-gradient-to-b from-[#BFB49C] to-[#D4CBB4] py-24 lg:py-32 overflow-hidden">
       {/* Ambient sage glow behind the Stroyka column */}
@@ -143,11 +144,11 @@ export default function Comparison() {
             as="h2"
             className="font-display font-light text-5xl lg:text-7xl leading-[0.95] tracking-[-0.02em] text-ink mb-6"
           >
-            Where Stroyka lands.
+            {t("heading")}
           </TextReveal>
           <FadeIn delay={0.1}>
             <p className="text-lg text-ink/70 leading-relaxed max-w-xl">
-              Honest comparison. If you&rsquo;re a 50+ person GC with a dedicated back-office team, enterprise tools are still the right call. If you&rsquo;re a 5–25 crew trying to stop texting timesheets, keep reading.
+              {t("subhead")}
             </p>
           </FadeIn>
         </div>
@@ -169,30 +170,30 @@ export default function Comparison() {
                 </span>
                 <div className="hidden sm:block">
                   <div className="font-mono text-[11px] tracking-[0.15em] uppercase text-ink/70 leading-tight">
-                    What matters
+                    {t("whatMatters")}
                   </div>
                   <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-ink/40 mt-0.5">
-                    on the jobsite
+                    {t("onJobsite")}
                   </div>
                 </div>
               </div>
-              {COLS.map((col) => {
-                const isStroyka = col.key === "stroyka";
+              {COL_KEYS.map((key, colIdx) => {
+                const isStroyka = key === "stroyka";
                 return (
-                  <div key={col.key} className="text-center relative">
+                  <div key={key} className="text-center relative">
                     <div
                       className={`font-display leading-tight ${
                         isStroyka ? "text-ink text-xl" : "text-ink/80 text-[15px]"
                       }`}
                     >
-                      {col.label}
+                      {t(`cols.${colIdx}.name`)}
                     </div>
                     <div
                       className={`mt-1 font-mono text-[10px] tracking-[0.15em] uppercase ${
                         isStroyka ? "text-brand-forest" : "text-ink/40"
                       }`}
                     >
-                      {col.sub}
+                      {t(`cols.${colIdx}.sub`)}
                     </div>
                   </div>
                 );
@@ -201,9 +202,9 @@ export default function Comparison() {
 
             {/* Rows */}
             <div className="relative divide-y divide-ink/10">
-              {ROWS.map((row, i) => (
+              {ROW_CELLS.map((row, i) => (
                 <motion.div
-                  key={row.label}
+                  key={i}
                   initial={{ opacity: 0, y: 12 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-40px" }}
@@ -216,11 +217,11 @@ export default function Comparison() {
                 >
                   <div>
                     <p className="text-[15px] text-ink font-medium leading-snug">
-                      {row.label}
+                      {t(`rows.${i}.label`)}
                     </p>
-                    {row.note && (
+                    {row.hasNote && (
                       <p className="mt-1 font-mono text-[11px] tracking-[0.05em] text-ink/50 leading-snug">
-                        {row.note}
+                        {t(`rows.${i}.note`)}
                       </p>
                     )}
                   </div>
@@ -242,9 +243,9 @@ export default function Comparison() {
         {/* Mobile (<md) — stacked card per row, columns travel with the data */}
         <FadeIn delay={0.15}>
           <div className="md:hidden flex flex-col gap-3">
-            {ROWS.map((row, i) => (
+            {ROW_CELLS.map((row, i) => (
               <motion.div
-                key={row.label}
+                key={i}
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
@@ -257,20 +258,20 @@ export default function Comparison() {
               >
                 <div className="relative">
                   <p className="text-[15px] text-ink font-medium leading-snug">
-                    {row.label}
+                    {t(`rows.${i}.label`)}
                   </p>
-                  {row.note && (
+                  {row.hasNote && (
                     <p className="mt-1 font-mono text-[11px] tracking-[0.05em] text-ink/50 leading-snug">
-                      {row.note}
+                      {t(`rows.${i}.note`)}
                     </p>
                   )}
                   <div className="mt-3 grid grid-cols-3 gap-2">
-                    {COLS.map((col) => {
-                      const value = row[col.key];
-                      const isStroyka = col.key === "stroyka";
+                    {COL_KEYS.map((key, colIdx) => {
+                      const value = row[key];
+                      const isStroyka = key === "stroyka";
                       return (
                         <div
-                          key={col.key}
+                          key={key}
                           className={`flex flex-col items-center text-center gap-2 rounded-xl px-2 py-2.5 ${
                             isStroyka
                               ? "bg-brand-sage/10 border border-brand-sage/30"
@@ -287,7 +288,7 @@ export default function Comparison() {
                               isStroyka ? "text-brand-forest font-semibold" : "text-ink/55"
                             }`}
                           >
-                            {col.label}
+                            {t(`cols.${colIdx}.name`)}
                           </div>
                         </div>
                       );
@@ -306,19 +307,19 @@ export default function Comparison() {
               <span className="w-4 h-4 rounded-full bg-brand-sage/15 text-brand-deep border-[1.5px] border-brand-sage/60 flex items-center justify-center">
                 <Check size={10} strokeWidth={3} />
               </span>
-              Yes
+              {t("legendYes")}
             </span>
             <span className="flex items-center gap-2">
               <span className="w-4 h-4 rounded-full border-[1.5px] border-ink-muted/45 bg-ink-muted/10 text-ink-muted flex items-center justify-center">
                 <Minus size={10} strokeWidth={3} />
               </span>
-              Partial
+              {t("legendPartial")}
             </span>
             <span className="flex items-center gap-2">
               <span className="w-4 h-4 rounded-full border border-ink/20 text-ink/40 flex items-center justify-center">
                 <X size={10} strokeWidth={2.5} />
               </span>
-              No
+              {t("legendNo")}
             </span>
           </div>
         </FadeIn>

@@ -1,0 +1,689 @@
+{
+  "_note": "pending native pass",
+  "meta": {
+    "homeTitle": "Stroyka — Gestión de Cuadrilla y Costos de Obra",
+    "homeDescription": "Stroyka ayuda a cuadrillas de construcción a rastrear horas, costos de obra y pago de trabajadores — todo en una app. Para contratistas de EE.UU. con 5–25 trabajadores.",
+    "demoTitle": "Solicitar una Demo — Stroyka",
+    "demoDescription": "Mira Stroyka en acción. Agenda una demo de 20 minutos con el fundador.",
+    "getStartedTitle": "Empezar — Stroyka",
+    "getStartedDescription": "Elige un plan de Stroyka y empieza a gestionar tu cuadrilla hoy. Sin cobro por usuario — todo el equipo está incluido.",
+    "privacyTitle": "Política de Privacidad — Stroyka",
+    "privacyDescription": "Política de Privacidad de la plataforma de gestión de construcción Stroyka.",
+    "termsTitle": "Términos de Servicio — Stroyka",
+    "termsDescription": "Términos de Servicio de la plataforma de gestión de construcción Stroyka.",
+    "appDescription": "App de gestión de cuadrilla y costos de obra para pequeños contratistas en EE.UU. Registra el tiempo, asigna tareas y controla los costos de obra sin conexión."
+  },
+  "hero": {
+    "startFree": "Empieza gratis",
+    "foundingRate": "$99/mo tarifa fundadora",
+    "spotsLeft": "{count} lugares disponibles",
+    "headline1": "Gestión",
+    "headline2": "de obra,",
+    "headline3": "para cuadrillas reales.",
+    "subhead": "Una herramienta para toda la cuadrilla — jefe y trabajadores. Entrada y salida, costos de obra, reportes. Funciona en cualquier teléfono, incluso sin señal.",
+    "specCrew": "Para cuadrillas de 5–25",
+    "specInstant": "Funciona desde el primer día",
+    "bookDemo": "Agenda una demo →",
+    "sheetTitle": "Hoja de proyecto",
+    "sheetLive": "en vivo",
+    "sheetCrew": "Cuadrilla",
+    "sheetCrewCount": "{count} trabajadores",
+    "sheetJob": "Obra no.",
+    "sheetLabor": "Hrs. semana",
+    "sheetTrend": "Tendencia",
+    "sheetBudget": "Presupuesto",
+    "sheetOnPlanLabel": "según lo planeado",
+    "sheetOffline": "Sin conexión",
+    "sheetAnyPhone": "Sí — cualquier teléfono"
+  },
+  "nav": {
+    "features": "Funciones",
+    "howItWorks": "Cómo funciona",
+    "pricing": "Precios",
+    "faq": "Preguntas frecuentes",
+    "getStarted": "Empezar",
+    "toggleMenu": "Abrir menú",
+    "changeLanguage": "Cambiar idioma",
+    "selectLanguage": "Seleccionar idioma"
+  },
+  "theShift": {
+    "eyebrow": "El cambio",
+    "heading": "Martes por la mañana, antes y después.",
+    "subhead": "Misma cuadrilla de doce. Misma semana. Uno trabaja con recibos y grupos de chat; el otro usa Stroyka.",
+    "beforeLabel": "Antes",
+    "beforeTitle": "Apañado con cuatro apps.",
+    "beforeBody": "Horas en WhatsApp. Recibos en el camión. Presupuestos en una hoja que nadie abrió desde el día de la oferta.",
+    "afterLabel": "Después",
+    "afterTitle": "Una app. Todos los números cuadrados.",
+    "afterBody": "La cuadrilla marca entrada. El presupuesto avanza. Los materiales se aprueban. Abres el teléfono a las 6am y sabes exactamente cómo está Johnson Home.",
+    "before": {
+      "items": {
+        "0": {
+          "time": "06:15",
+          "title": "Disputa de parte de horas en WhatsApp",
+          "caption": "Jose registró 9h. El capataz recuerda 7. Alguien se va a quedar corto."
+        },
+        "1": {
+          "time": "07:12",
+          "title": "Solicitud de material perdida en el chat",
+          "caption": "«necesito 20 QUIKRETE» se fue entre los mensajes del turno de la mañana."
+        },
+        "2": {
+          "time": "Jue.",
+          "title": "Desvío de presupuesto detectado días tarde",
+          "caption": "Johnson Home está 18% sobre presupuesto y nadie lo vio hasta la nómina del viernes."
+        },
+        "3": {
+          "time": "Fin de mes",
+          "title": "Recibos sin registrar",
+          "caption": "Un recibo de concreto de $340 vivía en la guantera del camión."
+        }
+      }
+    },
+    "after": {
+      "items": {
+        "0": {
+          "time": "06:15",
+          "title": "Las partes de horas se aprueban solas",
+          "caption": "La cuadrilla marca entrada. El jefe aprueba el día de un desliz. Sin chat."
+        },
+        "1": {
+          "time": "07:12",
+          "title": "Solicitudes aprobadas en dos toques",
+          "caption": "Foto, cantidad, aprobado — la línea se adjunta sola a la obra."
+        },
+        "2": {
+          "time": "En cualquier momento",
+          "title": "El presupuesto se mueve en tiempo real",
+          "caption": "Cada hora de trabajo y bolsa de QUIKRETE actualiza el panel al instante."
+        },
+        "3": {
+          "time": "Un clic",
+          "title": "Reporte mensual, listo",
+          "caption": "Mano de obra, materiales, combustible — exportable para tu contador."
+        }
+      }
+    }
+  },
+  "howItWorks": {
+    "heading": "Cuatro pasos del registro al parte de horas firmado.",
+    "subhead": "Sin implementación de 30 días. Sin llamada de «éxito del cliente». Tú y tu cuadrilla están listos en una tarde.",
+    "steps": {
+      "0": {
+        "title": "Crea tu primer proyecto",
+        "body": "Nombre, dirección, número de plano y un presupuesto aproximado. Listo en menos de un minuto — sin llamada de bienvenida, sin demo de ventas.",
+        "alt": "Vista general de proyectos con presupuestos y obras en riesgo"
+      },
+      "1": {
+        "title": "Invita a tu cuadrilla",
+        "body": "Mándales el enlace por texto. Se instala en 30 segundos y tocan su nombre. Los trabajadores solo ven lo que les importa — sus tareas, sus horas, su comprobante de pago.",
+        "alt": "Pantalla de inicio del trabajador con ganancias, horas y tareas del día"
+      },
+      "2": {
+        "title": "Gestiona el día desde el teléfono",
+        "body": "La cuadrilla marca entrada, registra materiales y combustible, cierra tareas. Todo funciona sin conexión y sincroniza cuando vuelve la señal — sin datos perdidos, sin entradas duplicadas.",
+        "alt": "Pantalla de detalle de tarea con progreso e hilo de chat de la cuadrilla"
+      },
+      "3": {
+        "title": "Revisa los números",
+        "body": "Al final de la semana, abre la pestaña Reporte. Mano de obra, materiales, combustible, plan vs. real — listo para exportar como PDF o CSV para tu contador.",
+        "alt": "Reporte de proyecto con quema de presupuesto y desglose plan vs. real"
+      }
+    }
+  },
+  "features": {
+    "heading": "Todo lo que tu cuadrilla necesita. Nada más.",
+    "items": {
+      "0": {
+        "title": "Funciona sin señal",
+        "body": "Stroyka guarda todo localmente en cada dispositivo y sincroniza cuando vuelve la conexión. Los trabajadores pueden registrar horas, enviar solicitudes y revisar tareas en cualquier obra — sótano, campo o bajo tierra."
+      },
+      "1": {
+        "title": "Pensado para toda la cuadrilla",
+        "body": "El jefe tiene control de presupuesto, flujos de aprobación y reportes de costos en tiempo real. Los trabajadores ven sus tareas, registran horas y envían solicitudes. La misma app, adaptada a cada rol."
+      },
+      "2": {
+        "title": "Conoce tus números antes de fin de mes",
+        "body": "Cada compra, entrada del parte de horas y viaje de combustible se consolida automáticamente en el P&L del proyecto. Ve los costos de mano de obra, materiales y presupuesto restante de un vistazo — actualizado en el momento en que un trabajador envía."
+      },
+      "3": {
+        "title": "Nunca más «¿lo aprobaste?»",
+        "body": "Los trabajadores envían solicitudes de material o suministros desde la obra. El jefe revisa y aprueba con un toque. Los ítems aprobados se registran solos en los costos del proyecto. Historial completo, sin cadenas de mensajes."
+      }
+    }
+  },
+  "comparison": {
+    "heading": "Dónde encaja Stroyka.",
+    "subhead": "Comparación honesta. Si eres un GC de 50+ personas con equipo administrativo dedicado, las herramientas enterprise siguen siendo la mejor opción. Si eres una cuadrilla de 5–25 que quiere dejar de mandar partes de horas por texto, sigue leyendo.",
+    "whatMatters": "Lo que importa",
+    "onJobsite": "en la obra",
+    "cols": {
+      "0": {
+        "name": "Hojas de cálculo + WhatsApp",
+        "sub": "El estándar"
+      },
+      "1": {
+        "name": "Software enterprise",
+        "sub": "Para GCs de 50+ personas"
+      },
+      "2": {
+        "name": "Stroyka",
+        "sub": "Para cuadrillas de 5–25"
+      }
+    },
+    "rows": {
+      "0": {
+        "label": "Precio mensual fijo",
+        "note": "$0 / $149 / $249. Sin cobro por trabajador."
+      },
+      "1": {
+        "label": "Listo en una tarde"
+      },
+      "2": {
+        "label": "Sin capacitación"
+      },
+      "3": {
+        "label": "Exportar a QuickBooks / Xero",
+        "note": "CSV + PDF ahora, integraciones directas en la hoja de ruta."
+      },
+      "4": {
+        "label": "Costos de obra en tiempo real"
+      },
+      "5": {
+        "label": "Flujos de aprobación + historial"
+      },
+      "6": {
+        "label": "Funciona sin conexión en la obra"
+      },
+      "7": {
+        "label": "App móvil para la cuadrilla"
+      }
+    },
+    "legendYes": "Sí",
+    "legendPartial": "Parcial",
+    "legendNo": "No"
+  },
+  "footer": {
+    "tagline": "Costos de obra, gestión de cuadrilla y control de materiales para equipos de construcción.",
+    "colophonLeft": "Stroyka — The Field Journal · Vol. 01",
+    "colophonRight": "Austin, Texas · Est. 2026",
+    "product": "Producto",
+    "company": "Empresa",
+    "contact": "Contacto",
+    "getTheApp": "Obtener la app",
+    "requestDemo": "Solicitar demo",
+    "privacy": "Política de privacidad",
+    "terms": "Términos de servicio",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "soon": "próximamente",
+    "rights": "Todos los derechos reservados",
+    "madeFor": "Hecho para cuadrillas que construyen"
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "heading": "Respuestas directas. Sin rodeos.",
+    "subhead": "Todo lo que necesitas saber antes de llevar Stroyka a la obra — las preguntas que las cuadrillas reales hacen.",
+    "items": {
+      "0": {
+        "q": "¿Funciona sin internet?",
+        "a": "Sí. Stroyka funciona sin conexión — todos los datos se guardan localmente en cada dispositivo y se sincronizan automáticamente cuando vuelve la conexión. Los trabajadores en sótanos, zonas rurales o donde la señal es mala pueden seguir registrando horas, enviando solicitudes y viendo tareas.",
+        "meta": "Sin conexión"
+      },
+      "1": {
+        "q": "¿Cómo se suman los trabajadores?",
+        "a": "El jefe envía invitaciones por correo directamente desde la app. Los trabajadores hacen clic en el enlace, crean una contraseña y listo. No se necesita descargar ninguna app para la versión web — funciona en el navegador de cualquier teléfono.",
+        "meta": "Configuración"
+      },
+      "2": {
+        "q": "¿Qué pasa si un trabajador se va?",
+        "a": "Puedes desactivar la cuenta de un trabajador al instante desde la app. Pierde el acceso de inmediato. Su historial de partes de horas y datos de costos se queda en tu cuenta.",
+        "meta": "Administración"
+      },
+      "3": {
+        "q": "¿Son seguros mis datos?",
+        "a": "Los datos de tu empresa están aislados de los de las demás empresas a nivel de base de datos — no los mezclamos, no los compartimos, no los vendemos. Cifrados en reposo y en tránsito, alojados en infraestructura probada. Consulta nuestra Política de privacidad para más detalles.",
+        "meta": "Seguridad"
+      },
+      "4": {
+        "q": "¿Puedo exportar mis datos?",
+        "a": "Sí. Cada proyecto, parte de horas y registro de costos se puede exportar como CSV o PDF en cualquier momento. Si cancelas, tienes 30 días para exportar todo.",
+        "meta": "Datos"
+      },
+      "5": {
+        "q": "¿Por qué no usar software enterprise de construcción?",
+        "a": "La mayoría de las plataformas de construcción están diseñadas para grandes contratistas generales con personal de oficina y equipos de TI dedicados. Cuestan $500–$1,000+/mes, requieren semanas de incorporación y cobran por usuario. Stroyka está hecho para cuadrillas pequeñas de 5–25 trabajadores — los que de verdad ponen el hombro. Precio fijo, sin cobro por usuario, sin capacitación. Tu cuadrilla puede empezar el mismo día.",
+        "meta": "Comparación"
+      },
+      "6": {
+        "q": "¿Hay prueba gratis?",
+        "a": "Sí — empieza gratis para hasta 5 trabajadores, para siempre. ¿Necesitas más? Reclama un lugar fundador a $99/mes fijo de por vida, o agenda una demo de 20 minutos y te mostramos la app en vivo con datos de muestra.",
+        "meta": "Precios"
+      }
+    }
+  },
+  "pricing": {
+    "eyebrow": "Precios",
+    "heading": "Mensualidad fija. Sin cobro por usuario.",
+    "subhead": "Por usuario = por trabajador. Nosotros no hacemos eso. Gratis para siempre para cuadrillas de hasta 5.",
+    "monthly": "Mensual",
+    "annual": "Anual",
+    "annualSave": "−17%",
+    "perMonth": "/ mes",
+    "billedAnnually": "{total} facturado anualmente",
+    "mostPopular": "Más popular",
+    "spotsClaimed": "Lugares tomados",
+    "spotsCounter": "{taken} de {total}",
+    "spotsRemaining": "{count} disponibles",
+    "notSure": "¿No sabes qué plan te conviene? Agenda una demo de 20 minutos y te recomendamos el indicado para tu cuadrilla.",
+    "free": {
+      "name": "Gratis",
+      "description": "Para cuadrillas que están empezando",
+      "priceForever": "para siempre",
+      "limit": "Hasta 5 trabajadores",
+      "cta": "Empieza gratis",
+      "features": {
+        "0": "Hasta 5 trabajadores",
+        "1": "Registro de horas y partes diarios",
+        "2": "Solicitudes de material y combustible",
+        "3": "Gestión de tareas y mensajería",
+        "4": "Seguimiento de ganancias del trabajador",
+        "5": "Sincronización sin conexión",
+        "6": "Reportes PDF y CSV (Starter+)",
+        "7": "Costos de obra y P&L (Starter+)",
+        "8": "Alertas de horas extra (Starter+)"
+      }
+    },
+    "starter": {
+      "name": "Starter",
+      "description": "Para cuadrillas en crecimiento, hasta 15",
+      "limit": "Hasta 15 trabajadores",
+      "cta": "Obtener Starter",
+      "features": {
+        "0": "Todo lo de Gratis",
+        "1": "Hasta 15 trabajadores",
+        "2": "Tarifas por hora por trabajador",
+        "3": "Alertas de horas extra (32h y 40h)",
+        "4": "Reportes PDF — Parte de horas, P&L, Materiales",
+        "5": "Costos de obra y panel P&L",
+        "6": "Exportación CSV",
+        "7": "Soporte por email",
+        "8": "Generador de facturas para cliente (Pro)",
+        "9": "Archivos y fotos adjuntos (Pro)"
+      }
+    },
+    "pro": {
+      "name": "Pro",
+      "description": "Para operaciones más grandes, sin límites",
+      "limit": "Trabajadores ilimitados",
+      "cta": "Obtener Pro",
+      "features": {
+        "0": "Todo lo de Starter",
+        "1": "Trabajadores ilimitados",
+        "2": "Generador de facturas para cliente",
+        "3": "Archivos y fotos en tareas",
+        "4": "Exportación Excel",
+        "5": "Analítica avanzada",
+        "6": "Soporte prioritario",
+        "7": "Llamada de incorporación dedicada"
+      }
+    },
+    "founding": {
+      "title": "Miembro Fundador — limitado",
+      "pricePart1": "$99 al mes.",
+      "pricePart2": "Bloqueado para siempre.",
+      "body": "Las primeras 20 empresas en suscribirse fijan $99/mes de por vida — Starter con 34% de descuento, para siempre. Sin importar cuánto suba la tarifa pública.",
+      "cta": "Reclamar un lugar fundador →"
+    }
+  },
+  "integrations": {
+    "heading": "Envía tus números a donde necesitan ir.",
+    "subhead": "Exportación CSV y PDF hoy. Integraciones nativas en 2026 — escríbenos para subir la tuya en la lista.",
+    "soon": "Pronto",
+    "tools": {
+      "0": {
+        "name": "QuickBooks",
+        "caption": "Exportación CSV hoy · sincronización directa en la hoja de ruta"
+      },
+      "1": {
+        "name": "Xero",
+        "caption": "Exportación CSV hoy · sincronización directa en la hoja de ruta"
+      },
+      "2": {
+        "name": "Excel / Sheets",
+        "caption": "Exportación CSV — cada proyecto, cada parte de horas"
+      },
+      "3": {
+        "name": "Stripe",
+        "caption": "Tu suscripción a Stroyka, cobrada por Stripe"
+      },
+      "4": {
+        "name": "Informes PDF",
+        "caption": "Parte de horas, P&L, materiales — un clic"
+      },
+      "5": {
+        "name": "Respaldo en la nube",
+        "caption": "Respaldo cifrado en almacenamiento Supabase"
+      }
+    },
+    "demo": {
+      "concrete": "concreto",
+      "lumber": "madera",
+      "roof": "techo",
+      "invoice": "Factura",
+      "paid": "✓ pagado"
+    }
+  },
+  "guarantee": {
+    "heading": "La letra pequeña, en español claro.",
+    "subhead": "Sin reloj de prueba. Sin tarjeta de crédito para probarlo. Sin ataduras si decides que no es para ti.",
+    "promises": {
+      "0": {
+        "title": "Gratis para siempre en cuadrillas de hasta 5",
+        "body": "Descarga la app y úsala con hasta 5 trabajadores todo el tiempo que quieras. Sin cronómetro de prueba, sin tarjeta de crédito, sin modales molestos de actualización."
+      },
+      "1": {
+        "title": "Importación de datos gratis",
+        "body": "Envíanos tus hojas de cálculo actuales o un CSV de lo que estés usando. Nosotros ponemos tu primera obra en la app — sin costo para ti."
+      },
+      "2": {
+        "title": "Cancela cuando quieras",
+        "body": "Los planes de pago son mes a mes, sin contratos. Exporta cada registro como CSV o PDF antes de irte. 30 días de gracia para tus datos."
+      }
+    }
+  },
+  "cta": {
+    "run": "Dirige",
+    "cleaner": "una obra",
+    "jobsite": "más limpia.",
+    "subhead": "Empieza gratis con hasta cinco trabajadores, o agenda una demo de veinte minutos y te mostramos Stroyka en vivo. Sin tarjeta de crédito en ningún caso.",
+    "startFree": "Empieza gratis",
+    "bookDemo": "Agenda una demo →",
+    "freeUpTo5": "Gratis para cuadrillas de hasta 5",
+    "foundingRate": "$99/mo tarifa fundadora",
+    "cancelAnytime": "Cancela cuando quieras"
+  },
+  "founderNote": {
+    "location": "Austin, Texas",
+    "eyebrow": "Una carta del fundador · Vol. 01",
+    "openingLine": "Crecí en obras de construcción.",
+    "para1": "Mi familia llevaba una cuadrilla de encofrado con una hoja de cálculo, un bloc de notas y un grupo de chat que nadie tenía energía para mantener ordenado al final de la semana. Los presupuestos se descontrolaban. Los recibos desaparecían. La respuesta a \"¿cómo vamos en Johnson Home?\" era un encogimiento de hombros.",
+    "para2": "Stroyka es la herramienta que quería poner en manos de mi viejo. Precio fijo. Funciona sin señal. Se aprende en una tarde. Hecha para la cuadrilla, no para la oficina. Nada más, nada menos.",
+    "para3italic": "Si no te hace el martes más fácil, no tiene nada que hacer en tu teléfono.",
+    "signature": "— Maks",
+    "name": "Maks Dalen",
+    "role": "Fundador, Stroyka"
+  },
+  "testimonials": {
+    "heading": "Lo que dicen las cuadrillas",
+    "subhead": "La confianza de equipos reales de construcción",
+    "items": {
+      "0": {
+        "name": "Mike R.",
+        "role": "Contratista general, Denver",
+        "quote": "Stroyka reemplazó tres apps que usábamos. La cuadrilla lo usa de verdad porque funciona sin señal en cualquier obra."
+      },
+      "1": {
+        "name": "Sarah K.",
+        "role": "Gerente de proyecto, Austin",
+        "quote": "Por fin sé adónde va cada dólar antes de que termine el proyecto. Nada de pesadillas con hojas de cálculo."
+      },
+      "2": {
+        "name": "Carlos M.",
+        "role": "Líder de cuadrilla, Phoenix",
+        "quote": "Mis muchachos registran tiempo y solicitudes desde el teléfono en 30 segundos. Incluso en el sótano sin señal."
+      }
+    }
+  },
+  "demo": {
+    "eyebrow": "Empezar",
+    "title": "Solicita tu demo",
+    "subtitle": "Rellena el formulario y programaremos una demo personalizada de 20 minutos con tus propios datos de muestra. Sin compromisos, sin tarjeta de crédito.",
+    "name": "Nombre",
+    "company": "Nombre de empresa",
+    "crewSize": "Tamaño de cuadrilla",
+    "email": "Correo electrónico",
+    "phone": "Teléfono (opcional)",
+    "challenge": "¿Cuál es tu mayor reto?",
+    "namePlaceholder": "Juan García",
+    "companyPlaceholder": "García Construcción LLC",
+    "crewSizePlaceholder": "Elige el tamaño",
+    "emailPlaceholder": "juan@garciaconstruccion.com",
+    "phonePlaceholder": "(555) 123-4567",
+    "challengePlaceholder": "Cuéntanos cómo trabajas ahora y qué no está funcionando...",
+    "crew1to5": "1–5 trabajadores",
+    "crew5to10": "5–10 trabajadores",
+    "crew10to25": "10–25 trabajadores",
+    "crew25plus": "25+ trabajadores",
+    "submit": "Solicitar mi demo →",
+    "submitting": "Enviando…",
+    "successTitle": "Estás en la lista",
+    "successBody": "Te escribiremos en 24 horas para agendar tu demo.",
+    "confirmSent": "Confirmación enviada a tu correo",
+    "fromEmail": "de hello@getstroyka.com",
+    "checkSpam": "¿No lo ves? Revisa tu carpeta de spam o promociones.",
+    "backHome": "Volver al inicio",
+    "errors": {
+      "nameRequired": "Ingresa tu nombre para saber a quién contactar.",
+      "companyRequired": "Nos encantaría saber el nombre de tu empresa.",
+      "crewSizeRequired": "Elige el tamaño de cuadrilla para personalizar la demo.",
+      "emailRequired": "Necesitamos tu correo para enviarte los detalles de la demo.",
+      "emailInvalid": "Ese correo no parece válido — ¿lo revisas?",
+      "tooManyRequests": "Demasiadas solicitudes. Espera una hora y vuelve a intentarlo, o escríbenos a hello@getstroyka.com.",
+      "genericError": "Algo salió mal de nuestro lado. Escríbenos a hello@getstroyka.com y te respondemos pronto."
+    }
+  },
+  "planToDone": {
+    "_note": "pending native pass",
+    "beats": {
+      "0": {
+        "kicker": "MÓDULO · 01",
+        "headline": "Todo proyecto empieza en papel.",
+        "state": "PLAN"
+      },
+      "1": {
+        "kicker": "MÓDULO · 02",
+        "headline": "Ahora puedes ver todo el conjunto.",
+        "state": "ESTRUCTURA"
+      },
+      "2": {
+        "kicker": "MÓDULO · 03",
+        "headline": "Cada material se registra solo.",
+        "state": "CONSTRUYENDO"
+      },
+      "3": {
+        "kicker": "MÓDULO · 04",
+        "headline": "Siempre sabes cómo vas.",
+        "state": "CONTROL"
+      },
+      "4": {
+        "kicker": "CERRADO · JOHNSON",
+        "headline": "",
+        "state": "COMPLETO"
+      },
+      "5": {
+        "kicker": "CERRADO · JOHNSON",
+        "headline": "",
+        "state": "COMPLETO"
+      }
+    },
+    "rooms": {
+      "living": "SALA",
+      "kitchen": "COCINA",
+      "bedroom1": "CUARTO 1",
+      "bedroom2": "CUARTO 2",
+      "bath": "BAÑO"
+    },
+    "floorPlan": "PLANO DE PLANTA · A-04",
+    "scale": "ESCALA 1/4\"=1'",
+    "costEntries": {
+      "0": {
+        "label": "CONCRETO",
+        "subtitle": "14 yardas · colado 04/15"
+      },
+      "1": {
+        "label": "MADERA",
+        "subtitle": "320 pies-tabla · roble"
+      },
+      "2": {
+        "label": "TECHO",
+        "subtitle": "Tejas arquitectónicas"
+      },
+      "3": {
+        "label": "FACHADA",
+        "subtitle": "Cedro solapado · tinte"
+      },
+      "4": {
+        "label": "VENTANAS",
+        "subtitle": "12 unid. · doble vidrio"
+      }
+    },
+    "chartBars": {
+      "0": {
+        "label": "Mano de obra"
+      },
+      "1": {
+        "label": "Materiales"
+      },
+      "2": {
+        "label": "Combustible"
+      }
+    },
+    "delivered": "ENTREGADO",
+    "chartTitle": "PLAN VS REAL",
+    "onBudget": "EN PRESUPUESTO",
+    "jobLabel": "OBRA",
+    "trackPct": "89% CONTROL",
+    "introEyebrow": "Cómo Stroyka ve tu proyecto",
+    "introTitle": "Del plano a la entrega — cada peso rastreado.",
+    "introSubtitle": "Desplázate para ver cómo avanza un proyecto en Stroyka — cada material, cada costo, en tiempo real.",
+    "introScrollHint": "Desplázate para empezar",
+    "introAriaLabel": "Cómo Stroyka ve tu proyecto — animación interactiva de desplazamiento",
+    "onTimeBudget": "A tiempo · En presupuesto",
+    "spentToDate": "GASTADO A LA FECHA",
+    "onTime": "A tiempo"
+  },
+  "getStarted": {
+    "chooseYourPlan": "Elige tu plan",
+    "almostThere": "Ya casi",
+    "redirecting": "Redirigiendo...",
+    "noPerSeatFees": "Sin cobro por usuario. Toda tu cuadrilla incluida.",
+    "enterDetails": "Ingresa tus datos y te llevamos al pago seguro.",
+    "monthly": "Mensual",
+    "annual": "Anual",
+    "perMonth": "/ mes",
+    "perMonthShort": "/mes",
+    "billedAnnually": "facturado anualmente",
+    "perYrBilledAnnually": "/año, facturado anualmente",
+    "saveAmount": "Ahorras ${amount}",
+    "mostPopular": "Más popular",
+    "selectedPlan": "Plan seleccionado",
+    "starter": {
+      "name": "Starter",
+      "description": "Para cuadrillas en crecimiento, hasta 15",
+      "workerLimit": "Hasta 15 trabajadores",
+      "features": {
+        "0": "Todo lo de Gratis",
+        "1": "Hasta 15 trabajadores",
+        "2": "Reportes PDF (Parte de horas, P&L, Materiales)",
+        "3": "Costos de obra y panel P&L",
+        "4": "Exportación CSV",
+        "5": "Soporte por email"
+      }
+    },
+    "pro": {
+      "name": "Pro",
+      "description": "Para operaciones más grandes, sin límites",
+      "workerLimit": "Trabajadores ilimitados",
+      "features": {
+        "0": "Todo lo de Starter",
+        "1": "Trabajadores ilimitados",
+        "2": "Exportación Excel",
+        "3": "Fotos y archivos adjuntos en mensajes de tareas",
+        "4": "Analítica avanzada",
+        "5": "Soporte prioritario",
+        "6": "Llamada de incorporación dedicada"
+      }
+    },
+    "founding": {
+      "title": "Tarifa de Miembro Fundador — $99/mes, fija para siempre",
+      "body": "Las primeras 20 empresas fijan Starter a $99/mes de por vida. $50 de ahorro cada mes, para siempre.",
+      "cta": "Reclamar un lugar fundador",
+      "badge": "Miembro Fundador — $50 de ahorro cada mes, para siempre"
+    },
+    "form": {
+      "nameLbl": "Tu nombre *",
+      "emailLbl": "Correo de trabajo *",
+      "companyLbl": "Nombre de empresa *",
+      "namePlaceholder": "Juan García",
+      "emailPlaceholder": "juan@garciaconstruccion.com",
+      "companyPlaceholder": "García Construcción LLC",
+      "retryHint": ". Intenta de nuevo o escríbenos a",
+      "errors": {
+        "nameRequired": "Ingresa tu nombre.",
+        "emailRequired": "Necesitamos tu correo de trabajo.",
+        "emailInvalid": "Ese correo no parece válido.",
+        "companyRequired": "Ingresa el nombre de tu empresa.",
+        "somethingWentWrong": "Algo salió mal"
+      }
+    },
+    "back": "Atrás",
+    "continue": "Continuar",
+    "continueToPayment": "Continuar al pago",
+    "processing": "Procesando...",
+    "alreadyHaveAccount": "¿Ya tienes cuenta?",
+    "login": "Inicia sesión →",
+    "takingYouToCheckout": "Llevándote al pago seguro...",
+    "poweredByStripe": "Procesado por Stripe. Tu información de pago nunca se guarda en nuestros servidores.",
+    "subscriptionActive": "Suscripción activa",
+    "welcome": "Estás dentro. Bienvenido a Stroyka.",
+    "planActive": "Tu plan {plan} está activo",
+    "planActiveGeneric": "Tu plan está activo",
+    "haveApp": "¿Ya tienes la app?",
+    "openSignIn": "Abre Stroyka e inicia sesión — tu plan ya está actualizado.",
+    "newToStroyka": "¿Nuevo en Stroyka?",
+    "downloadSignUp": "Descarga la app y regístrate con el mismo correo. Tu plan se activa automáticamente.",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "questions": "¿Preguntas?",
+    "noWorries": "Sin problema",
+    "planUnchanged": "Tu plan no ha cambiado.",
+    "subscribeAnytime": "Puedes suscribirte cuando quieras desde la página de precios.",
+    "backToPricing": "← Volver a precios"
+  },
+  "account": {
+    "title": "Cuenta",
+    "manageInApp": "Administra tu suscripción en la app",
+    "managedInside": "Tu suscripción se gestiona dentro de Stroyka. Abre la app y ve a <highlight>Configuración → tu plan</highlight> para actualizar tu tarjeta, ver facturas o cambiar tu plan.",
+    "openStroyka": "Abrir Stroyka",
+    "needHelp": "¿Necesitas ayuda? hello@getstroyka.com",
+    "redirectingBilling": "Redirigiendo a facturación",
+    "verifying": "Verificando tu sesión",
+    "updated": "ACTUALIZADO",
+    "allSet": "Todo listo",
+    "changesSaved": "Los cambios de facturación se guardaron.",
+    "couldntVerify": "No pudimos verificar tu sesión",
+    "tryFromApp": "Vuelve a intentarlo desde la app Stroyka, o contáctanos en <email>hello@getstroyka.com</email>.",
+    "loading": "cargando",
+    "backToSite": "← Volver a getstroyka.com"
+  },
+  "errors": {
+    "eyebrow": "• Algo salió del plan",
+    "title": "Algo salió mal",
+    "body": "Ocurrió un error inesperado. Nuestro equipo ya fue notificado.",
+    "tryAgain": "Intentar de nuevo",
+    "backHome": "← Volver al inicio",
+    "nfEyebrow": "Fuera del plan",
+    "nfTitle": "Esta página no existe",
+    "nfBody": "Parece que esta se quedó enterrada bajo un montón de planos.",
+    "nfBackHome": "Volver al inicio",
+    "nfBookDemo": "O agenda una demo →",
+    "loading": "Cargando"
+  },
+  "legal": {
+    "_note": "pending native pass",
+    "eyebrow": "Legal",
+    "englishOnlyTitle": "Disponible en inglés",
+    "englishOnlyBody": "Este documento se proporciona en inglés. Como producto de EE. UU., la versión en inglés es la oficial."
+  }
+}

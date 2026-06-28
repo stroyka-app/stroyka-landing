@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   motion,
   useMotionValue,
@@ -36,11 +37,12 @@ interface Tool {
  * scrolls in every 2.4s; oldest scrolls off the top. Reads as live posting.
  */
 function LedgerDemo({ active }: { active: boolean }) {
+  const t = useTranslations("integrations");
   const prefersReduced = useReducedMotion();
   const rows = [
-    { ref: "INV-0142", amt: "+$2,180", label: "concrete" },
-    { ref: "INV-0143", amt: "+$4,820", label: "lumber" },
-    { ref: "INV-0144", amt: "+$3,640", label: "roof" },
+    { ref: "INV-0142", amt: "+$2,180", label: t("demo.concrete") },
+    { ref: "INV-0143", amt: "+$4,820", label: t("demo.lumber") },
+    { ref: "INV-0144", amt: "+$3,640", label: t("demo.roof") },
   ];
   return (
     <div className="relative h-[64px] overflow-hidden rounded-md bg-bone-soft/60 border border-ink/10 px-2.5 py-2 font-mono text-[10.5px]">
@@ -100,13 +102,14 @@ function LedgerDemo({ active }: { active: boolean }) {
  * Xero-style invoice ticker — a single big invoice number that ticks up.
  */
 function InvoiceTickerDemo({ active }: { active: boolean }) {
+  const t = useTranslations("integrations");
   const prefersReduced = useReducedMotion();
   const numbers = [42, 43, 44, 45, 46];
   return (
     <div className="relative h-[64px] overflow-hidden rounded-md bg-bone-soft/60 border border-ink/10 px-3 py-2 font-mono text-[10.5px]">
       <div className="flex items-baseline gap-2 mb-1">
         <span className="text-ink/50 tracking-[0.1em] text-[10px] uppercase">
-          Invoice
+          {t("demo.invoice")}
         </span>
         <span className="relative inline-flex w-1.5 h-1.5">
           {!prefersReduced && (
@@ -204,6 +207,7 @@ function SheetWaveDemo({ active }: { active: boolean }) {
  * sliding across periodically.
  */
 function StripeCardDemo({ active }: { active: boolean }) {
+  const t = useTranslations("integrations");
   const prefersReduced = useReducedMotion();
   return (
     <div className="relative h-[64px] rounded-md bg-bone-soft/60 border border-ink/10 px-3 py-2 overflow-hidden">
@@ -259,7 +263,7 @@ function StripeCardDemo({ active }: { active: boolean }) {
               }
         }
       >
-        ✓ paid
+        {t("demo.paid")}
       </motion.div>
     </div>
   );
@@ -388,63 +392,15 @@ function CloudSyncDemo({ active }: { active: boolean }) {
   );
 }
 
-/* ── Tool table ──────────────────────────────────────────────────────── */
+/* ── Tool table (non-text config; text comes from translations) ──────── */
 
-const TOOLS: Tool[] = [
-  {
-    name: "QuickBooks",
-    caption: "CSV export today · direct sync on roadmap",
-    status: "soon",
-    rotation: -2.4,
-    bobPeriod: 5.1,
-    bobOffset: 0,
-    Demo: LedgerDemo,
-  },
-  {
-    name: "Xero",
-    caption: "CSV export today · direct sync on roadmap",
-    status: "soon",
-    rotation: 1.8,
-    bobPeriod: 4.3,
-    bobOffset: 1.2,
-    Demo: InvoiceTickerDemo,
-  },
-  {
-    name: "Excel / Sheets",
-    caption: "CSV export — every project, every timesheet",
-    status: "live",
-    rotation: -1.2,
-    bobPeriod: 6.2,
-    bobOffset: 2.0,
-    Demo: SheetWaveDemo,
-  },
-  {
-    name: "Stripe",
-    caption: "Your Stroyka subscription, billed through Stripe",
-    status: "live",
-    rotation: 2.6,
-    bobPeriod: 4.8,
-    bobOffset: 0.8,
-    Demo: StripeCardDemo,
-  },
-  {
-    name: "PDF reports",
-    caption: "Timesheet, P&L, materials — one click",
-    status: "live",
-    rotation: -2.2,
-    bobPeriod: 3.7,
-    bobOffset: 1.6,
-    Demo: PdfFanDemo,
-  },
-  {
-    name: "Cloud backup",
-    caption: "Encrypted backup on Supabase storage",
-    status: "live",
-    rotation: 0.8,
-    bobPeriod: 3.9,
-    bobOffset: 2.4,
-    Demo: CloudSyncDemo,
-  },
+const TOOLS_CONFIG: Array<Omit<Tool, "name" | "caption">> = [
+  { status: "soon", rotation: -2.4, bobPeriod: 5.1, bobOffset: 0,   Demo: LedgerDemo },
+  { status: "soon", rotation:  1.8, bobPeriod: 4.3, bobOffset: 1.2, Demo: InvoiceTickerDemo },
+  { status: "live", rotation: -1.2, bobPeriod: 6.2, bobOffset: 2.0, Demo: SheetWaveDemo },
+  { status: "live", rotation:  2.6, bobPeriod: 4.8, bobOffset: 0.8, Demo: StripeCardDemo },
+  { status: "live", rotation: -2.2, bobPeriod: 3.7, bobOffset: 1.6, Demo: PdfFanDemo },
+  { status: "live", rotation:  0.8, bobPeriod: 3.9, bobOffset: 2.4, Demo: CloudSyncDemo },
 ];
 
 /* ── Sticker card ────────────────────────────────────────────────────── */
@@ -604,10 +560,11 @@ function StickerCard({
  * — reads as in-progress build, not just a label.
  */
 function SoonBadge() {
+  const t = useTranslations("integrations");
   const prefersReduced = useReducedMotion();
   return (
     <span className="relative inline-flex items-center font-mono text-[9px] font-semibold uppercase tracking-[0.15em] text-brand-forest px-1.5 py-0.5 rounded bg-brand-sage/15 border border-brand-sage/40">
-      Soon
+      {t("soon")}
       {!prefersReduced && (
         <svg
           aria-hidden
@@ -642,8 +599,15 @@ function SoonBadge() {
 /* ── Section ─────────────────────────────────────────────────────────── */
 
 export default function Integrations() {
+  const t = useTranslations("integrations");
   const sectionRef = useRef<HTMLElement>(null);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+
+  const tools: Tool[] = TOOLS_CONFIG.map((cfg, i) => ({
+    ...cfg,
+    name: t(`tools.${i}.name` as `tools.${number}.name`),
+    caption: t(`tools.${i}.caption` as `tools.${number}.caption`),
+  }));
 
   return (
     <section
@@ -667,12 +631,12 @@ export default function Integrations() {
         <div className="max-w-2xl mb-14">
           <FadeIn delay={0.1}>
             <h2 className="font-display font-light text-5xl lg:text-7xl leading-[0.98] tracking-[-0.02em] text-ink mb-4">
-              Send your numbers where they need to go.
+              {t("heading")}
             </h2>
           </FadeIn>
           <FadeIn delay={0.15}>
             <p className="text-[15px] text-ink-soft max-w-lg leading-relaxed">
-              CSV and PDF export today. Native integrations rolling out in 2026 — email us to move yours up the list.
+              {t("subhead")}
             </p>
           </FadeIn>
         </div>
@@ -681,7 +645,7 @@ export default function Integrations() {
             grid bounds — neighbors recede on hover. */}
         <FadeIn delay={0.2}>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-8 md:gap-x-7 md:gap-y-10 [perspective:1200px]">
-            {TOOLS.map((tool, i) => (
+            {tools.map((tool, i) => (
               <StickerCard
                 key={tool.name}
                 tool={tool}

@@ -1,17 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { usePathname } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useReducedMotion } from "framer-motion";
 import { useScrollPosition } from "@/lib/hooks/useScrollPosition";
 import Logo from "@/components/Logo";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 
-const NAV_LINKS = [
-  { label: "Features", href: "/#features" },
-  { label: "How It Works", href: "/#how-it-works" },
-  { label: "Pricing", href: "/#pricing" },
-  { label: "FAQ", href: "/#faq" },
+type NavKey = "features" | "howItWorks" | "pricing" | "faq";
+
+const NAV_LINKS: Array<{ key: NavKey; hash: string }> = [
+  { key: "features", hash: "features" },
+  { key: "howItWorks", hash: "how-it-works" },
+  { key: "pricing", hash: "pricing" },
+  { key: "faq", hash: "faq" },
 ];
 
 /**
@@ -31,6 +35,10 @@ const NAV_LINKS = [
  * sitting on top of it.
  */
 export default function Navbar() {
+  const t = useTranslations("nav");
+  const active = useLocale();
+  const homeHash = (hash: string) =>
+    active === "en" ? `/#${hash}` : `/${active}#${hash}`;
   const scrollY = useScrollPosition();
   const pathname = usePathname();
   // Only the landing page has a dark hero behind the navbar — everywhere
@@ -76,31 +84,32 @@ export default function Navbar() {
           </motion.div>
         </Link>
 
-        <div className="hidden md:flex items-center gap-9">
+        <div className="hidden md:flex items-center gap-5 lg:gap-9">
           {NAV_LINKS.map((link) => (
             <a
-              key={link.href}
-              href={link.href}
-              className={`font-mono text-[12px] tracking-[0.15em] uppercase transition-colors duration-200 ${textBase}`}
+              key={link.hash}
+              href={homeHash(link.hash)}
+              className={`font-mono text-[12px] tracking-[0.12em] lg:tracking-[0.15em] uppercase transition-colors duration-200 ${textBase}`}
             >
-              {link.label}
+              {t(link.key)}
             </a>
           ))}
         </div>
 
-        <div className="hidden md:block">
-          <a
+        <div className="hidden md:flex items-center gap-4">
+          <LanguageSwitcher />
+          <Link
             href="/get-started"
             className="group relative inline-flex items-center rounded-full px-5 py-2 font-heading text-[13.5px] font-medium tracking-wide text-bone border border-brand-sage-bright/40 bg-brand-sage-bright/10 hover:bg-brand-sage-bright/20 hover:border-brand-sage-bright/70 transition-[background-color,border-color,transform] duration-200 active:scale-[0.97]"
           >
-            Get started
-          </a>
+            {t("getStarted")}
+          </Link>
         </div>
 
         <button
           className="md:hidden flex flex-col gap-1.5 p-2"
           onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
+          aria-label={t("toggleMenu")}
           aria-expanded={mobileOpen}
         >
           <motion.span
@@ -134,21 +143,24 @@ export default function Navbar() {
             <div className="flex flex-col px-6 py-6 gap-5">
               {NAV_LINKS.map((link) => (
                 <a
-                  key={link.href}
-                  href={link.href}
+                  key={link.hash}
+                  href={homeHash(link.hash)}
                   className="font-mono text-[12px] tracking-[0.15em] uppercase text-bone/80 hover:text-bone transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
-                  {link.label}
+                  {t(link.key)}
                 </a>
               ))}
-              <a
+              <Link
                 href="/get-started"
                 className="inline-flex items-center justify-center rounded-full px-5 py-2.5 font-heading text-[14px] font-medium text-bone border border-brand-sage-bright/50 bg-brand-sage-bright/15 hover:bg-brand-sage-bright/25"
                 onClick={() => setMobileOpen(false)}
               >
-                Get started
-              </a>
+                {t("getStarted")}
+              </Link>
+              <div className="pt-2 border-t border-bone/10">
+                <LanguageSwitcher variant="inline" />
+              </div>
             </div>
           </motion.div>
         )}

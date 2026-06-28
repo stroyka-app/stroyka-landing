@@ -1,18 +1,47 @@
 import type { Metadata } from "next";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import DemoForm from "@/components/DemoForm";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
+import { localeAlternates, canonicalFor, ogLocale } from "@/i18n/alternates";
 
-export const metadata: Metadata = {
-  title: "Request a Demo",
-  description: "See Stroyka in action. Book a 20-minute demo with the founder.",
-  alternates: { canonical: "/demo" },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+  const canonical = canonicalFor(locale, "/demo");
+  return {
+    title: { absolute: t("demoTitle") },
+    description: t("demoDescription"),
+    alternates: { canonical, languages: localeAlternates("/demo") },
+    openGraph: {
+      type: "website",
+      url: canonical,
+      siteName: "Stroyka",
+      title: t("demoTitle"),
+      description: t("demoDescription"),
+      locale: ogLocale[locale],
+      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Stroyka — Construction Management App" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("demoTitle"),
+      description: t("demoDescription"),
+      images: ["/og-image.png"],
+    },
+  };
+}
 
-export default function DemoPage() {
+export default async function DemoPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("demo");
   return (
     <>
       <Navbar />
@@ -28,16 +57,16 @@ export default function DemoPage() {
         />
         <div className="relative max-w-2xl mx-auto px-6">
           <FadeIn>
-            <SectionLabel>Get started</SectionLabel>
+            <SectionLabel>{t("eyebrow")}</SectionLabel>
           </FadeIn>
           <FadeIn delay={0.05}>
             <TextReveal as="h1" className="font-display font-light text-4xl lg:text-6xl leading-[0.98] tracking-[-0.02em] text-ink mb-5">
-              Request your demo
+              {t("title")}
             </TextReveal>
           </FadeIn>
           <FadeIn delay={0.12}>
             <p className="text-[15px] lg:text-base text-ink-soft leading-relaxed mb-10 max-w-lg">
-              Fill out the form and we&rsquo;ll schedule a 20-minute personalized demo with your own sample data. No commitment, no credit card.
+              {t("subtitle")}
             </p>
           </FadeIn>
           <FadeIn delay={0.2}>

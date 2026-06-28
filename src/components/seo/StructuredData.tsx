@@ -1,71 +1,17 @@
 // src/components/seo/StructuredData.tsx
-// Server component. Emits four JSON-LD blocks to give Google a clear
-// entity + product + content picture of the site in a single render.
-// Imports data modules so the FAQ and Pricing components remain the
-// single source of truth for the content they describe.
+// Async server component. Emits four locale-aware JSON-LD blocks.
+// Uses QUESTIONS/PRICING_TIERS data files for structure and numeric values;
+// getTranslations() supplies all localized text (FAQ Q&A, offer descriptions, app description).
+// The escapeJsonLd helper unicode-escapes <, >, & so no </script> sequence in
+// any translated string can terminate this block early.
 
+import { getLocale, getTranslations } from "next-intl/server";
 import { QUESTIONS } from "@/data/faq";
-import { PRICING_TIERS } from "@/data/pricing";
+import { PRICING_TIERS, type PricingTier } from "@/data/pricing";
 
 const SITE_URL = "https://getstroyka.com";
 const ORG_LOGO = `${SITE_URL}/social-avatar-400.png`;
 const SUPPORT_EMAIL = "hello@getstroyka.com";
-
-function organizationSchema() {
-  return {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Stroyka",
-    url: SITE_URL,
-    logo: ORG_LOGO,
-    email: SUPPORT_EMAIL,
-  };
-}
-
-function websiteSchema() {
-  return {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "Stroyka",
-    url: SITE_URL,
-    publisher: { "@type": "Organization", name: "Stroyka" },
-  };
-}
-
-function softwareApplicationSchema() {
-  return {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "Stroyka",
-    applicationCategory: "BusinessApplication",
-    operatingSystem: "iOS, Android, Web",
-    description:
-      "Construction crew and job cost management app for small US contractors. Track time, assign tasks, and monitor job costs offline.",
-    url: SITE_URL,
-    offers: PRICING_TIERS.map((tier) => ({
-      "@type": "Offer",
-      name: tier.name,
-      price: String(tier.monthlyPrice),
-      priceCurrency: "USD",
-      description: tier.description,
-    })),
-  };
-}
-
-function faqPageSchema() {
-  return {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: QUESTIONS.map((item) => ({
-      "@type": "Question",
-      name: item.q,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: item.a,
-      },
-    })),
-  };
-}
 
 type JsonLdObject = Record<string, unknown>;
 
@@ -89,13 +35,77 @@ function JsonLdScript({ schema }: { schema: JsonLdObject }) {
   );
 }
 
-export default function StructuredData() {
+/** Maps the PricingTier name (brand string, same across locales) to its messages key. */
+const TIER_MSG_KEY: Record<PricingTier["name"], "free" | "starter" | "pro"> = {
+  Free: "free",
+  Starter: "starter",
+  Pro: "pro",
+};
+
+export default async function StructuredData() {
+  const locale = await getLocale();
+  const tFaq = await getTranslations("faq");
+  const tPricing = await getTranslations("pricing");
+  const tMeta = await getTranslations("meta");
+
+  const organization: JsonLdObject = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Stroyka",
+    url: SITE_URL,
+    logo: ORG_LOGO,
+    email: SUPPORT_EMAIL,
+  };
+
+  const website: JsonLdObject = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Stroyka",
+    url: SITE_URL,
+    inLanguage: locale,
+    publisher: { "@type": "Organization", name: "Stroyka" },
+  };
+
+  const softwareApplication: JsonLdObject = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Stroyka",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "iOS, Android, Web",
+    description: tMeta("appDescription"),
+    url: SITE_URL,
+    inLanguage: locale,
+    offers: PRICING_TIERS.map((tier) => ({
+      "@type": "Offer",
+      name: tier.name,
+      price: String(tier.monthlyPrice),
+      priceCurrency: "USD",
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      description: tPricing(`${TIER_MSG_KEY[tier.name]}.description` as any),
+    })),
+  };
+
+  const faqPage: JsonLdObject = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: QUESTIONS.map((_, i) => ({
+      "@type": "Question",
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      name: tFaq(`items.${i}.q` as any),
+      acceptedAnswer: {
+        "@type": "Answer",
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        text: tFaq(`items.${i}.a` as any),
+      },
+    })),
+  };
+
   return (
     <>
-      <JsonLdScript schema={organizationSchema()} />
-      <JsonLdScript schema={websiteSchema()} />
-      <JsonLdScript schema={softwareApplicationSchema()} />
-      <JsonLdScript schema={faqPageSchema()} />
+      <JsonLdScript schema={organization} />
+      <JsonLdScript schema={website} />
+      <JsonLdScript schema={softwareApplication} />
+      <JsonLdScript schema={faqPage} />
     </>
   );
 }

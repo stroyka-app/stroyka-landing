@@ -1,0 +1,686 @@
+{
+  "meta": {
+    "homeTitle": "Stroyka — Construction Crew & Job Cost Management",
+    "homeDescription": "Stroyka helps small construction crews track daily hours, job costs, and worker pay — all in one app. Built for US contractors with 5–25 workers.",
+    "demoTitle": "Request a Demo — Stroyka",
+    "demoDescription": "See Stroyka in action. Book a 20-minute demo with the founder.",
+    "getStartedTitle": "Get Started — Stroyka",
+    "getStartedDescription": "Choose a Stroyka plan and start managing your construction crew today. No per-seat fees — your entire team is included.",
+    "privacyTitle": "Privacy Policy — Stroyka",
+    "privacyDescription": "Privacy Policy for the Stroyka construction management platform.",
+    "termsTitle": "Terms of Service — Stroyka",
+    "termsDescription": "Terms of Service for the Stroyka construction management platform.",
+    "appDescription": "Construction crew and job cost management app for small US contractors. Track time, assign tasks, and monitor job costs offline."
+  },
+  "hero": {
+    "startFree": "Start free",
+    "foundingRate": "$99/mo founding rate",
+    "spotsLeft": "{count} spots left",
+    "headline1": "Construction",
+    "headline2": "management,",
+    "headline3": "for real crews.",
+    "subhead": "One tool for the whole crew — boss and workers. Clock-in, job costing, reports. Works on any phone, even with no signal.",
+    "specCrew": "For crews of 5–25",
+    "specInstant": "Works the day you sign up",
+    "bookDemo": "Book a demo →",
+    "sheetTitle": "Project sheet",
+    "sheetLive": "live",
+    "sheetCrew": "Crew",
+    "sheetCrewCount": "{count} workers",
+    "sheetJob": "Job no.",
+    "sheetLabor": "Labor wk",
+    "sheetTrend": "Trend",
+    "sheetBudget": "Budget",
+    "sheetOnPlanLabel": "on plan",
+    "sheetOffline": "Offline",
+    "sheetAnyPhone": "Yes — any phone"
+  },
+  "nav": {
+    "features": "Features",
+    "howItWorks": "How It Works",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "getStarted": "Get started",
+    "toggleMenu": "Toggle menu",
+    "changeLanguage": "Change language",
+    "selectLanguage": "Select language"
+  },
+  "theShift": {
+    "eyebrow": "The shift",
+    "heading": "Tuesday morning, before and after.",
+    "subhead": "Same crew of twelve. Same week. One of them is running on receipts and group chats; the other one is running Stroyka.",
+    "beforeLabel": "Before",
+    "beforeTitle": "Duct-taped out of four apps.",
+    "beforeBody": "Hours in WhatsApp. Receipts in the truck. Budgets in a spreadsheet no one has opened since bid day.",
+    "afterLabel": "After",
+    "afterTitle": "One app. Every number aligned.",
+    "afterBody": "Crew clocks in. Budget moves. Materials approve. You open the phone at 6am and know exactly where Johnson Home stands.",
+    "before": {
+      "items": {
+        "0": {
+          "time": "06:15",
+          "title": "Timesheet dispute in WhatsApp",
+          "caption": "Jose logged 9h. The foreman remembers 7. Someone is getting shorted."
+        },
+        "1": {
+          "time": "07:12",
+          "title": "Material request buried in a thread",
+          "caption": "“need 20 QUIKRETE” scrolled past the morning check-in messages."
+        },
+        "2": {
+          "time": "Thu.",
+          "title": "Budget drift caught days late",
+          "caption": "Johnson Home is 18% over and no one noticed until Friday payroll."
+        },
+        "3": {
+          "time": "Month-end",
+          "title": "Receipts unaccounted",
+          "caption": "A $340 concrete receipt lived in the truck’s center console."
+        }
+      }
+    },
+    "after": {
+      "items": {
+        "0": {
+          "time": "06:15",
+          "title": "Timesheets sign themselves",
+          "caption": "Crew taps to clock in. Boss approves the day in one swipe. No thread."
+        },
+        "1": {
+          "time": "07:12",
+          "title": "Requests approved in two taps",
+          "caption": "Photo, quantity, approve — the line item attaches itself to the job."
+        },
+        "2": {
+          "time": "Anytime",
+          "title": "Budget moves in real time",
+          "caption": "Every labor hour and bag of QUIKRETE updates the dashboard live."
+        },
+        "3": {
+          "time": "One click",
+          "title": "Monthly report, ready",
+          "caption": "Labor, materials, fuel — exportable, for your bookkeeper."
+        }
+      }
+    }
+  },
+  "howItWorks": {
+    "heading": "Four steps from signup to signed timesheet.",
+    "subhead": "No 30-day implementation. No “customer success” call. You and your crew are running in an afternoon.",
+    "steps": {
+      "0": {
+        "title": "Create your first project",
+        "body": "Name, address, plan number, and a rough budget. You’re set up in under a minute — no onboarding call, no sales demo.",
+        "alt": "Projects overview screen showing budgets and at-risk jobs"
+      },
+      "1": {
+        "title": "Invite your crew",
+        "body": "Text them a link. They install in 30 seconds and tap their name. Workers only see what matters to them — their tasks, their hours, their paystub.",
+        "alt": "Worker daily home screen with earnings, hours, and today’s tasks"
+      },
+      "2": {
+        "title": "Run the day, on the phone",
+        "body": "Crew clocks in, logs materials and fuel, closes tasks. Everything works offline and syncs when signal comes back — no lost data, no duplicated entries.",
+        "alt": "Task detail screen with progress and crew chat thread"
+      },
+      "3": {
+        "title": "Run the numbers",
+        "body": "End of week, open the Report tab. Labor, materials, fuel, plan vs. actual — ready to export as PDF or CSV for your bookkeeper.",
+        "alt": "Project report screen with budget burn and plan vs. actual breakdown"
+      }
+    }
+  },
+  "features": {
+    "heading": "Everything your crew needs. Nothing they don’t.",
+    "items": {
+      "0": {
+        "title": "Works without cell service",
+        "body": "Stroyka stores everything locally on each device and syncs automatically when a connection returns. Workers can log time, submit requests, and check tasks at any job site — basement, rural, or underground."
+      },
+      "1": {
+        "title": "Built for both sides of the crew",
+        "body": "Bosses get budget tracking, approval workflows, and real-time cost reports. Workers get a focused view of their tasks, time logging, and request submission. Same app, purpose-built for each role."
+      },
+      "2": {
+        "title": "Know your numbers before month-end",
+        "body": "Every purchase, timesheet entry, and fuel trip rolls up automatically into a project P&L. See labor costs, material spend, and budget remaining at a glance — updated the moment a worker submits."
+      },
+      "3": {
+        "title": "No more \"did you approve that?\"",
+        "body": "Workers submit material or supply requests from the field. Bosses review and approve with one tap. Approved items auto-log to project costs. Full audit trail, no text message chains."
+      }
+    }
+  },
+  "comparison": {
+    "heading": "Where Stroyka lands.",
+    "subhead": "Honest comparison. If you’re a 50+ person GC with a dedicated back-office team, enterprise tools are still the right call. If you’re a 5–25 crew trying to stop texting timesheets, keep reading.",
+    "whatMatters": "What matters",
+    "onJobsite": "on the jobsite",
+    "cols": {
+      "0": {
+        "name": "Spreadsheets + WhatsApp",
+        "sub": "The default"
+      },
+      "1": {
+        "name": "Enterprise software",
+        "sub": "For 50+ person GCs"
+      },
+      "2": {
+        "name": "Stroyka",
+        "sub": "For crews of 5–25"
+      }
+    },
+    "rows": {
+      "0": {
+        "label": "Flat monthly pricing",
+        "note": "$0 / $149 / $249. No per-worker fees."
+      },
+      "1": {
+        "label": "Setup in under an afternoon"
+      },
+      "2": {
+        "label": "No training required"
+      },
+      "3": {
+        "label": "Export to QuickBooks / Xero",
+        "note": "CSV + PDF now, direct integrations on the roadmap."
+      },
+      "4": {
+        "label": "Real-time job costing"
+      },
+      "5": {
+        "label": "Approval workflows + audit trail"
+      },
+      "6": {
+        "label": "Works offline at the jobsite"
+      },
+      "7": {
+        "label": "Crew-facing mobile app"
+      }
+    },
+    "legendYes": "Yes",
+    "legendPartial": "Partial",
+    "legendNo": "No"
+  },
+  "footer": {
+    "tagline": "Job costing, crew management, and supply tracking built for small construction teams.",
+    "colophonLeft": "Stroyka — The Field Journal · Vol. 01",
+    "colophonRight": "Austin, Texas · Est. 2026",
+    "product": "Product",
+    "company": "Company",
+    "contact": "Contact",
+    "getTheApp": "Get the app",
+    "requestDemo": "Request Demo",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "soon": "soon",
+    "rights": "All rights reserved",
+    "madeFor": "Made for crews who build things"
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "heading": "Straight answers. No runaround.",
+    "subhead": "Everything you need to know before bringing Stroyka onto a jobsite — the questions real crews actually ask.",
+    "items": {
+      "0": {
+        "q": "Does it work without internet?",
+        "a": "Yes. Stroyka is offline-first — all data is stored locally on each device and syncs automatically when a connection is restored. Workers in basements, rural areas, or anywhere with poor signal can still log time, submit requests, and view tasks.",
+        "meta": "Offline"
+      },
+      "1": {
+        "q": "How do workers join?",
+        "a": "The boss sends email invites directly from the app. Workers click the link, create a password, and they’re in. No app store download required for web — it runs in the browser on any phone.",
+        "meta": "Setup"
+      },
+      "2": {
+        "q": "What happens if a worker leaves?",
+        "a": "You can deactivate a worker’s account instantly from the app. They immediately lose access. Their historical timesheet and cost data stays in your account.",
+        "meta": "Admin"
+      },
+      "3": {
+        "q": "Is my data secure?",
+        "a": "Your company’s data is siloed from every other company’s data at the database level — we don’t mingle it, don’t share it, don’t sell it. Encrypted at rest and in transit, hosted on battle-tested infrastructure. See our Privacy Policy for the specifics.",
+        "meta": "Security"
+      },
+      "4": {
+        "q": "Can I export my data?",
+        "a": "Yes. Every project, timesheet, and cost record can be exported as CSV or PDF at any time. If you ever cancel, you have 30 days to export everything.",
+        "meta": "Data"
+      },
+      "5": {
+        "q": "Why not just use enterprise construction software?",
+        "a": "Most construction platforms are designed for large general contractors with dedicated office staff and IT teams. They cost $500–$1,000+/month, take weeks to onboard, and charge per seat. Stroyka is purpose-built for small crews of 5–25 workers — the people who actually swing hammers. Flat pricing, no per-seat fees, no training required. Your crew can be up and running the same day.",
+        "meta": "Comparison"
+      },
+      "6": {
+        "q": "Is there a free trial?",
+        "a": "Yes — start free for up to 5 workers, forever. Need more? Claim a founding spot at $99/mo locked for life, or book a 20-minute demo and we’ll walk you through the app live with your own sample data.",
+        "meta": "Pricing"
+      }
+    }
+  },
+  "pricing": {
+    "eyebrow": "Pricing",
+    "heading": "Flat monthly. No per-seat games.",
+    "subhead": "Per-seat = per-worker. We don’t do that. Free forever for crews up to 5.",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "annualSave": "−17%",
+    "perMonth": "/ month",
+    "billedAnnually": "{total} billed annually",
+    "mostPopular": "Most popular",
+    "spotsClaimed": "Spots claimed",
+    "spotsCounter": "{taken} of {total}",
+    "spotsRemaining": "{count} remaining",
+    "notSure": "Not sure which plan fits? Book a 20-minute demo and we’ll recommend the right one for your crew size.",
+    "free": {
+      "name": "Free",
+      "description": "For crews just getting started",
+      "priceForever": "forever",
+      "limit": "Up to 5 workers",
+      "cta": "Start free",
+      "features": {
+        "0": "Up to 5 workers",
+        "1": "Time tracking & daily logs",
+        "2": "Material & fuel requests",
+        "3": "Task management & messaging",
+        "4": "Worker earnings tracker",
+        "5": "Offline-first sync",
+        "6": "PDF & CSV reports (Starter+)",
+        "7": "Job costing & P&L (Starter+)",
+        "8": "Overtime alerts (Starter+)"
+      }
+    },
+    "starter": {
+      "name": "Starter",
+      "description": "For growing crews up to 15",
+      "limit": "Up to 15 workers",
+      "cta": "Get Starter",
+      "features": {
+        "0": "Everything in Free",
+        "1": "Up to 15 workers",
+        "2": "Per-worker hourly rates",
+        "3": "Overtime alerts (32h & 40h warnings)",
+        "4": "PDF reports — Timesheet, P&L, Materials",
+        "5": "Job costing & P&L dashboard",
+        "6": "CSV export",
+        "7": "Email support",
+        "8": "Client invoice generator (Pro)",
+        "9": "File & photo attachments (Pro)"
+      }
+    },
+    "pro": {
+      "name": "Pro",
+      "description": "For larger operations, no limits",
+      "limit": "Unlimited workers",
+      "cta": "Get Pro",
+      "features": {
+        "0": "Everything in Starter",
+        "1": "Unlimited workers",
+        "2": "Client invoice generator",
+        "3": "File & photo attachments in tasks",
+        "4": "Excel export",
+        "5": "Advanced analytics",
+        "6": "Priority support",
+        "7": "Dedicated onboarding call"
+      }
+    },
+    "founding": {
+      "title": "Founding Member — limited",
+      "pricePart1": "$99 a month.",
+      "pricePart2": "Locked forever.",
+      "body": "The first 20 companies to subscribe lock in $99/month for life — Starter at 34% off, forever. No matter what the public rate becomes.",
+      "cta": "Claim a Founding Spot →"
+    }
+  },
+  "integrations": {
+    "heading": "Send your numbers where they need to go.",
+    "subhead": "CSV and PDF export today. Native integrations rolling out in 2026 — email us to move yours up the list.",
+    "soon": "Soon",
+    "tools": {
+      "0": {
+        "name": "QuickBooks",
+        "caption": "CSV export today · direct sync on roadmap"
+      },
+      "1": {
+        "name": "Xero",
+        "caption": "CSV export today · direct sync on roadmap"
+      },
+      "2": {
+        "name": "Excel / Sheets",
+        "caption": "CSV export — every project, every timesheet"
+      },
+      "3": {
+        "name": "Stripe",
+        "caption": "Your Stroyka subscription, billed through Stripe"
+      },
+      "4": {
+        "name": "PDF reports",
+        "caption": "Timesheet, P&L, materials — one click"
+      },
+      "5": {
+        "name": "Cloud backup",
+        "caption": "Encrypted backup on Supabase storage"
+      }
+    },
+    "demo": {
+      "concrete": "concrete",
+      "lumber": "lumber",
+      "roof": "roof",
+      "invoice": "Invoice",
+      "paid": "✓ paid"
+    }
+  },
+  "guarantee": {
+    "heading": "The fine print, in plain English.",
+    "subhead": "No trial clock. No credit card to try it. No lock-in if you decide it’s not for you.",
+    "promises": {
+      "0": {
+        "title": "Free forever for crews up to 5",
+        "body": "Download the app and use it with up to 5 workers as long as you want. No trial timer, no credit card, no nagging upgrade modals."
+      },
+      "1": {
+        "title": "Free data import",
+        "body": "Send us your current spreadsheets or a CSV export from whatever you’re using. We’ll get your first job in the app for you — on us."
+      },
+      "2": {
+        "title": "Cancel anytime",
+        "body": "Paid plans are month-to-month, no contracts. Export every record as CSV or PDF before you go. 30-day grace window on your data."
+      }
+    }
+  },
+  "cta": {
+    "run": "Run a",
+    "cleaner": "cleaner",
+    "jobsite": "jobsite.",
+    "subhead": "Start free for up to five workers, or book a twenty-minute demo and we’ll walk you through Stroyka live. No credit card either way.",
+    "startFree": "Start free",
+    "bookDemo": "Book a demo →",
+    "freeUpTo5": "Free for crews up to 5",
+    "foundingRate": "$99/mo founding rate",
+    "cancelAnytime": "Cancel anytime"
+  },
+  "founderNote": {
+    "location": "Austin, Texas",
+    "eyebrow": "A letter from the founder · Vol. 01",
+    "openingLine": "I grew up on jobsites.",
+    "para1": "My family ran a framing crew out of a spreadsheet, a clipboard, and a group chat nobody had the energy to keep clean by the end of the week. Budgets drifted. Receipts vanished. The answer to \"where are we on Johnson Home?\" was usually a shrug.",
+    "para2": "Stroyka is the tool I wanted to hand my old man. Flat pricing. Works offline. Takes an afternoon to learn. Built for the crew, not the back office. Nothing more, nothing less.",
+    "para3italic": "If it doesn’t make your Tuesday easier, it has no business being on your phone.",
+    "signature": "— Maks",
+    "name": "Maks Dalen",
+    "role": "Founder, Stroyka"
+  },
+  "testimonials": {
+    "heading": "What Crews Are Saying",
+    "subhead": "Trusted by real construction teams",
+    "items": {
+      "0": {
+        "name": "Mike R.",
+        "role": "General Contractor, Denver",
+        "quote": "Stroyka replaced three different apps we were using. The crew actually uses it because it works offline at every site."
+      },
+      "1": {
+        "name": "Sarah K.",
+        "role": "Project Manager, Austin",
+        "quote": "I finally know where every dollar goes before the project ends. No more spreadsheet nightmares."
+      },
+      "2": {
+        "name": "Carlos M.",
+        "role": "Crew Lead, Phoenix",
+        "quote": "My guys submit time and requests from their phones in 30 seconds. Even in the basement with zero signal."
+      }
+    }
+  },
+  "demo": {
+    "eyebrow": "Get started",
+    "title": "Request your demo",
+    "subtitle": "Fill out the form and we’ll schedule a 20-minute personalized demo with your own sample data. No commitment, no credit card.",
+    "name": "Name",
+    "company": "Company name",
+    "crewSize": "Crew size",
+    "email": "Email",
+    "phone": "Phone (optional)",
+    "challenge": "What’s your biggest challenge?",
+    "namePlaceholder": "John Smith",
+    "companyPlaceholder": "Smith Construction LLC",
+    "crewSizePlaceholder": "Select crew size",
+    "emailPlaceholder": "john@smithconstruction.com",
+    "phonePlaceholder": "(555) 123-4567",
+    "challengePlaceholder": "Tell us about your current process and what’s not working...",
+    "crew1to5": "1–5 workers",
+    "crew5to10": "5–10 workers",
+    "crew10to25": "10–25 workers",
+    "crew25plus": "25+ workers",
+    "submit": "Request Your Demo →",
+    "submitting": "Sending...",
+    "successTitle": "You’re on the list",
+    "successBody": "We’ll reach out within 24 hours to schedule your demo.",
+    "confirmSent": "Confirmation sent to your email",
+    "fromEmail": "from hello@getstroyka.com",
+    "checkSpam": "Don’t see it? Check your spam or promotions folder.",
+    "backHome": "Back to homepage",
+    "errors": {
+      "nameRequired": "Please enter your name so we know who to reach out to.",
+      "companyRequired": "We’d love to know your company name.",
+      "crewSizeRequired": "Pick a crew size so we can tailor the demo to your team.",
+      "emailRequired": "We need your email to send demo details.",
+      "emailInvalid": "That doesn’t look like a valid email — double-check it?",
+      "tooManyRequests": "Too many requests. Please wait an hour and try again, or email us directly at hello@getstroyka.com.",
+      "genericError": "Something went wrong on our end. Please email us at hello@getstroyka.com and we’ll get back to you quickly."
+    }
+  },
+  "planToDone": {
+    "beats": {
+      "0": {
+        "kicker": "MODULE · 01",
+        "headline": "Every project starts on paper.",
+        "state": "PLAN"
+      },
+      "1": {
+        "kicker": "MODULE · 02",
+        "headline": "Now you can see the whole thing.",
+        "state": "WIREFRAME"
+      },
+      "2": {
+        "kicker": "MODULE · 03",
+        "headline": "Every material logs itself.",
+        "state": "BUILDING"
+      },
+      "3": {
+        "kicker": "MODULE · 04",
+        "headline": "So you always know where you stand.",
+        "state": "TRACKING"
+      },
+      "4": {
+        "kicker": "CLOSED · JOHNSON",
+        "headline": "",
+        "state": "COMPLETE"
+      },
+      "5": {
+        "kicker": "CLOSED · JOHNSON",
+        "headline": "",
+        "state": "COMPLETE"
+      }
+    },
+    "rooms": {
+      "living": "LIVING",
+      "kitchen": "KITCHEN",
+      "bedroom1": "BEDROOM 1",
+      "bedroom2": "BEDROOM 2",
+      "bath": "BATH"
+    },
+    "floorPlan": "FLOOR PLAN · A-04",
+    "scale": "SCALE 1/4\"=1'",
+    "costEntries": {
+      "0": {
+        "label": "CONCRETE",
+        "subtitle": "14 yards · poured 04/15"
+      },
+      "1": {
+        "label": "LUMBER",
+        "subtitle": "320 board-ft · oak frame"
+      },
+      "2": {
+        "label": "ROOF",
+        "subtitle": "Architectural shingles"
+      },
+      "3": {
+        "label": "SIDING",
+        "subtitle": "Cedar lap · stained"
+      },
+      "4": {
+        "label": "WINDOWS",
+        "subtitle": "12 units · double-pane"
+      }
+    },
+    "chartBars": {
+      "0": {
+        "label": "Labor"
+      },
+      "1": {
+        "label": "Materials"
+      },
+      "2": {
+        "label": "Fuel"
+      }
+    },
+    "delivered": "DELIVERED",
+    "chartTitle": "PLAN VS ACTUAL",
+    "onBudget": "ON BUDGET",
+    "jobLabel": "JOB",
+    "trackPct": "89% TRACK",
+    "introEyebrow": "How Stroyka Sees Your Project",
+    "introTitle": "From plan to done — every dollar tracked.",
+    "introSubtitle": "Scroll to see a project unfold in Stroyka — every material, every cost, in real time.",
+    "introScrollHint": "Scroll to begin",
+    "introAriaLabel": "How Stroyka sees your project — interactive scroll animation",
+    "onTimeBudget": "On time · On budget",
+    "spentToDate": "SPENT TO DATE",
+    "onTime": "On time"
+  },
+  "getStarted": {
+    "chooseYourPlan": "Choose your plan",
+    "almostThere": "Almost there",
+    "redirecting": "Redirecting...",
+    "noPerSeatFees": "No per-seat fees. Your entire crew is included.",
+    "enterDetails": "Enter your details and we’ll take you to secure checkout.",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "perMonth": "/ month",
+    "perMonthShort": "/mo",
+    "billedAnnually": "billed annually",
+    "perYrBilledAnnually": "/yr billed annually",
+    "saveAmount": "Save ${amount}",
+    "mostPopular": "Most Popular",
+    "selectedPlan": "Selected plan",
+    "starter": {
+      "name": "Starter",
+      "description": "For growing crews up to 15",
+      "workerLimit": "Up to 15 workers",
+      "features": {
+        "0": "Everything in Free",
+        "1": "Up to 15 workers",
+        "2": "PDF reports (Timesheet, P&L, Materials)",
+        "3": "Job costing & P&L dashboard",
+        "4": "CSV export",
+        "5": "Email support"
+      }
+    },
+    "pro": {
+      "name": "Pro",
+      "description": "For larger operations, no limits",
+      "workerLimit": "Unlimited workers",
+      "features": {
+        "0": "Everything in Starter",
+        "1": "Unlimited workers",
+        "2": "Excel export",
+        "3": "Photo & file attachments in task messaging",
+        "4": "Advanced analytics",
+        "5": "Priority support",
+        "6": "Dedicated onboarding call"
+      }
+    },
+    "founding": {
+      "title": "Founding Member Rate — $99/month, locked forever",
+      "body": "The first 20 companies lock in Starter at $99/month for life. $50 off every month, forever.",
+      "cta": "Claim a Founding Spot",
+      "badge": "Founding Member — $50 off every month, forever"
+    },
+    "form": {
+      "nameLbl": "Your name *",
+      "emailLbl": "Work email *",
+      "companyLbl": "Company name *",
+      "namePlaceholder": "John Smith",
+      "emailPlaceholder": "john@smithconstruction.com",
+      "companyPlaceholder": "Smith Construction LLC",
+      "retryHint": ". Please try again or email us at",
+      "errors": {
+        "nameRequired": "Please enter your name.",
+        "emailRequired": "We need your work email.",
+        "emailInvalid": "That doesn’t look like a valid email.",
+        "companyRequired": "Please enter your company name.",
+        "somethingWentWrong": "Something went wrong"
+      }
+    },
+    "back": "Back",
+    "continue": "Continue",
+    "continueToPayment": "Continue to Payment",
+    "processing": "Processing...",
+    "alreadyHaveAccount": "Already have an account?",
+    "login": "Log in →",
+    "takingYouToCheckout": "Taking you to secure checkout...",
+    "poweredByStripe": "Powered by Stripe. Your payment info is never stored on our servers.",
+    "subscriptionActive": "Subscription active",
+    "welcome": "You’re in. Welcome to Stroyka.",
+    "planActive": "Your {plan} plan is active",
+    "planActiveGeneric": "Your plan is active",
+    "haveApp": "Already have the app?",
+    "openSignIn": "Open Stroyka and sign in — your plan is already upgraded.",
+    "newToStroyka": "New to Stroyka?",
+    "downloadSignUp": "Download the app and sign up with the same email. Your plan activates automatically.",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "questions": "Questions?",
+    "noWorries": "No worries",
+    "planUnchanged": "Your plan hasn’t changed.",
+    "subscribeAnytime": "You can subscribe anytime from the pricing page.",
+    "backToPricing": "← Back to pricing"
+  },
+  "account": {
+    "title": "Account",
+    "manageInApp": "Manage your subscription in the app",
+    "managedInside": "Your subscription is managed inside Stroyka. Open the app and go to <highlight>Settings → your plan</highlight> to update your card, view invoices, or change your plan.",
+    "openStroyka": "Open Stroyka",
+    "needHelp": "Need help? hello@getstroyka.com",
+    "redirectingBilling": "Redirecting to billing",
+    "verifying": "Verifying your session",
+    "updated": "UPDATED",
+    "allSet": "You’re all set",
+    "changesSaved": "Your billing changes have been saved.",
+    "couldntVerify": "We couldn’t verify your session",
+    "tryFromApp": "Please try again from the Stroyka app, or contact us at <email>hello@getstroyka.com</email>.",
+    "loading": "loading",
+    "backToSite": "← Back to getstroyka.com"
+  },
+  "errors": {
+    "eyebrow": "• Something went off plan",
+    "title": "Something went wrong",
+    "body": "An unexpected error occurred. Our team has been notified.",
+    "tryAgain": "Try again",
+    "backHome": "← Back to home",
+    "nfEyebrow": "Off plan",
+    "nfTitle": "This page doesn’t exist",
+    "nfBody": "Looks like this one got buried under a pile of blueprints.",
+    "nfBackHome": "Back to home",
+    "nfBookDemo": "Or book a demo →",
+    "loading": "Loading"
+  },
+  "legal": {
+    "eyebrow": "Legal",
+    "englishOnlyTitle": "Available in English",
+    "englishOnlyBody": "This document is provided in English. As a US product, the English version is authoritative."
+  }
+}
