@@ -111,6 +111,30 @@
       }
     }
   },
+  "comparison": {
+    "heading": "Where Stroyka lands.",
+    "subhead": "Honest comparison. If you're a 50+ person GC with a dedicated back-office team, enterprise tools are still the right call. If you're a 5–25 crew trying to stop texting timesheets, keep reading.",
+    "whatMatters": "What matters",
+    "onJobsite": "on the jobsite",
+    "cols": {
+      "0": { "name": "Spreadsheets + WhatsApp", "sub": "The default" },
+      "1": { "name": "Enterprise software", "sub": "For 50+ person GCs" },
+      "2": { "name": "Stroyka", "sub": "For crews of 5–25" }
+    },
+    "rows": {
+      "0": { "label": "Flat monthly pricing", "note": "$0 / $149 / $249. No per-worker fees." },
+      "1": { "label": "Setup in under an afternoon" },
+      "2": { "label": "No training required" },
+      "3": { "label": "Export to QuickBooks / Xero", "note": "CSV + PDF now, direct integrations on the roadmap." },
+      "4": { "label": "Real-time job costing" },
+      "5": { "label": "Approval workflows + audit trail" },
+      "6": { "label": "Works offline at the jobsite" },
+      "7": { "label": "Crew-facing mobile app" }
+    },
+    "legendYes": "Yes",
+    "legendPartial": "Partial",
+    "legendNo": "No"
+  },
   "footer": {
     "tagline": "Job costing, crew management, and supply tracking built for small construction teams.",
     "colophonLeft": "Stroyka — The Field Journal · Vol. 01",

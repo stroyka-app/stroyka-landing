@@ -112,6 +112,30 @@
       }
     }
   },
+  "comparison": {
+    "heading": "Dónde encaja Stroyka.",
+    "subhead": "Comparación honesta. Si eres un GC de 50+ personas con equipo administrativo dedicado, las herramientas enterprise siguen siendo la mejor opción. Si eres una cuadrilla de 5–25 que quiere dejar de mandar partes de horas por texto, sigue leyendo.",
+    "whatMatters": "Lo que importa",
+    "onJobsite": "en la obra",
+    "cols": {
+      "0": { "name": "Hojas de cálculo + WhatsApp", "sub": "El estándar" },
+      "1": { "name": "Software enterprise", "sub": "Para GCs de 50+ personas" },
+      "2": { "name": "Stroyka", "sub": "Para cuadrillas de 5–25" }
+    },
+    "rows": {
+      "0": { "label": "Precio mensual fijo", "note": "$0 / $149 / $249. Sin cobro por trabajador." },
+      "1": { "label": "Listo en una tarde" },
+      "2": { "label": "Sin capacitación" },
+      "3": { "label": "Exportar a QuickBooks / Xero", "note": "CSV + PDF ahora, integraciones directas en la hoja de ruta." },
+      "4": { "label": "Costos de obra en tiempo real" },
+      "5": { "label": "Flujos de aprobación + historial" },
+      "6": { "label": "Funciona sin conexión en la obra" },
+      "7": { "label": "App móvil para la cuadrilla" }
+    },
+    "legendYes": "Sí",
+    "legendPartial": "Parcial",
+    "legendNo": "No"
+  },
   "footer": {
     "tagline": "Costos de obra, gestión de cuadrilla y control de materiales para equipos de construcción.",
     "colophonLeft": "Stroyka — The Field Journal · Vol. 01",
