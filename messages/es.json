@@ -407,6 +407,13 @@
       "1": { "label": "Materiales" },
       "2": { "label": "Combustible" }
     },
-    "delivered": "ENTREGADO"
+    "delivered": "ENTREGADO",
+    "chartTitle": "PLAN VS REAL",
+    "onBudget": "EN PRESUPUESTO",
+    "jobLabel": "OBRA",
+    "trackPct": "89% CONTROL",
+    "introEyebrow": "Cómo Stroyka ve tu proyecto",
+    "introTitle": "Del plano a la entrega — cada peso rastreado.",
+    "onTimeBudget": "A tiempo · En presupuesto"
   }
 }

@@ -405,6 +405,13 @@
       "1": { "label": "Materials" },
       "2": { "label": "Fuel" }
     },
-    "delivered": "DELIVERED"
+    "delivered": "DELIVERED",
+    "chartTitle": "PLAN VS ACTUAL",
+    "onBudget": "ON BUDGET",
+    "jobLabel": "JOB",
+    "trackPct": "89% TRACK",
+    "introEyebrow": "How Stroyka Sees Your Project",
+    "introTitle": "From plan to done — every dollar tracked.",
+    "onTimeBudget": "On time · On budget"
   }
 }

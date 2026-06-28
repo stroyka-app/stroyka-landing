@@ -1980,9 +1980,9 @@ function ChartCard({ progress }: { progress: MotionValue<number> }) {
       >
         <div className="flex justify-between items-baseline mb-4">
           <div className="font-mono text-[11px] tracking-[0.16em] text-brand-sage font-semibold">
-            PLAN VS ACTUAL
+            {t("chartTitle")}
           </div>
-          <div className="font-mono text-[10px] text-brand-amber tracking-wider">JOB #204</div>
+          <div className="font-mono text-[10px] text-brand-amber tracking-wider">{t("jobLabel")} #204</div>
         </div>
         <div className="flex flex-col gap-3.5">
           {CHART_BARS.map((bar, i) => (
@@ -1994,8 +1994,8 @@ function ChartCard({ progress }: { progress: MotionValue<number> }) {
           ))}
         </div>
         <div className="mt-4 pt-3 border-t border-brand-forest/15 flex justify-between font-mono text-[10px] text-brand-sage-mist/65">
-          <span>ON BUDGET</span>
-          <span className="text-brand-sage">● 89% TRACK</span>
+          <span>{t("onBudget")}</span>
+          <span className="text-brand-sage">● {t("trackPct")}</span>
         </div>
       </div>
     </motion.div>
@@ -2076,7 +2076,7 @@ function DeliveredStamp({
             aria-hidden
           />
           <div className="font-mono text-[10px] tracking-[0.18em] text-brand-sage-mist/85">
-            ON BUDGET
+            {t("onBudget")}
           </div>
           <div className="mt-1.5 font-mono text-[11px] font-bold text-brand-sage-bright tabular-nums">
             ${total.toLocaleString("en-US")}
@@ -2214,10 +2214,10 @@ function MobileChartCard({ progress }: { progress: MotionValue<number> }) {
       >
         <div className="flex justify-between items-baseline mb-3">
           <div className="font-mono text-[10px] tracking-[0.16em] text-brand-sage font-semibold">
-            PLAN VS ACTUAL
+            {t("chartTitle")}
           </div>
           <div className="font-mono text-[9px] text-brand-amber tracking-wider">
-            JOB #204
+            {t("jobLabel")} #204
           </div>
         </div>
         <div className="flex flex-col gap-2.5">
@@ -2230,8 +2230,8 @@ function MobileChartCard({ progress }: { progress: MotionValue<number> }) {
           ))}
         </div>
         <div className="mt-3 pt-2 border-t border-brand-forest/15 flex justify-between font-mono text-[9px] text-brand-sage-mist/65">
-          <span>ON BUDGET</span>
-          <span className="text-brand-sage">● 89% TRACK</span>
+          <span>{t("onBudget")}</span>
+          <span className="text-brand-sage">● {t("trackPct")}</span>
         </div>
       </div>
     </motion.div>
@@ -2288,7 +2288,7 @@ function MobileDeliveredStamp({
           </div>
           <div className="my-1.5 h-px w-8 bg-brand-sage-bright/60" aria-hidden />
           <div className="font-mono text-[9px] tracking-[0.18em] text-brand-sage-mist/85">
-            ON BUDGET
+            {t("onBudget")}
           </div>
           <div className="mt-1 font-mono text-[10px] font-bold text-brand-sage-bright tabular-nums">
             ${total.toLocaleString("en-US")}
@@ -2314,10 +2314,10 @@ function StaticFallback() {
       <div className="max-w-5xl mx-auto px-6">
         <div className="text-center mb-10">
           <p className="font-heading text-xs font-semibold tracking-[0.2em] uppercase text-brand-forest mb-3">
-            How Stroyka Sees Your Project
+            {t("introEyebrow")}
           </p>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold tracking-tight text-white leading-tight max-w-2xl mx-auto">
-            From plan to done — every dollar tracked.
+            {t("introTitle")}
           </h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-3xl mx-auto">
@@ -2341,7 +2341,7 @@ function StaticFallback() {
             <span className="w-2.5 h-2.5 rounded-full bg-brand-sage" />
             <span className="font-heading text-sm font-semibold text-white">Johnson Home</span>
             <span className="text-brand-sage/40">·</span>
-            <span className="text-sm text-brand-sage-mist/85">On time · On budget</span>
+            <span className="text-sm text-brand-sage-mist/85">{t("onTimeBudget")}</span>
           </div>
         </div>
       </div>
@@ -2386,8 +2386,9 @@ export default function PlanToDoneAnimation() {
     [a0x, a0y, a0v, a1x, a1y, a1v, a2x, a2y, a2v, a3x, a3y, a3v, a4x, a4y, a4v],
   );
 
-  // Pre-computed translations (static per locale)
-  const floorPlanLabels: FloorPlanLabels = {
+  // Pre-computed translations (static per locale) — memoized so 60fps scroll
+  // driver does not reconstruct these objects on every animation frame.
+  const floorPlanLabels: FloorPlanLabels = useMemo(() => ({
     living:    t("rooms.living"),
     kitchen:   t("rooms.kitchen"),
     bedroom1:  t("rooms.bedroom1"),
@@ -2395,13 +2396,13 @@ export default function PlanToDoneAnimation() {
     bath:      t("rooms.bath"),
     floorPlan: t("floorPlan"),
     scale:     t("scale"),
-  };
+  }), [t]);
 
-  const translatedCostEntries = COST_ENTRIES.map((e, i) => ({
+  const translatedCostEntries = useMemo(() => COST_ENTRIES.map((e, i) => ({
     ...e,
     label:    t(`costEntries.${i}.label`    as `costEntries.${number}.label`),
     subtitle: t(`costEntries.${i}.subtitle` as `costEntries.${number}.subtitle`),
-  }));
+  })), [t]);
 
   // Beat index for translated beat text (beat state stores the raw BEATS item)
   const beatIdx = BEATS.indexOf(beat);

@@ -407,6 +407,13 @@
       "1": { "label": "Материалы" },
       "2": { "label": "Топливо" }
     },
-    "delivered": "СДАНО"
+    "delivered": "СДАНО",
+    "chartTitle": "ПЛАН VS ФАКТ",
+    "onBudget": "В БЮДЖЕТЕ",
+    "jobLabel": "ОБЪЕКТ",
+    "trackPct": "89% НОРМ",
+    "introEyebrow": "Как Stroyka видит ваш проект",
+    "introTitle": "От плана до сдачи — каждый доллар под контролем.",
+    "onTimeBudget": "В срок · В бюджете"
   }
 }
