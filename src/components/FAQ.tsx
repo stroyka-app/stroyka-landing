@@ -3,6 +3,7 @@
 import { useState, type ComponentType, type SVGProps } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { WifiOff, Rocket, UserCog, Lock, Database, Scale, Tag } from "lucide-react";
+import { useTranslations } from "next-intl";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
@@ -28,11 +29,17 @@ function FAQItem({
   isOpen,
   onToggle,
   index,
+  question,
+  answer,
+  metaLabel,
 }: {
   item: FaqItem;
   isOpen: boolean;
   onToggle: () => void;
   index: number;
+  question: string;
+  answer: string;
+  metaLabel: string;
 }) {
   const prefersReduced = useReducedMotion();
   const glow = useCursorGlow();
@@ -81,7 +88,7 @@ function FAQItem({
                 isOpen ? "text-ink" : "text-ink"
               }`}
             >
-              {item.q}
+              {question}
             </h3>
             <span
               className={`inline-flex w-fit items-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.22em] sm:ml-auto shrink-0 transition-colors duration-300 ${
@@ -92,7 +99,7 @@ function FAQItem({
                     : "text-ink-muted"
               }`}
             >
-              {item.meta}
+              {metaLabel}
             </span>
           </div>
 
@@ -110,7 +117,7 @@ function FAQItem({
                 className="overflow-hidden"
               >
                 <p className="pr-2 pt-1 text-[15px] leading-[1.65] text-ink/75 max-w-2xl">
-                  {item.a}
+                  {answer}
                 </p>
               </motion.div>
             )}
@@ -133,6 +140,7 @@ function FAQItem({
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const t = useTranslations("faq");
 
   return (
     <section id="faq" className="relative bg-gradient-to-b from-[#A89E85] to-[#BFB49C] py-24 lg:py-32 overflow-hidden">
@@ -150,17 +158,17 @@ export default function FAQ() {
       <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-10">
         <div className="max-w-2xl mb-16">
           <FadeIn>
-            <SectionLabel>FAQ</SectionLabel>
+            <SectionLabel>{t("eyebrow")}</SectionLabel>
           </FadeIn>
           <TextReveal
             as="h2"
             className="font-display font-light text-5xl lg:text-7xl leading-[0.95] tracking-[-0.02em] text-ink mb-6"
           >
-            Straight answers. No runaround.
+            {t("heading")}
           </TextReveal>
           <FadeIn delay={0.1}>
             <p className="text-lg text-ink/70 leading-relaxed max-w-xl">
-              Everything you need to know before bringing Stroyka onto a jobsite — the questions real crews actually ask.
+              {t("subhead")}
             </p>
           </FadeIn>
         </div>
@@ -174,6 +182,9 @@ export default function FAQ() {
                 index={i}
                 isOpen={openIndex === i}
                 onToggle={() => setOpenIndex(openIndex === i ? null : i)}
+                question={t(`items.${i}.q`)}
+                answer={t(`items.${i}.a`)}
+                metaLabel={t(`items.${i}.meta`)}
               />
             ))}
           </ul>

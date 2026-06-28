@@ -179,6 +179,48 @@
     "rights": "Todos los derechos reservados",
     "madeFor": "Hecho para cuadrillas que construyen"
   },
+  "faq": {
+    "eyebrow": "FAQ",
+    "heading": "Respuestas directas. Sin rodeos.",
+    "subhead": "Todo lo que necesitas saber antes de llevar Stroyka a la obra — las preguntas que las cuadrillas reales hacen.",
+    "items": {
+      "0": {
+        "q": "¿Funciona sin internet?",
+        "a": "Sí. Stroyka funciona sin conexión — todos los datos se guardan localmente en cada dispositivo y se sincronizan automáticamente cuando vuelve la conexión. Los trabajadores en sótanos, zonas rurales o donde la señal es mala pueden seguir registrando horas, enviando solicitudes y viendo tareas.",
+        "meta": "Sin conexión"
+      },
+      "1": {
+        "q": "¿Cómo se suman los trabajadores?",
+        "a": "El jefe envía invitaciones por correo directamente desde la app. Los trabajadores hacen clic en el enlace, crean una contraseña y listo. No se necesita descargar ninguna app para la versión web — funciona en el navegador de cualquier teléfono.",
+        "meta": "Configuración"
+      },
+      "2": {
+        "q": "¿Qué pasa si un trabajador se va?",
+        "a": "Puedes desactivar la cuenta de un trabajador al instante desde la app. Pierde el acceso de inmediato. Su historial de partes de horas y datos de costos se queda en tu cuenta.",
+        "meta": "Administración"
+      },
+      "3": {
+        "q": "¿Son seguros mis datos?",
+        "a": "Los datos de tu empresa están aislados de los de las demás empresas a nivel de base de datos — no los mezclamos, no los compartimos, no los vendemos. Cifrados en reposo y en tránsito, alojados en infraestructura probada. Consulta nuestra Política de privacidad para más detalles.",
+        "meta": "Seguridad"
+      },
+      "4": {
+        "q": "¿Puedo exportar mis datos?",
+        "a": "Sí. Cada proyecto, parte de horas y registro de costos se puede exportar como CSV o PDF en cualquier momento. Si cancelas, tienes 30 días para exportar todo.",
+        "meta": "Datos"
+      },
+      "5": {
+        "q": "¿Por qué no usar software enterprise de construcción?",
+        "a": "La mayoría de las plataformas de construcción están diseñadas para grandes contratistas generales con personal de oficina y equipos de TI dedicados. Cuestan $500–$1,000+/mes, requieren semanas de incorporación y cobran por usuario. Stroyka está hecho para cuadrillas pequeñas de 5–25 trabajadores — los que de verdad ponen el hombro. Precio fijo, sin cobro por usuario, sin capacitación. Tu cuadrilla puede empezar el mismo día.",
+        "meta": "Comparación"
+      },
+      "6": {
+        "q": "¿Hay prueba gratis?",
+        "a": "Sí — empieza gratis para hasta 5 trabajadores, para siempre. ¿Necesitas más? Reclama un lugar fundador a $99/mes fijo de por vida, o agenda una demo de 20 minutos y te mostramos la app en vivo con datos de muestra.",
+        "meta": "Precios"
+      }
+    }
+  },
   "pricing": {
     "eyebrow": "Precios",
     "heading": "Mensualidad fija. Sin cobro por usuario.",
