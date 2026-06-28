@@ -295,6 +295,26 @@
       "cta": "Reclamar un lugar fundador →"
     }
   },
+  "integrations": {
+    "heading": "Envía tus números a donde necesitan ir.",
+    "subhead": "Exportación CSV y PDF hoy. Integraciones nativas en 2026 — escríbenos para subir la tuya en la lista.",
+    "soon": "Pronto",
+    "tools": {
+      "0": { "name": "QuickBooks", "caption": "Exportación CSV hoy · sincronización directa en la hoja de ruta" },
+      "1": { "name": "Xero", "caption": "Exportación CSV hoy · sincronización directa en la hoja de ruta" },
+      "2": { "name": "Excel / Sheets", "caption": "Exportación CSV — cada proyecto, cada parte de horas" },
+      "3": { "name": "Stripe", "caption": "Tu suscripción a Stroyka, cobrada por Stripe" },
+      "4": { "name": "PDF reports", "caption": "Parte de horas, P&L, materiales — un clic" },
+      "5": { "name": "Respaldo en la nube", "caption": "Respaldo cifrado en almacenamiento Supabase" }
+    },
+    "demo": {
+      "concrete": "concreto",
+      "lumber": "madera",
+      "roof": "techo",
+      "invoice": "Factura",
+      "paid": "✓ pagado"
+    }
+  },
   "guarantee": {
     "heading": "La letra pequeña, en español claro.",
     "subhead": "Sin reloj de prueba. Sin tarjeta de crédito para probarlo. Sin ataduras si decides que no es para ti.",

@@ -294,6 +294,26 @@
       "cta": "Claim a Founding Spot →"
     }
   },
+  "integrations": {
+    "heading": "Send your numbers where they need to go.",
+    "subhead": "CSV and PDF export today. Native integrations rolling out in 2026 — email us to move yours up the list.",
+    "soon": "Soon",
+    "tools": {
+      "0": { "name": "QuickBooks", "caption": "CSV export today · direct sync on roadmap" },
+      "1": { "name": "Xero", "caption": "CSV export today · direct sync on roadmap" },
+      "2": { "name": "Excel / Sheets", "caption": "CSV export — every project, every timesheet" },
+      "3": { "name": "Stripe", "caption": "Your Stroyka subscription, billed through Stripe" },
+      "4": { "name": "PDF reports", "caption": "Timesheet, P&L, materials — one click" },
+      "5": { "name": "Cloud backup", "caption": "Encrypted backup on Supabase storage" }
+    },
+    "demo": {
+      "concrete": "concrete",
+      "lumber": "lumber",
+      "roof": "roof",
+      "invoice": "Invoice",
+      "paid": "✓ paid"
+    }
+  },
   "guarantee": {
     "heading": "The fine print, in plain English.",
     "subhead": "No trial clock. No credit card to try it. No lock-in if you decide it's not for you.",
