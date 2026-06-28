@@ -42,7 +42,9 @@
     "pricing": "Тарифы",
     "faq": "Вопросы",
     "getStarted": "Начать",
-    "toggleMenu": "Открыть меню"
+    "toggleMenu": "Открыть меню",
+    "changeLanguage": "Сменить язык",
+    "selectLanguage": "Выбрать язык"
   },
   "theShift": {
     "eyebrow": "Смена",
@@ -356,7 +358,7 @@
         "caption": "Твоя подписка на Stroyka, оплачивается через Stripe"
       },
       "4": {
-        "name": "PDF reports",
+        "name": "PDF-отчёты",
         "caption": "Табель, P&L, материалы — один клик"
       },
       "5": {

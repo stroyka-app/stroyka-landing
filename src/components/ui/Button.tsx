@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { motion, useSpring, useReducedMotion } from "framer-motion";
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -84,10 +85,25 @@ export default function Button({
 
   const cls = cn(base, variants[variant], sizes[size], className);
 
+  // Internal routes (starting with "/") get the locale-aware Link from
+  // next-intl so they preserve the active locale prefix on /es and /ru.
+  // Hash-only, external (http/https), and mailto links stay as plain <a>.
+  const isInternal = !!href && href.startsWith("/");
+
   const inner = href ? (
-    <a href={href} className={cls}>
-      {children}
-    </a>
+    isInternal ? (
+      <Link href={href} className={cls}>
+        {children}
+      </Link>
+    ) : (
+      <a
+        href={href}
+        className={cls}
+        {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      >
+        {children}
+      </a>
+    )
   ) : (
     <button className={cls} {...props}>
       {children}

@@ -41,7 +41,9 @@
     "pricing": "Pricing",
     "faq": "FAQ",
     "getStarted": "Get started",
-    "toggleMenu": "Toggle menu"
+    "toggleMenu": "Toggle menu",
+    "changeLanguage": "Change language",
+    "selectLanguage": "Select language"
   },
   "theShift": {
     "eyebrow": "The shift",

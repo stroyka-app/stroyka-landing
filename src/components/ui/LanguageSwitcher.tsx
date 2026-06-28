@@ -5,7 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 const LABELS: Record<string, { code: string; name: string }> = {
   en: { code: "EN", name: "English" },
@@ -32,6 +32,7 @@ export default function LanguageSwitcher({
   const router = useRouter();
   const active = useLocale();
   const reduce = useReducedMotion();
+  const t = useTranslations("nav");
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
 
@@ -90,7 +91,7 @@ export default function LanguageSwitcher({
   };
 
   const Options = (
-    <ul role="menu" aria-label="Select language" className="flex flex-col gap-0.5">
+    <ul role="menu" aria-label={t("selectLanguage")} className="flex flex-col gap-0.5">
       {routing.locales.map((loc, i) => {
         const isActive = loc === active;
         return (
@@ -138,7 +139,7 @@ export default function LanguageSwitcher({
           type="button"
           aria-haspopup="menu"
           aria-expanded={open}
-          aria-label="Change language"
+          aria-label={t("changeLanguage")}
           onClick={() => setOpen((v) => !v)}
           className="flex items-center justify-between rounded-xl py-1 text-bone/80 transition-colors hover:text-bone"
         >
@@ -178,7 +179,7 @@ export default function LanguageSwitcher({
         type="button"
         aria-haspopup="menu"
         aria-expanded={open}
-        aria-label="Change language"
+        aria-label={t("changeLanguage")}
         onClick={() => setOpen((v) => !v)}
         className="group inline-flex items-center gap-1.5 rounded-full border border-bone/15 bg-brand-sage-bright/5 py-1.5 pl-2.5 pr-2 text-bone/80 transition-[background-color,border-color,transform] duration-150 hover:border-bone/25 hover:bg-brand-sage-bright/10 hover:text-bone active:scale-[0.97]"
       >

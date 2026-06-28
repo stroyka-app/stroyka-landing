@@ -42,7 +42,9 @@
     "pricing": "Precios",
     "faq": "Preguntas frecuentes",
     "getStarted": "Empezar",
-    "toggleMenu": "Abrir menú"
+    "toggleMenu": "Abrir menú",
+    "changeLanguage": "Cambiar idioma",
+    "selectLanguage": "Seleccionar idioma"
   },
   "theShift": {
     "eyebrow": "El cambio",
@@ -356,7 +358,7 @@
         "caption": "Tu suscripción a Stroyka, cobrada por Stripe"
       },
       "4": {
-        "name": "PDF reports",
+        "name": "Informes PDF",
         "caption": "Parte de horas, P&L, materiales — un clic"
       },
       "5": {
