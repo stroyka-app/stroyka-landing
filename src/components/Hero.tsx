@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import FadeIn from "@/components/ui/FadeIn";
 import Button from "@/components/ui/Button";
 import { Counter, Sparkline } from "@/components/ui/LiveSheet";
@@ -76,6 +77,7 @@ const FOUNDING_SPOTS_REMAINING = Math.max(
  * in its natural tones, just muted.
  */
 export default function Hero() {
+  const t = useTranslations("hero");
   const ref = useRef<HTMLDivElement>(null);
   const prefersReduced = useReducedMotion();
 
@@ -173,17 +175,17 @@ export default function Hero() {
               <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage-bright opacity-60 animate-ping" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage-bright" />
             </span>
-            <span className="text-brand-amber-bright">Start free</span>
+            <span className="text-brand-amber-bright">{t("startFree")}</span>
             <span className="relative inline-flex w-1.5 h-1.5">
               <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage-bright opacity-60 animate-ping" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage-bright" />
             </span>
-            <span>$99/mo founding rate</span>
+            <span>{t("foundingRate")}</span>
             <span className="relative inline-flex w-1.5 h-1.5">
               <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage-bright opacity-60 animate-ping" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage-bright" />
             </span>
-            <span className="text-brand-amber-bright">{FOUNDING_SPOTS_REMAINING} spots left</span>
+            <span className="text-brand-amber-bright">{t("spotsLeft", { count: FOUNDING_SPOTS_REMAINING })}</span>
           </p>
         </FadeIn>
 
@@ -197,11 +199,11 @@ export default function Hero() {
             drops below 0.6s the words finish behind the curtain and the
             entire reveal is wasted (only the late ones would be visible). */}
         <h1 className="font-display font-light text-[clamp(3.25rem,10.5vw,11rem)] leading-[0.92] tracking-[-0.03em] text-bone mb-10 max-w-[16ch]">
-          <WordLine words={["Construction"]} startDelay={0.7} stagger={0.06} prefersReduced={prefersReduced} />
-          <WordLine words={["management,"]} startDelay={0.85} stagger={0.06} prefersReduced={prefersReduced} />
+          <WordLine words={[t("headline1")]} startDelay={0.7} stagger={0.06} prefersReduced={prefersReduced} />
+          <WordLine words={[t("headline2")]} startDelay={0.85} stagger={0.06} prefersReduced={prefersReduced} />
           <span className="block italic font-normal relative">
             <WordLine
-              words={["for", "real", "crews."]}
+              words={t("headline3").split(" ")}
               startDelay={1.0}
               stagger={0.08}
               prefersReduced={prefersReduced}
@@ -229,7 +231,7 @@ export default function Hero() {
           <div className="max-w-xl">
             <FadeIn delay={0.18} triggerOnMount>
               <p className="text-lg lg:text-xl text-bone/85 leading-[1.55]">
-                One tool for the whole crew — boss and workers. Clock-in, job costing, reports. Works on any phone, even with no signal.
+                {t("subhead")}
               </p>
             </FadeIn>
             <FadeIn delay={0.22} triggerOnMount>
@@ -250,22 +252,22 @@ export default function Hero() {
                     aria-hidden
                     className="inline-block w-3.5 h-px bg-brand-amber"
                   />
-                  For crews of 5–25
+                  {t("specCrew")}
                   <span
                     aria-hidden
                     className="inline-block w-1 h-1 rounded-full bg-brand-sage-bright/80"
                   />
-                  Works the day you sign up
+                  {t("specInstant")}
                 </p>
               </div>
             </FadeIn>
             <FadeIn delay={0.28} triggerOnMount>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <Button variant="primary" size="lg" href="/#download">
-                  Start free
+                  {t("startFree")}
                 </Button>
                 <Button variant="ghost" size="lg" href="/demo" className="text-bone hover:text-brand-sage-bright">
-                  Book a demo →
+                  {t("bookDemo")}
                 </Button>
               </div>
             </FadeIn>
@@ -296,50 +298,50 @@ export default function Hero() {
             >
               <div className="flex items-center justify-between pb-3 mb-4 border-b border-bone/25">
                 <span className="uppercase tracking-[0.2em] text-bone/80 font-semibold">
-                  Project sheet
+                  {t("sheetTitle")}
                 </span>
                 <span className="flex items-center gap-1.5 text-brand-sage-bright font-semibold">
                   <span className="relative inline-flex w-1.5 h-1.5">
                     <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage-bright opacity-60 animate-ping" />
                     <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage-bright" />
                   </span>
-                  live
+                  {t("sheetLive")}
                 </span>
               </div>
               <dl className="space-y-3">
                 <div className="flex justify-between">
-                  <dt className="text-bone/75 uppercase">Crew</dt>
-                  <dd className="tabular-nums text-bone font-semibold">12 workers</dd>
+                  <dt className="text-bone/75 uppercase">{t("sheetCrew")}</dt>
+                  <dd className="tabular-nums text-bone font-semibold">{t("sheetCrewCount", { count: 12 })}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-bone/75 uppercase">Job no.</dt>
+                  <dt className="text-bone/75 uppercase">{t("sheetJob")}</dt>
                   <dd className="tabular-nums text-bone font-semibold">2411-JH</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-bone/75 uppercase">Labor wk</dt>
+                  <dt className="text-bone/75 uppercase">{t("sheetLabor")}</dt>
                   <dd>
                     <Counter to={428.5} start={sheetLive} delay={0}
                       format={(n) => `${n.toFixed(1)} h`} className="text-bone font-semibold" />
                   </dd>
                 </div>
                 <div className="flex justify-between items-center">
-                  <dt className="text-bone/75 uppercase">Trend</dt>
+                  <dt className="text-bone/75 uppercase">{t("sheetTrend")}</dt>
                   <dd><Sparkline points={[8,10,9,12,11,14,13]} start={sheetLive} delay={250} /></dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-bone/75 uppercase">Budget</dt>
+                  <dt className="text-bone/75 uppercase">{t("sheetBudget")}</dt>
                   <motion.dd
                     className="tabular-nums text-bone font-semibold"
                     initial={prefersReduced ? false : { scale: 0.8, opacity: 0 }}
                     animate={sheetLive || prefersReduced ? { scale: 1, opacity: 1 } : undefined}
                     transition={{ type: "spring", stiffness: 380, damping: 16 }}
                   >
-                    <span className="text-brand-sage-bright">▲</span> on plan
+                    {t("sheetOnPlan")}
                   </motion.dd>
                 </div>
                 <div className="flex justify-between pt-3 mt-3 border-t border-bone/25">
-                  <dt className="text-bone/75 uppercase">Offline</dt>
-                  <dd className="text-bone font-semibold">Yes — any phone</dd>
+                  <dt className="text-bone/75 uppercase">{t("sheetOffline")}</dt>
+                  <dd className="text-bone font-semibold">{t("sheetAnyPhone")}</dd>
                 </div>
               </dl>
             </motion.aside>

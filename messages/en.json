@@ -1,5 +1,28 @@
 {
   "meta": { "smokeKey": "Built for the field" },
+  "hero": {
+    "startFree": "Start free",
+    "foundingRate": "$99/mo founding rate",
+    "spotsLeft": "{count} spots left",
+    "headline1": "Construction",
+    "headline2": "management,",
+    "headline3": "for real crews.",
+    "subhead": "One tool for the whole crew — boss and workers. Clock-in, job costing, reports. Works on any phone, even with no signal.",
+    "specCrew": "For crews of 5–25",
+    "specInstant": "Works the day you sign up",
+    "bookDemo": "Book a demo →",
+    "sheetTitle": "Project sheet",
+    "sheetLive": "live",
+    "sheetCrew": "Crew",
+    "sheetCrewCount": "{count} workers",
+    "sheetJob": "Job no.",
+    "sheetLabor": "Labor wk",
+    "sheetTrend": "Trend",
+    "sheetBudget": "Budget",
+    "sheetOnPlan": "▲ on plan",
+    "sheetOffline": "Offline",
+    "sheetAnyPhone": "Yes — any phone"
+  },
   "nav": {
     "features": "Features",
     "howItWorks": "How It Works",
