@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import FadeIn from "@/components/ui/FadeIn";
 import TextReveal from "@/components/ui/TextReveal";
 
 interface Feature {
   icon: (active: boolean) => React.ReactNode;
-  title: string;
-  body: string;
 }
 
 /* ── Per-feature motion icons ──
@@ -153,35 +152,21 @@ const ApproveIcon = ({ active }: { active: boolean }) => {
 };
 
 const FEATURES: Feature[] = [
-  {
-    icon: (active) => <SignalIcon active={active} />,
-    title: "Works without cell service",
-    body: "Stroyka stores everything locally on each device and syncs automatically when a connection returns. Workers can log time, submit requests, and check tasks at any job site — basement, rural, or underground.",
-  },
-  {
-    icon: (active) => <CrewIcon active={active} />,
-    title: "Built for both sides of the crew",
-    body: "Bosses get budget tracking, approval workflows, and real-time cost reports. Workers get a focused view of their tasks, time logging, and request submission. Same app, purpose-built for each role.",
-  },
-  {
-    icon: (active) => <DollarIcon active={active} />,
-    title: "Know your numbers before month-end",
-    body: "Every purchase, timesheet entry, and fuel trip rolls up automatically into a project P&L. See labor costs, material spend, and budget remaining at a glance — updated the moment a worker submits.",
-  },
-  {
-    icon: (active) => <ApproveIcon active={active} />,
-    title: "No more \"did you approve that?\"",
-    body: "Workers submit material or supply requests from the field. Bosses review and approve with one tap. Approved items auto-log to project costs. Full audit trail, no text message chains.",
-  },
+  { icon: (active) => <SignalIcon active={active} /> },
+  { icon: (active) => <CrewIcon active={active} /> },
+  { icon: (active) => <DollarIcon active={active} /> },
+  { icon: (active) => <ApproveIcon active={active} /> },
 ];
 
 interface FlipperCardProps {
   feature: Feature;
+  title: string;
+  body: string;
   isActive: boolean;
   onActivate: () => void;
 }
 
-function FlipperCard({ feature, isActive, onActivate }: FlipperCardProps) {
+function FlipperCard({ feature, title, body, isActive, onActivate }: FlipperCardProps) {
   return (
     <motion.div
       layout
@@ -220,7 +205,7 @@ function FlipperCard({ feature, isActive, onActivate }: FlipperCardProps) {
           isActive ? "text-2xl mb-3 text-ink" : "text-[15px] mb-0 text-ink-soft",
         ].join(" ")}
       >
-        {feature.title}
+        {title}
       </h3>
 
       <AnimatePresence initial={false}>
@@ -232,7 +217,7 @@ function FlipperCard({ feature, isActive, onActivate }: FlipperCardProps) {
             exit={{ opacity: 0, transition: { duration: 0.1 } }}
             className="text-ink-soft text-[14.5px] leading-relaxed min-w-0"
           >
-            {feature.body}
+            {body}
           </motion.p>
         )}
       </AnimatePresence>
@@ -242,6 +227,7 @@ function FlipperCard({ feature, isActive, onActivate }: FlipperCardProps) {
 
 export default function Features() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const t = useTranslations("features");
 
   return (
     <section id="features" className="bg-gradient-to-b from-[#D4CBB4] to-[#BFB49C] py-24 lg:py-32">
@@ -251,7 +237,7 @@ export default function Features() {
             as="h2"
             className="font-display font-light text-5xl lg:text-7xl leading-[0.95] tracking-[-0.02em] text-ink"
           >
-            Everything your crew needs. Nothing they don&apos;t.
+            {t("heading")}
           </TextReveal>
         </div>
 
@@ -260,8 +246,10 @@ export default function Features() {
           <div className="hidden md:flex gap-4 h-72">
             {FEATURES.map((feature, i) => (
               <FlipperCard
-                key={feature.title}
+                key={i}
                 feature={feature}
+                title={t(`items.${i}.title`)}
+                body={t(`items.${i}.body`)}
                 isActive={activeIndex === i}
                 onActivate={() => setActiveIndex(i)}
               />
@@ -272,16 +260,16 @@ export default function Features() {
         {/* Mobile: stacked cards */}
         <div className="flex flex-col gap-4 md:hidden">
           {FEATURES.map((feature, i) => (
-            <FadeIn key={feature.title} delay={0.08 * i}>
+            <FadeIn key={i} delay={0.08 * i}>
               <div className="card-stone border border-ink/15 rounded-2xl p-6">
                 <div className="w-11 h-11 bg-ink text-bone rounded-full flex items-center justify-center mb-5">
                   {feature.icon(true)}
                 </div>
                 <h3 className="font-display text-2xl leading-snug text-ink mb-3">
-                  {feature.title}
+                  {t(`items.${i}.title`)}
                 </h3>
                 <p className="text-ink-soft text-[14.5px] leading-relaxed">
-                  {feature.body}
+                  {t(`items.${i}.body`)}
                 </p>
               </div>
             </FadeIn>

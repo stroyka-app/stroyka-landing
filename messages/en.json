@@ -90,6 +90,27 @@
       }
     }
   },
+  "features": {
+    "heading": "Everything your crew needs. Nothing they don't.",
+    "items": {
+      "0": {
+        "title": "Works without cell service",
+        "body": "Stroyka stores everything locally on each device and syncs automatically when a connection returns. Workers can log time, submit requests, and check tasks at any job site — basement, rural, or underground."
+      },
+      "1": {
+        "title": "Built for both sides of the crew",
+        "body": "Bosses get budget tracking, approval workflows, and real-time cost reports. Workers get a focused view of their tasks, time logging, and request submission. Same app, purpose-built for each role."
+      },
+      "2": {
+        "title": "Know your numbers before month-end",
+        "body": "Every purchase, timesheet entry, and fuel trip rolls up automatically into a project P&L. See labor costs, material spend, and budget remaining at a glance — updated the moment a worker submits."
+      },
+      "3": {
+        "title": "No more \"did you approve that?\"",
+        "body": "Workers submit material or supply requests from the field. Bosses review and approve with one tap. Approved items auto-log to project costs. Full audit trail, no text message chains."
+      }
+    }
+  },
   "footer": {
     "tagline": "Job costing, crew management, and supply tracking built for small construction teams.",
     "colophonLeft": "Stroyka — The Field Journal · Vol. 01",

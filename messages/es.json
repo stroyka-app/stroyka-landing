@@ -91,6 +91,27 @@
       }
     }
   },
+  "features": {
+    "heading": "Todo lo que tu cuadrilla necesita. Nada más.",
+    "items": {
+      "0": {
+        "title": "Funciona sin señal",
+        "body": "Stroyka guarda todo localmente en cada dispositivo y sincroniza cuando vuelve la conexión. Los trabajadores pueden registrar horas, enviar solicitudes y revisar tareas en cualquier obra — sótano, campo o bajo tierra."
+      },
+      "1": {
+        "title": "Pensado para toda la cuadrilla",
+        "body": "El jefe tiene control de presupuesto, flujos de aprobación y reportes de costos en tiempo real. Los trabajadores ven sus tareas, registran horas y envían solicitudes. La misma app, adaptada a cada rol."
+      },
+      "2": {
+        "title": "Conoce tus números antes de fin de mes",
+        "body": "Cada compra, entrada del parte de horas y viaje de combustible se consolida automáticamente en el P&L del proyecto. Ve los costos de mano de obra, materiales y presupuesto restante de un vistazo — actualizado en el momento en que un trabajador envía."
+      },
+      "3": {
+        "title": "Nunca más «¿lo aprobaste?»",
+        "body": "Los trabajadores envían solicitudes de material o suministros desde la obra. El jefe revisa y aprueba con un toque. Los ítems aprobados se registran solos en los costos del proyecto. Historial completo, sin cadenas de mensajes."
+      }
+    }
+  },
   "footer": {
     "tagline": "Costos de obra, gestión de cuadrilla y control de materiales para equipos de construcción.",
     "colophonLeft": "Stroyka — The Field Journal · Vol. 01",
