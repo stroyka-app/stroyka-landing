@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { setRequestLocale } from "next-intl/server";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
@@ -14,7 +15,9 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function CancelPage() {
+export default async function CancelPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   return (
     <>
       <Navbar />
@@ -45,7 +48,7 @@ export default function CancelPage() {
 
           <FadeIn delay={0.1}>
             <TextReveal as="h1" className="font-display font-light text-4xl lg:text-5xl leading-[0.98] tracking-[-0.02em] text-ink mb-5">
-              {"Your plan hasn’t changed."}
+              {"Your plan hasn't changed."}
             </TextReveal>
           </FadeIn>
 

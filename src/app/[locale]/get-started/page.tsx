@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { setRequestLocale } from "next-intl/server";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import GetStartedFlow from "@/components/GetStartedFlow";
@@ -11,7 +12,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/get-started" },
 };
 
-export default function GetStartedPage() {
+export default async function GetStartedPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   return (
     <>
       <Navbar />

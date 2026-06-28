@@ -89,12 +89,12 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:block">
-          <a
+          <Link
             href="/get-started"
             className="group relative inline-flex items-center rounded-full px-5 py-2 font-heading text-[13.5px] font-medium tracking-wide text-bone border border-brand-sage-bright/40 bg-brand-sage-bright/10 hover:bg-brand-sage-bright/20 hover:border-brand-sage-bright/70 transition-[background-color,border-color,transform] duration-200 active:scale-[0.97]"
           >
             Get started
-          </a>
+          </Link>
         </div>
 
         <button
@@ -142,13 +142,13 @@ export default function Navbar() {
                   {link.label}
                 </a>
               ))}
-              <a
+              <Link
                 href="/get-started"
                 className="inline-flex items-center justify-center rounded-full px-5 py-2.5 font-heading text-[14px] font-medium text-bone border border-brand-sage-bright/50 bg-brand-sage-bright/15 hover:bg-brand-sage-bright/25"
                 onClick={() => setMobileOpen(false)}
               >
                 Get started
-              </a>
+              </Link>
             </div>
           </motion.div>
         )}
