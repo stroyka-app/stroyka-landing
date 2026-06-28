@@ -1,1 +1,28 @@
-{ "meta": { "smokeKey": "Built for the field" } }
+{
+  "meta": { "smokeKey": "Built for the field" },
+  "nav": {
+    "features": "Features",
+    "howItWorks": "How It Works",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "getStarted": "Get started",
+    "toggleMenu": "Toggle menu"
+  },
+  "footer": {
+    "tagline": "Job costing, crew management, and supply tracking built for small construction teams.",
+    "colophonLeft": "Stroyka — The Field Journal · Vol. 01",
+    "colophonRight": "Austin, Texas · Est. 2026",
+    "product": "Product",
+    "company": "Company",
+    "contact": "Contact",
+    "getTheApp": "Get the app",
+    "requestDemo": "Request Demo",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "soon": "soon",
+    "rights": "All rights reserved",
+    "madeFor": "Made for crews who build things"
+  }
+}

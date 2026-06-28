@@ -1,1 +1,29 @@
-{ "meta": { "smokeKey": "Hecho para la obra" } }
+{
+  "_note": "pending native pass",
+  "meta": { "smokeKey": "Hecho para la obra" },
+  "nav": {
+    "features": "Funciones",
+    "howItWorks": "Cómo funciona",
+    "pricing": "Precios",
+    "faq": "Preguntas frecuentes",
+    "getStarted": "Empezar",
+    "toggleMenu": "Abrir menú"
+  },
+  "footer": {
+    "tagline": "Costos de obra, gestión de cuadrilla y control de materiales para equipos de construcción.",
+    "colophonLeft": "Stroyka — The Field Journal · Vol. 01",
+    "colophonRight": "Austin, Texas · Est. 2026",
+    "product": "Producto",
+    "company": "Empresa",
+    "contact": "Contacto",
+    "getTheApp": "Obtener la app",
+    "requestDemo": "Solicitar demo",
+    "privacy": "Política de privacidad",
+    "terms": "Términos de servicio",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "soon": "próximamente",
+    "rights": "Todos los derechos reservados",
+    "madeFor": "Hecho para cuadrillas que construyen"
+  }
+}

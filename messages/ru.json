@@ -1,1 +1,29 @@
-{ "meta": { "smokeKey": "Создано для стройки" } }
+{
+  "_note": "pending Maks review",
+  "meta": { "smokeKey": "Создано для стройки" },
+  "nav": {
+    "features": "Возможности",
+    "howItWorks": "Как это работает",
+    "pricing": "Тарифы",
+    "faq": "Вопросы",
+    "getStarted": "Начать",
+    "toggleMenu": "Открыть меню"
+  },
+  "footer": {
+    "tagline": "Расчёт затрат, управление бригадой и учёт материалов для небольших строительных бригад.",
+    "colophonLeft": "Stroyka — The Field Journal · Vol. 01",
+    "colophonRight": "Austin, Texas · Est. 2026",
+    "product": "Продукт",
+    "company": "Компания",
+    "contact": "Контакты",
+    "getTheApp": "Скачать приложение",
+    "requestDemo": "Запросить демо",
+    "privacy": "Политика конфиденциальности",
+    "terms": "Условия использования",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "soon": "скоро",
+    "rights": "Все права защищены",
+    "madeFor": "Для бригад, которые строят"
+  }
+}
