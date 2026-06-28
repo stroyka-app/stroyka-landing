@@ -40,6 +40,7 @@ function Cell({
   delay?: number;
 }) {
   const prefersReduced = useReducedMotion();
+  const t = useTranslations("comparison");
 
   if (value === "yes") {
     // Both highlighted (Stroyka) and un-highlighted "Yes" use the same sage
@@ -98,7 +99,7 @@ function Cell({
     return (
       <motion.span
         className="flex items-center justify-center w-9 h-9 rounded-full border-[1.5px] border-ink-muted/45 bg-ink-muted/10 text-ink-muted"
-        title="Partial"
+        title={t("legendPartial")}
         initial={prefersReduced ? false : { scale: 0.7, opacity: 0 }}
         whileInView={prefersReduced ? undefined : { scale: 1, opacity: 1 }}
         viewport={{ once: true, margin: "-60px" }}
