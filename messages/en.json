@@ -177,5 +177,79 @@
     "soon": "soon",
     "rights": "All rights reserved",
     "madeFor": "Made for crews who build things"
+  },
+  "pricing": {
+    "eyebrow": "Pricing",
+    "heading": "Flat monthly. No per-seat games.",
+    "subhead": "Per-seat = per-worker. We don't do that. Free forever for crews up to 5.",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "annualSave": "−17%",
+    "perMonth": "/ month",
+    "billedAnnually": "{total} billed annually",
+    "mostPopular": "Most popular",
+    "spotsClaimed": "Spots claimed",
+    "spotsCounter": "{taken} of {total}",
+    "spotsRemaining": "{count} remaining",
+    "notSure": "Not sure which plan fits? Book a 20-minute demo and we'll recommend the right one for your crew size.",
+    "free": {
+      "name": "Free",
+      "description": "For crews just getting started",
+      "priceForever": "forever",
+      "limit": "Up to 5 workers",
+      "cta": "Start free",
+      "features": {
+        "0": "Up to 5 workers",
+        "1": "Time tracking & daily logs",
+        "2": "Material & fuel requests",
+        "3": "Task management & messaging",
+        "4": "Worker earnings tracker",
+        "5": "Offline-first sync",
+        "6": "PDF & CSV reports (Starter+)",
+        "7": "Job costing & P&L (Starter+)",
+        "8": "Overtime alerts (Starter+)"
+      }
+    },
+    "starter": {
+      "name": "Starter",
+      "description": "For growing crews up to 15",
+      "limit": "Up to 15 workers",
+      "cta": "Get Starter",
+      "features": {
+        "0": "Everything in Free",
+        "1": "Up to 15 workers",
+        "2": "Per-worker hourly rates",
+        "3": "Overtime alerts (32h & 40h warnings)",
+        "4": "PDF reports — Timesheet, P&L, Materials",
+        "5": "Job costing & P&L dashboard",
+        "6": "CSV export",
+        "7": "Email support",
+        "8": "Client invoice generator (Pro)",
+        "9": "File & photo attachments (Pro)"
+      }
+    },
+    "pro": {
+      "name": "Pro",
+      "description": "For larger operations, no limits",
+      "limit": "Unlimited workers",
+      "cta": "Get Pro",
+      "features": {
+        "0": "Everything in Starter",
+        "1": "Unlimited workers",
+        "2": "Client invoice generator",
+        "3": "File & photo attachments in tasks",
+        "4": "Excel export",
+        "5": "Advanced analytics",
+        "6": "Priority support",
+        "7": "Dedicated onboarding call"
+      }
+    },
+    "founding": {
+      "title": "Founding Member — limited",
+      "pricePart1": "$99 a month.",
+      "pricePart2": "Locked forever.",
+      "body": "The first 20 companies to subscribe lock in $99/month for life — Starter at 34% off, forever. No matter what the public rate becomes.",
+      "cta": "Claim a Founding Spot →"
+    }
   }
 }

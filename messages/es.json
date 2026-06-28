@@ -178,5 +178,79 @@
     "soon": "próximamente",
     "rights": "Todos los derechos reservados",
     "madeFor": "Hecho para cuadrillas que construyen"
+  },
+  "pricing": {
+    "eyebrow": "Precios",
+    "heading": "Mensualidad fija. Sin cobro por usuario.",
+    "subhead": "Por usuario = por trabajador. Nosotros no hacemos eso. Gratis para siempre para cuadrillas de hasta 5.",
+    "monthly": "Mensual",
+    "annual": "Anual",
+    "annualSave": "−17%",
+    "perMonth": "/ mes",
+    "billedAnnually": "{total} facturado anualmente",
+    "mostPopular": "Más popular",
+    "spotsClaimed": "Lugares tomados",
+    "spotsCounter": "{taken} de {total}",
+    "spotsRemaining": "{count} disponibles",
+    "notSure": "¿No sabes qué plan te conviene? Agenda una demo de 20 minutos y te recomendamos el indicado para tu cuadrilla.",
+    "free": {
+      "name": "Gratis",
+      "description": "Para cuadrillas que están empezando",
+      "priceForever": "para siempre",
+      "limit": "Hasta 5 trabajadores",
+      "cta": "Empieza gratis",
+      "features": {
+        "0": "Hasta 5 trabajadores",
+        "1": "Registro de horas y partes diarios",
+        "2": "Solicitudes de material y combustible",
+        "3": "Gestión de tareas y mensajería",
+        "4": "Seguimiento de ganancias del trabajador",
+        "5": "Sincronización sin conexión",
+        "6": "Reportes PDF y CSV (Starter+)",
+        "7": "Costos de obra y P&L (Starter+)",
+        "8": "Alertas de horas extra (Starter+)"
+      }
+    },
+    "starter": {
+      "name": "Starter",
+      "description": "Para cuadrillas en crecimiento, hasta 15",
+      "limit": "Hasta 15 trabajadores",
+      "cta": "Obtener Starter",
+      "features": {
+        "0": "Todo lo de Gratis",
+        "1": "Hasta 15 trabajadores",
+        "2": "Tarifas por hora por trabajador",
+        "3": "Alertas de horas extra (32h y 40h)",
+        "4": "Reportes PDF — Parte de horas, P&L, Materiales",
+        "5": "Costos de obra y panel P&L",
+        "6": "Exportación CSV",
+        "7": "Soporte por email",
+        "8": "Generador de facturas para cliente (Pro)",
+        "9": "Archivos y fotos adjuntos (Pro)"
+      }
+    },
+    "pro": {
+      "name": "Pro",
+      "description": "Para operaciones más grandes, sin límites",
+      "limit": "Trabajadores ilimitados",
+      "cta": "Obtener Pro",
+      "features": {
+        "0": "Todo lo de Starter",
+        "1": "Trabajadores ilimitados",
+        "2": "Generador de facturas para cliente",
+        "3": "Archivos y fotos en tareas",
+        "4": "Exportación Excel",
+        "5": "Analítica avanzada",
+        "6": "Soporte prioritario",
+        "7": "Llamada de incorporación dedicada"
+      }
+    },
+    "founding": {
+      "title": "Miembro Fundador — limitado",
+      "pricePart1": "$99 al mes.",
+      "pricePart2": "Bloqueado para siempre.",
+      "body": "Las primeras 20 empresas en suscribirse fijan $99/mes de por vida — Starter con 34% de descuento, para siempre. Sin importar cuánto suba la tarifa pública.",
+      "cta": "Reclamar un lugar fundador →"
+    }
   }
 }
