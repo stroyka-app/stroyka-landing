@@ -20,7 +20,7 @@
     "sheetLabor": "Часы за нед.",
     "sheetTrend": "Тренд",
     "sheetBudget": "Бюджет",
-    "sheetOnPlan": "▲ по плану",
+    "sheetOnPlanLabel": "по плану",
     "sheetOffline": "Офлайн",
     "sheetAnyPhone": "Да — любой телефон"
   },

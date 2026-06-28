@@ -336,7 +336,8 @@ export default function Hero() {
                     animate={sheetLive || prefersReduced ? { scale: 1, opacity: 1 } : undefined}
                     transition={{ type: "spring", stiffness: 380, damping: 16 }}
                   >
-                    {t("sheetOnPlan")}
+                    <span className="text-brand-sage-bright" aria-hidden>▲</span>{" "}
+                    {t("sheetOnPlanLabel")}
                   </motion.dd>
                 </div>
                 <div className="flex justify-between pt-3 mt-3 border-t border-bone/25">

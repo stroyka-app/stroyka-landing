@@ -20,7 +20,7 @@
     "sheetLabor": "Hrs. semana",
     "sheetTrend": "Tendencia",
     "sheetBudget": "Presupuesto",
-    "sheetOnPlan": "▲ según lo planeado",
+    "sheetOnPlanLabel": "según lo planeado",
     "sheetOffline": "Sin conexión",
     "sheetAnyPhone": "Sí — cualquier teléfono"
   },
