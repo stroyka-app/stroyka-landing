@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { AlertTriangle } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import Button from "@/components/ui/Button";
 
 export default function Error({
@@ -10,6 +11,8 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const t = useTranslations("errors");
+
   return (
     <main className="relative min-h-screen flex items-center justify-center px-6 bg-gradient-to-b from-[#E3DCC9] to-[#D4CBB4] overflow-hidden">
       <div
@@ -28,23 +31,23 @@ export default function Error({
           </div>
         </div>
         <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-soft mb-4">
-          • Something went off plan
+          {t("eyebrow")}
         </p>
         <h1 className="font-display font-light text-3xl lg:text-4xl leading-tight text-ink mb-4">
-          Something went wrong
+          {t("title")}
         </h1>
         <p className="text-[15px] text-ink-soft leading-relaxed mb-10 max-w-sm mx-auto">
-          An unexpected error occurred. Our team has been notified.
+          {t("body")}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button variant="primary" size="md" onClick={reset}>
-            Try again
+            {t("tryAgain")}
           </Button>
           <Link
             href="/"
             className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-muted hover:text-brand-forest transition-colors self-center"
           >
-            ← Back to home
+            {t("backHome")}
           </Link>
         </div>
       </div>

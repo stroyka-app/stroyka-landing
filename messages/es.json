@@ -648,5 +648,18 @@
     "couldntVerify": "No pudimos verificar tu sesión",
     "tryFromApp": "Vuelve a intentarlo desde la app Stroyka, o contáctanos en <email>hello@getstroyka.com</email>.",
     "loading": "cargando"
+  },
+  "errors": {
+    "eyebrow": "• Algo salió del plan",
+    "title": "Algo salió mal",
+    "body": "Ocurrió un error inesperado. Nuestro equipo ya fue notificado.",
+    "tryAgain": "Intentar de nuevo",
+    "backHome": "← Volver al inicio",
+    "nfEyebrow": "Fuera del plan",
+    "nfTitle": "Esta página no existe",
+    "nfBody": "Parece que esta se quedó enterrada bajo un montón de planos.",
+    "nfBackHome": "Volver al inicio",
+    "nfBookDemo": "O agenda una demo →",
+    "loading": "Cargando"
   }
 }

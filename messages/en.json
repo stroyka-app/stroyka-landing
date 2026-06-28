@@ -646,5 +646,18 @@
     "couldntVerify": "We couldn’t verify your session",
     "tryFromApp": "Please try again from the Stroyka app, or contact us at <email>hello@getstroyka.com</email>.",
     "loading": "loading"
+  },
+  "errors": {
+    "eyebrow": "• Something went off plan",
+    "title": "Something went wrong",
+    "body": "An unexpected error occurred. Our team has been notified.",
+    "tryAgain": "Try again",
+    "backHome": "← Back to home",
+    "nfEyebrow": "Off plan",
+    "nfTitle": "This page doesn't exist",
+    "nfBody": "Looks like this one got buried under a pile of blueprints.",
+    "nfBackHome": "Back to home",
+    "nfBookDemo": "Or book a demo →",
+    "loading": "Loading"
   }
 }

@@ -1,5 +1,12 @@
 "use client";
 
+// INTENTIONALLY English-only — no i18n here.
+// global-error.tsx sits OUTSIDE the [locale] segment and replaces the root
+// layout entirely on a catastrophic crash. There is no middleware locale
+// header, no NextIntlClientProvider, and no request context available at
+// this point, so useTranslations / getTranslations cannot be used.
+// This is a last-resort crash screen; keeping it in plain English is correct.
+
 export default function GlobalError({
   reset,
 }: {
