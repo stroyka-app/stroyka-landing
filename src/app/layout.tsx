@@ -6,15 +6,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // Slack-style transparent Safari chrome = page edge-to-edge under the bars
-  // (viewport-fit=cover) + NO opaque theme-color, so the bars go translucent
-  // and show the real page behind them. Pages handle the insets themselves:
-  // Navbar pads top by safe-area-inset-top, Footer pads bottom by
-  // safe-area-inset-bottom, so the dark chrome extends to the very edges and
-  // nothing important hides under the notch / home indicator. (No themeColor,
-  // no html background — either would paint an OPAQUE band and defeat this.)
+  // Initial theme-color = the hero (dark, where the page loads). DynamicThemeColor
+  // then updates it live on scroll to track the section behind the iOS Safari
+  // bottom bar — see that component + tasks/lessons.md. (True transparency for
+  // the bottom bar is impossible on the web; a scroll-driven theme-color is the
+  // Slack-style approximation.)
+  themeColor: "#2f3e46",
   colorScheme: "light",
-  viewportFit: "cover",
 };
 
 export default function RootLayout({

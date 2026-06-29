@@ -33,7 +33,7 @@ export default function Footer() {
     active === "en" ? `/#${hash}` : `/${active}#${hash}`;
 
   return (
-    <footer id="footer" className="relative bg-[#2B3D30] text-bone pb-[env(safe-area-inset-bottom)]">
+    <footer id="footer" className="relative bg-[#2B3D30] text-bone">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 pt-20 pb-10">
         {/* Colophon line — mono, Paysages-style */}
         <div className="flex flex-wrap items-center justify-between gap-4 pb-10 mb-16 border-b border-bone/12 font-mono text-[11px] tracking-[0.22em] uppercase text-bone/50">
