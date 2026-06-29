@@ -6,10 +6,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // Hint for browsers that DO honor it (Android Chrome, PWA). iOS Safari with
-  // the bottom URL bar ignores it for the top status bar — see the note in
-  // tasks/lessons.md before attempting to "fix" the sand status bar again.
-  themeColor: "#2B3D30",
+  // Intentionally NO themeColor. A dark theme-color tints the iOS Safari
+  // bottom toolbar (the URL-bar band) solid green, which clashes with the
+  // light page. Leaving it unset lets Safari use its default translucent
+  // chrome that adapts to the page, so the bar reads as transparent/light.
+  // See tasks/lessons.md (iOS status-bar note) before re-adding it.
   colorScheme: "light",
 };
 
