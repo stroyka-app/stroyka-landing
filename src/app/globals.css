@@ -4,12 +4,30 @@
 
 @layer base {
   html {
+    /* Offset for the fixed navbar so hash targets don't land under it.
+       Single source of truth, shared by CSS scroll-margin (native path) and
+       the JS lenis offset (HashScroll). */
+    --nav-offset: 5rem;
     scroll-behavior: smooth;
     /* iOS paints the status-bar / notch safe area and overscroll from the
        root canvas background. Without this it propagates the bone <body>
        bg → a sand band over the dark hero/navbar. Dark forest matches the
        always-dark top chrome and the footer (bottom overscroll). */
     background-color: #2B3D30;
+  }
+  /* Native-first hash navigation: every section/footer anchor target clears
+     the fixed navbar via scroll-margin, so plain <a href="#x"> lands
+     correctly with zero JS (reduced-motion + touch users, and as the
+     deterministic base under lenis). */
+  section[id],
+  footer[id] {
+    scroll-margin-top: var(--nav-offset);
+  }
+  /* When lenis owns scrolling (desktop, motion on — SmoothScroll adds this
+     class), suppress CSS smooth so the two engines never double-smooth or
+     fight. When lenis is absent the class is gone → CSS smooth applies. */
+  html.has-lenis {
+    scroll-behavior: auto;
   }
   body {
     /* Very faint warm-earth grain at <3% — reads as plaster paper, not noise */

@@ -12,8 +12,15 @@ export default function SmoothScroll({
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    // lenis is a progressive enhancement, not the scroll engine. Skip it for
+    // touch (native momentum is better) and for reduced-motion (accessibility)
+    // — both fall back to the deterministic native path: CSS scroll-behavior
+    // smooth + scroll-margin-top handle hash anchors with no JS.
     const isTouch = window.matchMedia("(pointer: coarse)").matches;
-    if (isTouch) return;
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (isTouch || prefersReduced) return;
 
     const lenis = new Lenis({
       duration: 1.2,
@@ -21,16 +28,20 @@ export default function SmoothScroll({
     });
     lenisRef.current = lenis;
     setLenis(lenis);
+    // Marks "lenis owns scrolling" so globals.css can switch off CSS smooth.
+    const html = document.documentElement;
+    html.classList.add("has-lenis");
 
-    function raf(time: number) {
+    let rafId = requestAnimationFrame(function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
+    });
 
     return () => {
+      cancelAnimationFrame(rafId);
       lenis.destroy();
       setLenis(null);
+      html.classList.remove("has-lenis");
     };
   }, []);
 

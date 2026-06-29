@@ -43,10 +43,13 @@ export default function LanguageSwitcher({
   const switchTo = (locale: string) => {
     setOpen(false);
     if (locale === active) return;
-    // Preserve the hash; next-intl's router rewrites the locale prefix.
-    const hash = typeof window !== "undefined" ? window.location.hash : "";
+    // Stay exactly where the user is. We deliberately do NOT carry the URL
+    // hash: it's set on anchor clicks and never cleared on scroll, so it's a
+    // stale "teleport target" (e.g. an old #pricing) that would otherwise be
+    // re-applied here and yank the user away. scroll:false stops Next from
+    // resetting scroll on the locale navigation.
     startTransition(() => {
-      router.replace(`${pathname}${hash}`, { locale });
+      router.replace(pathname, { locale, scroll: false });
     });
   };
 
