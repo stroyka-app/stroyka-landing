@@ -6,17 +6,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // Matches the dark navbar chrome that sits under the iOS status bar in
-  // every scroll state (transparent over the dark hero, dark-glass when
-  // scrolled), and the footer (#2B3D30) for the bottom safe area.
+  // Hint for browsers that DO honor it (Android Chrome, PWA). iOS Safari with
+  // the bottom URL bar ignores it for the top status bar — see the note in
+  // tasks/lessons.md before attempting to "fix" the sand status bar again.
   themeColor: "#2B3D30",
   colorScheme: "light",
-  // Extend the web view edge-to-edge into the iOS safe areas. Without this
-  // the view is inset below the status bar and Safari fills that strip with
-  // the bone <body> backdrop (the "sand eyebrow"). With cover, the fixed
-  // dark navbar (which pads itself by safe-area-inset-top) fills the
-  // status-bar area instead. Sections keep px-6 so nothing hugs the notch.
-  viewportFit: "cover",
 };
 
 export default function RootLayout({
