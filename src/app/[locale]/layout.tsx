@@ -12,9 +12,9 @@ import ScrollProgress from "@/components/ScrollProgress";
 import StructuredData from "@/components/seo/StructuredData";
 import { routing } from "@/i18n/routing";
 
-const inter = Inter({ subsets: ["latin", "cyrillic"], weight: ["400", "500", "600"], variable: "--font-inter" });
+const inter = Inter({ subsets: ["latin", "cyrillic"], weight: ["400", "500", "600", "700"], variable: "--font-inter" });
 const fraunces = Fraunces({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"], style: ["normal", "italic"], variable: "--font-fraunces" });
-const jetbrainsMono = JetBrains_Mono({ subsets: ["latin", "cyrillic"], weight: ["400", "500", "600"], variable: "--font-jetbrains-mono" });
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin", "cyrillic"], weight: ["400", "500", "600", "700"], variable: "--font-jetbrains-mono" });
 const playfair = Playfair_Display({ subsets: ["latin", "cyrillic"], weight: ["400", "500", "600", "700"], style: ["normal", "italic"], variable: "--font-playfair" });
 
 export const metadata: Metadata = {

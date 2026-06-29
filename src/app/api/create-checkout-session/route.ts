@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { z } from "zod";
+import { checkoutRatelimit } from "@/lib/checkout-ratelimit";
 
 function getStripe() {
   const key = process.env.STRIPE_SECRET_KEY;
@@ -29,6 +30,22 @@ const requestSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  // Rate limit (fail-open: if Redis is down, skip rate limiting)
+  if (process.env.UPSTASH_REDIS_REST_URL) {
+    try {
+      const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
+      const { success } = await checkoutRatelimit.limit(ip);
+      if (!success) {
+        return NextResponse.json(
+          { error: "Too many requests. Please try again later." },
+          { status: 429 }
+        );
+      }
+    } catch (err) {
+      console.error("[create-checkout-session] rate limit check failed:", err);
+    }
+  }
+
   let body: unknown;
   try {
     body = await req.json();
