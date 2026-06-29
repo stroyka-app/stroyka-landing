@@ -6,14 +6,15 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // theme-color tints the iOS Safari bottom toolbar (the URL-bar band). A dark
-  // value painted it green; REMOVING it made the bar translucent, which then
-  // showed the dark green footer through it. Pinning it to the bone page color
-  // (#E3DCC9, == bg-bone) gives a solid light bar everywhere — never green,
-  // and it matches the top status bar (which samples the same bone backdrop).
-  // See tasks/lessons.md (iOS status-bar note).
-  themeColor: "#E3DCC9",
+  // Slack-style transparent Safari chrome = page edge-to-edge under the bars
+  // (viewport-fit=cover) + NO opaque theme-color, so the bars go translucent
+  // and show the real page behind them. Pages handle the insets themselves:
+  // Navbar pads top by safe-area-inset-top, Footer pads bottom by
+  // safe-area-inset-bottom, so the dark chrome extends to the very edges and
+  // nothing important hides under the notch / home indicator. (No themeColor,
+  // no html background — either would paint an OPAQUE band and defeat this.)
   colorScheme: "light",
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
