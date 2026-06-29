@@ -381,7 +381,7 @@ export default function Pricing() {
               <p className="text-[15px] text-bone/75 mb-7 leading-relaxed max-w-lg">
                 {t("founding.body")}
               </p>
-              <Button variant="invert" href="/get-started?plan=starter&coupon=FOUNDING99">
+              <Button variant="invert" href="/get-started?plan=starter&coupon=FOUNDING99" className="text-center">
                 {t("founding.cta")}
               </Button>
             </div>

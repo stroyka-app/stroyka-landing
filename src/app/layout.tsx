@@ -6,7 +6,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2f3e46",
+  // Matches the dark navbar chrome that sits under the iOS status bar in
+  // every scroll state (transparent over the dark hero, dark-glass when
+  // scrolled), and the footer (#2B3D30) for the bottom safe area.
+  themeColor: "#2B3D30",
   colorScheme: "light",
 };
 
