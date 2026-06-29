@@ -6,11 +6,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // Intentionally NO themeColor. A dark theme-color tints the iOS Safari
-  // bottom toolbar (the URL-bar band) solid green, which clashes with the
-  // light page. Leaving it unset lets Safari use its default translucent
-  // chrome that adapts to the page, so the bar reads as transparent/light.
-  // See tasks/lessons.md (iOS status-bar note) before re-adding it.
+  // theme-color tints the iOS Safari bottom toolbar (the URL-bar band). A dark
+  // value painted it green; REMOVING it made the bar translucent, which then
+  // showed the dark green footer through it. Pinning it to the bone page color
+  // (#E3DCC9, == bg-bone) gives a solid light bar everywhere — never green,
+  // and it matches the top status bar (which samples the same bone backdrop).
+  // See tasks/lessons.md (iOS status-bar note).
+  themeColor: "#E3DCC9",
   colorScheme: "light",
 };
 
