@@ -22,11 +22,16 @@ interface LanguageSwitcherProps {
   variant?: "popover" | "inline";
   /** Which way the popover opens — down from the navbar, up from the footer. */
   placement?: "bottom" | "top";
+  /** Which edge the popover aligns to. "right" suits a right-anchored trigger
+   *  (navbar); "left" suits a left-anchored trigger (footer) so the menu
+   *  opens toward the screen center instead of off the edge. */
+  align?: "left" | "right";
 }
 
 export default function LanguageSwitcher({
   variant = "popover",
   placement = "bottom",
+  align = "right",
 }: LanguageSwitcherProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -205,10 +210,10 @@ export default function LanguageSwitcher({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.97, y: placement === "top" ? 2 : -2 }}
             transition={{ duration: 0.18, ease: EASE_OUT }}
-            style={{ transformOrigin: placement === "top" ? "bottom right" : "top right" }}
-            className={`absolute right-0 z-50 min-w-[176px] rounded-2xl border border-bone/12 bg-[rgba(30,46,36,0.97)] p-1.5 shadow-[0_18px_50px_-12px_rgba(0,0,0,0.6)] backdrop-blur-xl ${
-              placement === "top" ? "bottom-full mb-2" : "top-full mt-2"
-            }`}
+            style={{ transformOrigin: `${placement === "top" ? "bottom" : "top"} ${align}` }}
+            className={`absolute z-50 min-w-[176px] rounded-2xl border border-bone/12 bg-[rgba(30,46,36,0.97)] p-1.5 shadow-[0_18px_50px_-12px_rgba(0,0,0,0.6)] backdrop-blur-xl ${
+              align === "left" ? "left-0" : "right-0"
+            } ${placement === "top" ? "bottom-full mb-2" : "top-full mt-2"}`}
           >
             {Options}
           </motion.div>

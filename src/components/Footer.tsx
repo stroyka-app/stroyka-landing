@@ -152,7 +152,7 @@ export default function Footer() {
         <div className="pt-8 flex flex-col md:flex-row items-start md:items-center md:justify-between gap-3 font-mono text-[11px] tracking-[0.18em] uppercase text-bone/45">
           <p>&copy; {new Date().getFullYear()} Stroyka — {t("rights")}</p>
           <div className="flex items-center gap-5">
-            <LanguageSwitcher placement="top" />
+            <LanguageSwitcher placement="top" align="left" />
             <p className="hidden sm:block">{t("madeFor")}</p>
           </div>
         </div>
