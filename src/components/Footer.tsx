@@ -148,22 +148,11 @@ export default function Footer() {
             Stroyka<span className="text-brand-sage-bright">.</span>
           </p>
         </div>
-      </div>
 
-      {/* Light legal plinth — a bone base under the dark footer body.
-          Purpose: iOS Safari's bottom URL bar is frosted glass that blurs the
-          page surface directly behind it. Over the dark green footer it bakes
-          into pale sage; over THIS light bone strip it frosts clean, the way
-          every light section does (the Slack effect — Slack's page is light
-          where its bar sits). min-h is kept ≥ the iOS toolbar's overlap so the
-          bar only ever samples bone, not the green above. Reads as a
-          conventional light legal bar on desktop. pb safe-area keeps the bone
-          flush to the very bottom edge under the home indicator. */}
-      <div className="bg-bone text-ink">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 min-h-[132px] py-9 pb-[calc(2.25rem+env(safe-area-inset-bottom,0px))] flex flex-col md:flex-row items-start md:items-center md:justify-between gap-3 font-mono text-[11px] tracking-[0.18em] uppercase text-ink/55">
+        <div className="pt-8 flex flex-col md:flex-row items-start md:items-center md:justify-between gap-3 font-mono text-[11px] tracking-[0.18em] uppercase text-bone/45">
           <p>&copy; {new Date().getFullYear()} Stroyka — {t("rights")}</p>
           <div className="flex items-center gap-5">
-            <LanguageSwitcher placement="top" align="left" tone="onLight" />
+            <LanguageSwitcher placement="top" align="left" />
             <p className="hidden sm:block">{t("madeFor")}</p>
           </div>
         </div>
