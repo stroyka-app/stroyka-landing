@@ -174,7 +174,9 @@
 @media (prefers-reduced-motion: reduce) {
   .glow-border::before,
   .glow-sweep,
-  .cursor-glow::before { animation: none; }
+  .cursor-glow::before,
+  .ambient-grid,
+  .ambient-bloom { animation: none; }
 }
 
 .legal-content p {
@@ -227,6 +229,24 @@
   stroke-dasharray: 400;
   stroke-dashoffset: 400;
   animation: draw-underline 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+}
+
+/* Ambient backdrop (/demo, /get-started) — pure-CSS drift, off main thread. */
+@keyframes ambient-grid-drift {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(-72px, -72px); }
+}
+@keyframes ambient-bloom-float {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(-26px, 22px); }
+}
+.ambient-grid {
+  animation: ambient-grid-drift 32s linear infinite;
+  will-change: transform;
+}
+.ambient-bloom {
+  animation: ambient-bloom-float 18s ease-in-out infinite;
+  will-change: transform;
 }
 
 .texture-crosshatch {
