@@ -26,12 +26,16 @@ interface LanguageSwitcherProps {
    *  (navbar); "left" suits a left-anchored trigger (footer) so the menu
    *  opens toward the screen center instead of off the edge. */
   align?: "left" | "right";
+  /** Trigger colorway. "onDark" (default) = bone text for the green footer /
+   *  navbar; "onLight" = ink text for the footer's light legal base plinth. */
+  tone?: "onDark" | "onLight";
 }
 
 export default function LanguageSwitcher({
   variant = "popover",
   placement = "bottom",
   align = "right",
+  tone = "onDark",
 }: LanguageSwitcherProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -180,6 +184,15 @@ export default function LanguageSwitcher({
   }
 
   // --- Floating popover (navbar, footer) ---
+  const isLight = tone === "onLight";
+  const triggerCls = isLight
+    ? "border-ink/15 bg-ink/[0.03] text-ink/70 hover:border-ink/30 hover:bg-ink/[0.06] hover:text-ink"
+    : "border-bone/15 bg-brand-sage-bright/5 text-bone/80 hover:border-bone/25 hover:bg-brand-sage-bright/10 hover:text-bone";
+  const globeCls = isLight
+    ? "text-ink/45 group-hover:text-ink/70"
+    : "text-bone/55 group-hover:text-bone/75";
+  const chevronCls = isLight ? "text-ink/40" : "text-bone/40";
+
   return (
     <div ref={rootRef} className="relative">
       <button
@@ -189,16 +202,16 @@ export default function LanguageSwitcher({
         aria-expanded={open}
         aria-label={t("changeLanguage")}
         onClick={() => setOpen((v) => !v)}
-        className="group inline-flex items-center gap-1.5 rounded-full border border-bone/15 bg-brand-sage-bright/5 py-1.5 pl-2.5 pr-2 text-bone/80 transition-[background-color,border-color,transform] duration-150 hover:border-bone/25 hover:bg-brand-sage-bright/10 hover:text-bone active:scale-[0.97]"
+        className={`group inline-flex items-center gap-1.5 rounded-full border py-1.5 pl-2.5 pr-2 transition-[background-color,border-color,transform] duration-150 active:scale-[0.97] ${triggerCls}`}
       >
-        <Globe size={14} className="shrink-0 text-bone/55 transition-colors group-hover:text-bone/75" aria-hidden />
+        <Globe size={14} className={`shrink-0 transition-colors ${globeCls}`} aria-hidden />
         <span className="font-mono text-[11px] tracking-[0.12em] uppercase">{LABELS[active].code}</span>
         <motion.span
           animate={{ rotate: open ? 180 : 0 }}
           transition={reduce ? { duration: 0 } : { duration: 0.2, ease: EASE_OUT }}
           className="flex"
         >
-          <ChevronDown size={13} className="text-bone/40" aria-hidden />
+          <ChevronDown size={13} className={chevronCls} aria-hidden />
         </motion.span>
       </button>
 
