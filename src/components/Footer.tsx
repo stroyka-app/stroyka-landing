@@ -41,18 +41,18 @@ export default function Footer() {
           <span>{t("colophonRight")}</span>
         </div>
 
-        {/* Brand block hugs the left rule; the three nav columns group and
-            shift to the right rule (justify-between) so the row reads balanced
-            edge-to-edge instead of left-weighted. Stacks on mobile. */}
-        <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:justify-between lg:gap-16 mb-16">
-          <div className="flex flex-col lg:max-w-xs">
+        {/* Brand column is slightly wider (1.4fr) than the three even nav
+            columns (1fr each), all spread across the full width so the row is
+            balanced with light, even gaps — no big middle void. Stacks on
+            mobile. */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] gap-12 lg:gap-16 mb-16">
+          <div className="flex flex-col">
             <Logo variant="dark" size={30} />
             <p className="mt-5 text-[14px] text-bone/65 leading-relaxed max-w-xs">
               {t("tagline")}
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-10 gap-y-10 sm:gap-12 lg:gap-16">
           <div className="flex flex-col">
             <h3 className="font-mono text-[11px] font-medium text-bone mb-5 tracking-[0.22em] uppercase">
               {t("product")}
@@ -143,7 +143,6 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
-          </div>
           </div>
         </div>
 
