@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import Button from "@/components/ui/Button";
 import TextReveal from "@/components/ui/TextReveal";
+import AmbientBackdrop from "@/components/ui/AmbientBackdrop";
 
 /* ─── Types ────────────────────────────────────────────────────── */
 
@@ -257,8 +258,9 @@ export default function GetStartedFlow() {
   /* ─── Render ────────────────────────────────────────────────── */
 
   return (
-    <div className="min-h-screen bg-bone text-ink pt-28 pb-16">
-      <div className="max-w-4xl mx-auto px-6">
+    <div className="relative min-h-screen overflow-hidden bg-bone text-ink pt-28 pb-16">
+      <AmbientBackdrop />
+      <div className="relative z-10 max-w-4xl mx-auto px-6">
         {/* Heading */}
         <div className="text-center mb-8">
           <TextReveal as="h1" className="text-4xl lg:text-5xl font-display font-light leading-tight tracking-[-0.02em] text-ink mb-3">
