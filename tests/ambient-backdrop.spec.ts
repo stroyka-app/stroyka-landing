@@ -13,7 +13,10 @@ for (const path of ["/demo", "/get-started"]) {
     await expect(backdrop).toHaveCount(1);
     await expect(backdrop).toHaveCSS("pointer-events", "none");
 
-    // The page's primary CTA is still reachable above the backdrop.
-    await expect(page.getByRole("button").first()).toBeVisible();
+    // The page's primary content lives in the z-10 layer above the backdrop:
+    // assert the heading and a CTA button render there (not just any nav button).
+    const content = page.locator(".z-10").first();
+    await expect(content.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(content.getByRole("button").first()).toBeVisible();
   });
 }
