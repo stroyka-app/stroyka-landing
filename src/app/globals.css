@@ -35,6 +35,36 @@
     background-color: #2E261C;
     color: #E3DCC9;
   }
+
+  /* iOS 26 Safari ("Liquid Glass") bottom-toolbar tint source.
+     Safari 26 ignores theme-color and instead derives its bottom-bar tint from
+     the background-color of a position:fixed element near the bottom edge
+     (requires viewport-fit=cover, set in layout.tsx). This sliver supplies that
+     color so the Liquid-Glass bar reads as a clean dark-green tint matching the
+     footer, instead of frosting the footer content into pale sage.
+     Hidden everywhere by default; shown ONLY on iOS phones (the Apple-engine
+     @supports probe + phone width) so desktop/Android are untouched. Must be
+     display:none when inactive — Safari still samples opacity:0 elements. */
+  #safari-bottom-tint {
+    position: fixed;
+    bottom: -8px;
+    left: 0;
+    width: 100%;
+    min-height: 12px;
+    margin: 0;
+    padding: 0;
+    z-index: 5;
+    background-color: #2B3D30;
+    pointer-events: none;
+    display: none;
+  }
+  @supports (-webkit-text-size-adjust: none) and (font: -apple-system-body) and (-webkit-touch-callout: none) {
+    @media (width < 768px) {
+      #safari-bottom-tint {
+        display: block;
+      }
+    }
+  }
 }
 
 @layer utilities {

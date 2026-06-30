@@ -63,7 +63,11 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,backdrop-filter,border-color,box-shadow] duration-300 ${
+      // pt safe-area: viewport-fit=cover (for the iOS 26 bottom-bar tint) puts
+      // the page under the notch; pad the bar so the logo clears it and the bar
+      // bg fills the notch (which Safari 26 also samples for the TOP tint).
+      // env() = 0 on desktop → no change.
+      className={`fixed top-0 left-0 right-0 z-50 pt-[env(safe-area-inset-top,0px)] transition-[background-color,backdrop-filter,border-color,box-shadow] duration-300 ${
         scrolled
           ? "bg-[rgba(30,46,36,0.72)] backdrop-blur-xl border-b border-bone/10 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.45)]"
           : "bg-transparent border-b border-transparent"

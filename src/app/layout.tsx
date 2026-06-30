@@ -6,11 +6,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // No themeColor: iOS Safari's bottom bar is a frosted material that shows the
-  // page behind it. Letting it be (no theme-color tint) keeps it transparent
-  // over light/textured sections. Flat dark sections (3D house, footer) frost
-  // to pale sage — an iOS limitation no web API can override. See
-  // tasks/lessons.md before touching this again.
+  // iOS 26 ("Liquid Glass") Safari IGNORES theme-color and instead tints its
+  // toolbars from the background-color of position:fixed/sticky elements near
+  // the screen edges. viewport-fit=cover is REQUIRED for the bottom-bar tint to
+  // work at all (and for env(safe-area-*)). The bottom tint is driven by the
+  // fixed #safari-bottom-tint sliver (see globals.css + [locale]/layout.tsx);
+  // the top bar is tinted by the fixed Navbar. See tasks/lessons.md.
+  viewportFit: "cover",
   colorScheme: "light",
 };
 

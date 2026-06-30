@@ -54,6 +54,14 @@ export default async function LocaleLayout({
       style={locale === "ru" ? ({ ["--font-fraunces"]: "var(--font-playfair)" } as React.CSSProperties) : undefined}
     >
       <body className="bg-bone text-ink antialiased font-body">
+        {/* iOS 26 Safari bottom-toolbar tint source. Safari 26 samples the
+            background-color of a position:fixed element pinned to the bottom
+            edge and tints its Liquid-Glass bottom bar to match — this replaces
+            the now-ignored theme-color. A ~4px sliver (mostly off-screen via
+            bottom:-8px), shown only on iOS phones via globals.css, so it never
+            affects desktop/Android. #2B3D30 = the footer green, so the bar
+            reads as a clean dark tint instead of frosting the footer to sage. */}
+        <div id="safari-bottom-tint" aria-hidden />
         <NextIntlClientProvider>
           <StructuredData />
           <ScrollProgress />
