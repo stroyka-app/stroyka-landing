@@ -10,6 +10,7 @@ import CursorDot from "@/components/CursorDot";
 import ScrollToTop from "@/components/ScrollToTop";
 import ScrollProgress from "@/components/ScrollProgress";
 import StructuredData from "@/components/seo/StructuredData";
+import SafariBottomTint from "@/components/SafariBottomTint";
 import { routing } from "@/i18n/routing";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"], weight: ["400", "500", "600", "700"], variable: "--font-inter" });
@@ -54,14 +55,11 @@ export default async function LocaleLayout({
       style={locale === "ru" ? ({ ["--font-fraunces"]: "var(--font-playfair)" } as React.CSSProperties) : undefined}
     >
       <body className="bg-bone text-ink antialiased font-body">
-        {/* iOS 26 Safari bottom-toolbar tint source. Safari 26 samples the
-            background-color of a position:fixed element pinned to the bottom
-            edge and tints its Liquid-Glass bottom bar to match — this replaces
-            the now-ignored theme-color. A ~4px sliver (mostly off-screen via
-            bottom:-8px), shown only on iOS phones via globals.css, so it never
-            affects desktop/Android. #2B3D30 = the footer green, so the bar
-            reads as a clean dark tint instead of frosting the footer to sage. */}
-        <div id="safari-bottom-tint" aria-hidden />
+        {/* iOS 26 Safari bottom-toolbar tint. Renders the fixed sliver Safari
+            samples and, only while a flat-dark section is under the bar, flips
+            it on with that section's colour — otherwise the bar stays
+            transparent glass. iOS-phone-only via globals.css. */}
+        <SafariBottomTint />
         <NextIntlClientProvider>
           <StructuredData />
           <ScrollProgress />

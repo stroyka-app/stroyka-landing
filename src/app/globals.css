@@ -39,12 +39,16 @@
   /* iOS 26 Safari ("Liquid Glass") bottom-toolbar tint source.
      Safari 26 ignores theme-color and instead derives its bottom-bar tint from
      the background-color of a position:fixed element near the bottom edge
-     (requires viewport-fit=cover, set in layout.tsx). This sliver supplies that
-     color so the Liquid-Glass bar reads as a clean dark-green tint matching the
-     footer, instead of frosting the footer content into pale sage.
-     Hidden everywhere by default; shown ONLY on iOS phones (the Apple-engine
-     @supports probe + phone width) so desktop/Android are untouched. Must be
-     display:none when inactive — Safari still samples opacity:0 elements. */
+     (requires viewport-fit=cover, set in layout.tsx).
+     DEFAULT = display:none → no fixed element to sample → Safari keeps its
+     TRANSPARENT GLASS bar (the page shows through it), which already looks
+     clean over the hero + light/textured sections. SafariBottomTint.tsx flips
+     data-active="true" (and sets the colour) ONLY while a flat-dark section
+     (#plan-to-done, #footer) is under the bar, so just those frost to a solid
+     tint instead of pale sage. Must toggle display (not opacity) — Safari still
+     samples opacity:0 / transparent elements. Gated to iOS phones via the
+     Apple-engine @supports probe + phone width, so desktop/Android never show
+     the sliver regardless of data-active. */
   #safari-bottom-tint {
     position: fixed;
     bottom: -8px;
@@ -54,13 +58,13 @@
     margin: 0;
     padding: 0;
     z-index: 5;
-    background-color: #2B3D30;
+    background-color: transparent;
     pointer-events: none;
     display: none;
   }
   @supports (-webkit-text-size-adjust: none) and (font: -apple-system-body) and (-webkit-touch-callout: none) {
     @media (width < 768px) {
-      #safari-bottom-tint {
+      #safari-bottom-tint[data-active="true"] {
         display: block;
       }
     }
