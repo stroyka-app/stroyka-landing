@@ -6,12 +6,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // Initial theme-color = the hero (dark, where the page loads). DynamicThemeColor
-  // then updates it live on scroll to track the section behind the iOS Safari
-  // bottom bar — see that component + tasks/lessons.md. (True transparency for
-  // the bottom bar is impossible on the web; a scroll-driven theme-color is the
-  // Slack-style approximation.)
-  themeColor: "#2f3e46",
+  // No themeColor: iOS Safari's bottom bar is a frosted material that shows the
+  // page behind it. Letting it be (no theme-color tint) keeps it transparent
+  // over light/textured sections. Flat dark sections (3D house, footer) frost
+  // to pale sage — an iOS limitation no web API can override. See
+  // tasks/lessons.md before touching this again.
   colorScheme: "light",
 };
 
