@@ -19,7 +19,10 @@ export default function AmbientBackdrop({ className = "" }: AmbientBackdropProps
     >
       {/* Drafting grid — forest-tint hairlines, mask-faded toward the bottom.
           Oversized by 72px on every side so the diagonal drift never reveals
-          an edge (it loops every one 72px cell). */}
+          an edge (it loops every one 72px cell). The mask stops are measured
+          against this oversized box (not the container), so the fade lands a
+          few % lower than the literal 45%/80% — intentional, still well clear
+          of the footer. */}
       <div
         className="ambient-grid absolute -inset-[72px]"
         style={{
