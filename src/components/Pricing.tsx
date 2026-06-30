@@ -124,7 +124,7 @@ export default function Pricing() {
             {t("heading")}
           </TextReveal>
           <FadeIn delay={0.1}>
-            <p className="text-lg text-ink/70 leading-relaxed max-w-xl">
+            <p className="text-lg text-ink/70 leading-relaxed max-w-2xl text-balance">
               {t("subhead")}
             </p>
           </FadeIn>
