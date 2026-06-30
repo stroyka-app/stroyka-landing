@@ -34,7 +34,7 @@ export default function Footer() {
 
   return (
     <footer id="footer" className="relative bg-[#2B3D30] text-bone">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 pt-20 pb-10">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 pt-20 pb-[calc(2.5rem+env(safe-area-inset-bottom,0px))]">
         {/* Colophon line — mono, Paysages-style */}
         <div className="flex flex-wrap items-center justify-between gap-4 pb-10 mb-16 border-b border-bone/12 font-mono text-[11px] tracking-[0.22em] uppercase text-bone/50">
           <span>{t("colophonLeft")}</span>
@@ -157,6 +157,21 @@ export default function Footer() {
           </div>
         </div>
       </div>
+
+      {/* iOS bar-zone — the surgical "transparent footer" test.
+          The bottom URL bar is frosted glass that samples the pixels behind it.
+          Over a flat dark fill (this footer's #2B3D30) iOS bakes it into pale
+          sage; over a light/bone surface it frosts clean, like every other
+          section. So we paint ONLY the bottom safe-area strip — the exact band
+          the bar sits over — in bone. Height is env(safe-area-inset-bottom),
+          which is 0 on desktop and every non-iOS surface → completely invisible
+          there; it only appears under the iOS home-bar inset. See
+          tasks/lessons.md (iOS Safari status-bar entry). */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 bg-bone"
+        style={{ height: "env(safe-area-inset-bottom, 0px)" }}
+      />
     </footer>
   );
 }
