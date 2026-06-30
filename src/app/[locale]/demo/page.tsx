@@ -3,6 +3,7 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import DemoForm from "@/components/DemoForm";
+import AmbientBackdrop from "@/components/ui/AmbientBackdrop";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
@@ -46,16 +47,8 @@ export default async function DemoPage({ params }: { params: Promise<{ locale: s
     <>
       <Navbar />
       <main className="relative min-h-screen pt-32 pb-20 bg-gradient-to-b from-[#E3DCC9] to-[#D4CBB4] overflow-hidden">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-20 right-0 w-[60vw] h-[60vw] opacity-30"
-          style={{
-            background:
-              "radial-gradient(ellipse 50% 50% at 80% 20%, rgba(184,212,189,0.32), transparent 70%)",
-            filter: "blur(80px)",
-          }}
-        />
-        <div className="relative max-w-2xl mx-auto px-6">
+        <AmbientBackdrop />
+        <div className="relative z-10 max-w-2xl mx-auto px-6">
           <FadeIn>
             <SectionLabel>{t("eyebrow")}</SectionLabel>
           </FadeIn>
