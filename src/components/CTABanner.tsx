@@ -116,7 +116,7 @@ export default function CTABanner() {
 
           <FadeIn delay={0.22}>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <Button variant="invert" size="lg" href="/#download">
+              <Button variant="invert" size="lg" href="https://app.getstroyka.com/signup">
                 {t("startFree")}
               </Button>
               <Button variant="ghost" size="lg" href="/demo" className="text-bone hover:text-brand-sage-bright">

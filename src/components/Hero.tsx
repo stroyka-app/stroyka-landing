@@ -263,7 +263,7 @@ export default function Hero() {
             </FadeIn>
             <FadeIn delay={0.28} triggerOnMount>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <Button variant="primary" size="lg" href="/#download">
+                <Button variant="primary" size="lg" href="https://app.getstroyka.com/signup">
                   {t("startFree")}
                 </Button>
                 <Button variant="ghost" size="lg" href="/demo" className="text-bone hover:text-brand-sage-bright">

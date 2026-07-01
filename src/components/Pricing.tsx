@@ -202,7 +202,7 @@ export default function Pricing() {
               </div>
               <FeatureList features={FREE_FEATURES} />
               <div className="mt-auto">
-                <Button variant="secondary" href="/#download" className="w-full">
+                <Button variant="secondary" href="https://app.getstroyka.com/signup" className="w-full">
                   {t("free.cta")}
                 </Button>
               </div>
