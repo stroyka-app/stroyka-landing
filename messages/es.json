@@ -472,7 +472,12 @@
       "emailInvalid": "Ese correo no parece válido — ¿lo revisas?",
       "tooManyRequests": "Demasiadas solicitudes. Espera una hora y vuelve a intentarlo, o escríbenos a hello@getstroyka.com.",
       "genericError": "Algo salió mal de nuestro lado. Escríbenos a hello@getstroyka.com y te respondemos pronto."
-    }
+    },
+    "nextTitle": "Qué pasa después",
+    "next1": "Respondemos en un día hábil",
+    "next2": "Una llamada de 20 minutos — sin diapositivas, solo la app",
+    "next3": "Recibes un proyecto de muestra con tus números",
+    "nextNote": "Sin tarjeta de crédito. Sin cadena de seguimiento comercial."
   },
   "planToDone": {
     "_note": "pending native pass",

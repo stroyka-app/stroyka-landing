@@ -263,6 +263,10 @@ export default function GetStartedFlow() {
       <div className="relative z-10 max-w-4xl mx-auto px-6">
         {/* Heading */}
         <div className="text-center mb-8">
+          {/* Field-journal folio — decorative continuity with the homepage device */}
+          <div aria-hidden className="font-mono text-[9.5px] tracking-[0.24em] uppercase text-ink/35 mb-4">
+            Field journal · Appendix A
+          </div>
           <TextReveal as="h1" className="text-4xl lg:text-5xl font-display font-light leading-tight tracking-[-0.02em] text-ink mb-3">
             {step === 1 ? t("chooseYourPlan") : step === 2 ? t("almostThere") : t("redirecting")}
           </TextReveal>

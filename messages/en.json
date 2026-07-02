@@ -471,7 +471,12 @@
       "emailInvalid": "That doesn’t look like a valid email — double-check it?",
       "tooManyRequests": "Too many requests. Please wait an hour and try again, or email us directly at hello@getstroyka.com.",
       "genericError": "Something went wrong on our end. Please email us at hello@getstroyka.com and we’ll get back to you quickly."
-    }
+    },
+    "nextTitle": "What happens next",
+    "next1": "We reply within one business day",
+    "next2": "A 20-minute call — no slides, just the app",
+    "next3": "You get a sample project loaded with your numbers",
+    "nextNote": "No credit card. No sales follow-up chain."
   },
   "planToDone": {
     "beats": {
