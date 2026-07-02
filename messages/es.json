@@ -201,7 +201,8 @@
     },
     "legendYes": "Sí",
     "legendPartial": "Parcial",
-    "legendNo": "No"
+    "legendNo": "No",
+    "verdict": "Hecho para la obra"
   },
   "footer": {
     "tagline": "Costos de obra, gestión de cuadrilla y control de materiales para equipos de construcción.",

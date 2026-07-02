@@ -200,7 +200,8 @@
     },
     "legendYes": "Yes",
     "legendPartial": "Partial",
-    "legendNo": "No"
+    "legendNo": "No",
+    "verdict": "Built for the jobsite"
   },
   "footer": {
     "tagline": "Job costing, crew management, and supply tracking built for small construction teams.",

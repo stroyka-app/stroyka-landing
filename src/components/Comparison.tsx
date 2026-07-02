@@ -300,6 +300,47 @@ export default function Comparison() {
           </div>
         </FadeIn>
 
+        {/* Verdict — the payoff row: the sheet gets its final tally */}
+        <motion.div
+          className="mt-10 flex items-center gap-5"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <motion.span
+            aria-hidden
+            className="hidden sm:block h-px flex-1 bg-ink/20 origin-left"
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          />
+          <p className="font-mono text-[12px] tracking-[0.15em] uppercase text-ink/70 whitespace-nowrap">
+            <span className="text-brand-forest font-semibold">
+              {ROW_CELLS.filter((r) => r.stroyka === "yes").length} / {ROW_CELLS.length}
+            </span>{" "}
+            — {t("verdict")}
+          </p>
+          <motion.span
+            aria-hidden
+            className="relative flex items-center justify-center w-7 h-7 rounded-full bg-brand-deep text-bone"
+            initial={{ scale: 0, rotate: -12 }}
+            whileInView={{ scale: 1, rotate: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ delay: 0.35, type: "spring", stiffness: 380, damping: 14 }}
+          >
+            <motion.span
+              className="absolute inset-0 rounded-full border-2 border-brand-sage-bright/70"
+              initial={{ scale: 1, opacity: 0 }}
+              whileInView={{ scale: [1, 1.85], opacity: [0.7, 0] }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ delay: 0.5, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            />
+            <Check size={13} strokeWidth={3} />
+          </motion.span>
+        </motion.div>
+
         {/* Legend */}
         <FadeIn delay={0.25}>
           <div className="mt-8 flex flex-wrap items-center gap-6 font-mono text-[11px] tracking-[0.15em] uppercase text-ink/55">

@@ -49,8 +49,10 @@ function FAQItem({
   const isPricing = item.meta === "Pricing";
 
   return (
-    <li
+    <motion.li
       {...glow}
+      whileTap={prefersReduced ? undefined : { scale: 0.985 }}
+      transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
       className={`group cursor-glow relative overflow-hidden rounded-2xl border transition-[border-color,opacity] duration-300 ${
         isOpen
           ? "card-stone border-ink/60"
@@ -134,7 +136,7 @@ function FAQItem({
           </svg>
         </motion.span>
       </button>
-    </li>
+    </motion.li>
   );
 }
 

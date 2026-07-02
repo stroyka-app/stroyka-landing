@@ -16,6 +16,7 @@ import Guarantee from "@/components/Guarantee";
 import FAQ from "@/components/FAQ";
 import CTABanner from "@/components/CTABanner";
 import Footer from "@/components/Footer";
+import Marginalia from "@/components/ui/Marginalia";
 
 const PlanToDoneAnimation = dynamic(
   () => import("@/components/PlanToDoneAnimation"),
@@ -75,6 +76,16 @@ export default function HomeClient() {
       <Hero />
       <TheShift />
       <HowItWorks />
+      {/* Field-journal marginalia — the dead air between sections becomes
+          the margins of one bound journal (the footer masthead's device).
+          This one pulls up into HowItWorks' 30vh sticky-phone runway. */}
+      {/* Pulled up into the section's own padding — transparent so the
+          gradient beneath shows through (a flat bg would band mid-gradient). */}
+      <Marginalia
+        note="06:15 — crew clocked in · 12 / 12"
+        folio="02"
+        className="md:-mt-[16vh] pb-12"
+      />
       <Features />
       {/* Features ends on stone (#BFB49C). Fade into PlanToDoneAnimation's
           sage-olive canvas (#4E6253) — lighter + warmer than the previous
@@ -95,10 +106,38 @@ export default function HomeClient() {
         stops={["#4E6253 8%", "#566B5C 20%", "#647566 38%", "#868C70 58%", "#A59E7D 78%"]}
       />
       <Comparison />
+      <Marginalia
+        note="thursday — zero “did you approve that?” texts"
+        folio="03"
+        side="right"
+        className="bg-[#D4CBB4] pb-10 md:-mt-6"
+      />
       <FounderNote />
+      <Marginalia
+        note="— written from the truck, jobsite #204"
+        folio="04"
+        className="bg-[#E3DCC9] pb-10 md:-mt-14"
+      />
       <Integrations />
+      <Marginalia
+        note="W-38 — invoice matched the estimate. first time ever."
+        folio="05"
+        side="right"
+        className="bg-[#D4CBB4] pb-10 md:-mt-8"
+      />
       <Pricing />
+      <Marginalia
+        note="— read it twice. it really is $0 to start."
+        folio="06"
+        side="right"
+        className="bg-[#BFB49C] pb-10 md:-mt-8"
+      />
       <Guarantee />
+      <Marginalia
+        note="no training day. the crew just… used it."
+        folio="07"
+        className="bg-[#A89E85] pb-10 md:-mt-10"
+      />
       <FAQ />
       {/* FAQ ends and CTA starts both on #BFB49C — but Tailwind's
           bg-gradient-to-b vs the CTA's inline linear-gradient render
