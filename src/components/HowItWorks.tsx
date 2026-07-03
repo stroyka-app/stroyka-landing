@@ -137,7 +137,7 @@ export default function HowItWorks() {
                       handles the visual. */}
                   <div className="md:hidden mt-6 flex justify-center">
                     <div className="relative w-[240px] rounded-[36px] p-[8px] bg-gradient-to-br from-[#3a4a52] to-[#24313a] shadow-[0_20px_40px_-16px_rgba(46,38,28,0.35)]">
-                      <div className="relative w-full aspect-[1206/2150] rounded-[28px] overflow-hidden bg-black/40">
+                      <div className="relative w-full aspect-[1206/2609] rounded-[28px] overflow-hidden bg-black/40">
                         <Image
                           src={step.screenshot}
                           alt={t(`steps.${i}.alt` as `steps.${number}.alt`)}
@@ -167,7 +167,7 @@ export default function HowItWorks() {
               {/* Phone body */}
               <div className="relative rounded-[44px] p-[10px] bg-gradient-to-br from-[#3a4a52] to-[#24313a] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.7),0_0_0_1px_rgba(202,210,197,0.08),0_0_80px_rgba(82,121,111,0.18)]">
                 {/* Screen */}
-                <div className="relative w-full aspect-[1206/2150] rounded-[34px] overflow-hidden bg-black/40">
+                <div className="relative w-full aspect-[1206/2609] rounded-[34px] overflow-hidden bg-black/40">
                   {STEPS.map((s, i) => (
                     <Image
                       key={s.num}
