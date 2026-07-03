@@ -69,7 +69,19 @@ export default function HowItWorks() {
   }, []);
 
   return (
-    <section id="how-it-works" className="relative bg-gradient-to-b from-[#BFB49C] to-[#D4CBB4] py-24 lg:py-32">
+    <section
+      id="how-it-works"
+      className="relative py-24 lg:py-32"
+      style={{
+        // Hold #D4CBB4 across the bottom 34vh so the sticky-phone runway — where
+        // the transparent folio-02 marginalia is pulled up (-16vh) and Features
+        // overlaps into — is a flat, seam-matching #D4CBB4. Anchored in vh (not
+        // %) because the runway is 30vh while the section's total height varies
+        // with viewport; a % stop caught the marginalia mid-transition → a line.
+        background:
+          "linear-gradient(to bottom, #BFB49C 0%, #D4CBB4 calc(100% - 34vh), #D4CBB4 100%)",
+      }}
+    >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         {/* Header */}
         <div className="max-w-2xl mb-20 lg:mb-24">

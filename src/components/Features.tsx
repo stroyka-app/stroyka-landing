@@ -230,7 +230,21 @@ export default function Features() {
   const t = useTranslations("features");
 
   return (
-    <section id="features" className="bg-gradient-to-b from-[#D4CBB4] to-[#BFB49C] py-24 lg:py-32">
+    <section
+      id="features"
+      className="py-24 lg:py-32"
+      style={{
+        // Hold #D4CBB4 for the top 16vh. The folio-02 marginalia's -16vh pull-up
+        // overlaps this section under HowItWorks, and HowItWorks (position:
+        // relative) paints OVER this static section — so this section's first
+        // *visible* pixel is ~overlap px down its own box. Without the hold that
+        // pixel is already mid-gradient (darker) and reads as a hard seam against
+        // HowItWorks' flat #D4CBB4 bottom. The hold makes the visible top match;
+        // it still resolves to #BFB49C at the bottom for the bridge below.
+        background:
+          "linear-gradient(to bottom, #D4CBB4 0, #D4CBB4 16vh, #BFB49C 100%)",
+      }}
+    >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <div className="max-w-3xl mb-16 lg:mb-20">
           <TextReveal

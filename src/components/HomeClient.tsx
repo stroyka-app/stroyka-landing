@@ -78,9 +78,11 @@ export default function HomeClient() {
       <HowItWorks />
       {/* Field-journal marginalia — the dead air between sections becomes
           the margins of one bound journal (the footer masthead's device).
-          This one pulls up into HowItWorks' 30vh sticky-phone runway. */}
-      {/* Pulled up into the section's own padding — transparent so the
-          gradient beneath shows through (a flat bg would band mid-gradient). */}
+          This one pulls up into HowItWorks' 30vh sticky-phone runway. MUST stay
+          transparent (a solid full-width bg here would paint a band over the
+          sticky phone): HowItWorks now holds a flat #D4CBB4 across that bottom
+          runway, so the transparent marginalia shows a seam-matching colour and
+          the transition into Features is invisible. */}
       <Marginalia
         note="06:15 — crew clocked in · 12 / 12"
         folio="02"

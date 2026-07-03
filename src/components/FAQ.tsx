@@ -146,14 +146,19 @@ export default function FAQ() {
 
   return (
     <section id="faq" className="relative bg-gradient-to-b from-[#A89E85] to-[#BFB49C] py-24 lg:py-32 overflow-hidden">
-      {/* Ambient sage vignette top-left */}
+      {/* Ambient sage vignette, low-left. Two rules that keep it edge-free:
+          (1) NO `filter: blur()` — on a finite box the blur layer's rectangular
+          bounds render as a faint visible edge; a radial gradient is already soft.
+          (2) The glow centre sits ~halfway down the box so the gradient is fully
+          transparent AT the top edge — a glow intense at y=0 reads as a hard line
+          on the section seam (where the previous section's flat colour meets it).
+          Every box edge lands in the transparent zone, so no rectangle shows. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute top-0 left-0 w-[50vw] h-[50vw] opacity-40"
+        className="pointer-events-none absolute top-0 left-0 w-[58vw] h-[92vw] opacity-45"
         style={{
           background:
-            "radial-gradient(ellipse 50% 50% at 10% 10%, rgba(184, 212, 189, 0.28), transparent 70%)",
-          filter: "blur(70px)",
+            "radial-gradient(ellipse 52% 40% at 4% 46%, rgba(184, 212, 189, 0.22), transparent 66%)",
         }}
       />
 
