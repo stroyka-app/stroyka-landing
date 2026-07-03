@@ -2,12 +2,10 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { Apple, Play } from "lucide-react";
+import { AppleGlyph, GooglePlayGlyph } from "@/components/ui/StoreGlyphs";
 import Logo from "@/components/Logo";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
-
-const IOS_URL = process.env.NEXT_PUBLIC_IOS_APP_URL ?? "#";
-const ANDROID_URL = process.env.NEXT_PUBLIC_ANDROID_APP_URL ?? "#";
+import { IOS_APP_URL, ANDROID_APP_URL } from "@/lib/appLinks";
 
 type NavKey = "features" | "howItWorks" | "pricing" | "faq";
 type FooterCompanyKey = "requestDemo" | "privacy" | "terms";
@@ -110,14 +108,14 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <a
-                  href={IOS_URL}
+                  href={IOS_APP_URL}
                   aria-label="Download on the App Store"
                   className="group inline-flex items-center gap-2.5 text-[14.5px] text-bone/70 hover:text-brand-sage-bright transition-colors duration-200"
                 >
-                  <Apple size={15} className="shrink-0" />
+                  <AppleGlyph className="h-[15px] w-[15px] shrink-0" />
                   <span>
                     {t("appStore")}
-                    {IOS_URL === "#" && (
+                    {IOS_APP_URL === "#" && (
                       <span className="text-bone/35 ml-1.5">
                         ({t("soon")})
                       </span>
@@ -127,14 +125,14 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href={ANDROID_URL}
+                  href={ANDROID_APP_URL}
                   aria-label="Get it on Google Play"
                   className="group inline-flex items-center gap-2.5 text-[14.5px] text-bone/70 hover:text-brand-sage-bright transition-colors duration-200"
                 >
-                  <Play size={15} className="shrink-0" />
+                  <GooglePlayGlyph className="h-[15px] w-[15px] shrink-0" />
                   <span>
                     {t("googlePlay")}
-                    {ANDROID_URL === "#" && (
+                    {ANDROID_APP_URL === "#" && (
                       <span className="text-bone/35 ml-1.5">
                         ({t("soon")})
                       </span>
