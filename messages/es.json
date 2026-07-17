@@ -2,7 +2,7 @@
   "_note": "pending native pass",
   "meta": {
     "homeTitle": "Stroyka — Gestión de Cuadrilla y Costos de Obra",
-    "homeDescription": "Stroyka ayuda a cuadrillas de construcción a rastrear horas, costos de obra y pago de trabajadores — todo en una app. Para contratistas de EE.UU. con 5–25 trabajadores.",
+    "homeDescription": "Stroyka gestiona toda la obra en una app que funciona sin conexión — reloj GPS, costos de obra, escaneo AI de recibos y facturación con recordatorios de pago automáticos. Para cuadrillas de 5–25.",
     "demoTitle": "Solicitar una Demo — Stroyka",
     "demoDescription": "Mira Stroyka en acción. Agenda una demo de 20 minutos con el fundador.",
     "getStartedTitle": "Empezar — Stroyka",
@@ -20,7 +20,7 @@
     "headline1": "Gestión",
     "headline2": "de obra,",
     "headline3": "para cuadrillas reales.",
-    "subhead": "Una herramienta para toda la cuadrilla — jefe y trabajadores. Entrada y salida, costos de obra, reportes. Funciona en cualquier teléfono, incluso sin señal.",
+    "subhead": "Una herramienta para toda la cuadrilla — jefe y trabajadores. Entrada y salida, costos de obra, facturación. Funciona en cualquier teléfono, incluso sin señal.",
     "specCrew": "Para cuadrillas de 5–25",
     "specInstant": "Funciona desde el primer día",
     "bookDemo": "Agenda una demo →",
@@ -260,6 +260,11 @@
         "q": "¿Hay prueba gratis?",
         "a": "Sí — empieza gratis para hasta 5 trabajadores, para siempre. ¿Necesitas más? Reclama un lugar fundador a $99/mes fijo de por vida, o agenda una demo de 20 minutos y te mostramos la app en vivo con datos de muestra.",
         "meta": "Precios"
+      },
+      "7": {
+        "q": "¿Cómo facturo a mis clientes?",
+        "a": "Genera una factura con las horas, materiales y combustible sin facturar de cualquier obra — añade margen o líneas personalizadas y envía el PDF al cliente por email desde la app. Si una factura se vence, envía un recordatorio con un toque o activa los recordatorios automáticos y Stroyka hace el seguimiento por ti (hasta 3 veces).",
+        "meta": "Facturación"
       }
     }
   },
@@ -285,8 +290,8 @@
       "cta": "Empieza gratis",
       "features": {
         "0": "Hasta 5 trabajadores",
-        "1": "Registro de horas y partes diarios",
-        "2": "Solicitudes de material y combustible",
+        "1": "Reloj GPS con geocercas y partes diarios",
+        "2": "Materiales y combustible con escaneo AI de recibos",
         "3": "Gestión de tareas y mensajería",
         "4": "Seguimiento de ganancias del trabajador",
         "5": "Sincronización sin conexión",
@@ -305,11 +310,11 @@
         "1": "Hasta 15 trabajadores",
         "2": "Tarifas por hora por trabajador",
         "3": "Alertas de horas extra (32h y 40h)",
-        "4": "Reportes PDF — Parte de horas, P&L, Materiales",
+        "4": "Reportes PDF — Parte de horas, P&L, Materiales, Partes diarios",
         "5": "Costos de obra y panel P&L",
         "6": "Exportación CSV",
         "7": "Soporte por email",
-        "8": "Generador de facturas para cliente (Pro)",
+        "8": "Facturación por email + recordatorios de pago automáticos (Pro)",
         "9": "Archivos y fotos adjuntos (Pro)"
       }
     },
@@ -321,10 +326,10 @@
       "features": {
         "0": "Todo lo de Starter",
         "1": "Trabajadores ilimitados",
-        "2": "Generador de facturas para cliente",
+        "2": "Facturas al cliente por email — margen y líneas personalizadas",
         "3": "Archivos y fotos en tareas",
         "4": "Exportación Excel",
-        "5": "Analítica avanzada",
+        "5": "Recordatorios automáticos de pagos vencidos",
         "6": "Soporte prioritario",
         "7": "Llamada de incorporación dedicada"
       }
@@ -360,7 +365,7 @@
       },
       "4": {
         "name": "Informes PDF",
-        "caption": "Parte de horas, P&L, materiales — un clic"
+        "caption": "Parte de horas, P&L, facturas, partes diarios — un clic"
       },
       "5": {
         "name": "Respaldo en la nube",
@@ -591,7 +596,7 @@
       "features": {
         "0": "Todo lo de Gratis",
         "1": "Hasta 15 trabajadores",
-        "2": "Reportes PDF (Parte de horas, P&L, Materiales)",
+        "2": "Reportes PDF (Parte de horas, P&L, Materiales, Partes diarios)",
         "3": "Costos de obra y panel P&L",
         "4": "Exportación CSV",
         "5": "Soporte por email"
@@ -606,7 +611,7 @@
         "1": "Trabajadores ilimitados",
         "2": "Exportación Excel",
         "3": "Fotos y archivos adjuntos en mensajes de tareas",
-        "4": "Analítica avanzada",
+        "4": "Facturas por email + recordatorios de pago automáticos",
         "5": "Soporte prioritario",
         "6": "Llamada de incorporación dedicada"
       }

@@ -41,4 +41,9 @@ export const QUESTIONS: readonly FaqItem[] = [
     a: "Yes — start free for up to 5 workers, forever. Need more? Claim a founding spot at $99/mo locked for life, or book a 20-minute demo and we'll walk you through the app live with your own sample data.",
     meta: "Pricing",
   },
+  {
+    q: "How do I bill my clients?",
+    a: "Generate an invoice from any project's unbilled hours, materials, and fuel — add markup or custom line items, then email the PDF to your client right from the app. If an invoice goes overdue, send a one-tap payment reminder, or turn on automatic reminders and Stroyka politely follows up for you (up to 3 times).",
+    meta: "Invoicing",
+  },
 ];

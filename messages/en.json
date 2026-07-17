@@ -1,7 +1,7 @@
 {
   "meta": {
     "homeTitle": "Stroyka — Construction Crew & Job Cost Management",
-    "homeDescription": "Stroyka helps small construction crews track daily hours, job costs, and worker pay — all in one app. Built for US contractors with 5–25 workers.",
+    "homeDescription": "Stroyka runs the whole job from one offline-first app — GPS time clock, job costing, AI receipt scanning, and client invoicing with automatic payment reminders. For construction crews of 5–25.",
     "demoTitle": "Request a Demo — Stroyka",
     "demoDescription": "See Stroyka in action. Book a 20-minute demo with the founder.",
     "getStartedTitle": "Get Started — Stroyka",
@@ -19,7 +19,7 @@
     "headline1": "Construction",
     "headline2": "management,",
     "headline3": "for real crews.",
-    "subhead": "One tool for the whole crew — boss and workers. Clock-in, job costing, reports. Works on any phone, even with no signal.",
+    "subhead": "One tool for the whole crew — boss and workers. Clock-in, job costing, invoicing. Works on any phone, even with no signal.",
     "specCrew": "For crews of 5–25",
     "specInstant": "Works the day you sign up",
     "bookDemo": "Book a demo →",
@@ -259,6 +259,11 @@
         "q": "Is there a free trial?",
         "a": "Yes — start free for up to 5 workers, forever. Need more? Claim a founding spot at $99/mo locked for life, or book a 20-minute demo and we’ll walk you through the app live with your own sample data.",
         "meta": "Pricing"
+      },
+      "7": {
+        "q": "How do I bill my clients?",
+        "a": "Generate an invoice from any project’s unbilled hours, materials, and fuel — add markup or custom line items, then email the PDF to your client right from the app. If an invoice goes overdue, send a one-tap payment reminder, or turn on automatic reminders and Stroyka politely follows up for you (up to 3 times).",
+        "meta": "Invoicing"
       }
     }
   },
@@ -284,8 +289,8 @@
       "cta": "Start free",
       "features": {
         "0": "Up to 5 workers",
-        "1": "Time tracking & daily logs",
-        "2": "Material & fuel requests",
+        "1": "GPS time clock, geofences & daily logs",
+        "2": "Materials & fuel with AI receipt scan",
         "3": "Task management & messaging",
         "4": "Worker earnings tracker",
         "5": "Offline-first sync",
@@ -304,11 +309,11 @@
         "1": "Up to 15 workers",
         "2": "Per-worker hourly rates",
         "3": "Overtime alerts (32h & 40h warnings)",
-        "4": "PDF reports — Timesheet, P&L, Materials",
+        "4": "PDF reports — Timesheet, P&L, Materials, Daily logs",
         "5": "Job costing & P&L dashboard",
         "6": "CSV export",
         "7": "Email support",
-        "8": "Client invoice generator (Pro)",
+        "8": "Invoicing — email clients & auto payment reminders (Pro)",
         "9": "File & photo attachments (Pro)"
       }
     },
@@ -320,10 +325,10 @@
       "features": {
         "0": "Everything in Starter",
         "1": "Unlimited workers",
-        "2": "Client invoice generator",
+        "2": "Invoice clients by email — markup & custom line items",
         "3": "File & photo attachments in tasks",
         "4": "Excel export",
-        "5": "Advanced analytics",
+        "5": "Automatic overdue payment reminders",
         "6": "Priority support",
         "7": "Dedicated onboarding call"
       }
@@ -359,7 +364,7 @@
       },
       "4": {
         "name": "PDF reports",
-        "caption": "Timesheet, P&L, materials — one click"
+        "caption": "Timesheets, P&L, invoices, daily logs — one click"
       },
       "5": {
         "name": "Cloud backup",
@@ -589,7 +594,7 @@
       "features": {
         "0": "Everything in Free",
         "1": "Up to 15 workers",
-        "2": "PDF reports (Timesheet, P&L, Materials)",
+        "2": "PDF reports (Timesheet, P&L, Materials, Daily logs)",
         "3": "Job costing & P&L dashboard",
         "4": "CSV export",
         "5": "Email support"
@@ -604,7 +609,7 @@
         "1": "Unlimited workers",
         "2": "Excel export",
         "3": "Photo & file attachments in task messaging",
-        "4": "Advanced analytics",
+        "4": "Invoice clients by email + auto payment reminders",
         "5": "Priority support",
         "6": "Dedicated onboarding call"
       }
