@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/account", "/get-started/success", "/get-started/cancel"],
     },
-    sitemap: "https://getstroyka.com/sitemap.xml",
+    sitemap: "https://www.getstroyka.com/sitemap.xml",
   };
 }

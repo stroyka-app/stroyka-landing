@@ -4,7 +4,7 @@ import TermsContent from "./TermsContent";
 import { ogLocale } from "@/i18n/alternates";
 
 // Legal pages are English-authoritative: all locales point canonical + hreflang to the EN URL.
-const EN_TERMS = "https://getstroyka.com/terms";
+const EN_TERMS = "https://www.getstroyka.com/terms";
 const legalLanguages = { en: EN_TERMS, es: EN_TERMS, ru: EN_TERMS, "x-default": EN_TERMS };
 
 export async function generateMetadata({

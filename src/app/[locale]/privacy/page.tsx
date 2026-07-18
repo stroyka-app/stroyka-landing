@@ -4,7 +4,7 @@ import PrivacyContent from "./PrivacyContent";
 import { ogLocale } from "@/i18n/alternates";
 
 // Legal pages are English-authoritative: all locales point canonical + hreflang to the EN URL.
-const EN_PRIVACY = "https://getstroyka.com/privacy";
+const EN_PRIVACY = "https://www.getstroyka.com/privacy";
 const legalLanguages = { en: EN_PRIVACY, es: EN_PRIVACY, ru: EN_PRIVACY, "x-default": EN_PRIVACY };
 
 export async function generateMetadata({

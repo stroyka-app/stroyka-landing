@@ -9,7 +9,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { QUESTIONS } from "@/data/faq";
 import { PRICING_TIERS, type PricingTier } from "@/data/pricing";
 
-const SITE_URL = "https://getstroyka.com";
+const SITE_URL = "https://www.getstroyka.com";
 const ORG_LOGO = `${SITE_URL}/social-avatar-400.png`;
 const SUPPORT_EMAIL = "hello@getstroyka.com";
 

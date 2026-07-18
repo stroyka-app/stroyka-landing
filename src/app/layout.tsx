@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://getstroyka.com"),
+  metadataBase: new URL("https://www.getstroyka.com"),
 };
 
 export const viewport: Viewport = {
