@@ -33,7 +33,8 @@
     "sheetBudget": "Budget",
     "sheetOnPlanLabel": "on plan",
     "sheetOffline": "Offline",
-    "sheetAnyPhone": "Yes — any phone"
+    "sheetAnyPhone": "Yes — any phone",
+    "spotsAllOpen": "All {total} founding spots open"
   },
   "nav": {
     "features": "Features",
@@ -339,7 +340,10 @@
       "pricePart2": "Locked forever.",
       "body": "The first 20 companies to subscribe lock in $99/month for life — Starter at 34% off, forever. No matter what the public rate becomes.",
       "cta": "Claim a Founding Spot →"
-    }
+    },
+    "spotsOpenLabel": "Founding spots",
+    "spotsOpenSuffix": "open",
+    "spotsBeFirst": "Be the first crew in"
   },
   "integrations": {
     "heading": "Send your numbers where they need to go.",

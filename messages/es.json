@@ -34,7 +34,8 @@
     "sheetBudget": "Presupuesto",
     "sheetOnPlanLabel": "según lo planeado",
     "sheetOffline": "Sin conexión",
-    "sheetAnyPhone": "Sí — cualquier teléfono"
+    "sheetAnyPhone": "Sí — cualquier teléfono",
+    "spotsAllOpen": "Los {total} lugares fundadores disponibles"
   },
   "nav": {
     "features": "Funciones",
@@ -340,7 +341,10 @@
       "pricePart2": "Bloqueado para siempre.",
       "body": "Las primeras 20 empresas en suscribirse fijan $99/mes de por vida — Starter con 34% de descuento, para siempre. Sin importar cuánto suba la tarifa pública.",
       "cta": "Reclamar un lugar fundador →"
-    }
+    },
+    "spotsOpenLabel": "Lugares fundadores",
+    "spotsOpenSuffix": "disponibles",
+    "spotsBeFirst": "Sé la primera cuadrilla"
   },
   "integrations": {
     "heading": "Envía tus números a donde necesitan ir.",

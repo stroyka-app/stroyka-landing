@@ -11,6 +11,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import ScrollProgress from "@/components/ScrollProgress";
 import StructuredData from "@/components/seo/StructuredData";
 import SafariBottomTint from "@/components/SafariBottomTint";
+import MetaPixel from "@/components/MetaPixel";
 import { routing } from "@/i18n/routing";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"], weight: ["400", "500", "600", "700"], variable: "--font-inter" });
@@ -70,6 +71,7 @@ export default async function LocaleLayout({
           </SmoothScroll>
           <Analytics />
           <SpeedInsights />
+          <MetaPixel />
         </NextIntlClientProvider>
       </body>
     </html>

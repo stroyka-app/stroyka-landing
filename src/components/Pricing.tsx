@@ -14,14 +14,12 @@ import { PRICES } from "@/data/pricing";
 
 type Billing = "monthly" | "annual";
 
-const FOUNDING_SPOTS_TOTAL = 20;
-const FOUNDING_SPOTS_TAKEN = Number(
-  process.env.NEXT_PUBLIC_FOUNDING_SPOTS_TAKEN ?? 6,
-);
-const FOUNDING_SPOTS_REMAINING = Math.max(
-  0,
-  FOUNDING_SPOTS_TOTAL - FOUNDING_SPOTS_TAKEN,
-);
+import {
+  FOUNDING_NONE_CLAIMED,
+  FOUNDING_SPOTS_REMAINING,
+  FOUNDING_SPOTS_TAKEN,
+  FOUNDING_SPOTS_TOTAL,
+} from "@/lib/founding";
 
 interface Feature {
   label: string;
@@ -389,29 +387,51 @@ export default function Pricing() {
             <div className="relative z-[1] rounded-2xl p-6 bg-bone/5 border border-bone/15 backdrop-blur-sm">
               <div className="flex justify-between items-baseline mb-3 font-mono">
                 <span className="text-[11px] tracking-[0.18em] uppercase text-bone/65">
-                  {t("spotsClaimed")}
+                  {FOUNDING_NONE_CLAIMED ? t("spotsOpenLabel") : t("spotsClaimed")}
                 </span>
                 <span className="font-display text-3xl text-bone tabular-nums">
-                  <span ref={countRef}>{spotsCount}</span>
-                  <span className="text-[15px] text-bone/55 font-mono">
-                    {" "}/{" "}{FOUNDING_SPOTS_TOTAL}
-                  </span>
+                  {FOUNDING_NONE_CLAIMED ? (
+                    <>
+                      {FOUNDING_SPOTS_TOTAL}
+                      <span className="text-[15px] text-bone/55 font-mono">
+                        {" "}{t("spotsOpenSuffix")}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span ref={countRef}>{spotsCount}</span>
+                      <span className="text-[15px] text-bone/55 font-mono">
+                        {" "}/{" "}{FOUNDING_SPOTS_TOTAL}
+                      </span>
+                    </>
+                  )}
                 </span>
               </div>
-              <div className="h-[3px] rounded bg-bone/12 overflow-hidden mb-4 relative">
-                <motion.div
-                  initial={{ width: 0 }}
-                  whileInView={{
-                    width: `${(FOUNDING_SPOTS_TAKEN / FOUNDING_SPOTS_TOTAL) * 100}%`,
-                  }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
-                  className="h-full rounded bg-gradient-to-r from-brand-sage to-brand-sage-bright"
-                />
-              </div>
+              {/* Progress bar only reads as progress once there IS progress.
+                  At zero it renders as an empty trough that looks broken, so
+                  the invitation line carries the block instead. */}
+              {!FOUNDING_NONE_CLAIMED && (
+                <div className="h-[3px] rounded bg-bone/12 overflow-hidden mb-4 relative">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{
+                      width: `${(FOUNDING_SPOTS_TAKEN / FOUNDING_SPOTS_TOTAL) * 100}%`,
+                    }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+                    className="h-full rounded bg-gradient-to-r from-brand-sage to-brand-sage-bright"
+                  />
+                </div>
+              )}
               <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-bone/55">
-                {t("spotsCounter", { taken: FOUNDING_SPOTS_TAKEN, total: FOUNDING_SPOTS_TOTAL })}
-                {FOUNDING_SPOTS_REMAINING > 0 && ` · ${t("spotsRemaining", { count: FOUNDING_SPOTS_REMAINING })}`}
+                {FOUNDING_NONE_CLAIMED ? (
+                  t("spotsBeFirst")
+                ) : (
+                  <>
+                    {t("spotsCounter", { taken: FOUNDING_SPOTS_TAKEN, total: FOUNDING_SPOTS_TOTAL })}
+                    {FOUNDING_SPOTS_REMAINING > 0 && ` · ${t("spotsRemaining", { count: FOUNDING_SPOTS_REMAINING })}`}
+                  </>
+                )}
               </p>
             </div>
             </div>
