@@ -24,12 +24,29 @@
   html.has-lenis {
     scroll-behavior: auto;
   }
+  /* Chrome/overscroll canvas — iOS Safari (26 "Liquid Glass") tints the top
+     status bar and paints the rubber-band overscroll areas from the page
+     background-color. The hero is a background-IMAGE gradient and the navbar
+     translucent glass — both invisible to that heuristic — so with a bone body
+     Safari frosted a sand "eyebrow" over the dark hero and flashed sand when
+     overscrolling past the dark footer. Every route's edges are dark (dark
+     navbar/hero at top, #2B3D30 footer at bottom), so the canvas is footer
+     green on BOTH html and body (an old on-device test proved html alone does
+     nothing — Safari reads body). The in-document bone surface lives on
+     .page-surface below, so nothing inside the page changes. */
+  html,
   body {
-    /* Very faint warm-earth grain at <3% — reads as plaster paper, not noise */
+    background-color: #2B3D30;
+  }
+  .page-surface {
+    background-color: #E3DCC9; /* bone — the real page surface */
+    /* Very faint warm-earth grain at <3% — reads as plaster paper, not noise.
+       NO background-attachment: fixed — iOS rasterizes fixed backgrounds at
+       document scale, blowing the 3px tile up into a visible halftone band
+       (the mobile-only dotted grid in the marginalia voids). */
     background-image:
       radial-gradient(rgba(46, 38, 28, 0.04) 1px, transparent 1px);
     background-size: 3px 3px;
-    background-attachment: fixed;
   }
   ::selection {
     background-color: #2E261C;

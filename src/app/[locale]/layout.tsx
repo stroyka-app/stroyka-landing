@@ -55,12 +55,16 @@ export default async function LocaleLayout({
       className={`${inter.variable} ${fraunces.variable} ${jetbrainsMono.variable} ${playfair.variable}`}
       style={locale === "ru" ? ({ ["--font-fraunces"]: "var(--font-playfair)" } as React.CSSProperties) : undefined}
     >
-      <body className="bg-bone text-ink antialiased font-body">
+      {/* body carries the dark chrome canvas (globals.css) that iOS Safari
+          reads for its status-bar tint + overscroll; .page-surface restores
+          the bone surface for everything in-document. */}
+      <body className="text-ink antialiased font-body">
         {/* iOS 26 Safari bottom-toolbar tint. Renders the fixed sliver Safari
             samples and, only while a flat-dark section is under the bar, flips
             it on with that section's colour — otherwise the bar stays
             transparent glass. iOS-phone-only via globals.css. */}
         <SafariBottomTint />
+        <div className="page-surface min-h-svh">
         <NextIntlClientProvider>
           <StructuredData />
           <ScrollProgress />
@@ -73,6 +77,7 @@ export default async function LocaleLayout({
           <SpeedInsights />
           <MetaPixel />
         </NextIntlClientProvider>
+        </div>
       </body>
     </html>
   );
