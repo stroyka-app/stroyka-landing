@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/", "/account", "/get-started/success", "/get-started/cancel"],
+      disallow: ["/api/", "/account", "/get", "/get-started/success", "/get-started/cancel"],
     },
     sitemap: "https://www.getstroyka.com/sitemap.xml",
   };
