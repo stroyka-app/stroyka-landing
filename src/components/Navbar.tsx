@@ -63,16 +63,26 @@ export default function Navbar() {
 
   return (
     <nav
-      // pt safe-area: viewport-fit=cover (for the iOS 26 bottom-bar tint) puts
-      // the page under the notch; pad the bar so the logo clears it and the bar
-      // bg fills the notch (which Safari 26 also samples for the TOP tint).
+      // pt safe-area: viewport-fit=cover (for the iOS 26 toolbar tints) puts
+      // the page under the notch; pad the bar so the logo clears it.
       // env() = 0 on desktop → no change.
-      className={`fixed top-0 left-0 right-0 z-50 pt-[env(safe-area-inset-top,0px)] transition-[background-color,backdrop-filter,border-color,box-shadow] duration-300 ${
-        scrolled
-          ? "bg-[rgba(30,46,36,0.72)] backdrop-blur-xl border-b border-bone/10 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.45)]"
-          : "bg-transparent border-b border-transparent"
-      }`}
+      // The glass surface lives on the absolute child below, NOT on the nav
+      // itself: iOS 26 Safari samples background-color/backdrop-filter of
+      // position:fixed elements near the top edge for its status-bar tint,
+      // and semi-transparent glass makes it fall back to the root canvas (a
+      // flat band). An absolute child is invisible to the sampler (the
+      // "fixed element trap" fix), so SafariChromeTint's top sliver stays
+      // the single deterministic tint source. Visuals are unchanged.
+      className="fixed top-0 left-0 right-0 z-50 pt-[env(safe-area-inset-top,0px)]"
     >
+      <div
+        aria-hidden
+        className={`absolute inset-0 -z-10 transition-[background-color,backdrop-filter,border-color,box-shadow] duration-300 ${
+          scrolled
+            ? "bg-[rgba(30,46,36,0.72)] backdrop-blur-xl border-b border-bone/10 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.45)]"
+            : "bg-transparent border-b border-transparent"
+        }`}
+      />
       <motion.div
         style={{ height }}
         className="max-w-[1400px] mx-auto px-6 lg:px-10 flex items-center justify-between"
