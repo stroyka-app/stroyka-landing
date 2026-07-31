@@ -146,6 +146,22 @@ export default function Hero() {
         }}
       />
 
+      {/* Phone-only top scrim: iOS paints the status-bar zone with the root
+          background (#485348, globals.css). Holding that exact color flat
+          across the hero's first ~72px and fading it out over the next ~90px
+          makes the OS band and the page meet with no visible seam — the
+          "transparent status bar" look every polished site fakes this way
+          (real pixels are never composited there at scrollY=0). md:hidden
+          keeps desktop untouched. */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-44 z-[2] pointer-events-none md:hidden"
+        style={{
+          background:
+            "linear-gradient(180deg, #485348 0%, #485348 72px, rgba(72,83,72,0) 160px)",
+        }}
+      />
+
       {/* Field-journal strip removed — it collided with the Navbar
           wordmark. The Navbar's "STROYKA" logo is the only top-of-page
           brand mark now; the Field Journal colophon lives in the Footer. */}

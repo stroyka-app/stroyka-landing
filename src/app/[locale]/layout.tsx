@@ -10,7 +10,6 @@ import CursorDot from "@/components/CursorDot";
 import ScrollToTop from "@/components/ScrollToTop";
 import ScrollProgress from "@/components/ScrollProgress";
 import StructuredData from "@/components/seo/StructuredData";
-import SafariChromeTint from "@/components/SafariChromeTint";
 import MetaPixel from "@/components/MetaPixel";
 import { routing } from "@/i18n/routing";
 
@@ -59,13 +58,6 @@ export default async function LocaleLayout({
           reads for its status-bar tint + overscroll; .page-surface restores
           the bone surface for everything in-document. */}
       <body className="text-ink antialiased font-body">
-        {/* iOS 26 Safari toolbar tints — one fixed sliver per screen edge.
-            Bottom: activates only while a flat-dark section is under the bar
-            (otherwise Safari's transparent glass stays). Top: always active,
-            colored to whatever sits under the status bar (hero at rest, nav
-            glass when scrolled) so it reads as the page continuing instead of
-            an opaque band. iOS-phone-only via globals.css. */}
-        <SafariChromeTint />
         <div className="page-surface min-h-svh">
         <NextIntlClientProvider>
           <StructuredData />

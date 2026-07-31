@@ -24,77 +24,52 @@
   html.has-lenis {
     scroll-behavior: auto;
   }
-  /* Chrome/overscroll canvas — iOS Safari (26 "Liquid Glass") tints the top
-     status bar and paints the rubber-band overscroll areas from the page
-     background-color. The hero is a background-IMAGE gradient and the navbar
-     translucent glass — both invisible to that heuristic — so with a bone body
-     Safari frosted a sand "eyebrow" over the dark hero and flashed sand when
-     overscrolling past the dark footer. Every route's edges are dark (dark
-     navbar/hero at top, #2B3D30 footer at bottom), so the canvas is footer
-     green on BOTH html and body (an old on-device test proved html alone does
-     nothing — Safari reads body). The in-document bone surface lives on
-     .page-surface below, so nothing inside the page changes. */
+  /* Chrome/overscroll canvas. On-device iOS 26 evidence (three deploys):
+     the TOP status-bar zone is painted with the root/body background-color
+     (bone body → sand band, #2B3D30 body → green band — always exactly the
+     root; fixed-sliver sampling and theme-color never moved it), while the
+     BOTTOM bar frosts the real page pixels behind it (clean glass with any
+     root color). So the root is the one proven lever for the top, and it
+     must match what sits under the status bar: the hero's rendered top tone
+     (#485348 — Playwright-sampled at phone width; a matching flat scrim at
+     the hero's very top makes the seam invisible). Overscroll rubber-band
+     areas show this same green — harmonious against both the hero and the
+     footer. The in-document bone surface lives on .page-surface, so nothing
+     inside the page changes. Do NOT use a dark near-black/footer green here:
+     it reads as a heavy band over the lighter hero. And never reintroduce
+     display-toggled fixed tint slivers — Safari latches the sampled color
+     and keeps a stale opaque plate over the page after the sliver hides. */
   html,
   body {
-    background-color: #2B3D30;
+    background-color: #485348;
   }
   .page-surface {
     background-color: #E3DCC9; /* bone — the real page surface */
-    /* Very faint warm-earth grain at <3% — reads as plaster paper, not noise.
-       NO background-attachment: fixed — iOS rasterizes fixed backgrounds at
-       document scale, blowing the 3px tile up into a visible halftone band
-       (the mobile-only dotted grid in the marginalia voids). */
-    background-image:
-      radial-gradient(rgba(46, 38, 28, 0.04) 1px, transparent 1px);
-    background-size: 3px 3px;
+  }
+  /* Very faint warm-earth grain at <3% — reads as plaster paper, not noise.
+     DESKTOP ONLY: on iPhone (3x DPR) the 3px dot tile aliases into a clearly
+     visible halftone grid wherever the raw surface shows (the marginalia
+     voids) — regardless of background-attachment, which was ruled out on
+     device. */
+  @media (min-width: 768px) {
+    .page-surface {
+      background-image:
+        radial-gradient(rgba(46, 38, 28, 0.04) 1px, transparent 1px);
+      background-size: 3px 3px;
+    }
   }
   ::selection {
     background-color: #2E261C;
     color: #E3DCC9;
   }
 
-  /* iOS 26 Safari ("Liquid Glass") toolbar tint sources — one fixed sliver
-     per screen edge. Safari 26 ignores theme-color and derives each bar's
-     tint from the background-color of a position:fixed element near that
-     edge (requires viewport-fit=cover, set in layout.tsx).
-     DEFAULT = display:none → no fixed element to sample → Safari falls back
-     (bottom: its TRANSPARENT GLASS bar, which looks clean over the hero and
-     light/textured sections; top: the root canvas color). SafariChromeTint.tsx
-     drives both: the bottom sliver activates ONLY while a flat-dark section
-     (#plan-to-done, #footer) is under the bar (those frost to pale sage
-     otherwise); the top sliver is ALWAYS active on iOS with the color of
-     whatever sits under the status bar (hero top at rest, nav glass once
-     scrolled) so the status bar reads as the page continuing, not a band.
-     Must toggle display (not opacity) — Safari still samples opacity:0 /
-     transparent elements. Gated to iOS phones via the Apple-engine @supports
-     probe + phone width, so desktop/Android never show the slivers. */
-  #safari-bottom-tint,
-  #safari-top-tint {
-    position: fixed;
-    left: 0;
-    width: 100%;
-    min-height: 12px;
-    margin: 0;
-    padding: 0;
-    z-index: 5;
-    background-color: transparent;
-    pointer-events: none;
-    display: none;
-  }
-  #safari-bottom-tint {
-    bottom: -8px;
-  }
-  #safari-top-tint {
-    top: -8px;
-  }
-  @supports (-webkit-text-size-adjust: none) and (font: -apple-system-body) and (-webkit-touch-callout: none) {
-    @media (width < 768px) {
-      #safari-bottom-tint[data-active="true"],
-      #safari-top-tint[data-active="true"] {
-        display: block;
-      }
-    }
-  }
+  /* NOTE: the fixed "Safari tint sliver" mechanism (SafariBottomTint /
+     SafariChromeTint, 2026-06-29 → 2026-07-31) is deliberately GONE. On
+     device, iOS 26 latched the sliver's sampled color and kept a stale
+     opaque sage plate over the page after the sliver display:none'd
+     (scroll to footer → back to hero repro). The bottom bar's natural
+     content-frost glass is the professional default; the footer frosting
+     slightly pale is standard iOS behavior. See tasks/lessons.md. */
 }
 
 @layer utilities {

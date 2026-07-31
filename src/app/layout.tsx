@@ -6,12 +6,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // iOS 26 ("Liquid Glass") Safari IGNORES theme-color and instead tints its
-  // toolbars from the background-color of position:fixed/sticky elements near
-  // the screen edges. viewport-fit=cover is REQUIRED for the bottom-bar tint to
-  // work at all (and for env(safe-area-*)). The bottom tint is driven by the
-  // fixed #safari-bottom-tint sliver (see globals.css + [locale]/layout.tsx);
-  // the top bar is tinted by the fixed Navbar. See tasks/lessons.md.
+  // iOS 26 ("Liquid Glass") Safari ignores theme-color. On device, the TOP
+  // status-bar zone paints with the root background-color (see globals.css —
+  // #485348, hero-matched) and the BOTTOM bar frosts the real page pixels
+  // behind it (needs viewport-fit=cover + env(safe-area-*)). No tint slivers:
+  // Safari latches sampled fixed-element colors (see tasks/lessons.md).
   viewportFit: "cover",
   colorScheme: "light",
 };
