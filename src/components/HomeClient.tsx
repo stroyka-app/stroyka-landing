@@ -83,10 +83,15 @@ export default function HomeClient() {
           sticky phone): HowItWorks now holds a flat #D4CBB4 across that bottom
           runway, so the transparent marginalia shows a seam-matching colour and
           the transition into Features is invisible. */}
+      {/* Mobile: no -mt pull-up, so this strip sits BETWEEN sections where
+          the raw bone page-surface would show as a lighter band — both
+          neighbours (HowItWorks' bottom runway and Features' top) are flat
+          #D4CBB4, so paint the strip to match. Desktop keeps transparent
+          (it overlaps the sticky-phone runway; a solid bg would band). */}
       <Marginalia
         note="06:15 — crew clocked in · 12 / 12"
         folio="02"
-        className="md:-mt-[16vh] pb-12"
+        className="bg-[#D4CBB4] md:bg-transparent md:-mt-[16vh] pb-12"
       />
       <Features />
       {/* Features ends on stone (#BFB49C). Fade into PlanToDoneAnimation's

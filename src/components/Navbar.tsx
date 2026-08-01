@@ -65,12 +65,22 @@ export default function Navbar() {
     <nav
       // pt safe-area: viewport-fit=cover puts the page under the notch; pad
       // the bar so the logo clears it. env() = 0 on desktop → no change.
-      className={`fixed top-0 left-0 right-0 z-50 pt-[env(safe-area-inset-top,0px)] transition-[background-color,backdrop-filter,border-color,box-shadow] duration-300 ${
-        scrolled
-          ? "bg-[rgba(30,46,36,0.72)] backdrop-blur-xl border-b border-bone/10 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.45)]"
-          : "bg-transparent border-b border-transparent"
-      }`}
+      // The glass lives on the absolute child, NOT the nav itself: iOS 26
+      // samples the background-color of fixed elements (latching it into the
+      // status-bar tint at render-tree changes — e.g. the mobile menu
+      // mounting), so the fixed element must stay background-free. The
+      // child's .nav-glass-scrolled (globals.css) also blends the phone
+      // status zone (#485348) into the glass so the two read as one surface.
+      className="fixed top-0 left-0 right-0 z-50 pt-[env(safe-area-inset-top,0px)]"
     >
+      <div
+        aria-hidden
+        className={`absolute inset-0 -z-10 transition-[background-color,backdrop-filter,border-color,box-shadow] duration-300 ${
+          scrolled
+            ? "nav-glass-scrolled backdrop-blur-xl border-b border-bone/10 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.45)]"
+            : "bg-transparent border-b border-transparent"
+        }`}
+      />
       <motion.div
         style={{ height }}
         className="max-w-[1400px] mx-auto px-6 lg:px-10 flex items-center justify-between"

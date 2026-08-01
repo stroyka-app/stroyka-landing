@@ -2493,9 +2493,16 @@ export default function PlanToDoneAnimation() {
         ref={wrapperRef}
         style={{ position: "relative", height: "500vh" }}
       >
+        {/* NO background on this sticky element: iOS 26 Safari samples the
+            background-color of fixed/STICKY elements that touch a viewport
+            edge and LATCHES it into its toolbar tint — this full-viewport
+            sticky canvas with #4E6253 was the "stale pale-sage plate behind
+            the URL bar after visiting the 3D house" bug. The parent section
+            paints the same #4E6253 behind it, so removing this is pixel-
+            identical while staying invisible to the sampler. */}
         <div
           ref={stickyRef}
-          className="sticky top-16 h-[calc(100vh-4rem)] min-h-[560px] bg-[#4E6253]"
+          className="sticky top-16 h-[calc(100vh-4rem)] min-h-[560px]"
           style={{ overflow: "clip" }}
         >
           <div className="absolute inset-0 z-0">

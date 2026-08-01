@@ -43,6 +43,38 @@
   body {
     background-color: #485348;
   }
+  /* Overscroll rubber-band follows scroll position (Safari 26 tracks LIVE
+     body background for overscroll ONLY — toolbars sample once at load, so
+     this cannot disturb them): hero green while near the top, footer green
+     by the end of the document, so pulling past either edge reveals a
+     matching surface. Progressive — static #485348 where unsupported. */
+  @supports (animation-timeline: scroll()) {
+    body {
+      animation: chrome-canvas linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+  /* Navbar scrolled glass (used by Navbar.tsx's absolute child — the fixed
+     <nav> itself must stay background-free so iOS 26's toolbar sampler
+     ignores it). Desktop: the original flat dark glass. Phones: the same
+     glass, but starting from the chrome tint (#485348 — what iOS paints
+     behind the clock) across the safe-area and easing into the dark glass
+     over the next 44px, so the status zone flows INTO the navbar instead of
+     sitting on it as a second band. */
+  .nav-glass-scrolled {
+    background-color: rgba(30, 46, 36, 0.72);
+  }
+  @media (max-width: 767.98px) {
+    .nav-glass-scrolled {
+      background-color: transparent;
+      background-image: linear-gradient(
+        180deg,
+        #485348 0,
+        #485348 env(safe-area-inset-top, 0px),
+        rgba(30, 46, 36, 0.72) calc(env(safe-area-inset-top, 0px) + 44px)
+      );
+    }
+  }
   .page-surface {
     background-color: #E3DCC9; /* bone — the real page surface */
   }
@@ -324,4 +356,9 @@
   --from: #E3DCC9;
   --to:   #D4CBB4;
   background: linear-gradient(to bottom, var(--from) 0%, var(--to) 100%);
+}
+
+@keyframes chrome-canvas {
+  0%, 82% { background-color: #485348; }
+  100% { background-color: #2B3D30; }
 }
