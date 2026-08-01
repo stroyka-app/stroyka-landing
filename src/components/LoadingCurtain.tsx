@@ -33,8 +33,14 @@ export default function LoadingCurtain() {
           transition={{ duration: 0.5, ease: [0.65, 0, 0.35, 1], delay: 0.1 }}
           onAnimationComplete={() => setVisible(false)}
           className="fixed inset-0 z-[100] pointer-events-none"
-          style={{ background: "#34453A" }}
-        />
+        >
+          {/* Color on a child, NOT the fixed element: iOS 26 hit-tests fixed
+              elements at the screen edges at initial render and adopts their
+              background-color as the toolbar tint — this full-screen curtain
+              would hijack both bars at load. A bg-less fixed parent is
+              ignored by the sampler; the child paints identically. */}
+          <div className="absolute inset-0" style={{ background: "#34453A" }} />
+        </motion.div>
       )}
     </AnimatePresence>
   );

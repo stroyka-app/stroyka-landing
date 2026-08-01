@@ -24,30 +24,44 @@
   html.has-lenis {
     scroll-behavior: auto;
   }
-  /* Chrome/overscroll canvas. On-device iOS 26 evidence (three deploys):
-     the TOP status-bar zone is painted with the root/body background-color
-     (bone body → sand band, #2B3D30 body → green band — always exactly the
-     root; fixed-sliver sampling and theme-color never moved it), while the
-     BOTTOM bar frosts the real page pixels behind it (clean glass with any
-     root color). So the root is the one proven lever for the top, and it
-     must match what sits under the status bar: the hero's rendered top tone
-     (#485348 — Playwright-sampled at phone width; a matching flat scrim at
-     the hero's very top makes the seam invisible). Overscroll rubber-band
-     areas show this same green — harmonious against both the hero and the
-     footer. The in-document bone surface lives on .page-surface, so nothing
-     inside the page changes. Do NOT use a dark near-black/footer green here:
-     it reads as a heavy band over the lighter hero. And never reintroduce
-     display-toggled fixed tint slivers — Safari latches the sampled color
-     and keeps a stale opaque plate over the page after the sliver hides. */
+  /* Chrome/overscroll canvas — THE SETTLED MODEL (WebKit source +
+     four rounds of on-device evidence, 2026-07-31):
+     - iOS 26 hit-tests each screen edge for a fixed/sticky container at
+       INITIAL RENDER and adopts its background-color as that bar's tint;
+       with none it falls back to the BODY color. JS/style changes are
+       never re-sampled.
+     - The body color also frosts into the bottom bar zone. A dark body =
+       the opaque "sage plate" over content (both dark-body attempts
+       reproduced it). Body must stay LIGHT (bone) — this is the config
+       that was stable for months.
+     - The TOP status zone is therefore owned by #chrome-cap below: a
+       static, server-rendered fixed element exactly env(safe-area-inset-
+       top) tall (0 on desktop/Android → invisible) that Safari samples at
+       load. The same mechanism as the June static bottom sliver (9e320bf)
+       — the ONLY sliver variant ever proven to work on device. It is
+       never toggled or recolored (re-sampling doesn't exist), and every
+       other fixed/sticky element keeps its background OFF the sampled
+       element itself (Navbar, LoadingCurtain, 3D-house sticky canvas). */
   html,
   body {
-    background-color: #485348;
+    background-color: #E3DCC9;
+  }
+  #chrome-cap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: env(safe-area-inset-top, 0px);
+    background-color: #485348; /* hero's rendered top tone; = hero scrim + nav blend */
+    z-index: 40; /* under the navbar (z-50); over page content */
+    pointer-events: none;
   }
   /* Overscroll rubber-band follows scroll position (Safari 26 tracks LIVE
      body background for overscroll ONLY — toolbars sample once at load, so
-     this cannot disturb them): hero green while near the top, footer green
-     by the end of the document, so pulling past either edge reveals a
-     matching surface. Progressive — static #485348 where unsupported. */
+     this cannot disturb them): bone through the page, footer green by the
+     end of the document, so pulling up past the dark footer reveals a
+     matching surface instead of a sand flash. Progressive — static bone
+     where unsupported. */
   @supports (animation-timeline: scroll()) {
     body {
       animation: chrome-canvas linear both;
@@ -359,6 +373,6 @@
 }
 
 @keyframes chrome-canvas {
-  0%, 82% { background-color: #485348; }
+  0%, 88% { background-color: #E3DCC9; }
   100% { background-color: #2B3D30; }
 }

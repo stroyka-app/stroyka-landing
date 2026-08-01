@@ -54,10 +54,18 @@ export default async function LocaleLayout({
       className={`${inter.variable} ${fraunces.variable} ${jetbrainsMono.variable} ${playfair.variable}`}
       style={locale === "ru" ? ({ ["--font-fraunces"]: "var(--font-playfair)" } as React.CSSProperties) : undefined}
     >
-      {/* body carries the dark chrome canvas (globals.css) that iOS Safari
-          reads for its status-bar tint + overscroll; .page-surface restores
-          the bone surface for everything in-document. */}
+      {/* body = bone (globals.css): iOS frosts the body color into the
+          bottom bar zone, so it must stay light — the proven-stable config.
+          .page-surface carries the in-document surface. */}
       <body className="text-ink antialiased font-body">
+        {/* iOS status-zone tint source. Static + server-rendered on purpose:
+            Safari 26 hit-tests fixed elements at the screen edges ONCE at
+            initial render and adopts their background-color as the bar tint
+            (JS toggles are never re-sampled — the June static sliver is the
+            only variant ever proven on device). Exactly env(safe-area-inset-
+            top) tall → invisible on desktop/Android. Color = hero top tone,
+            continued by the hero scrim and the navbar glass blend. */}
+        <div id="chrome-cap" aria-hidden />
         <div className="page-surface min-h-svh">
         <NextIntlClientProvider>
           <StructuredData />
