@@ -109,13 +109,54 @@
     color: #E3DCC9;
   }
 
-  /* NOTE: the fixed "Safari tint sliver" mechanism (SafariBottomTint /
-     SafariChromeTint, 2026-06-29 → 2026-07-31) is deliberately GONE. On
-     device, iOS 26 latched the sliver's sampled color and kept a stale
-     opaque sage plate over the page after the sliver display:none'd
-     (scroll to footer → back to hero repro). The bottom bar's natural
-     content-frost glass is the professional default; the footer frosting
-     slightly pale is standard iOS behavior. See tasks/lessons.md. */
+  /* iOS 26 Safari ("Liquid Glass") bottom-toolbar tint source — RESTORED
+     byte-for-byte from the month-proven pre-2026-07-31 state (e36a8f2).
+     Safari derives its bottom-bar tint from the background-color of a
+     position:fixed element near the bottom edge (requires
+     viewport-fit=cover, set in layout.tsx).
+     DEFAULT = display:none → no fixed element to sample → Safari keeps its
+     TRANSPARENT GLASS bar (the page shows through it), which already looks
+     clean over the hero + light/textured sections. SafariBottomTint.tsx flips
+     data-active="true" (and sets the colour) ONLY while a flat-dark section
+     (#plan-to-done, #footer) is under the bar, so just those frost to a solid
+     tint instead of pale sage. Must toggle display (not opacity) — Safari still
+     samples opacity:0 / transparent elements. Gated to iOS phones via the
+     Apple-engine @supports probe + phone width, so desktop/Android never show
+     the sliver regardless of data-active.
+     CRITICAL side-effect (why deleting this broke everything): each
+     display toggle is a render-tree change, which is the ONLY event that
+     makes Safari re-sample its toolbar tints. The toggling keeps the tint
+     in sync at every section boundary — without it, whatever Safari
+     sampled at the 3D house stayed latched as a stale pale-sage plate.
+     Do not remove or "simplify" this mechanism again. */
+  #safari-bottom-tint {
+    position: fixed;
+    bottom: -8px;
+    left: 0;
+    width: 100%;
+    min-height: 12px;
+    margin: 0;
+    padding: 0;
+    z-index: 5;
+    background-color: transparent;
+    pointer-events: none;
+    display: none;
+  }
+  @supports (-webkit-text-size-adjust: none) and (font: -apple-system-body) and (-webkit-touch-callout: none) {
+    @media (width < 768px) {
+      #safari-bottom-tint[data-active="true"] {
+        display: block;
+      }
+      /* The status-zone cap must poke a few px INTO the visible viewport
+         or Safari's edge hit-test misses it entirely (the June bottom
+         sliver pokes 4px in for the same reason — and the env()-only cap
+         was missed on device: sand band returned). The extra 4px sits over
+         the hero scrim / nav glass blend, both #485348 → invisible. */
+      #chrome-cap {
+        height: calc(env(safe-area-inset-top, 0px) + 4px);
+      }
+    }
+  }
 }
 
 @layer utilities {

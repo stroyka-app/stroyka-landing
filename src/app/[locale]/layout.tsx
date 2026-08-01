@@ -11,6 +11,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import ScrollProgress from "@/components/ScrollProgress";
 import StructuredData from "@/components/seo/StructuredData";
 import MetaPixel from "@/components/MetaPixel";
+import SafariBottomTint from "@/components/SafariBottomTint";
 import { routing } from "@/i18n/routing";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"], weight: ["400", "500", "600", "700"], variable: "--font-inter" });
@@ -66,6 +67,10 @@ export default async function LocaleLayout({
             top) tall → invisible on desktop/Android. Color = hero top tone,
             continued by the hero scrim and the navbar glass blend. */}
         <div id="chrome-cap" aria-hidden />
+        {/* Month-proven bottom-bar system, restored (see globals.css note:
+            its display toggles are also what force Safari to re-sample the
+            toolbar tint — removing it caused the stale sage plate). */}
+        <SafariBottomTint />
         <div className="page-surface min-h-svh">
         <NextIntlClientProvider>
           <StructuredData />
