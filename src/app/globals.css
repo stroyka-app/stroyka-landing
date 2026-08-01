@@ -85,11 +85,17 @@
   @media (max-width: 767.98px) {
     .nav-glass-scrolled {
       background-color: transparent;
+      /* Gradient START = #454F46: the OS status strip's RENDERED color,
+         measured from a device screenshot (IMG_0105 — Safari frosts the
+         #485348 body slightly darker). Holding that exact tone 8px past
+         the safe area and easing into the dark glass over the next 80px
+         removes the visible boundary line between the OS strip and the
+         nav glass — they read as one continuous surface. */
       background-image: linear-gradient(
         180deg,
-        #485348 0,
-        #485348 env(safe-area-inset-top, 0px),
-        rgba(30, 46, 36, 0.72) calc(env(safe-area-inset-top, 0px) + 44px)
+        #454F46 0,
+        #454F46 calc(env(safe-area-inset-top, 0px) + 8px),
+        rgba(30, 46, 36, 0.72) calc(env(safe-area-inset-top, 0px) + 88px)
       );
     }
   }

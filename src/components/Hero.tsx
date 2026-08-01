@@ -157,8 +157,11 @@ export default function Hero() {
         aria-hidden
         className="absolute inset-x-0 top-0 h-44 z-[2] pointer-events-none md:hidden"
         style={{
+          // #454F46 = the OS strip's RENDERED tone (device-measured; Safari
+          // frosts the #485348 body slightly darker) — the scrim meets it
+          // exactly, then dissolves into the hero texture.
           background:
-            "linear-gradient(180deg, #485348 0%, #485348 72px, rgba(72,83,72,0) 160px)",
+            "linear-gradient(180deg, #454F46 0%, #454F46 72px, rgba(69,79,70,0) 160px)",
         }}
       />
 
