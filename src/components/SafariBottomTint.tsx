@@ -3,6 +3,20 @@
 import { useEffect } from "react";
 
 /**
+ * ⚠️ DO NOT DELETE OR "SIMPLIFY" THIS COMPONENT. (2026-07-31)
+ *
+ * It was removed once ("the bottom bar frosts content natively, this is
+ * redundant") and the result was a STALE PALE-SAGE PLATE stuck over the
+ * page behind the URL bar after visiting the 3D house — because iOS 26
+ * re-samples its toolbar tint ONLY on render-tree changes, and this
+ * component's display:none↔block toggles at section boundaries are
+ * exactly those changes. It is both the tint source over the flat-dark
+ * sections AND the mechanism that keeps Safari's tint in sync everywhere
+ * else. Full post-mortem: tasks/lessons.md ("the old sliver was also the
+ * un-latcher").
+ *
+ * ────────────────────────────────────────────────────────────────────
+ *
  * iOS 26 ("Liquid Glass") Safari tints its bottom toolbar from the
  * background-color of a position:fixed element near the bottom edge (it ignores
  * theme-color). We want the bar to stay TRANSPARENT GLASS — showing the page

@@ -53,7 +53,15 @@
     right: 0;
     height: env(safe-area-inset-top, 0px);
     background-color: #485348; /* hero's rendered top tone; = hero scrim + nav blend */
-    z-index: 40; /* under the navbar (z-50); over page content */
+    /* MUST be the TOPMOST fixed element at the top edge: Safari's edge
+       hit-test finds the topmost viewport-constrained element and reads
+       ITS background-color — at z-40 the (transparent) navbar shadowed
+       the cap and Safari fell through to the bone body = sand band.
+       z-70 puts it above the navbar (50) and ScrollProgress (60); on
+       iPhones everything it covers is the status zone (behind the OS
+       clock) plus 4px of #485348 scrim/nav-blend — nothing visible is
+       lost. Desktop height is 0 → no effect. */
+    z-index: 70;
     pointer-events: none;
   }
   /* Overscroll rubber-band follows scroll position (Safari 26 tracks LIVE
