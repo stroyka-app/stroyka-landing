@@ -4,6 +4,8 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import FadeIn from "@/components/ui/FadeIn";
 import Button from "@/components/ui/Button";
+import { useAttributedUrl } from "@/lib/hooks/useAttributedUrl";
+import { SIGNUP_URL } from "@/lib/appLinks";
 
 /**
  * CTA finale — the gradient "ramp down" into dark forest. Starts at pale
@@ -12,6 +14,7 @@ import Button from "@/components/ui/Button";
  * The oversized Fraunces type is the moment.
  */
 export default function CTABanner() {
+  const signupUrl = useAttributedUrl(SIGNUP_URL);
   const t = useTranslations("cta");
   const prefersReduced = useReducedMotion();
   return (
@@ -116,7 +119,7 @@ export default function CTABanner() {
 
           <FadeIn delay={0.22}>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <Button variant="invert" size="lg" href="https://app.getstroyka.com/signup">
+              <Button variant="invert" size="lg" href={signupUrl}>
                 {t("startFree")}
               </Button>
               <Button variant="ghost" size="lg" href="/demo" className="text-bone hover:text-brand-sage-bright">

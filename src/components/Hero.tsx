@@ -5,6 +5,8 @@ import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion
 import { useTranslations } from "next-intl";
 import FadeIn from "@/components/ui/FadeIn";
 import Button from "@/components/ui/Button";
+import { useAttributedUrl } from "@/lib/hooks/useAttributedUrl";
+import { SIGNUP_URL } from "@/lib/appLinks";
 import { Counter, Sparkline } from "@/components/ui/LiveSheet";
 
 /**
@@ -74,6 +76,9 @@ import {
  * in its natural tones, just muted.
  */
 export default function Hero() {
+  // Carry the visitor's utm_* / click-ids across the hop to the app origin —
+  // without this every campaign loses attribution at the last click.
+  const signupUrl = useAttributedUrl(SIGNUP_URL);
   const t = useTranslations("hero");
   const ref = useRef<HTMLDivElement>(null);
   const prefersReduced = useReducedMotion();
@@ -280,7 +285,7 @@ export default function Hero() {
             </FadeIn>
             <FadeIn delay={0.28} triggerOnMount>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <Button variant="primary" size="lg" href="https://app.getstroyka.com/signup">
+                <Button variant="primary" size="lg" href={signupUrl}>
                   {t("startFree")}
                 </Button>
                 <Button variant="ghost" size="lg" href="/demo" className="text-bone hover:text-brand-sage-bright">

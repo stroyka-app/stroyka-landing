@@ -8,6 +8,8 @@ import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
 import Button from "@/components/ui/Button";
+import { useAttributedUrl } from "@/lib/hooks/useAttributedUrl";
+import { SIGNUP_URL } from "@/lib/appLinks";
 import { useCursorGlow } from "@/lib/hooks/useCursorGlow";
 import { useCountUp } from "@/lib/hooks/useCountUp";
 import { PRICES } from "@/data/pricing";
@@ -51,6 +53,7 @@ function FeatureList({ features, sub }: { features: Feature[]; sub?: boolean }) 
 }
 
 export default function Pricing() {
+  const signupUrl = useAttributedUrl(SIGNUP_URL);
   const t = useTranslations("pricing");
   const [billing, setBilling] = useState<Billing>("monthly");
   const prefersReduced = useReducedMotion();
@@ -200,7 +203,7 @@ export default function Pricing() {
               </div>
               <FeatureList features={FREE_FEATURES} />
               <div className="mt-auto">
-                <Button variant="secondary" href="https://app.getstroyka.com/signup" className="w-full">
+                <Button variant="secondary" href={signupUrl} className="w-full">
                   {t("free.cta")}
                 </Button>
               </div>
