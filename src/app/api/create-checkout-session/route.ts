@@ -77,16 +77,75 @@ export async function POST(req: NextRequest) {
   try {
     const stripe = getStripe();
 
-    // Create a fresh Stripe customer for the checkout
-    const customer = await stripe.customers.create({
-      email,
-      name,
-      metadata: {
-        source: "web_signup",
-        company_name: companyName,
-        plan,
-      },
-    });
+    // Reuse this email's existing Stripe customer instead of minting a new
+    // one per attempt.
+    //
+    // This used to be an unconditional customers.create(), so every click on
+    // "subscribe" produced another customer. Our first paying customer
+    // (2026-08-08) generated FIVE for one purchase, and the resulting mess —
+    // payment recorded against a customer id our app had never seen — is what
+    // left him billed and stuck on the free plan.
+    //
+    // customers.list is immediately consistent (customers.search is not, and
+    // lags by up to a minute — useless for someone retrying twice in three
+    // minutes, which is exactly the pattern here). Stripe's email filter is
+    // case-sensitive, so we also try the lowercased form: the customer typed
+    // "Leone_david@…" while our own records lowercase.
+    const seen = new Map<string, Stripe.Customer>();
+    for (const candidate of [email, email.toLowerCase()]) {
+      const found = await stripe.customers.list({ email: candidate, limit: 10 });
+      for (const c of found.data) if (!c.deleted) seen.set(c.id, c);
+      if (candidate === email.toLowerCase()) break;
+    }
+    // Newest first: if duplicates already exist from before this fix, prefer
+    // the most recent, which is the one carrying any active subscription.
+    const existing = [...seen.values()].sort((a, b) => b.created - a.created);
+
+    let customer = existing[0] ?? null;
+
+    if (customer) {
+      // Refuse to sell a second subscription to someone who already has one.
+      // Nothing anywhere else stops this: Stripe will happily bill the same
+      // person twice, and our app has no concept of a company holding two
+      // subscriptions. The customer above ended up on $149 AND $99
+      // simultaneously and had to email us to sort it out.
+      for (const c of existing) {
+        const active = await stripe.subscriptions.list({
+          customer: c.id,
+          status: "active",
+          limit: 1,
+        });
+        const trialing = active.data.length
+          ? active
+          : await stripe.subscriptions.list({
+              customer: c.id,
+              status: "trialing",
+              limit: 1,
+            });
+        if (trialing.data.length > 0) {
+          return NextResponse.json(
+            {
+              error: "already_subscribed",
+              message:
+                "This email already has an active Stroyka subscription. " +
+                "Sign in to the app, or email support@getstroyka.com and " +
+                "we'll sort it out.",
+            },
+            { status: 409 }
+          );
+        }
+      }
+    } else {
+      customer = await stripe.customers.create({
+        email,
+        name,
+        metadata: {
+          source: "web_signup",
+          company_name: companyName,
+          plan,
+        },
+      });
+    }
 
     const siteUrl =
       process.env.NEXT_PUBLIC_SITE_URL || "https://getstroyka.com";

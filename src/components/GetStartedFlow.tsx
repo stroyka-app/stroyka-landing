@@ -229,7 +229,12 @@ export default function GetStartedFlow() {
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || t("form.errors.somethingWentWrong"));
+        // `message` is the human-readable form (e.g. the already-subscribed
+        // 409); `error` is the machine code and reads like a bug when shown
+        // raw. Prefer the sentence, fall back to the code, then to generic.
+        throw new Error(
+          data.message || data.error || t("form.errors.somethingWentWrong")
+        );
       }
 
       const { url } = await res.json();
