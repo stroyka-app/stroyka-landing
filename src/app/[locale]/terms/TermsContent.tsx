@@ -130,6 +130,8 @@ const sections: LegalSection[] = [
         <p>10.1. The Stroyka platform, including its software, design, logos, documentation, and all related intellectual property, is owned by Dalen Meridian LLC and is protected by applicable copyright, trademark, and other intellectual property laws.</p>
         <p>10.2. These Terms grant you a limited, non-exclusive, non-transferable, revocable license to use the Service for your internal business purposes during the term of your subscription.</p>
         <p>10.3. You may not copy, modify, distribute, sell, or create derivative works based on the Service or any part thereof.</p>
+        <p>10.4. <strong>Feedback and suggestions.</strong> If you send us feedback, feature requests, ideas, or suggestions about the Service (&ldquo;Feedback&rdquo;), you grant us a perpetual, irrevocable, worldwide, royalty-free license to use, modify, and incorporate that Feedback into the Service or any other product, without restriction, attribution, or compensation to you. Feedback is provided voluntarily and is not confidential.</p>
+        <p>10.5. <strong>No obligation to implement.</strong> We welcome Feedback, but we are under no obligation to respond to, implement, or retain any Feedback, feature request, or suggestion. Nothing in these Terms — and no discussion, email, or message about a potential feature — creates a commitment to build, deliver, or maintain any particular functionality, or a timeline for doing so. Product decisions rest solely with us.</p>
       </>
     ),
   },
@@ -217,7 +219,7 @@ export default function TermsContent() {
     <LegalPageLayout
       title="Terms of Service"
       subtitle="Please read these Terms of Service carefully before using the Stroyka platform."
-      effectiveDate="Effective Date: April 2026 · Last Updated: June 2026"
+      effectiveDate="Effective Date: April 2026 · Last Updated: August 2026"
       sections={sections}
     />
   );
