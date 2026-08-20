@@ -27,8 +27,17 @@ function enOnlyAlternates(path: string): Record<string, string> {
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
-  return ROUTES.flatMap((route) =>
-    LOCALES.map((locale) => ({
+  return ROUTES.flatMap((route) => {
+    // An English-authoritative page must be submitted ONCE, as its English
+    // URL. Emitting /es/privacy and /ru/privacy here told Google to index
+    // them while each of those pages' own canonical said "I am /privacy" —
+    // a direct contradiction, which Google resolved by indexing neither and
+    // reporting "Duplicate, Google chose different canonical than user"
+    // (Search Console, 2026-08-20). The localized pages still exist, still
+    // render, and are still reachable; they simply fold into the EN URL,
+    // which is what `legalOnly` meant in the first place.
+    const locales = route.legalOnly ? (["en"] as const) : LOCALES;
+    return locales.map((locale) => ({
       url: canonicalFor(locale, route.path),
       lastModified: now,
       changeFrequency: route.changeFrequency,
@@ -38,6 +47,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
           ? enOnlyAlternates(route.path)
           : localeAlternates(route.path),
       },
-    }))
-  );
+    }));
+  });
 }
