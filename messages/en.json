@@ -291,13 +291,14 @@
       "features": {
         "0": "Up to 5 workers",
         "1": "GPS time clock, geofences & daily logs",
-        "2": "Materials & fuel with AI receipt scan",
-        "3": "Task management & messaging",
-        "4": "Worker earnings tracker",
-        "5": "Offline-first sync",
-        "6": "PDF & CSV reports (Starter+)",
-        "7": "Job costing & P&L (Starter+)",
-        "8": "Overtime alerts (Starter+)"
+        "2": "Materials & fuel — scan a receipt once, every line grouped",
+        "3": "Contracts — agreed costs with paid & owed balances",
+        "4": "Tasks, messaging & supply requests",
+        "5": "Worker earnings tracker",
+        "6": "Offline-first sync",
+        "7": "PDF & CSV reports (Starter+)",
+        "8": "Job costing & P&L (Starter+)",
+        "9": "Overtime alerts (Starter+)"
       }
     },
     "starter": {

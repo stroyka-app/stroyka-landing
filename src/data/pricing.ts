@@ -17,7 +17,7 @@ export const PRICING_TIERS: readonly PricingTier[] = [
   {
     name: "Free",
     monthlyPrice: 0,
-    description: "Up to 5 workers, forever. Time tracking, daily logs, tasks, offline-first sync.",
+    description: "Up to 5 workers, forever. Time tracking, daily logs, tasks, supply requests, contracts, receipt scanning, offline-first sync.",
   },
   {
     name: "Starter",

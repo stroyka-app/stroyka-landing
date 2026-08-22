@@ -292,13 +292,14 @@
       "features": {
         "0": "Hasta 5 trabajadores",
         "1": "Reloj GPS con geocercas y partes diarios",
-        "2": "Materiales y combustible con escaneo AI de recibos",
-        "3": "Gestión de tareas y mensajería",
-        "4": "Seguimiento de ganancias del trabajador",
-        "5": "Sincronización sin conexión",
-        "6": "Reportes PDF y CSV (Starter+)",
-        "7": "Costos de obra y P&L (Starter+)",
-        "8": "Alertas de horas extra (Starter+)"
+        "2": "Materiales y combustible: un escaneo y todas las líneas juntas",
+        "3": "Contratos: montos acordados, pagado y saldo",
+        "4": "Tareas, mensajería y solicitudes de material",
+        "5": "Seguimiento de ganancias del trabajador",
+        "6": "Sincronización sin conexión",
+        "7": "Reportes PDF y CSV (Starter+)",
+        "8": "Costos de obra y P&L (Starter+)",
+        "9": "Alertas de horas extra (Starter+)"
       }
     },
     "starter": {

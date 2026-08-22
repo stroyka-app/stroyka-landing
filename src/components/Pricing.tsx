@@ -65,6 +65,9 @@ export default function Pricing() {
     duration: 1600,
   });
 
+  // 0-6 are what Free actually gets; 7-9 are the Starter+ teasers and must
+  // stay last. Verified against the app's real plan gates on 2026-08-22 —
+  // contracts and supply requests are ungated, so they belong here.
   const FREE_FEATURES: Feature[] = [
     { label: t("free.features.0"), included: true },
     { label: t("free.features.1"), included: true },
@@ -72,9 +75,10 @@ export default function Pricing() {
     { label: t("free.features.3"), included: true },
     { label: t("free.features.4"), included: true },
     { label: t("free.features.5"), included: true },
-    { label: t("free.features.6"), included: false },
+    { label: t("free.features.6"), included: true },
     { label: t("free.features.7"), included: false },
     { label: t("free.features.8"), included: false },
+    { label: t("free.features.9"), included: false },
   ];
 
   const STARTER_FEATURES: Feature[] = [
