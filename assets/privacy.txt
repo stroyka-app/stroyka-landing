@@ -1,3 +1,19 @@
+=============================================================================
+SUPERSEDED DRAFT — NOT THE LIVE TERMS. DO NOT QUOTE OR RELY ON THIS FILE.
+The published document is the ONLY authoritative version:
+  src/app/[locale]/terms/TermsContent.tsx  ->  getstroyka.com/terms
+  src/app/[locale]/privacy/PrivacyContent.tsx -> getstroyka.com/privacy
+
+This file is an early draft kept for reference. It was ALREADY out of sync
+before 2026-08-27 (it reads "Last Updated: June 2026", still carries a
+"[DATE YOU LAUNCH]" placeholder, and its section titles differ from the
+published ones). It does not contain the Disclaimer of Warranties, class
+action waiver, jury trial waiver or limitations period added on 2026-08-27.
+
+Nothing in the codebase reads this file. If you need the current terms,
+read the page component.
+=============================================================================
+
 Stroyka — Privacy Policy
 Effective Date: [DATE YOU LAUNCH]
 Last Updated: June 2026
