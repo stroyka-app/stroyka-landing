@@ -316,7 +316,8 @@
         "6": "CSV export",
         "7": "Email support",
         "8": "Invoicing — email clients & auto payment reminders (Pro)",
-        "9": "File & photo attachments (Pro)"
+        "9": "File & photo attachments (Pro)",
+        "10": "Client book & CSV import (Pro)"
       }
     },
     "pro": {
@@ -327,12 +328,14 @@
       "features": {
         "0": "Everything in Starter",
         "1": "Unlimited workers",
-        "2": "Invoice clients by email — markup & custom line items",
-        "3": "File & photo attachments in tasks",
-        "4": "Excel export",
-        "5": "Automatic overdue payment reminders",
-        "6": "Priority support",
-        "7": "Dedicated onboarding call"
+        "2": "Client book — save a client once, reuse them on every invoice",
+        "3": "Import your clients from a CSV — bring your list from your old app",
+        "4": "Invoice clients by email — markup & custom line items",
+        "5": "File & photo attachments in tasks",
+        "6": "Excel export",
+        "7": "Automatic overdue payment reminders",
+        "8": "Priority support",
+        "9": "Dedicated onboarding call"
       }
     },
     "founding": {

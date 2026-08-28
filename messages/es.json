@@ -317,7 +317,8 @@
         "6": "Exportación CSV",
         "7": "Soporte por email",
         "8": "Facturación por email + recordatorios de pago automáticos (Pro)",
-        "9": "Archivos y fotos adjuntos (Pro)"
+        "9": "Archivos y fotos adjuntos (Pro)",
+        "10": "Libreta de clientes e importación CSV (Pro)"
       }
     },
     "pro": {
@@ -328,12 +329,14 @@
       "features": {
         "0": "Todo lo de Starter",
         "1": "Trabajadores ilimitados",
-        "2": "Facturas al cliente por email — margen y líneas personalizadas",
-        "3": "Archivos y fotos en tareas",
-        "4": "Exportación Excel",
-        "5": "Recordatorios automáticos de pagos vencidos",
-        "6": "Soporte prioritario",
-        "7": "Llamada de incorporación dedicada"
+        "2": "Libreta de clientes — guarda un cliente una vez y reutilízalo en cada factura",
+        "3": "Importa tus clientes desde un CSV — trae tu lista de tu app anterior",
+        "4": "Facturas al cliente por email — margen y líneas personalizadas",
+        "5": "Archivos y fotos en tareas",
+        "6": "Exportación Excel",
+        "7": "Recordatorios automáticos de pagos vencidos",
+        "8": "Soporte prioritario",
+        "9": "Llamada de incorporación dedicada"
       }
     },
     "founding": {
