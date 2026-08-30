@@ -20,6 +20,61 @@ const PRICE_MAP: Record<string, Record<string, string | undefined>> = {
   },
 };
 
+// Coupon IDs this endpoint will honour when one arrives in the URL.
+//
+// The `coupon` query param is attacker-controlled: it used to be passed
+// straight to Stripe, so ANY coupon ID a visitor knew or guessed would be
+// applied. Comma-separated env var, empty by default — with FOUNDING99
+// retired (2026-08-30) we intend to honour none, and adding a future one is
+// a config change rather than a deploy.
+//
+// This is not the only discount path: `allow_promotion_codes` stays on, so
+// customer-facing promo codes are still redeemable on Stripe's own page,
+// where Stripe validates them and shows the result before anyone pays.
+const ALLOWED_COUPONS = (process.env.STRIPE_ALLOWED_COUPONS ?? "")
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
+
+/**
+ * Resolve the URL `coupon` param to something safe to send to Stripe, or null.
+ *
+ * Never throws and never blocks checkout. A stale discount link must degrade
+ * to "no discount", never to "checkout is broken" — deleting FOUNDING99 on
+ * 2026-08-30 turned every old founding-member link into a hard 500, because
+ * the dead coupon went to Stripe unchecked and sessions.create threw. Links
+ * we posted publicly are still out there; they now just pay list price.
+ */
+async function resolveCoupon(
+  stripe: Stripe,
+  coupon: string | undefined
+): Promise<string | null> {
+  if (!coupon) return null;
+
+  if (!ALLOWED_COUPONS.includes(coupon)) {
+    console.warn(
+      `[create-checkout-session] ignoring coupon "${coupon}": not in STRIPE_ALLOWED_COUPONS`
+    );
+    return null;
+  }
+
+  try {
+    const found = await stripe.coupons.retrieve(coupon);
+    if (!found.valid) {
+      console.warn(
+        `[create-checkout-session] ignoring coupon "${coupon}": Stripe reports it invalid/expired`
+      );
+      return null;
+    }
+    return found.id;
+  } catch {
+    console.warn(
+      `[create-checkout-session] ignoring coupon "${coupon}": not found in Stripe`
+    );
+    return null;
+  }
+}
+
 const requestSchema = z.object({
   plan: z.enum(["starter", "pro"]),
   billing: z.enum(["monthly", "annual"]),
@@ -74,8 +129,18 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Customers created by THIS request, so the catch below can undo them.
+  // Nothing else cleans these up: the customer is created before the session,
+  // so any later failure used to strand a customer with no subscription.
+  let createdCustomerId: string | null = null;
+
   try {
     const stripe = getStripe();
+
+    // Resolve the coupon FIRST — before creating anything. An unknown or
+    // expired coupon is now dropped here, so it can neither fail the session
+    // nor strand a customer on the way.
+    const appliedCoupon = await resolveCoupon(stripe, coupon);
 
     // Reuse this email's existing Stripe customer instead of minting a new
     // one per attempt.
@@ -145,6 +210,7 @@ export async function POST(req: NextRequest) {
           plan,
         },
       });
+      createdCustomerId = customer.id;
     }
 
     const siteUrl =
@@ -170,10 +236,11 @@ export async function POST(req: NextRequest) {
       },
     };
 
-    // Apply coupon directly if passed (e.g. from founding member link).
+    // Only ever an allow-listed coupon Stripe has confirmed is still valid;
+    // resolveCoupon returned null for anything else and we sell at list price.
     // allow_promotion_codes and discounts[] are mutually exclusive in Stripe.
-    if (coupon) {
-      sessionParams.discounts = [{ coupon }];
+    if (appliedCoupon) {
+      sessionParams.discounts = [{ coupon: appliedCoupon }];
       delete sessionParams.allow_promotion_codes;
     }
 
@@ -184,6 +251,22 @@ export async function POST(req: NextRequest) {
     const message =
       error instanceof Error ? error.message : "Checkout session failed";
     console.error("[create-checkout-session]", message);
+
+    // Undo a customer this request created but never got to use. Without
+    // this, every failed attempt leaves a customer with no subscription —
+    // exactly the debris that made the 2026-08-08 billing incident hard to
+    // read. Best-effort: a cleanup failure must not mask the real error.
+    if (createdCustomerId) {
+      try {
+        await getStripe().customers.del(createdCustomerId);
+      } catch (cleanupErr) {
+        console.error(
+          `[create-checkout-session] could not remove orphaned customer ${createdCustomerId}:`,
+          cleanupErr
+        );
+      }
+    }
+
     return NextResponse.json(
       { error: "Failed to create checkout session" },
       { status: 500 }
