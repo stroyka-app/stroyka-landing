@@ -9,11 +9,11 @@ import {
   ArrowRight,
   ArrowLeft,
   Loader2,
-  ShieldCheck,
   Zap,
   Crown,
 } from "lucide-react";
 import Button from "@/components/ui/Button";
+import { PRICES } from "@/data/pricing";
 import TextReveal from "@/components/ui/TextReveal";
 import AmbientBackdrop from "@/components/ui/AmbientBackdrop";
 
@@ -30,10 +30,9 @@ interface FormData {
 
 /* ─── Price data ───────────────────────────────────────────────── */
 
-const PRICES = {
-  starter: { monthly: 149, annual: 1488 },
-  pro: { monthly: 249, annual: 2484 },
-} as const;
+// Imported, never re-declared. This file carried its own copy of the price
+// table until 2026-08-30, when repricing Starter 149 -> 29 in data/pricing.ts
+// would have left the checkout still quoting the old numbers.
 
 /* ─── Animations ───────────────────────────────────────────────── */
 
@@ -132,8 +131,6 @@ export default function GetStartedFlow() {
 
   /* ─── Derived ───────────────────────────────────────────────── */
 
-  const isFoundingMember = coupon === "FOUNDING99" && plan === "starter";
-
   // Translated feature lists (explicit keys match message file indices)
   const starterFeatures = [
     t("starter.features.0"),
@@ -164,12 +161,6 @@ export default function GetStartedFlow() {
     setSubmitError("");
     setDirection(1);
     setStep(2);
-  };
-
-  const claimFoundingSpot = () => {
-    setCoupon("FOUNDING99");
-    setBilling("monthly");
-    goToStep2("starter");
   };
 
   const goBack = () => {
@@ -500,32 +491,6 @@ export default function GetStartedFlow() {
                 </motion.div>
               </div>
 
-              {/* Founding member banner */}
-              <motion.div
-                initial={prefersReduced ? {} : { opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="max-w-3xl mx-auto mt-8"
-              >
-                <div className="card-stone border border-brand-sage/35 rounded-2xl p-6 text-center">
-                  <p className="text-sm font-heading font-semibold flex items-center justify-center gap-2 text-ink">
-                    <ShieldCheck size={16} className="text-brand-forest" />
-                    {t("founding.title")}
-                  </p>
-                  <p className="text-xs text-ink-soft mt-2 mb-4">
-                    {t("founding.body")}
-                  </p>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={claimFoundingSpot}
-                    className="text-brand-forest hover:text-brand-deep"
-                  >
-                    {t("founding.cta")}
-                    <ArrowRight size={14} />
-                  </Button>
-                </div>
-              </motion.div>
             </motion.div>
           )}
 
@@ -556,13 +521,7 @@ export default function GetStartedFlow() {
                       </p>
                     </div>
                     <div className="text-right">
-                      {isFoundingMember && billing === "monthly" ? (
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-sm text-ink-muted/75 line-through">$149</span>
-                          <span className="font-display text-3xl font-light text-ink tabular-nums">$99</span>
-                          <span className="text-ink-muted text-sm">{t("perMonthShort")}</span>
-                        </div>
-                      ) : billing === "annual" ? (
+                      {billing === "annual" ? (
                         <div>
                           <div className="flex items-baseline gap-2 justify-end">
                             <span className="font-display text-3xl font-light text-ink tabular-nums">
@@ -584,14 +543,6 @@ export default function GetStartedFlow() {
                       )}
                     </div>
                   </div>
-                  {isFoundingMember && (
-                    <div className="mt-3 pt-3 border-t border-ink/15">
-                      <span className="inline-flex items-center gap-1.5 text-xs font-heading font-semibold text-brand-forest">
-                        <ShieldCheck size={13} />
-                        {t("founding.badge")}
-                      </span>
-                    </div>
-                  )}
                 </div>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">

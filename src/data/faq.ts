@@ -38,7 +38,7 @@ export const QUESTIONS: readonly FaqItem[] = [
   },
   {
     q: "Is there a free trial?",
-    a: "Yes — start free for up to 5 workers, forever. Need more? Claim a founding spot at $99/mo locked for life, or book a 20-minute demo and we'll walk you through the app live with your own sample data.",
+    a: "Yes — the free plan is free forever, and it now includes job costing, P&L and invoicing, capped at 2 active jobs and 3 invoices a month. Starter is $29/month for unlimited jobs and invoices. Or book a 20-minute demo and we'll walk you through the app live with your own sample data.",
     meta: "Pricing",
   },
   {

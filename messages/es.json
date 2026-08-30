@@ -15,8 +15,7 @@
   },
   "hero": {
     "startFree": "Empieza gratis",
-    "foundingRate": "$99/mo tarifa fundadora",
-    "spotsLeft": "{count} lugares disponibles",
+    "jobCostingFree": "Control de costos incluido, gratis",
     "headline1": "Gestión",
     "headline2": "de obra,",
     "headline3": "para cuadrillas reales.",
@@ -34,8 +33,7 @@
     "sheetBudget": "Presupuesto",
     "sheetOnPlanLabel": "según lo planeado",
     "sheetOffline": "Sin conexión",
-    "sheetAnyPhone": "Sí — cualquier teléfono",
-    "spotsAllOpen": "Los {total} lugares fundadores disponibles"
+    "sheetAnyPhone": "Sí — cualquier teléfono"
   },
   "nav": {
     "features": "Funciones",
@@ -175,7 +173,7 @@
     "rows": {
       "0": {
         "label": "Precio mensual fijo",
-        "note": "$0 / $149 / $249. Sin cobro por trabajador."
+        "note": "$0 / $29 / $149. Sin cobro por trabajador."
       },
       "1": {
         "label": "Listo en una tarde"
@@ -260,7 +258,7 @@
       },
       "6": {
         "q": "¿Hay prueba gratis?",
-        "a": "Sí — empieza gratis para hasta 5 trabajadores, para siempre. ¿Necesitas más? Reclama un lugar fundador a $99/mes fijo de por vida, o agenda una demo de 20 minutos y te mostramos la app en vivo con datos de muestra.",
+        "a": "Sí — el plan gratis es gratis para siempre y ahora incluye control de costos, ganancia por obra y facturación, con un límite de 2 obras activas y 3 facturas al mes. Starter cuesta $29 al mes con obras y facturas ilimitadas. O agenda una demo de 20 minutos y te mostramos la app en vivo con tus propios datos de ejemplo.",
         "meta": "Precios"
       },
       "7": {
@@ -273,53 +271,49 @@
   "pricing": {
     "eyebrow": "Precios",
     "heading": "Mensualidad fija. Sin cobro por usuario.",
-    "subhead": "Por usuario = por trabajador. Nosotros no hacemos eso. Gratis para siempre para cuadrillas de hasta 5.",
+    "subhead": "Por asiento = por trabajador. Nosotros no hacemos eso. El control de costos y las facturas son gratis: solo pagas cuando llevas más de dos obras a la vez.",
     "monthly": "Mensual",
     "annual": "Anual",
     "annualSave": "−17%",
     "perMonth": "/ mes",
     "billedAnnually": "{total} facturado anualmente",
     "mostPopular": "Más popular",
-    "spotsClaimed": "Lugares tomados",
-    "spotsCounter": "{taken} de {total}",
-    "spotsRemaining": "{count} disponibles",
     "notSure": "¿No sabes qué plan te conviene? Agenda una demo de 20 minutos y te recomendamos el indicado para tu cuadrilla.",
     "free": {
       "name": "Gratis",
-      "description": "Para cuadrillas que están empezando",
+      "description": "Todo lo necesario para costear bien una obra",
       "priceForever": "para siempre",
-      "limit": "Hasta 5 trabajadores",
+      "limit": "2 obras activas · 3 facturas al mes",
       "cta": "Empieza gratis",
       "features": {
-        "0": "Hasta 5 trabajadores",
-        "1": "Reloj GPS con geocercas y partes diarios",
-        "2": "Materiales y combustible: un escaneo y todas las líneas juntas",
-        "3": "Contratos: montos acordados, pagado y saldo",
-        "4": "Tareas, mensajería y solicitudes de material",
-        "5": "Seguimiento de ganancias del trabajador",
-        "6": "Sincronización sin conexión",
-        "7": "Reportes PDF y CSV (Starter+)",
-        "8": "Costos de obra y P&L (Starter+)",
-        "9": "Alertas de horas extra (Starter+)"
+        "0": "Costos y ganancia — lo que de verdad costó cada obra",
+        "1": "Factura a tus clientes por correo — 3 al mes",
+        "2": "Hasta 2 obras activas a la vez",
+        "3": "Reloj checador con GPS, geocercas y bitácoras",
+        "4": "Materiales y combustible — escanea un recibo y se agrupa cada línea",
+        "5": "Contratos, tareas, mensajes y pedidos de material",
+        "6": "Sincroniza sin internet — hasta 5 trabajadores",
+        "7": "Obras y facturas ilimitadas (Starter+)",
+        "8": "Reportes PDF y CSV (Starter+)",
+        "9": "Exportar a Excel y archivos adjuntos (Pro)"
       }
     },
     "starter": {
       "name": "Starter",
-      "description": "Para cuadrillas en crecimiento, hasta 15",
+      "description": "Para contratistas con varias obras a la vez",
       "limit": "Hasta 15 trabajadores",
       "cta": "Obtener Starter",
       "features": {
-        "0": "Todo lo de Gratis",
-        "1": "Hasta 15 trabajadores",
-        "2": "Tarifas por hora por trabajador",
-        "3": "Alertas de horas extra (32h y 40h)",
-        "4": "Reportes PDF — Parte de horas, P&L, Materiales, Partes diarios",
-        "5": "Costos de obra y panel P&L",
-        "6": "Exportación CSV",
-        "7": "Soporte por email",
-        "8": "Facturación por email + recordatorios de pago automáticos (Pro)",
-        "9": "Archivos y fotos adjuntos (Pro)",
-        "10": "Libreta de clientes e importación CSV (Pro)"
+        "0": "Todo lo del plan gratis",
+        "1": "Obras activas ilimitadas",
+        "2": "Facturas ilimitadas",
+        "3": "Hasta 15 trabajadores",
+        "4": "Tarifa por hora por trabajador",
+        "5": "Alertas de horas extra (32 h y 40 h)",
+        "6": "Reportes PDF — horas, ganancia, materiales y bitácoras",
+        "7": "Exportar a CSV y soporte por correo",
+        "8": "Fotos y archivos adjuntos (Pro)",
+        "9": "Directorio de clientes e importación CSV (Pro)"
       }
     },
     "pro": {
@@ -330,26 +324,14 @@
       "features": {
         "0": "Todo lo de Starter",
         "1": "Trabajadores ilimitados",
-        "2": "Libreta de clientes — guarda un cliente una vez y reutilízalo en cada factura",
-        "3": "Importa tus clientes desde un CSV — trae tu lista de tu app anterior",
-        "4": "Facturas al cliente por email — margen y líneas personalizadas",
-        "5": "Archivos y fotos en tareas",
-        "6": "Exportación Excel",
-        "7": "Recordatorios automáticos de pagos vencidos",
-        "8": "Soporte prioritario",
-        "9": "Llamada de incorporación dedicada"
+        "2": "Directorio de clientes — guarda un cliente y úsalo en cada factura",
+        "3": "Importa tus clientes desde un CSV",
+        "4": "Fotos y archivos adjuntos en tareas",
+        "5": "Exportar a Excel",
+        "6": "Recordatorios automáticos de pagos vencidos",
+        "7": "Soporte prioritario y llamada de configuración"
       }
-    },
-    "founding": {
-      "title": "Miembro Fundador — limitado",
-      "pricePart1": "$99 al mes.",
-      "pricePart2": "Bloqueado para siempre.",
-      "body": "Las primeras 20 empresas en suscribirse fijan $99/mes de por vida — Starter con 34% de descuento, para siempre. Sin importar cuánto suba la tarifa pública.",
-      "cta": "Reclamar un lugar fundador →"
-    },
-    "spotsOpenLabel": "Lugares fundadores",
-    "spotsOpenSuffix": "disponibles",
-    "spotsBeFirst": "Sé la primera cuadrilla"
+    }
   },
   "integrations": {
     "heading": "Envía tus números a donde necesitan ir.",
@@ -415,7 +397,7 @@
     "startFree": "Empieza gratis",
     "bookDemo": "Agenda una demo →",
     "freeUpTo5": "Gratis para cuadrillas de hasta 5",
-    "foundingRate": "$99/mo tarifa fundadora",
+    "jobCostingFree": "Control de costos incluido, gratis",
     "cancelAnytime": "Cancela cuando quieras"
   },
   "founderNote": {
@@ -624,12 +606,6 @@
         "5": "Soporte prioritario",
         "6": "Llamada de incorporación dedicada"
       }
-    },
-    "founding": {
-      "title": "Tarifa de Miembro Fundador — $99/mes, fija para siempre",
-      "body": "Las primeras 20 empresas fijan Starter a $99/mes de por vida. $50 de ahorro cada mes, para siempre.",
-      "cta": "Reclamar un lugar fundador",
-      "badge": "Miembro Fundador — $50 de ahorro cada mes, para siempre"
     },
     "form": {
       "nameLbl": "Tu nombre *",

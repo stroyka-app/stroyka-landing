@@ -133,7 +133,7 @@ export default function CTABanner() {
           <p className="mt-20 pt-10 border-t border-bone/15 font-mono text-[11px] tracking-[0.22em] uppercase text-bone/55">
             {t("freeUpTo5")}
             <span className="text-bone/25 mx-3">/</span>
-            {t("foundingRate")}
+            {t("jobCostingFree")}
             <span className="text-bone/25 mx-3">/</span>
             {t("cancelAnytime")}
           </p>

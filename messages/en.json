@@ -14,8 +14,7 @@
   },
   "hero": {
     "startFree": "Start free",
-    "foundingRate": "$99/mo founding rate",
-    "spotsLeft": "{count} spots left",
+    "jobCostingFree": "Job costing included, free",
     "headline1": "Construction",
     "headline2": "management,",
     "headline3": "for real crews.",
@@ -33,8 +32,7 @@
     "sheetBudget": "Budget",
     "sheetOnPlanLabel": "on plan",
     "sheetOffline": "Offline",
-    "sheetAnyPhone": "Yes — any phone",
-    "spotsAllOpen": "All {total} founding spots open"
+    "sheetAnyPhone": "Yes — any phone"
   },
   "nav": {
     "features": "Features",
@@ -174,7 +172,7 @@
     "rows": {
       "0": {
         "label": "Flat monthly pricing",
-        "note": "$0 / $149 / $249. No per-worker fees."
+        "note": "$0 / $29 / $149. No per-worker fees."
       },
       "1": {
         "label": "Setup in under an afternoon"
@@ -259,7 +257,7 @@
       },
       "6": {
         "q": "Is there a free trial?",
-        "a": "Yes — start free for up to 5 workers, forever. Need more? Claim a founding spot at $99/mo locked for life, or book a 20-minute demo and we’ll walk you through the app live with your own sample data.",
+        "a": "Yes — the free plan is free forever, and it now includes job costing, P&L and invoicing, capped at 2 active jobs and 3 invoices a month. Starter is $29/month for unlimited jobs and invoices. Or book a 20-minute demo and we’ll walk you through the app live with your own sample data.",
         "meta": "Pricing"
       },
       "7": {
@@ -272,53 +270,49 @@
   "pricing": {
     "eyebrow": "Pricing",
     "heading": "Flat monthly. No per-seat games.",
-    "subhead": "Per-seat = per-worker. We don’t do that. Free forever for crews up to 5.",
+    "subhead": "Per-seat = per-worker. We don’t do that. Job costing and invoicing are free — you only pay once you’re running more than two jobs at a time.",
     "monthly": "Monthly",
     "annual": "Annual",
     "annualSave": "−17%",
     "perMonth": "/ month",
     "billedAnnually": "{total} billed annually",
     "mostPopular": "Most popular",
-    "spotsClaimed": "Spots claimed",
-    "spotsCounter": "{taken} of {total}",
-    "spotsRemaining": "{count} remaining",
     "notSure": "Not sure which plan fits? Book a 20-minute demo and we’ll recommend the right one for your crew size.",
     "free": {
       "name": "Free",
-      "description": "For crews just getting started",
+      "description": "Everything you need to price one job right",
       "priceForever": "forever",
-      "limit": "Up to 5 workers",
+      "limit": "2 active jobs · 3 invoices a month",
       "cta": "Start free",
       "features": {
-        "0": "Up to 5 workers",
-        "1": "GPS time clock, geofences & daily logs",
-        "2": "Materials & fuel — scan a receipt once, every line grouped",
-        "3": "Contracts — agreed costs with paid & owed balances",
-        "4": "Tasks, messaging & supply requests",
-        "5": "Worker earnings tracker",
-        "6": "Offline-first sync",
-        "7": "PDF & CSV reports (Starter+)",
-        "8": "Job costing & P&L (Starter+)",
-        "9": "Overtime alerts (Starter+)"
+        "0": "Job costing & P&L — what every job really cost",
+        "1": "Invoice clients by email — 3 per month",
+        "2": "Up to 2 active jobs at a time",
+        "3": "GPS time clock, geofences & daily logs",
+        "4": "Materials & fuel — scan a receipt once, every line grouped",
+        "5": "Contracts, tasks, messaging & supply requests",
+        "6": "Offline-first sync — up to 5 workers",
+        "7": "Unlimited jobs & invoices (Starter+)",
+        "8": "PDF & CSV reports (Starter+)",
+        "9": "Excel export & file attachments (Pro)"
       }
     },
     "starter": {
       "name": "Starter",
-      "description": "For growing crews up to 15",
+      "description": "For contractors running several jobs at once",
       "limit": "Up to 15 workers",
       "cta": "Get Starter",
       "features": {
         "0": "Everything in Free",
-        "1": "Up to 15 workers",
-        "2": "Per-worker hourly rates",
-        "3": "Overtime alerts (32h & 40h warnings)",
-        "4": "PDF reports — Timesheet, P&L, Materials, Daily logs",
-        "5": "Job costing & P&L dashboard",
-        "6": "CSV export",
-        "7": "Email support",
-        "8": "Invoicing — email clients & auto payment reminders (Pro)",
-        "9": "File & photo attachments (Pro)",
-        "10": "Client book & CSV import (Pro)"
+        "1": "Unlimited active jobs",
+        "2": "Unlimited invoices",
+        "3": "Up to 15 workers",
+        "4": "Per-worker hourly rates",
+        "5": "Overtime alerts (32h & 40h warnings)",
+        "6": "PDF reports — Timesheet, P&L, Materials, Daily logs",
+        "7": "CSV export & email support",
+        "8": "File & photo attachments (Pro)",
+        "9": "Client book & CSV import (Pro)"
       }
     },
     "pro": {
@@ -330,25 +324,13 @@
         "0": "Everything in Starter",
         "1": "Unlimited workers",
         "2": "Client book — save a client once, reuse them on every invoice",
-        "3": "Import your clients from a CSV — bring your list from your old app",
-        "4": "Invoice clients by email — markup & custom line items",
-        "5": "File & photo attachments in tasks",
-        "6": "Excel export",
-        "7": "Automatic overdue payment reminders",
-        "8": "Priority support",
-        "9": "Dedicated onboarding call"
+        "3": "Import your clients from a CSV",
+        "4": "File & photo attachments in tasks",
+        "5": "Excel export",
+        "6": "Automatic overdue payment reminders",
+        "7": "Priority support & dedicated onboarding call"
       }
-    },
-    "founding": {
-      "title": "Founding Member — limited",
-      "pricePart1": "$99 a month.",
-      "pricePart2": "Locked forever.",
-      "body": "The first 20 companies to subscribe lock in $99/month for life — Starter at 34% off, forever. No matter what the public rate becomes.",
-      "cta": "Claim a Founding Spot →"
-    },
-    "spotsOpenLabel": "Founding spots",
-    "spotsOpenSuffix": "open",
-    "spotsBeFirst": "Be the first crew in"
+    }
   },
   "integrations": {
     "heading": "Send your numbers where they need to go.",
@@ -414,7 +396,7 @@
     "startFree": "Start free",
     "bookDemo": "Book a demo →",
     "freeUpTo5": "Free for crews up to 5",
-    "foundingRate": "$99/mo founding rate",
+    "jobCostingFree": "Job costing included, free",
     "cancelAnytime": "Cancel anytime"
   },
   "founderNote": {
@@ -622,12 +604,6 @@
         "5": "Priority support",
         "6": "Dedicated onboarding call"
       }
-    },
-    "founding": {
-      "title": "Founding Member Rate — $99/month, locked forever",
-      "body": "The first 20 companies lock in Starter at $99/month for life. $50 off every month, forever.",
-      "cta": "Claim a Founding Spot",
-      "badge": "Founding Member — $50 off every month, forever"
     },
     "form": {
       "nameLbl": "Your name *",
