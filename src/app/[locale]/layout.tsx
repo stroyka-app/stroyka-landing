@@ -11,6 +11,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import ScrollProgress from "@/components/ScrollProgress";
 import StructuredData from "@/components/seo/StructuredData";
 import MetaPixel from "@/components/MetaPixel";
+import PostHogAnalytics from "@/components/PostHogAnalytics";
 import SafariBottomTint from "@/components/SafariBottomTint";
 import { routing } from "@/i18n/routing";
 
@@ -83,6 +84,7 @@ export default async function LocaleLayout({
           <Analytics />
           <SpeedInsights />
           <MetaPixel />
+          <PostHogAnalytics />
         </NextIntlClientProvider>
         </div>
       </body>

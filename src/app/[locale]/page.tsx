@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import HomeClient from "@/components/HomeClient";
+import StructuredData from "@/components/seo/StructuredData";
 import { localeAlternates, canonicalFor, ogLocale } from "@/i18n/alternates";
 
 export async function generateMetadata({
@@ -37,5 +38,12 @@ export async function generateMetadata({
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <HomeClient />;
+  return (
+    <>
+      {/* SoftwareApplication + FAQPage belong to THIS page, not the layout —
+          the FAQ they describe is only visible here. See StructuredData. */}
+      <StructuredData pageSpecific />
+      <HomeClient />
+    </>
+  );
 }

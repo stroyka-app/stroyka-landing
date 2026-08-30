@@ -42,7 +42,25 @@ const TIER_MSG_KEY: Record<PricingTier["name"], "free" | "starter" | "pro"> = {
   Pro: "pro",
 };
 
-export default async function StructuredData() {
+/**
+ * [pageSpecific] adds the schemas that describe THIS page rather than the
+ * site: SoftwareApplication (with its price offers) and FAQPage.
+ *
+ * It exists because this component was mounted in the locale layout, so both
+ * of those emitted on /demo, /get-started, /privacy and /terms too. Google's
+ * structured-data policy requires FAQ markup to correspond to Q&A that is
+ * actually visible on the page carrying it, and none of those pages shows an
+ * FAQ. That is a policy violation that can cost rich-result eligibility for
+ * the whole site, not just the offending URL.
+ *
+ * Organization and WebSite stay in the layout: they describe the site and are
+ * true on every page of it.
+ */
+export default async function StructuredData({
+  pageSpecific = false,
+}: {
+  pageSpecific?: boolean;
+} = {}) {
   const locale = await getLocale();
   const tFaq = await getTranslations("faq");
   const tPricing = await getTranslations("pricing");
@@ -104,8 +122,12 @@ export default async function StructuredData() {
     <>
       <JsonLdScript schema={organization} />
       <JsonLdScript schema={website} />
-      <JsonLdScript schema={softwareApplication} />
-      <JsonLdScript schema={faqPage} />
+      {pageSpecific && (
+        <>
+          <JsonLdScript schema={softwareApplication} />
+          <JsonLdScript schema={faqPage} />
+        </>
+      )}
     </>
   );
 }

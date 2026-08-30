@@ -10,6 +10,21 @@ import { IOS_APP_URL, ANDROID_APP_URL } from "@/lib/appLinks";
 type NavKey = "features" | "howItWorks" | "pricing" | "faq";
 type FooterCompanyKey = "requestDemo" | "privacy" | "terms";
 
+/**
+ * Locale roots, as real hrefs a crawler can follow.
+ *
+ * `localePrefix` is 'as-needed' with `en` as default (src/i18n/routing.ts),
+ * so English is "/" and never "/en" — a /en link would 307 and waste the
+ * crawl. Labels stay in each language's own words rather than being
+ * translated, which is the convention every multilingual site uses and the
+ * only version a speaker of that language can recognise.
+ */
+const LOCALE_ROOTS = [
+  { locale: "en", href: "/", label: "English" },
+  { locale: "es", href: "/es", label: "Espa\u00f1ol" },
+  { locale: "ru", href: "/ru", label: "\u0420\u0443\u0441\u0441\u043a\u0438\u0439" },
+] as const;
+
 const PRODUCT_LINKS: Array<{ key: NavKey; hash: string }> = [
   { key: "features", hash: "features" },
   { key: "howItWorks", hash: "how-it-works" },
@@ -155,6 +170,27 @@ export default function Footer() {
           <p>&copy; {new Date().getFullYear()} Stroyka — {t("rights")}</p>
           <div className="flex items-center gap-5">
             <LanguageSwitcher placement="top" align="left" />
+            {/*
+              Crawlable locale links. The switcher above renders its options
+              only while OPEN, so before this the ONLY inbound references to
+              /es and /ru anywhere on the site were the sitemap and hreflang —
+              no internal link equity reached them and a crawler could not
+              walk to them. Plain <a>, not next-intl <Link>, because these are
+              deliberately absolute per-locale roots rather than "this page in
+              another locale"; hreflang already states the per-page mapping.
+            */}
+            <nav aria-label={t("languagesNavLabel")} className="hidden gap-3 sm:flex">
+              {LOCALE_ROOTS.map(({ locale, href, label }) => (
+                <a
+                  key={locale}
+                  href={href}
+                  hrefLang={locale}
+                  className="transition-colors hover:text-ink"
+                >
+                  {label}
+                </a>
+              ))}
+            </nav>
             <p className="hidden sm:block">{t("madeFor")}</p>
           </div>
         </div>

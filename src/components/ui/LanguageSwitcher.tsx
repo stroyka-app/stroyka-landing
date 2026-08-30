@@ -43,7 +43,22 @@ export default function LanguageSwitcher({
 
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+
+  /**
+   * The URL this option points at, so the switcher renders REAL anchors.
+   *
+   * It was `<button>` + router.replace(), which meant `/es` and `/ru` had
+   * zero inbound `<a href>` anywhere on the site: they were discoverable only
+   * via the sitemap and hreflang, and received no internal link equity at
+   * all. A crawler could not walk to them.
+   *
+   * `localePrefix` is 'as-needed' with `en` as default, so English is
+   * unprefixed — see src/i18n/routing.ts. Keep this in step with that
+   * setting; hardcoding a prefix for `en` would emit /en URLs that redirect.
+   */
+  const hrefFor = (locale: string) =>
+    locale === routing.defaultLocale ? pathname : `/${locale}${pathname}`;
 
   const switchTo = (locale: string) => {
     setOpen(false);
@@ -104,16 +119,25 @@ export default function LanguageSwitcher({
         const isActive = loc === active;
         return (
           <li key={loc} role="none">
-            <motion.button
+            <motion.a
               ref={(el) => {
                 itemRefs.current[i] = el;
               }}
-              type="button"
+              href={hrefFor(loc)}
+              // Real href for crawlers; the click is still handled in-app so
+              // the user keeps the soft navigation and scroll position.
+              // Modified clicks (new tab, download) fall through to the
+              // browser, which is the whole point of using an anchor.
+              onClick={(e) => {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                e.preventDefault();
+                if (isPending) return;
+                switchTo(loc);
+              }}
               role="menuitemradio"
               aria-checked={isActive}
+              aria-disabled={isPending}
               aria-label={LABELS[loc].name}
-              disabled={isPending}
-              onClick={() => switchTo(loc)}
               onKeyDown={(e) => onMenuKey(e, i)}
               initial={reduce || !open ? false : { opacity: 0, y: placement === "top" ? 4 : -4 }}
               animate={{ opacity: 1, y: 0 }}
@@ -131,7 +155,7 @@ export default function LanguageSwitcher({
                 <span className="font-body text-[13.5px]">{LABELS[loc].name}</span>
               </span>
               {isActive && <Check size={14} className="shrink-0 text-brand-sage-bright" aria-hidden />}
-            </motion.button>
+            </motion.a>
           </li>
         );
       })}
