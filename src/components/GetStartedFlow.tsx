@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence, LayoutGroup, useReducedMotion } from "framer-motion";
 import {
   Check,
@@ -91,6 +91,9 @@ function AnnualPriceDisplay({ plan, tone = "light" }: { plan: Plan; tone?: "ligh
 
 export default function GetStartedFlow() {
   const t = useTranslations("getStarted");
+  // The language this buyer chose on OUR site. Sent to the checkout route so
+  // Stripe bills and receipts them in it — see the note there.
+  const locale = useLocale();
   const searchParams = useSearchParams();
   const prefersReduced = useReducedMotion();
 
@@ -214,6 +217,7 @@ export default function GetStartedFlow() {
           email: form.email,
           name: form.name,
           companyName: form.companyName,
+          locale,
           ...(coupon && { coupon }),
         }),
       });

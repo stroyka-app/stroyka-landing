@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { z } from "zod";
 import { checkoutRatelimit } from "@/lib/checkout-ratelimit";
+import { routing } from "@/i18n/routing";
 
 function getStripe() {
   const key = process.env.STRIPE_SECRET_KEY;
@@ -82,6 +83,13 @@ const requestSchema = z.object({
   name: z.string().min(1).max(200),
   companyName: z.string().min(1).max(200),
   coupon: z.string().max(100).optional(),
+  // The locale the buyer was reading when they decided to pay. Optional so an
+  // older cached client that does not send it still checks out fine.
+  //
+  // Derived from routing.locales, never re-typed here: a hardcoded copy would
+  // silently 400 the WHOLE checkout the day a fourth locale is added, which is
+  // the same drift that left GetStartedFlow quoting stale prices.
+  locale: z.enum(routing.locales).optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -119,7 +127,8 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { plan, billing, email, name, companyName, coupon } = parsed.data;
+  const { plan, billing, email, name, companyName, coupon, locale } =
+    parsed.data;
 
   const priceId = PRICE_MAP[plan]?.[billing];
   if (!priceId) {
@@ -204,6 +213,12 @@ export async function POST(req: NextRequest) {
       customer = await stripe.customers.create({
         email,
         name,
+        // Stripe picks the language for receipts and invoices from
+        // preferred_locales, and only falls back to the Dashboard's "Default
+        // language" when it is absent. We never set it, so EVERY customer got
+        // English — including the Spanish-speaking ones the site is
+        // translated for. Set from the locale they were actually reading.
+        ...(locale ? { preferred_locales: [locale] } : {}),
         metadata: {
           source: "web_signup",
           company_name: companyName,
@@ -219,6 +234,12 @@ export async function POST(req: NextRequest) {
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
       customer: customer.id,
       mode: "subscription",
+      // Without this Checkout defaults to `auto`, i.e. the BROWSER's language
+      // — so someone who deliberately switched our site to Spanish but runs an
+      // English phone would hand their card over on an English page. The
+      // language they chose is the better signal than the one their OS shipped
+      // with.
+      ...(locale ? { locale } : {}),
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${siteUrl}/get-started/success?session_id={CHECKOUT_SESSION_ID}&plan=${plan}`,
       cancel_url: `${siteUrl}/get-started/cancel`,
