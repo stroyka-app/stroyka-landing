@@ -62,12 +62,6 @@ function WordLine({
   return inline ? <>{content}</> : <span className="block">{content}</span>;
 }
 
-import {
-  FOUNDING_NONE_CLAIMED,
-  FOUNDING_SPOTS_REMAINING,
-  FOUNDING_SPOTS_TOTAL,
-} from "@/lib/founding";
-
 /**
  * Hero — continuous warm-stone gradient from deepest earth at the top
  * down to mid stone at the bottom (where it will seamlessly meet the
@@ -198,16 +192,7 @@ export default function Hero() {
               <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage-bright opacity-60 animate-ping" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage-bright" />
             </span>
-            <span>{t("foundingRate")}</span>
-            <span className="relative inline-flex w-1.5 h-1.5">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage-bright opacity-60 animate-ping" />
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage-bright" />
-            </span>
-            <span className="text-brand-amber-bright">
-              {FOUNDING_NONE_CLAIMED
-                ? t("spotsAllOpen", { total: FOUNDING_SPOTS_TOTAL })
-                : t("spotsLeft", { count: FOUNDING_SPOTS_REMAINING })}
-            </span>
+            <span>{t("jobCostingFree")}</span>
           </p>
         </FadeIn>
 

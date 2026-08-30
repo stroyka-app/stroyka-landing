@@ -3,7 +3,7 @@
 import { useState, type CSSProperties } from "react";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence, LayoutGroup, useReducedMotion } from "framer-motion";
-import { Check, X, ShieldCheck, Zap, Crown, Download } from "lucide-react";
+import { Check, X, Zap, Crown, Download } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
@@ -11,17 +11,10 @@ import Button from "@/components/ui/Button";
 import { useAttributedUrl } from "@/lib/hooks/useAttributedUrl";
 import { SIGNUP_URL } from "@/lib/appLinks";
 import { useCursorGlow } from "@/lib/hooks/useCursorGlow";
-import { useCountUp } from "@/lib/hooks/useCountUp";
 import { PRICES } from "@/data/pricing";
 
 type Billing = "monthly" | "annual";
 
-import {
-  FOUNDING_NONE_CLAIMED,
-  FOUNDING_SPOTS_REMAINING,
-  FOUNDING_SPOTS_TAKEN,
-  FOUNDING_SPOTS_TOTAL,
-} from "@/lib/founding";
 
 interface Feature {
   label: string;
@@ -60,14 +53,10 @@ export default function Pricing() {
   const freeGlow = useCursorGlow();
   const starterGlow = useCursorGlow();
   const proGlow = useCursorGlow();
-  const { ref: countRef, value: spotsCount } = useCountUp<HTMLSpanElement>({
-    to: FOUNDING_SPOTS_TAKEN,
-    duration: 1600,
-  });
-
-  // 0-6 are what Free actually gets; 7-9 are the Starter+ teasers and must
-  // stay last. Verified against the app's real plan gates on 2026-08-22 —
-  // contracts and supply requests are ungated, so they belong here.
+  // 0-6 are what Free actually gets; 7-9 are the Starter+/Pro teasers and
+  // must stay last. Re-verified against the app's plan gates on 2026-08-30,
+  // when job costing and invoicing moved INTO free behind volume caps —
+  // these lists and lib/features/auth/auth_providers.dart must agree.
   const FREE_FEATURES: Feature[] = [
     { label: t("free.features.0"), included: true },
     { label: t("free.features.1"), included: true },
@@ -366,84 +355,6 @@ export default function Pricing() {
             </motion.div>
           </FadeIn>
         </div>
-
-        {/* Founding Member band */}
-        <FadeIn delay={0.3}>
-          <div className="relative overflow-hidden rounded-3xl mb-10 max-w-5xl border border-brand-sage/25 bg-[linear-gradient(135deg,#2B3D30_0%,#34453A_50%,#2B3D30_100%)] p-10 md:p-14">
-            <span
-              aria-hidden
-              className="pointer-events-none absolute -top-[30%] -right-[10%] w-[500px] h-[500px] rounded-full blur-[80px] bg-brand-sage-bright/18"
-            />
-            <div className="grid md:grid-cols-[1.4fr_1fr] gap-10 items-center">
-            <div className="relative">
-              <p className="font-mono text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-sage-bright mb-5 flex items-center gap-2">
-                <ShieldCheck size={14} className="text-brand-sage-bright" />
-                {t("founding.title")}
-              </p>
-              <h3 className="font-display text-3xl md:text-5xl leading-[1.02] text-bone mb-5">
-                {t("founding.pricePart1")} <span className="italic">{t("founding.pricePart2")}</span>
-              </h3>
-              <p className="text-[15px] text-bone/75 mb-7 leading-relaxed max-w-lg">
-                {t("founding.body")}
-              </p>
-              <Button variant="invert" href="/get-started?plan=starter&coupon=FOUNDING99" className="text-center">
-                {t("founding.cta")}
-              </Button>
-            </div>
-
-            <div className="relative z-[1] rounded-2xl p-6 bg-bone/5 border border-bone/15 backdrop-blur-sm">
-              <div className="flex justify-between items-baseline mb-3 font-mono">
-                <span className="text-[11px] tracking-[0.18em] uppercase text-bone/65">
-                  {FOUNDING_NONE_CLAIMED ? t("spotsOpenLabel") : t("spotsClaimed")}
-                </span>
-                <span className="font-display text-3xl text-bone tabular-nums">
-                  {FOUNDING_NONE_CLAIMED ? (
-                    <>
-                      {FOUNDING_SPOTS_TOTAL}
-                      <span className="text-[15px] text-bone/55 font-mono">
-                        {" "}{t("spotsOpenSuffix")}
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <span ref={countRef}>{spotsCount}</span>
-                      <span className="text-[15px] text-bone/55 font-mono">
-                        {" "}/{" "}{FOUNDING_SPOTS_TOTAL}
-                      </span>
-                    </>
-                  )}
-                </span>
-              </div>
-              {/* Progress bar only reads as progress once there IS progress.
-                  At zero it renders as an empty trough that looks broken, so
-                  the invitation line carries the block instead. */}
-              {!FOUNDING_NONE_CLAIMED && (
-                <div className="h-[3px] rounded bg-bone/12 overflow-hidden mb-4 relative">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    whileInView={{
-                      width: `${(FOUNDING_SPOTS_TAKEN / FOUNDING_SPOTS_TOTAL) * 100}%`,
-                    }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
-                    className="h-full rounded bg-gradient-to-r from-brand-sage to-brand-sage-bright"
-                  />
-                </div>
-              )}
-              <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-bone/55">
-                {FOUNDING_NONE_CLAIMED ? (
-                  t("spotsBeFirst")
-                ) : (
-                  <>
-                    {t("spotsCounter", { taken: FOUNDING_SPOTS_TAKEN, total: FOUNDING_SPOTS_TOTAL })}
-                    {FOUNDING_SPOTS_REMAINING > 0 && ` · ${t("spotsRemaining", { count: FOUNDING_SPOTS_REMAINING })}`}
-                  </>
-                )}
-              </p>
-            </div>
-            </div>
-          </div>
-        </FadeIn>
 
         <FadeIn delay={0.4}>
           <p className="font-mono text-[12px] tracking-[0.1em] uppercase text-ink/55 max-w-xl">
