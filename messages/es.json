@@ -394,11 +394,11 @@
     "run": "Dirige",
     "cleaner": "una obra",
     "jobsite": "más limpia.",
-    "subhead": "Empieza gratis con hasta cinco trabajadores, o agenda una demo de veinte minutos y te mostramos Stroyka en vivo. Sin tarjeta de crédito en ningún caso.",
+    "subhead": "Hasta cinco trabajadores en el plan gratis, o agenda una demo de veinte minutos y te mostramos Stroyka en vivo. Sin tarjeta de crédito en ningún caso.",
     "startFree": "Empieza gratis",
     "bookDemo": "Agenda una demo →",
-    "freeUpTo5": "Gratis para cuadrillas de hasta 5",
-    "jobCostingFree": "Control de costos incluido, gratis",
+    "freeUpTo5": "$0 para hasta 5 trabajadores",
+    "jobCostingFree": "Control de costos y facturación incluidos",
     "cancelAnytime": "Cancela cuando quieras"
   },
   "founderNote": {

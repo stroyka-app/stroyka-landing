@@ -393,11 +393,11 @@
     "run": "Run a",
     "cleaner": "cleaner",
     "jobsite": "jobsite.",
-    "subhead": "Start free for up to five workers, or book a twenty-minute demo and we’ll walk you through Stroyka live. No credit card either way.",
+    "subhead": "Up to five workers on the free plan, or book a twenty-minute demo and we’ll walk you through Stroyka live. No credit card either way.",
     "startFree": "Start free",
     "bookDemo": "Book a demo →",
-    "freeUpTo5": "Free for crews up to 5",
-    "jobCostingFree": "Job costing included, free",
+    "freeUpTo5": "$0 for up to 5 workers",
+    "jobCostingFree": "Job costing & invoicing included",
     "cancelAnytime": "Cancel anytime"
   },
   "founderNote": {
