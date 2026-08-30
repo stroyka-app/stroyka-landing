@@ -15,12 +15,13 @@
   },
   "hero": {
     "startFree": "Empieza gratis",
-    "jobCostingFree": "Control de costos incluido, gratis",
+    "ladderStart": "para empezar",
+    "ladderNext": "cuando crezcas",
     "headline1": "Gestión",
     "headline2": "de obra,",
     "headline3": "para cuadrillas reales.",
-    "subhead": "Una herramienta para toda la cuadrilla — jefe y trabajadores. Entrada y salida, costos de obra, facturación. Funciona en cualquier teléfono, incluso sin señal.",
-    "specCrew": "Para cuadrillas de 5–25",
+    "subhead": "Descubre cuánto cuesta de verdad cada obra — mano de obra, materiales, combustible — mientras sigue en marcha. Funciona en cualquier teléfono, incluso sin señal.",
+    "specCrew": "Solo o una cuadrilla de 25",
     "specInstant": "Funciona desde el primer día",
     "bookDemo": "Agenda una demo →",
     "sheetTitle": "Hoja de proyecto",
@@ -585,12 +586,12 @@
       "description": "Para cuadrillas en crecimiento, hasta 15",
       "workerLimit": "Hasta 15 trabajadores",
       "features": {
-        "0": "Todo lo de Gratis",
-        "1": "Hasta 15 trabajadores",
-        "2": "Reportes PDF (Parte de horas, P&L, Materiales, Partes diarios)",
-        "3": "Costos de obra y panel P&L",
-        "4": "Exportación CSV",
-        "5": "Soporte por email"
+        "0": "Todo lo del plan gratis",
+        "1": "Obras activas ilimitadas",
+        "2": "Facturas ilimitadas",
+        "3": "Hasta 15 trabajadores",
+        "4": "Tarifa por trabajador y alertas de horas extra",
+        "5": "Reportes PDF, exportar a CSV y soporte por correo"
       }
     },
     "pro": {
@@ -600,11 +601,11 @@
       "features": {
         "0": "Todo lo de Starter",
         "1": "Trabajadores ilimitados",
-        "2": "Exportación Excel",
-        "3": "Fotos y archivos adjuntos en mensajes de tareas",
-        "4": "Facturas por email + recordatorios de pago automáticos",
-        "5": "Soporte prioritario",
-        "6": "Llamada de incorporación dedicada"
+        "2": "Directorio de clientes — guarda un cliente y úsalo en cada factura",
+        "3": "Importa tus clientes desde un CSV",
+        "4": "Recordatorios automáticos de pagos vencidos",
+        "5": "Exportar a Excel y archivos adjuntos",
+        "6": "Soporte prioritario y llamada de configuración"
       }
     },
     "form": {

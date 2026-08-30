@@ -8,6 +8,7 @@ import Button from "@/components/ui/Button";
 import { useAttributedUrl } from "@/lib/hooks/useAttributedUrl";
 import { SIGNUP_URL } from "@/lib/appLinks";
 import { Counter, Sparkline } from "@/components/ui/LiveSheet";
+import { PRICES } from "@/data/pricing";
 
 /**
  * One line of word-mask reveals. Each word sits inside a clip box padded
@@ -171,14 +172,20 @@ export default function Hero() {
         className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 pt-24 pb-28 lg:pt-32 lg:pb-40 will-change-transform"
       >
         <FadeIn delay={0} triggerOnMount>
-          {/* Announcement eyebrow. Was three opacity-tiered text runs
-              ("80 / 30 / 100 / 30 / 80") over bare video — the light runs
-              washed out and the "/" separators at bone/30 were barely
-              rendering. Now a slim dark-glass chip, one unified bone weight,
-              amber-bright highlight on the commercial fact, and sage dot
-              separators that actually register. Slightly lighter than the
-              spec-tag chip below so the hierarchy stays intact (eyebrow
-              first, supporting tag second). */}
+          {/* Announcement eyebrow — the price ladder.
+              It used to render t("startFree") here AND on the CTA button
+              below (same key, twice on one screen), followed by a second
+              "…free" run, so the word appeared three times above the fold.
+              The eyebrow now carries the one fact nothing else on the page
+              states — what it costs to start and what the next rung is —
+              which also pre-empts "what's the catch" before the CTA. "Free"
+              survives once, on the button, where it is an action not a claim.
+              The $29 comes from PRICES, never a literal: this chip must not
+              be able to drift from data/pricing.ts the way GetStartedFlow's
+              private price table did before 2026-08-30.
+              Two pulsing dots (used as separators) were noise — one live dot
+              leads, a static sage dot separates. Amber sits on the numbers,
+              which is the scannable part. */}
           <p
             className="inline-flex items-center gap-2.5 font-mono text-[11.5px] font-medium tracking-[0.2em] uppercase text-bone mb-10 px-3 py-1.5 rounded-full bg-[rgba(14,20,15,0.32)] backdrop-blur-md border border-bone/12 shadow-[0_4px_18px_-8px_rgba(0,0,0,0.45)]"
             style={{ textShadow: "0 1px 2px rgba(10,16,12,0.7)" }}
@@ -187,12 +194,20 @@ export default function Hero() {
               <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage-bright opacity-60 animate-ping" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage-bright" />
             </span>
-            <span className="text-brand-amber-bright">{t("startFree")}</span>
-            <span className="relative inline-flex w-1.5 h-1.5">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage-bright opacity-60 animate-ping" />
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage-bright" />
+            <span>
+              <span className="text-brand-amber-bright font-semibold tabular-nums">$0</span>{" "}
+              {t("ladderStart")}
             </span>
-            <span>{t("jobCostingFree")}</span>
+            <span
+              aria-hidden
+              className="inline-block w-1 h-1 rounded-full bg-brand-sage-bright/70"
+            />
+            <span>
+              <span className="text-brand-amber-bright font-semibold tabular-nums">
+                ${PRICES.starter.monthly}
+              </span>{" "}
+              {t("ladderNext")}
+            </span>
           </p>
         </FadeIn>
 
@@ -318,7 +333,10 @@ export default function Hero() {
               <dl className="space-y-3">
                 <div className="flex justify-between">
                   <dt className="text-bone/75 uppercase">{t("sheetCrew")}</dt>
-                  <dd className="tabular-nums text-bone font-semibold">{t("sheetCrewCount", { count: 12 })}</dd>
+                  {/* 4, not 12. A twelve-hand crew in the demo sheet told the
+                      same story the old "For crews of 5–25" chip did, to a
+                      buyer who overwhelmingly has no crew at all. */}
+                  <dd className="tabular-nums text-bone font-semibold">{t("sheetCrewCount", { count: 4 })}</dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-bone/75 uppercase">{t("sheetJob")}</dt>

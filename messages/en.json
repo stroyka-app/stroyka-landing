@@ -14,12 +14,13 @@
   },
   "hero": {
     "startFree": "Start free",
-    "jobCostingFree": "Job costing included, free",
+    "ladderStart": "to start",
+    "ladderNext": "when you outgrow it",
     "headline1": "Construction",
     "headline2": "management,",
     "headline3": "for real crews.",
-    "subhead": "One tool for the whole crew — boss and workers. Clock-in, job costing, invoicing. Works on any phone, even with no signal.",
-    "specCrew": "For crews of 5–25",
+    "subhead": "Know what every job really costs — labor, materials, fuel — while it's still running. Works on any phone, even with no signal.",
+    "specCrew": "Solo or a crew of 25",
     "specInstant": "Works the day you sign up",
     "bookDemo": "Book a demo →",
     "sheetTitle": "Project sheet",
@@ -584,11 +585,11 @@
       "workerLimit": "Up to 15 workers",
       "features": {
         "0": "Everything in Free",
-        "1": "Up to 15 workers",
-        "2": "PDF reports (Timesheet, P&L, Materials, Daily logs)",
-        "3": "Job costing & P&L dashboard",
-        "4": "CSV export",
-        "5": "Email support"
+        "1": "Unlimited active jobs",
+        "2": "Unlimited invoices",
+        "3": "Up to 15 workers",
+        "4": "Per-worker rates & overtime alerts",
+        "5": "PDF reports, CSV export & email support"
       }
     },
     "pro": {
@@ -598,11 +599,11 @@
       "features": {
         "0": "Everything in Starter",
         "1": "Unlimited workers",
-        "2": "Excel export",
-        "3": "Photo & file attachments in task messaging",
-        "4": "Invoice clients by email + auto payment reminders",
-        "5": "Priority support",
-        "6": "Dedicated onboarding call"
+        "2": "Client book — save a client once, reuse them on every invoice",
+        "3": "Import your clients from a CSV",
+        "4": "Automatic overdue payment reminders",
+        "5": "Excel export & file attachments",
+        "6": "Priority support & dedicated onboarding call"
       }
     },
     "form": {
