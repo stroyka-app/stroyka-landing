@@ -186,14 +186,14 @@ export default function Hero() {
               leads, a static sage dot separates. Amber sits on the numbers,
               which is the scannable part. */}
           <p
-            className="inline-flex items-center gap-2.5 font-mono text-[11.5px] font-medium tracking-[0.2em] uppercase text-bone mb-10 px-3 py-1.5 rounded-full bg-[rgba(14,20,15,0.32)] backdrop-blur-md border border-bone/12 shadow-[0_4px_18px_-8px_rgba(0,0,0,0.45)]"
+            className="inline-flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-[11.5px] font-medium tracking-[0.1em] sm:tracking-[0.2em] uppercase text-bone mb-10 px-3 py-1.5 rounded-full bg-[rgba(14,20,15,0.32)] backdrop-blur-md border border-bone/12 shadow-[0_4px_18px_-8px_rgba(0,0,0,0.45)]"
             style={{ textShadow: "0 1px 2px rgba(10,16,12,0.7)" }}
           >
             <span className="relative inline-flex w-1.5 h-1.5">
               <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage-bright opacity-60 animate-ping" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brand-sage-bright" />
             </span>
-            <span>
+            <span className="whitespace-nowrap">
               <span className="text-brand-amber-bright font-semibold tabular-nums">$0</span>{" "}
               {t("ladderStart")}
             </span>
@@ -201,7 +201,7 @@ export default function Hero() {
               aria-hidden
               className="inline-block w-1 h-1 rounded-full bg-brand-sage-bright/70"
             />
-            <span>
+            <span className="whitespace-nowrap">
               <span className="text-brand-amber-bright font-semibold tabular-nums">
                 ${PRICES.starter.monthly}
               </span>{" "}
@@ -264,7 +264,7 @@ export default function Hero() {
                   editorial mono-uppercase voice. */}
               <div className="mb-10 mt-6">
                 <p
-                  className="inline-flex items-center gap-2.5 font-mono text-[12.5px] font-medium tracking-[0.16em] uppercase text-bone px-3.5 py-1.5 rounded-full bg-[rgba(14,20,15,0.38)] backdrop-blur-md border border-bone/15 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.45)]"
+                  className="inline-flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-[12.5px] font-medium tracking-[0.08em] sm:tracking-[0.16em] uppercase text-bone px-3.5 py-1.5 rounded-full bg-[rgba(14,20,15,0.38)] backdrop-blur-md border border-bone/15 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.45)]"
                   style={{
                     textShadow: "0 1px 2px rgba(10,16,12,0.75)",
                   }}
@@ -273,12 +273,12 @@ export default function Hero() {
                     aria-hidden
                     className="inline-block w-3.5 h-px bg-brand-amber"
                   />
-                  {t("specCrew")}
+                  <span className="whitespace-nowrap">{t("specCrew")}</span>
                   <span
                     aria-hidden
                     className="inline-block w-1 h-1 rounded-full bg-brand-sage-bright/80"
                   />
-                  {t("specInstant")}
+                  <span className="whitespace-nowrap">{t("specInstant")}</span>
                 </p>
               </div>
             </FadeIn>
