@@ -4,8 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import FadeIn from "@/components/ui/FadeIn";
 import Button from "@/components/ui/Button";
-import { useAttributedUrl } from "@/lib/hooks/useAttributedUrl";
-import { SIGNUP_URL } from "@/lib/appLinks";
+import { useSignupHref } from "@/lib/hooks/useSignupHref";
 
 /**
  * CTA finale — the gradient "ramp down" into dark forest. Starts at pale
@@ -14,7 +13,7 @@ import { SIGNUP_URL } from "@/lib/appLinks";
  * The oversized Fraunces type is the moment.
  */
 export default function CTABanner() {
-  const signupUrl = useAttributedUrl(SIGNUP_URL);
+  const signupUrl = useSignupHref();
   const t = useTranslations("cta");
   const prefersReduced = useReducedMotion();
   return (

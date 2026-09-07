@@ -63,3 +63,22 @@ export function withAttribution(base: string, search: string): string {
     return base;
   }
 }
+
+/**
+ * [withAttribution] for a SITE-RELATIVE path such as `/get`.
+ *
+ * `withAttribution` builds a `URL`, which requires an absolute address, so a
+ * bare path would throw and silently return undecorated. Routing mobile
+ * visitors to `/get` made that path matter: `/get` reads `src` for its
+ * redirect beacon, and a campaign that loses its params one hop before the
+ * store is exactly the hop this module exists to protect.
+ */
+export function withAttributionPath(path: string, search: string): string {
+  try {
+    const absolute = new URL(path, "https://relative.invalid").toString();
+    const decorated = new URL(withAttribution(absolute, search));
+    return `${decorated.pathname}${decorated.search}`;
+  } catch {
+    return path;
+  }
+}

@@ -8,8 +8,7 @@ import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
 import Button from "@/components/ui/Button";
-import { useAttributedUrl } from "@/lib/hooks/useAttributedUrl";
-import { SIGNUP_URL } from "@/lib/appLinks";
+import { useSignupHref } from "@/lib/hooks/useSignupHref";
 import { useCursorGlow } from "@/lib/hooks/useCursorGlow";
 import { PRICES } from "@/data/pricing";
 
@@ -46,7 +45,7 @@ function FeatureList({ features, sub }: { features: Feature[]; sub?: boolean }) 
 }
 
 export default function Pricing() {
-  const signupUrl = useAttributedUrl(SIGNUP_URL);
+  const signupUrl = useSignupHref();
   const t = useTranslations("pricing");
   const [billing, setBilling] = useState<Billing>("monthly");
   const prefersReduced = useReducedMotion();

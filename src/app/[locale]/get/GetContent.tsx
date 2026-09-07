@@ -8,8 +8,10 @@ import { AppleGlyph, GooglePlayGlyph } from "@/components/ui/StoreGlyphs";
 
 /**
  * UA-detects and forwards to the right store: Android → Google Play,
- * everything else → App Store (iOS is the platform whose users MUST come
- * through the web, and QR scans come from phones). The analytics beacon
+ * everything else → App Store. (It used to say iOS users MUST come through
+ * the web — true only while the iOS app was sign-in-only under 3.1.1. Since
+ * 1.0.28 they can sign up and subscribe in-app, which is why the landing CTAs
+ * now send phones HERE rather than to web signup.) The analytics beacon
  * needs a beat to leave before navigation, hence the short delay; the
  * visible store buttons double as the no-JS / slow-network / misdetection
  * fallback (e.g. a desktop browser opening the link out of curiosity).
