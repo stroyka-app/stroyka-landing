@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useReducedMotion } from "framer-motion";
@@ -11,12 +12,60 @@ import FadeIn from "@/components/ui/FadeIn";
 import TextReveal from "@/components/ui/TextReveal";
 import { AppleGlyph, GooglePlayGlyph } from "@/components/ui/StoreGlyphs";
 import { IOS_APP_URL, ANDROID_APP_URL, SIGNUP_URL } from "@/lib/appLinks";
+import { PRICES } from "@/data/pricing";
+import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
+
+/**
+ * What the buyer just paid, from the params the checkout route put on its
+ * success_url. `undefined` when either is missing or unrecognised, in which
+ * case the Purchase pixel event is skipped rather than sent with no value.
+ */
+function purchaseValue(plan: string | null, billing: string | null): number | undefined {
+  if (plan !== "starter" && plan !== "pro") return undefined;
+  if (billing === "monthly") return PRICES[plan].monthly;
+  if (billing === "annual") return PRICES[plan].annual;
+  return undefined;
+}
+
+/**
+ * Stripe's success_url is a page a buyer can refresh or reopen from history,
+ * and each load would report another purchase. The session id is unique per
+ * checkout, so it keys a one-shot marker for this browser.
+ */
+function claimPurchaseOnce(sessionId: string | null): boolean {
+  if (!sessionId) return true;
+  const key = `stroyka:purchase_tracked:${sessionId}`;
+  try {
+    if (window.sessionStorage.getItem(key)) return false;
+    window.sessionStorage.setItem(key, "1");
+  } catch {
+    // Storage blocked (private mode, ITP): fall through and report once per load.
+  }
+  return true;
+}
 
 export default function SuccessContent() {
   const t = useTranslations("getStarted");
   const searchParams = useSearchParams();
   const plan = searchParams.get("plan");
+  const billing = searchParams.get("billing");
+  const sessionId = searchParams.get("session_id");
   const prefersReduced = useReducedMotion();
+  const track = useCtaTracker("get_started_success");
+  const reported = useRef(false);
+
+  useEffect(() => {
+    // The ref guards React's dev double-invoke; the storage marker guards a
+    // human reloading the page.
+    if (reported.current || !claimPurchaseOnce(sessionId)) return;
+    reported.current = true;
+    const value = purchaseValue(plan, billing);
+    track("checkout_success", {
+      plan: plan ?? "unknown",
+      billing: billing ?? "unknown",
+      ...(value !== undefined && { value }),
+    });
+  }, [track, plan, billing, sessionId]);
 
   const planLabel =
     plan === "pro" ? t("pro.name") : plan === "starter" ? t("starter.name") : "";
@@ -112,12 +161,14 @@ export default function SuccessContent() {
                       href={IOS_APP_URL}
                       label={t("appStore")}
                       icon={<AppleGlyph className="h-3 w-3" />}
+                      onClick={() => track("store_badge_clicked", { store: "app_store" })}
                     />
                     {ANDROID_APP_URL !== "#" && (
                       <StoreBadge
                         href={ANDROID_APP_URL}
                         label={t("googlePlay")}
                         icon={<GooglePlayGlyph className="h-3 w-3" />}
+                        onClick={() => track("store_badge_clicked", { store: "google_play" })}
                       />
                     )}
                   </div>
@@ -167,16 +218,19 @@ function StoreBadge({
   href,
   label,
   icon,
+  onClick,
 }: {
   href: string;
   label: string;
   icon: React.ReactNode;
+  onClick?: () => void;
 }) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={onClick}
       className="inline-flex items-center gap-1.5 rounded-full bg-ink px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-bone transition-colors hover:bg-brand-deep"
     >
       {icon}

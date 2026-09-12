@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
 import { HardHat, Mail, ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
 
 interface FormData {
   name: string;
@@ -32,6 +33,7 @@ export default function DemoForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof FormData, string>>>({});
+  const track = useCtaTracker("demo_form");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -88,6 +90,10 @@ export default function DemoForm() {
         throw new Error(data.error || "Something went wrong");
       }
 
+      // Only after the API accepted it: a rejected or rate-limited submit is
+      // not a lead. Crew size is the one field that is not personal data and
+      // is what a sales follow-up sorts by.
+      track("demo_submitted", { crewSize: form.crewSize });
       setStatus("success");
       setForm(INITIAL);
     } catch (err) {

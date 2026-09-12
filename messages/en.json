@@ -681,5 +681,19 @@
     "eyebrow": "Legal",
     "englishOnlyTitle": "Available in English",
     "englishOnlyBody": "This document is provided in English. As a US product, the English version is authoritative."
+  },
+  "start": {
+    "metaTitle": "Stroyka: job costing for small construction crews",
+    "metaDescription": "Hours, receipts and fuel go on the job as the work happens. You see the margin while you can still do something about it. Free to start, no card.",
+    "kicker": "Job costing for small construction crews",
+    "h1": "Know what each job actually made",
+    "line": "Hours, receipts and fuel go on the job as the work happens. You see the margin while you can still do something about it.",
+    "imageAlt": "Stroyka job report for a kitchen remodel: 54% of the budget used, $8,340 left, labor and requests broken out, largest costs listed",
+    "cta": "Get Stroyka free",
+    "bullet1": "Works offline on site",
+    "bullet2": "Flat monthly price, no per-worker fees",
+    "bullet3": "Free to start, no card",
+    "privacy": "Privacy",
+    "terms": "Terms"
   }
 }

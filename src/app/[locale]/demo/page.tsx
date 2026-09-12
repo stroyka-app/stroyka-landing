@@ -7,7 +7,7 @@ import AmbientBackdrop from "@/components/ui/AmbientBackdrop";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
-import { localeAlternates, canonicalFor, ogLocale } from "@/i18n/alternates";
+import { localeAlternates, canonicalFor, ogLocale, ogAlternateLocales } from "@/i18n/alternates";
 
 export async function generateMetadata({
   params,
@@ -28,6 +28,7 @@ export async function generateMetadata({
       title: t("demoTitle"),
       description: t("demoDescription"),
       locale: ogLocale[locale],
+      alternateLocale: ogAlternateLocales(locale),
       images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Stroyka — Construction Management App" }],
     },
     twitter: {

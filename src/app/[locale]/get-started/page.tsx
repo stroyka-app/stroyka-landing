@@ -4,7 +4,7 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import GetStartedFlow from "@/components/GetStartedFlow";
-import { localeAlternates, canonicalFor, ogLocale } from "@/i18n/alternates";
+import { localeAlternates, canonicalFor, ogLocale, ogAlternateLocales } from "@/i18n/alternates";
 import { PRICING_TIERS } from "@/data/pricing";
 
 export async function generateMetadata({
@@ -26,6 +26,7 @@ export async function generateMetadata({
       title: t("getStartedTitle"),
       description: t("getStartedDescription"),
       locale: ogLocale[locale],
+      alternateLocale: ogAlternateLocales(locale),
       images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Stroyka — Construction Management App" }],
     },
     twitter: {

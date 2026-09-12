@@ -27,9 +27,21 @@ export function canonicalFor(locale: string, pathname: string): string {
   return `https://www.getstroyka.com${prefix}${clean || (prefix ? "" : "/")}`;
 }
 
-/** Maps next-intl locale codes to Open Graph locale strings. */
+/**
+ * Maps next-intl locale codes to Open Graph locale strings.
+ *
+ * Spanish is `es_US`, not `es_ES`: the product sells to US crews and the ES
+ * pages are written for them, so the territory tag should say so.
+ */
 export const ogLocale: Record<string, string> = {
   en: "en_US",
-  es: "es_ES",
+  es: "es_US",
   ru: "ru_RU",
 };
+
+/** The `og:locale:alternate` values for [locale]: every other locale we serve. */
+export function ogAlternateLocales(locale: string): string[] {
+  return routing.locales
+    .filter((other) => other !== locale)
+    .map((other) => ogLocale[other]);
+}

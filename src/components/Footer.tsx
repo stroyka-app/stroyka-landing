@@ -6,6 +6,7 @@ import { AppleGlyph, GooglePlayGlyph } from "@/components/ui/StoreGlyphs";
 import Logo from "@/components/Logo";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 import { IOS_APP_URL, ANDROID_APP_URL } from "@/lib/appLinks";
+import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
 
 type NavKey = "features" | "howItWorks" | "pricing" | "faq";
 type FooterCompanyKey = "requestDemo" | "privacy" | "terms";
@@ -44,6 +45,7 @@ export default function Footer() {
   const active = useLocale();
   const homeHash = (hash: string) =>
     active === "en" ? `/#${hash}` : `/${active}#${hash}`;
+  const track = useCtaTracker("footer");
 
   return (
     <footer id="footer" className="relative bg-[#2B3D30] text-bone">
@@ -126,6 +128,7 @@ export default function Footer() {
                   href={IOS_APP_URL}
                   aria-label="Download on the App Store"
                   className="group inline-flex items-center gap-2.5 text-[14.5px] text-bone/70 hover:text-brand-sage-bright transition-colors duration-200"
+                  onClick={() => track("store_badge_clicked", { store: "app_store" })}
                 >
                   <AppleGlyph className="h-[15px] w-[15px] shrink-0" />
                   <span>
@@ -143,6 +146,7 @@ export default function Footer() {
                   href={ANDROID_APP_URL}
                   aria-label="Get it on Google Play"
                   className="group inline-flex items-center gap-2.5 text-[14.5px] text-bone/70 hover:text-brand-sage-bright transition-colors duration-200"
+                  onClick={() => track("store_badge_clicked", { store: "google_play" })}
                 >
                   <GooglePlayGlyph className="h-[15px] w-[15px] shrink-0" />
                   <span>

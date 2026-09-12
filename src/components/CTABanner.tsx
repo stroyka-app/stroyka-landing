@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import FadeIn from "@/components/ui/FadeIn";
 import Button from "@/components/ui/Button";
 import { useSignupHref } from "@/lib/hooks/useSignupHref";
+import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
 
 /**
  * CTA finale — the gradient "ramp down" into dark forest. Starts at pale
@@ -16,6 +17,7 @@ export default function CTABanner() {
   const signupUrl = useSignupHref();
   const t = useTranslations("cta");
   const prefersReduced = useReducedMotion();
+  const track = useCtaTracker("cta_banner");
   return (
     <section id="cta" className="relative overflow-hidden">
       {/* Gradient shell — pistachio top → forest bottom. Same ramp family
@@ -118,10 +120,21 @@ export default function CTABanner() {
 
           <FadeIn delay={0.22}>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <Button variant="invert" size="lg" href={signupUrl}>
+              <Button
+                variant="invert"
+                size="lg"
+                href={signupUrl}
+                onClick={() => track("cta_start_free")}
+              >
                 {t("startFree")}
               </Button>
-              <Button variant="ghost" size="lg" href="/demo" className="text-bone hover:text-brand-sage-bright">
+              <Button
+                variant="ghost"
+                size="lg"
+                href="/demo"
+                className="text-bone hover:text-brand-sage-bright"
+                onClick={() => track("cta_book_demo")}
+              >
                 {t("bookDemo")}
               </Button>
             </div>

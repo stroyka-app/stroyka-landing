@@ -6,15 +6,45 @@ import { useTranslations } from "next-intl";
 import FadeIn from "@/components/ui/FadeIn";
 import Button from "@/components/ui/Button";
 import { useSignupHref } from "@/lib/hooks/useSignupHref";
+import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
 import { Counter, Sparkline } from "@/components/ui/LiveSheet";
 import { PRICES } from "@/data/pricing";
+
+/** Where the hero video lives. Attached to the element only after `load`. */
+const HERO_VIDEO_SRC = "/videos/hero-construction.mp4";
+
+/**
+ * The word-rise keyframes for the H1, as plain CSS so the reveal starts at
+ * FIRST PAINT rather than at hydration. Before 2026-09-12 each word was a
+ * framer `motion.span` starting at opacity 0, y 100%, delayed 0.7 s to play
+ * after the LoadingCurtain: on the Facebook in-app browser that meant the
+ * headline was invisible for JS download + hydration + 0.7 s, so LCP fell
+ * to 1.4 to 3.6 s. Now the SSR HTML carries the animation itself: opacity
+ * stays 1 throughout, only `transform` moves, delays start at 0, and the
+ * whole headline is settled ~0.75 s after the HTML paints, JS or no JS.
+ * Reduced-motion users get the static end state (the WordLine fallback
+ * covers the hydrated path; the media query covers the pre-hydration one).
+ */
+const HERO_WORD_CSS = `
+@keyframes hero-word-rise{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.hero-word{animation:hero-word-rise .55s cubic-bezier(.22,1,.36,1) both}
+@media (prefers-reduced-motion:reduce){.hero-word{animation:none}}
+`;
 
 /**
  * One line of word-mask reveals. Each word sits inside a clip box padded
  * by 0.22em (with matching negative margin) so descenders like g/y/p/j/q
  * are not chopped by overflow:hidden while baseline alignment is preserved
- * in the surrounding text. Words slide up from y:100% with opacity, with
- * a configurable per-word stagger continuing from `startDelay`.
+ * in the surrounding text. Words slide up from y:100% (opacity never
+ * changes, see HERO_WORD_CSS) with a per-word stagger continuing from
+ * `startDelay`.
+ *
+ * The space between words is a real space that sits OUTSIDE the clip box.
+ * It used to be an nbsp inside the inline-block, and the two block lines
+ * had no separator at all, so the SSR text read "Constructionmanagement,for
+ * real crews." to crawlers and screen readers. A block line now ends with
+ * a space too, so the three lines concatenate into a sentence in
+ * textContent; visually a trailing space at a line end collapses.
  *
  * `inline` lets the line render without forcing a `<span class="block">`
  * wrapper — useful when the parent already establishes the line context
@@ -38,28 +68,75 @@ function WordLine({
   }
 
   const content = words.map((word, i) => (
-    <span
-      key={i}
-      className="inline-block overflow-hidden align-bottom"
-      style={{ paddingBottom: "0.22em", marginBottom: "-0.22em" }}
-    >
-      <motion.span
-        className="inline-block"
-        initial={{ y: "100%", opacity: 0 }}
-        animate={{ y: "0%", opacity: 1 }}
-        transition={{
-          duration: 0.55,
-          delay: startDelay + i * stagger,
-          ease: [0.22, 1, 0.36, 1],
-        }}
+    <span key={i}>
+      <span
+        className="inline-block overflow-hidden align-bottom"
+        style={{ paddingBottom: "0.22em", marginBottom: "-0.22em" }}
       >
-        {word}
-      </motion.span>
-      {i < words.length - 1 && " "}
+        <span
+          className="inline-block hero-word"
+          style={{ animationDelay: `${(startDelay + i * stagger).toFixed(2)}s` }}
+        >
+          {word}
+        </span>
+      </span>
+      {i < words.length - 1 && " "}
     </span>
   ));
 
-  return inline ? <>{content}</> : <span className="block">{content}</span>;
+  return inline ? <>{content}</> : <span className="block">{content} </span>;
+}
+
+/**
+ * Attaches the hero footage only once the page has finished loading, and
+ * never for visitors who asked for less motion or less data. Until then the
+ * <video> shows its poster, a single JPEG that is part of the first paint.
+ * `preload="none"` on the element keeps the browser from touching the 6 MB
+ * MP4 on its own; setting `src` here is what starts the download.
+ */
+function useDeferredHeroVideo(videoRef: React.RefObject<HTMLVideoElement | null>) {
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    if (reduceMotion || connection?.saveData) return;
+
+    let cancelled = false;
+    let idleId: number | undefined;
+    let timeoutId: number | undefined;
+
+    const attach = () => {
+      if (cancelled || video.src) return;
+      video.src = HERO_VIDEO_SRC;
+      // autoplay covers the common case; an explicit play() covers browsers
+      // that only honour the attribute at insertion time. Rejections (power
+      // saving, no gesture) simply leave the poster in place.
+      video.play().catch(() => undefined);
+    };
+
+    const schedule = () => {
+      if (typeof window.requestIdleCallback === "function") {
+        idleId = window.requestIdleCallback(attach, { timeout: 2000 });
+      } else {
+        timeoutId = window.setTimeout(attach, 200);
+      }
+    };
+
+    if (document.readyState === "complete") {
+      schedule();
+    } else {
+      window.addEventListener("load", schedule, { once: true });
+    }
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener("load", schedule);
+      if (idleId !== undefined && typeof window.cancelIdleCallback === "function") window.cancelIdleCallback(idleId);
+      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+    };
+  }, [videoRef]);
 }
 
 /**
@@ -73,9 +150,12 @@ export default function Hero() {
   // Carry the visitor's utm_* / click-ids across the hop to the app origin —
   // without this every campaign loses attribution at the last click.
   const signupUrl = useSignupHref();
+  const track = useCtaTracker("hero");
   const t = useTranslations("hero");
   const ref = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const prefersReduced = useReducedMotion();
+  useDeferredHeroVideo(videoRef);
 
   const [sheetLive, setSheetLive] = useState(false);
   useEffect(() => {
@@ -95,6 +175,7 @@ export default function Hero() {
 
   return (
     <section ref={ref} id="hero" className="relative overflow-hidden min-h-[100vh]">
+      <style>{HERO_WORD_CSS}</style>
       {/* ── Gradient shell: teal-sage dark at top (close to main's #2f3e46)
           → warm stone at bottom. Integrates the original-hero feel with
           the stone palette. Bottom stop (#A89E85) matches TheShift's top
@@ -111,26 +192,27 @@ export default function Hero() {
       {/* ── Video layer — natural tones at low opacity. No blend-luminosity
           (it was stripping color from the footage and forcing the green
           gradient onto it — reading as "obvious green video"). The video
-          now plays at its real hue, muted to 30% so it reads as atmosphere
-          behind the gradient rather than a tinted overlay. Opacity ramps
-          from 0 → 0.3 over 800ms on mount so fast connections don't get a
-          jarring pop. */}
+          plays at its real hue, muted to 30% so it reads as atmosphere
+          behind the gradient rather than a tinted overlay.
+          The layer is at 0.3 from the SSR HTML onwards: the poster (one
+          frame of the same footage) is part of the first paint, and the
+          footage replaces it in place once `load` has fired, so there is
+          no pop to hide with an opacity ramp any more. The old 0 → 0.3
+          ramp also kept the poster out of LCP (opacity 0 is excluded). */}
       <motion.div
-        style={prefersReduced ? { opacity: 0.3 } : { y: videoY, scale: videoScale }}
-        initial={prefersReduced ? undefined : { opacity: 0 }}
-        animate={prefersReduced ? undefined : { opacity: 0.3 }}
-        transition={prefersReduced ? undefined : { duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        style={prefersReduced ? { opacity: 0.3 } : { opacity: 0.3, y: videoY, scale: videoScale }}
         className="absolute inset-0 z-[1] will-change-transform"
       >
         <video
+          ref={videoRef}
           autoPlay
           loop
           muted
           playsInline
+          preload="none"
+          poster="/videos/hero-poster.jpg"
           className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="/videos/hero-construction.mp4" type="video/mp4" />
-        </video>
+        />
       </motion.div>
 
       {/* Top/bottom washes so the headline reads clearly and the bottom
@@ -215,18 +297,17 @@ export default function Hero() {
             line-by-line so the three lines land in sequence rather than as
             one block. Italic line keeps its sage SVG underline (CSS-driven
             via .draw-underline, independent of word reveal).
-            CRITICAL — delays start at 0.7s so each word's 0.55s rise plays
-            *after* the LoadingCurtain has cleared at ~0.6s. If startDelay
-            drops below 0.6s the words finish behind the curtain and the
-            entire reveal is wasted (only the late ones would be visible). */}
+            Delays start at 0 and step 0.04s: the reveal is CSS (see
+            HERO_WORD_CSS) and begins the moment the HTML paints. There is no
+            LoadingCurtain to wait for any more, it was removed 2026-09-12. */}
         <h1 className="font-display font-light text-[clamp(3.25rem,10.5vw,11rem)] leading-[0.92] tracking-[-0.03em] text-bone mb-10 max-w-[16ch]">
-          <WordLine words={[t("headline1")]} startDelay={0.7} stagger={0.06} prefersReduced={prefersReduced} />
-          <WordLine words={[t("headline2")]} startDelay={0.85} stagger={0.06} prefersReduced={prefersReduced} />
+          <WordLine words={[t("headline1")]} startDelay={0} stagger={0.04} prefersReduced={prefersReduced} />
+          <WordLine words={[t("headline2")]} startDelay={0.04} stagger={0.04} prefersReduced={prefersReduced} />
           <span className="block italic font-normal relative">
             <WordLine
               words={t("headline3").split(" ")}
-              startDelay={1.0}
-              stagger={0.08}
+              startDelay={0.08}
+              stagger={0.04}
               prefersReduced={prefersReduced}
               inline
             />
@@ -250,11 +331,14 @@ export default function Hero() {
 
         <div className="grid lg:grid-cols-[1fr_auto] gap-10 lg:gap-16 items-end">
           <div className="max-w-xl">
-            <FadeIn delay={0.18} triggerOnMount>
-              <p className="text-lg lg:text-xl text-bone/85 leading-[1.55]">
-                {t("subhead")}
-              </p>
-            </FadeIn>
+            {/* Subhead and the CTA row are NOT wrapped in FadeIn: FadeIn
+                server-renders opacity 0 and waits for hydration, which on a
+                phone in the Facebook browser is the second or two we are
+                trying to win back. Both are in the SSR HTML at full
+                opacity; the chips and the sheet keep their entrance. */}
+            <p className="text-lg lg:text-xl text-bone/85 leading-[1.55]">
+              {t("subhead")}
+            </p>
             <FadeIn delay={0.22} triggerOnMount>
               {/* Spec tag. Was a plain bone/85 line with a soft text-shadow,
                   which washed out over bright frames of the hero video.
@@ -282,16 +366,20 @@ export default function Hero() {
                 </p>
               </div>
             </FadeIn>
-            <FadeIn delay={0.28} triggerOnMount>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <Button variant="primary" size="lg" href={signupUrl}>
-                  {t("startFree")}
-                </Button>
-                <Button variant="ghost" size="lg" href="/demo" className="text-bone hover:text-brand-sage-bright">
-                  {t("bookDemo")}
-                </Button>
-              </div>
-            </FadeIn>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <Button variant="primary" size="lg" href={signupUrl} onClick={() => track("cta_start_free")}>
+                {t("startFree")}
+              </Button>
+              <Button
+                variant="ghost"
+                size="lg"
+                href="/demo"
+                className="text-bone hover:text-brand-sage-bright"
+                onClick={() => track("cta_book_demo")}
+              >
+                {t("bookDemo")}
+              </Button>
+            </div>
           </div>
 
           {/* Project Sheet — floats on the mid-stone portion of the gradient.

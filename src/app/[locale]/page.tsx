@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import HomeClient from "@/components/HomeClient";
 import StructuredData from "@/components/seo/StructuredData";
-import { localeAlternates, canonicalFor, ogLocale } from "@/i18n/alternates";
+import { localeAlternates, canonicalFor, ogLocale, ogAlternateLocales } from "@/i18n/alternates";
 
 export async function generateMetadata({
   params,
@@ -24,6 +24,7 @@ export async function generateMetadata({
       title: t("homeTitle"),
       description: t("homeDescription"),
       locale: ogLocale[locale],
+      alternateLocale: ogAlternateLocales(locale),
       images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Stroyka — Construction Management App" }],
     },
     twitter: {
@@ -40,9 +41,11 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   setRequestLocale(locale);
   return (
     <>
-      {/* SoftwareApplication + FAQPage belong to THIS page, not the layout —
-          the FAQ they describe is only visible here. See StructuredData. */}
-      <StructuredData pageSpecific />
+      {/* SoftwareApplication + FAQPage belong to THIS page, not the layout:
+          the FAQ they describe is only visible here. The layout mounts the
+          "site" scope (Organization + WebSite), so nothing is emitted twice.
+          See StructuredData. */}
+      <StructuredData scope="page" />
       <HomeClient />
     </>
   );

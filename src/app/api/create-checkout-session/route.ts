@@ -241,7 +241,10 @@ export async function POST(req: NextRequest) {
       // with.
       ...(locale ? { locale } : {}),
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${siteUrl}/get-started/success?session_id={CHECKOUT_SESSION_ID}&plan=${plan}`,
+      // `billing` rides along so the success page can price the Purchase
+      // event for Meta; without it the pixel would be told the plan but not
+      // what it cost.
+      success_url: `${siteUrl}/get-started/success?session_id={CHECKOUT_SESSION_ID}&plan=${plan}&billing=${billing}`,
       cancel_url: `${siteUrl}/get-started/cancel`,
       allow_promotion_codes: true,
       metadata: {

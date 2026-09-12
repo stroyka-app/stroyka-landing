@@ -684,5 +684,19 @@
     "eyebrow": "Legal",
     "englishOnlyTitle": "Disponible en inglés",
     "englishOnlyBody": "Este documento se proporciona en inglés. Como producto de EE. UU., la versión en inglés es la oficial."
+  },
+  "start": {
+    "metaTitle": "Stroyka: costos de obra para cuadrillas pequeñas",
+    "metaDescription": "Las horas, los tickets y la gasolina se cargan a la obra mientras avanza el trabajo. Ves el margen cuando todavía puedes hacer algo. Gratis para empezar, sin tarjeta.",
+    "kicker": "Costos de obra para cuadrillas pequeñas",
+    "h1": "Descubre cuánto te dejó cada obra de verdad",
+    "line": "Las horas, los tickets y la gasolina se cargan a la obra mientras avanza el trabajo. Ves el margen cuando todavía puedes hacer algo al respecto.",
+    "imageAlt": "Reporte de obra en Stroyka para una remodelación de cocina: 54% del presupuesto usado, $8,340 disponibles, mano de obra y pedidos por separado, los gastos más grandes en lista",
+    "cta": "Consigue Stroyka gratis",
+    "bullet1": "Funciona sin señal en la obra",
+    "bullet2": "Precio fijo al mes, sin cobro por trabajador",
+    "bullet3": "Gratis para empezar, sin tarjeta",
+    "privacy": "Privacidad",
+    "terms": "Términos"
   }
 }

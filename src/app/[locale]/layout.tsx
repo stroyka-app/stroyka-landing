@@ -5,20 +5,36 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import SmoothScroll from "@/components/SmoothScroll";
-import CursorDot from "@/components/CursorDot";
-import ScrollToTop from "@/components/ScrollToTop";
-import ScrollProgress from "@/components/ScrollProgress";
+import SiteChrome from "@/components/SiteChrome";
 import StructuredData from "@/components/seo/StructuredData";
 import MetaPixel from "@/components/MetaPixel";
 import PostHogAnalytics from "@/components/PostHogAnalytics";
 import SafariBottomTint from "@/components/SafariBottomTint";
 import { routing } from "@/i18n/routing";
+import { ANDROID_APP_URL, IOS_APP_URL } from "@/lib/appLinks";
 
-const inter = Inter({ subsets: ["latin", "cyrillic"], weight: ["400", "500", "600", "700"], variable: "--font-inter" });
-const fraunces = Fraunces({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"], style: ["normal", "italic"], variable: "--font-fraunces" });
-const jetbrainsMono = JetBrains_Mono({ subsets: ["latin", "cyrillic"], weight: ["400", "500", "600", "700"], variable: "--font-jetbrains-mono" });
-const playfair = Playfair_Display({ subsets: ["latin", "cyrillic"], weight: ["400", "500", "600", "700"], style: ["normal", "italic"], variable: "--font-playfair" });
+// Font budget: FOUR preloaded woff2 files on /en, down from ten (2026-09-12).
+// Every face here is a Google VARIABLE font, so the `weight` list never
+// changes which file ships: one woff2 per preloaded subset per style, shared
+// by every declared weight (verified in .next/static/css). What the weight
+// list does control is which `font-weight` descriptors exist, so it must
+// still cover what the design actually uses: Fraunces 300 is `font-light` on
+// 41 display headings, Inter/JetBrains 700 is `font-bold` on 16 labels.
+// Dropping those would re-weight the locked design for zero bytes saved.
+// The savings come from `subsets`: only latin is PRELOADED. Cyrillic stays
+// declared in the CSS with its own unicode-range, so /ru still loads it, on
+// demand, and /en never pays for it.
+const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-inter" });
+// Italic is a second file (true italics are separate on Google Fonts), kept
+// because the hero's third line, the founder note and the CTA banner set
+// Fraunces italic; a synthesized slant of Fraunces looks like a different face.
+const fraunces = Fraunces({ subsets: ["latin"], weight: ["300", "400", "500", "600"], style: ["normal", "italic"], variable: "--font-fraunces" });
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-jetbrains-mono" });
+// Playfair is the Cyrillic stand-in for Fraunces and is referenced ONLY via
+// the --font-fraunces override on the `ru` <html> (below). preload:false keeps
+// its four files out of every <head>; on /en no element ever resolves to the
+// family, so the browser never requests them at all.
+const playfair = Playfair_Display({ subsets: ["latin", "cyrillic"], weight: ["400", "500", "600", "700"], style: ["normal", "italic"], variable: "--font-playfair", preload: false });
 
 export const metadata: Metadata = {
   title: {
@@ -33,6 +49,19 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
+  // Safari Smart App Banner (<meta name="apple-itunes-app">): an installed
+  // user tapping an ad or a shared link gets a one-tap "Open" strip instead
+  // of a second signup. The id is the App Store id from IOS_APP_URL.
+  itunes: { appId: "6783179191" },
+  // Facebook App Links: the in-app browser (where most paid traffic lands)
+  // reads these to offer the native app when installed and to attribute the
+  // install when it is not. web.should_fallback keeps the page itself as the
+  // fallback for everyone else.
+  appLinks: {
+    ios: { url: IOS_APP_URL, app_store_id: "6783179191", app_name: "Stroyka" },
+    android: { package: "com.getstroyka.app", app_name: "Stroyka", url: ANDROID_APP_URL },
+    web: { url: "https://www.getstroyka.com", should_fallback: true },
+  },
 };
 
 export function generateStaticParams() {
@@ -75,12 +104,10 @@ export default async function LocaleLayout({
         <div className="page-surface min-h-svh">
         <NextIntlClientProvider>
           <StructuredData />
-          <ScrollProgress />
-          <SmoothScroll>
-            <CursorDot />
-            {children}
-            <ScrollToTop />
-          </SmoothScroll>
+          {/* lenis, cursor dot, progress bar and scroll-to-top are loaded
+              per route inside SiteChrome so the paid /start landing ships
+              none of that JS. */}
+          <SiteChrome>{children}</SiteChrome>
           <Analytics />
           <SpeedInsights />
           <MetaPixel />

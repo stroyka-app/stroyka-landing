@@ -9,6 +9,7 @@ import SectionLabel from "@/components/ui/SectionLabel";
 import TextReveal from "@/components/ui/TextReveal";
 import Button from "@/components/ui/Button";
 import { useSignupHref } from "@/lib/hooks/useSignupHref";
+import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
 import { useCursorGlow } from "@/lib/hooks/useCursorGlow";
 import { PRICES } from "@/data/pricing";
 
@@ -49,6 +50,7 @@ export default function Pricing() {
   const t = useTranslations("pricing");
   const [billing, setBilling] = useState<Billing>("monthly");
   const prefersReduced = useReducedMotion();
+  const track = useCtaTracker("pricing");
   const freeGlow = useCursorGlow();
   const starterGlow = useCursorGlow();
   const proGlow = useCursorGlow();
@@ -195,7 +197,12 @@ export default function Pricing() {
               </div>
               <FeatureList features={FREE_FEATURES} />
               <div className="mt-auto">
-                <Button variant="secondary" href={signupUrl} className="w-full">
+                <Button
+                  variant="secondary"
+                  href={signupUrl}
+                  className="w-full"
+                  onClick={() => track("cta_start_free", { plan: "free" })}
+                >
                   {t("free.cta")}
                 </Button>
               </div>
@@ -255,7 +262,12 @@ export default function Pricing() {
                 </div>
                 <FeatureList features={STARTER_FEATURES} />
                 <div className="mt-auto">
-                  <Button variant="primary" href={`/get-started?plan=starter&billing=${billing}`} className="w-full">
+                  <Button
+                    variant="primary"
+                    href={`/get-started?plan=starter&billing=${billing}`}
+                    className="w-full"
+                    onClick={() => track("plan_selected", { plan: "starter", billing })}
+                  >
                     {t("starter.cta")}
                   </Button>
                 </div>
@@ -346,7 +358,12 @@ export default function Pricing() {
                   ))}
                 </ul>
                 <div className="mt-auto">
-                  <Button variant="invert" href={`/get-started?plan=pro&billing=${billing}`} className="w-full">
+                  <Button
+                    variant="invert"
+                    href={`/get-started?plan=pro&billing=${billing}`}
+                    className="w-full"
+                    onClick={() => track("plan_selected", { plan: "pro", billing })}
+                  >
                     {t("pro.cta")}
                   </Button>
                 </div>

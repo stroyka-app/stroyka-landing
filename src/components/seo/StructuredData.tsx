@@ -1,5 +1,5 @@
 // src/components/seo/StructuredData.tsx
-// Async server component. Emits four locale-aware JSON-LD blocks.
+// Async server component. Emits locale-aware JSON-LD blocks, split by scope.
 // Uses QUESTIONS/PRICING_TIERS data files for structure and numeric values;
 // getTranslations() supplies all localized text (FAQ Q&A, offer descriptions, app description).
 // The escapeJsonLd helper unicode-escapes <, >, & so no </script> sequence in
@@ -8,10 +8,13 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { QUESTIONS } from "@/data/faq";
 import { PRICING_TIERS, type PricingTier } from "@/data/pricing";
+import { ANDROID_APP_URL, IOS_APP_URL } from "@/lib/appLinks";
 
 const SITE_URL = "https://www.getstroyka.com";
 const ORG_LOGO = `${SITE_URL}/social-avatar-400.png`;
 const SUPPORT_EMAIL = "hello@getstroyka.com";
+// A store link blanked to "#" (see appLinks) must not leak into the schema.
+const STORE_URLS = [IOS_APP_URL, ANDROID_APP_URL].filter((url) => url.startsWith("http"));
 
 type JsonLdObject = Record<string, unknown>;
 
@@ -43,23 +46,24 @@ const TIER_MSG_KEY: Record<PricingTier["name"], "free" | "starter" | "pro"> = {
 };
 
 /**
- * [pageSpecific] adds the schemas that describe THIS page rather than the
- * site: SoftwareApplication (with its price offers) and FAQPage.
+ * [scope] picks which blocks this mount emits, and the two scopes are
+ * disjoint on purpose.
  *
- * It exists because this component was mounted in the locale layout, so both
- * of those emitted on /demo, /get-started, /privacy and /terms too. Google's
- * structured-data policy requires FAQ markup to correspond to Q&A that is
- * actually visible on the page carrying it, and none of those pages shows an
- * FAQ. That is a policy violation that can cost rich-result eligibility for
- * the whole site, not just the offending URL.
+ * - `"site"` (the layout): Organization + WebSite. True on every page.
+ * - `"page"` (the home page): SoftwareApplication (with its price offers) +
+ *   FAQPage. Google's structured-data policy requires FAQ markup to
+ *   correspond to Q&A actually visible on the page carrying it, and only the
+ *   home page shows the FAQ; emitting it site-wide risks rich-result
+ *   eligibility for the whole site.
  *
- * Organization and WebSite stay in the layout: they describe the site and are
- * true on every page of it.
+ * The split exists because the component is mounted in BOTH places. An
+ * earlier `pageSpecific` flag only ADDED the page blocks, so the home page
+ * carried Organization and WebSite twice, once from each mount.
  */
 export default async function StructuredData({
-  pageSpecific = false,
+  scope = "site",
 }: {
-  pageSpecific?: boolean;
+  scope?: "site" | "page";
 } = {}) {
   const locale = await getLocale();
   const tFaq = await getTranslations("faq");
@@ -73,6 +77,9 @@ export default async function StructuredData({
     url: SITE_URL,
     logo: ORG_LOGO,
     email: SUPPORT_EMAIL,
+    // Only profiles we can evidence: the two store listings. No social
+    // accounts are claimed here until they exist.
+    sameAs: STORE_URLS,
   };
 
   const website: JsonLdObject = {
@@ -92,6 +99,8 @@ export default async function StructuredData({
     operatingSystem: "iOS, Android, Web",
     description: tMeta("appDescription"),
     url: SITE_URL,
+    downloadUrl: STORE_URLS,
+    installUrl: STORE_URLS,
     inLanguage: locale,
     offers: PRICING_TIERS.map((tier) => ({
       "@type": "Offer",
@@ -118,16 +127,19 @@ export default async function StructuredData({
     })),
   };
 
+  if (scope === "page") {
+    return (
+      <>
+        <JsonLdScript schema={softwareApplication} />
+        <JsonLdScript schema={faqPage} />
+      </>
+    );
+  }
+
   return (
     <>
       <JsonLdScript schema={organization} />
       <JsonLdScript schema={website} />
-      {pageSpecific && (
-        <>
-          <JsonLdScript schema={softwareApplication} />
-          <JsonLdScript schema={faqPage} />
-        </>
-      )}
     </>
   );
 }

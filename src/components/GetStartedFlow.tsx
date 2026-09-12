@@ -16,6 +16,7 @@ import Button from "@/components/ui/Button";
 import { PRICES } from "@/data/pricing";
 import TextReveal from "@/components/ui/TextReveal";
 import AmbientBackdrop from "@/components/ui/AmbientBackdrop";
+import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
 
 /* ─── Types ────────────────────────────────────────────────────── */
 
@@ -96,6 +97,7 @@ export default function GetStartedFlow() {
   const locale = useLocale();
   const searchParams = useSearchParams();
   const prefersReduced = useReducedMotion();
+  const track = useCtaTracker("get_started");
 
   // URL params (initial values only)
   const urlPlan = searchParams.get("plan") as Plan | null;
@@ -157,6 +159,9 @@ export default function GetStartedFlow() {
   /* ─── Handlers ──────────────────────────────────────────────── */
 
   const goToStep2 = (selectedPlan: Plan) => {
+    // A visitor who arrived with ?plan= already fired this from Pricing; the
+    // URL auto-advance above deliberately does not fire it again.
+    track("plan_selected", { plan: selectedPlan, billing });
     setPlan(selectedPlan);
     // Step 2 always opens clean — never carry a prior triggered validation
     // state across a plan change (e.g. Continue → Back → Claim Founding Spot).
@@ -204,6 +209,9 @@ export default function GetStartedFlow() {
     e.preventDefault();
     if (!validate() || !plan) return;
 
+    // Fired on the validated submit, before the session request, so a
+    // checkout the API then refuses still counts as an attempt.
+    track("checkout_started", { plan, billing, hasCoupon: Boolean(coupon) });
     setSubmitting(true);
     setSubmitError("");
 

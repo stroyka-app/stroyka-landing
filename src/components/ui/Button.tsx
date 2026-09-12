@@ -5,7 +5,8 @@ import { motion, useSpring, useReducedMotion } from "framer-motion";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick"> {
   /**
    * primary   — solid deep-sage bg + cream text. Brand CTA on any light bg.
    * secondary — ink outline + ink text, fills to ink on hover. On light bgs.
@@ -17,6 +18,12 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "outline" | "invert" | "ghost";
   size?: "sm" | "md" | "lg";
   href?: string;
+  /**
+   * Fires for the link renderings too, not only the <button> one. The CTAs
+   * that matter most (start free, book a demo, pick a plan) are all links,
+   * and this is where their conversion events hook in.
+   */
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
   children: React.ReactNode;
 }
 
@@ -24,6 +31,7 @@ export default function Button({
   variant = "primary",
   size = "md",
   href,
+  onClick,
   children,
   className,
   ...props
@@ -92,20 +100,21 @@ export default function Button({
 
   const inner = href ? (
     isInternal ? (
-      <Link href={href} className={cls}>
+      <Link href={href} className={cls} onClick={onClick}>
         {children}
       </Link>
     ) : (
       <a
         href={href}
         className={cls}
+        onClick={onClick}
         {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       >
         {children}
       </a>
     )
   ) : (
-    <button className={cls} {...props}>
+    <button className={cls} onClick={onClick} {...props}>
       {children}
     </button>
   );

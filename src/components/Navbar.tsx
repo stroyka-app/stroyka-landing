@@ -7,6 +7,7 @@ import { motion, AnimatePresence, useScroll, useTransform, useSpring, useReduced
 import { useScrollPosition } from "@/lib/hooks/useScrollPosition";
 import Logo from "@/components/Logo";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
+import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
 
 type NavKey = "features" | "howItWorks" | "pricing" | "faq";
 
@@ -48,6 +49,7 @@ export default function Navbar() {
   const scrolled = !isHome || scrollY > 50;
   const prefersReduced = useReducedMotion();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const track = useCtaTracker("navbar");
 
   // Smooth scroll-bound height + logo-scale shrink. Anchored to first 320px
   // of vertical scroll so the bar settles by the time the hero copy clears.
@@ -112,6 +114,7 @@ export default function Navbar() {
           <Link
             href="/get-started"
             className="group relative inline-flex items-center rounded-full px-5 py-2 font-heading text-[13.5px] font-medium tracking-wide text-bone border border-brand-sage-bright/40 bg-brand-sage-bright/10 hover:bg-brand-sage-bright/20 hover:border-brand-sage-bright/70 transition-[background-color,border-color,transform] duration-200 active:scale-[0.97]"
+            onClick={() => track("cta_get_started", { placement: "desktop" })}
           >
             {t("getStarted")}
           </Link>
@@ -165,7 +168,10 @@ export default function Navbar() {
               <Link
                 href="/get-started"
                 className="inline-flex items-center justify-center rounded-full px-5 py-2.5 font-heading text-[14px] font-medium text-bone border border-brand-sage-bright/50 bg-brand-sage-bright/15 hover:bg-brand-sage-bright/25"
-                onClick={() => setMobileOpen(false)}
+                onClick={() => {
+                  track("cta_get_started", { placement: "mobile_menu" });
+                  setMobileOpen(false);
+                }}
               >
                 {t("getStarted")}
               </Link>

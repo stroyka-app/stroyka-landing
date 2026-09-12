@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import TermsContent from "./TermsContent";
-import { ogLocale } from "@/i18n/alternates";
+import { ogLocale, ogAlternateLocales } from "@/i18n/alternates";
 
 // Legal pages are English-authoritative: all locales point canonical + hreflang to the EN URL.
 const EN_TERMS = "https://www.getstroyka.com/terms";
@@ -25,6 +25,7 @@ export async function generateMetadata({
       title: t("termsTitle"),
       description: t("termsDescription"),
       locale: ogLocale[locale],
+      alternateLocale: ogAlternateLocales(locale),
       images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Stroyka — Construction Management App" }],
     },
     twitter: {
