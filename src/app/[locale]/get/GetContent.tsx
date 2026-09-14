@@ -5,6 +5,8 @@ import { useTranslations } from "next-intl";
 import { track } from "@vercel/analytics";
 import { ANDROID_APP_URL, IOS_APP_URL } from "@/lib/appLinks";
 import { isMobileVisitor } from "@/lib/isMobileVisitor";
+import Navbar from "@/components/Navbar";
+import AmbientBackdrop from "@/components/ui/AmbientBackdrop";
 import { AppleGlyph, GooglePlayGlyph } from "@/components/ui/StoreGlyphs";
 import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
 
@@ -51,37 +53,50 @@ export default function GetContent() {
   }, [trackCta]);
 
   return (
-    <main className="page-surface flex min-h-screen flex-col items-center justify-center gap-8 px-6 text-center">
-      {desktop ? (
-        <div className="max-w-md">
-          <h1 className="font-display font-light text-3xl leading-tight tracking-[-0.02em] text-ink mb-3">
-            {t("desktopTitle")}
-          </h1>
-          <p className="text-[15px] text-ink-soft leading-relaxed">
-            {t("desktopHint")}{" "}
-            <span className="font-mono text-ink">getstroyka.com/get</span>
-          </p>
+    <>
+      {/* A phone is forwarded within 350 ms and never needs chrome; a desktop
+          stays on this page, so it gets the site's navbar like every other
+          page (Maks, 2026-09-13: "no way back to the landing"). */}
+      {desktop && <Navbar />}
+      <main className="relative flex min-h-screen flex-col items-center justify-center gap-8 overflow-hidden bg-gradient-to-b from-[#E3DCC9] to-[#D4CBB4] px-6 pt-24 text-center">
+        <AmbientBackdrop />
+        <div className="relative z-10 flex flex-col items-center gap-8">
+          {desktop ? (
+            <div className="max-w-md">
+              <h1 className="font-display font-light text-3xl leading-tight tracking-[-0.02em] text-ink mb-3">
+                {t("desktopTitle")}
+              </h1>
+              <p className="text-[15px] text-ink-soft leading-relaxed">
+                {t("desktopHint")}{" "}
+                <span className="font-mono text-ink">getstroyka.com/get</span>
+              </p>
+            </div>
+          ) : (
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-muted">
+              {t("redirecting")}
+            </p>
+          )}
+          <div className="flex flex-wrap justify-center gap-3">
+            <StoreBadge
+              href={IOS_APP_URL}
+              label={t("appStore")}
+              icon={<AppleGlyph className="h-3 w-3" />}
+              onClick={() =>
+                trackCta("store_badge_clicked", { store: "app_store" })
+              }
+            />
+            <StoreBadge
+              href={ANDROID_APP_URL}
+              label={t("googlePlay")}
+              icon={<GooglePlayGlyph className="h-3 w-3" />}
+              onClick={() =>
+                trackCta("store_badge_clicked", { store: "google_play" })
+              }
+            />
+          </div>
         </div>
-      ) : (
-        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-muted">
-          {t("redirecting")}
-        </p>
-      )}
-      <div className="flex flex-wrap justify-center gap-3">
-        <StoreBadge
-          href={IOS_APP_URL}
-          label={t("appStore")}
-          icon={<AppleGlyph className="h-3 w-3" />}
-          onClick={() => trackCta("store_badge_clicked", { store: "app_store" })}
-        />
-        <StoreBadge
-          href={ANDROID_APP_URL}
-          label={t("googlePlay")}
-          icon={<GooglePlayGlyph className="h-3 w-3" />}
-          onClick={() => trackCta("store_badge_clicked", { store: "google_play" })}
-        />
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
 
