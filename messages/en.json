@@ -116,12 +116,12 @@
       "1": {
         "title": "Invite your crew",
         "body": "Text them a link. They install in 30 seconds and tap their name. Workers only see what matters to them — their tasks, their hours, their paystub.",
-        "alt": "Worker daily home screen with earnings, hours, and today’s tasks"
+        "alt": "Tasks screen: crew work grouped by project, with who is on it, progress, and messages"
       },
       "2": {
         "title": "Run the day, on the phone",
         "body": "Crew clocks in, logs materials and fuel, closes tasks. Everything works offline and syncs when signal comes back — no lost data, no duplicated entries.",
-        "alt": "Supply requests screen — crew logging materials and fuel from the field"
+        "alt": "Supply requests screen: crew asking for materials from the field, pending, purchased, and rejected"
       },
       "3": {
         "title": "Run the numbers",
@@ -568,8 +568,40 @@
     "chooseYourPlan": "Choose your plan",
     "almostThere": "Almost there",
     "redirecting": "Redirecting...",
-    "desktopTitle": "Stroyka is a phone app.",
-    "desktopHint": "Open this link on your phone, or tap a store below:",
+    "desktopKicker": "Get the app",
+    "desktopTitle": "Stroyka lives on your phone.",
+    "desktopHint": "Point your phone’s camera at the code, or tap a store. Same account, same jobs, from the site.",
+    "desktopQrAlt": "QR code that opens the Stroyka download link on a phone",
+    "desktopScanLabel": "Scan with your phone’s camera",
+    "desktopScanHint": "It opens the right store. Or tap one below.",
+    "desktopScreens": {
+      "projects": {
+        "label": "Projects",
+        "note": "Every job at a glance: what’s left, what’s at risk, who needs you.",
+        "alt": "Boss home screen: three projects with budgets, one over, one at risk"
+      },
+      "tasks": {
+        "label": "Tasks",
+        "note": "Who is on what, with the thread right on the card.",
+        "alt": "Tasks screen: crew work by project with assignee, progress and messages"
+      },
+      "requests": {
+        "label": "Requests",
+        "note": "The crew asks from the site. You approve from the truck.",
+        "alt": "Supply requests screen: pending, purchased and rejected requests from the crew"
+      },
+      "report": {
+        "label": "Report",
+        "note": "Labor, materials, fuel: the margin while you can still act on it.",
+        "alt": "Project report: budget bar, burn rate, cost breakdown and hours"
+      }
+    },
+    "desktopProof1Title": "Clock in on site",
+    "desktopProof1Detail": "GPS-stamped hours. No timesheet on Friday.",
+    "desktopProof2Title": "Snap the receipt",
+    "desktopProof2Detail": "The camera reads it. The cost lands on the job.",
+    "desktopProof3Title": "Works without signal",
+    "desktopProof3Detail": "Logs in the basement, syncs from the truck.",
     "noPerSeatFees": "No per-seat fees. Your entire crew is included.",
     "enterDetails": "Enter your details and we’ll take you to secure checkout.",
     "monthly": "Monthly",

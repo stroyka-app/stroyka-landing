@@ -117,12 +117,12 @@
       "1": {
         "title": "Invita a tu cuadrilla",
         "body": "Mándales el enlace por texto. Se instala en 30 segundos y tocan su nombre. Los trabajadores solo ven lo que les importa — sus tareas, sus horas, su comprobante de pago.",
-        "alt": "Pantalla de inicio del trabajador con ganancias, horas y tareas del día"
+        "alt": "Pantalla de tareas: el trabajo de la cuadrilla por obra, con responsable, avance y mensajes"
       },
       "2": {
         "title": "Gestiona el día desde el teléfono",
         "body": "La cuadrilla marca entrada, registra materiales y combustible, cierra tareas. Todo funciona sin conexión y sincroniza cuando vuelve la señal — sin datos perdidos, sin entradas duplicadas.",
-        "alt": "Pantalla de solicitudes — la cuadrilla registra materiales desde la obra"
+        "alt": "Pantalla de solicitudes: la cuadrilla pide materiales desde la obra; pendientes, compradas y rechazadas"
       },
       "3": {
         "title": "Revisa los números",
@@ -570,8 +570,40 @@
     "chooseYourPlan": "Elige tu plan",
     "almostThere": "Ya casi",
     "redirecting": "Redirigiendo...",
-    "desktopTitle": "Stroyka es una app para el teléfono.",
-    "desktopHint": "Abre este enlace en tu teléfono o elige una tienda abajo:",
+    "desktopKicker": "Descarga la app",
+    "desktopTitle": "Stroyka vive en tu teléfono.",
+    "desktopHint": "Apunta la cámara del teléfono al código o elige una tienda. La misma cuenta y las mismas obras, desde la obra.",
+    "desktopQrAlt": "Código QR que abre el enlace de descarga de Stroyka en un teléfono",
+    "desktopScanLabel": "Apunta la cámara del teléfono",
+    "desktopScanHint": "Abre la tienda correcta. O elige una abajo.",
+    "desktopScreens": {
+      "projects": {
+        "label": "Obras",
+        "note": "Todas las obras de un vistazo: cuánto queda, cuál está en riesgo, quién te necesita.",
+        "alt": "Pantalla principal del jefe: tres obras con presupuesto, una pasada, una en riesgo"
+      },
+      "tasks": {
+        "label": "Tareas",
+        "note": "Quién hace qué, con la conversación en la misma tarjeta.",
+        "alt": "Pantalla de tareas: el trabajo de la cuadrilla por obra, responsable, avance y mensajes"
+      },
+      "requests": {
+        "label": "Pedidos",
+        "note": "La cuadrilla pide desde la obra. Tú apruebas desde la camioneta.",
+        "alt": "Pantalla de pedidos: pedidos de material de la cuadrilla, pendientes, comprados y rechazados"
+      },
+      "report": {
+        "label": "Reporte",
+        "note": "Mano de obra, materiales, combustible: el margen mientras aún puedes actuar.",
+        "alt": "Reporte de obra: barra de presupuesto, ritmo de gasto, desglose de costos y horas"
+      }
+    },
+    "desktopProof1Title": "Marca entrada en la obra",
+    "desktopProof1Detail": "Horas con sello GPS. Sin planilla el viernes.",
+    "desktopProof2Title": "Foto al recibo",
+    "desktopProof2Detail": "La cámara lo lee y el gasto cae en la obra.",
+    "desktopProof3Title": "Funciona sin señal",
+    "desktopProof3Detail": "Registra en el sótano, sincroniza desde la camioneta.",
     "noPerSeatFees": "Sin cobro por usuario. Toda tu cuadrilla incluida.",
     "enterDetails": "Ingresa tus datos y te llevamos al pago seguro.",
     "monthly": "Mensual",
