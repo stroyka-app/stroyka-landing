@@ -1,33 +1,46 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { track } from "@vercel/analytics";
 import { ANDROID_APP_URL, IOS_APP_URL } from "@/lib/appLinks";
+import { isMobileVisitor } from "@/lib/isMobileVisitor";
 import { AppleGlyph, GooglePlayGlyph } from "@/components/ui/StoreGlyphs";
 import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
 
 /**
- * UA-detects and forwards to the right store: Android → Google Play,
- * everything else → App Store. (It used to say iOS users MUST come through
- * the web — true only while the iOS app was sign-in-only under 3.1.1. Since
- * 1.0.28 they can sign up and subscribe in-app, which is why the landing CTAs
- * now send phones HERE rather than to web signup.) The analytics beacon
- * needs a beat to leave before navigation, hence the short delay; the
- * visible store buttons double as the no-JS / slow-network / misdetection
- * fallback (e.g. a desktop browser opening the link out of curiosity).
+ * The smart store link. Every "Start free" on the site lands here.
+ *
+ * On a phone or tablet: UA-detects and forwards to the right store
+ * (Android → Google Play, everything else → App Store). The analytics
+ * beacon needs a beat to leave before navigation, hence the short delay;
+ * the visible store buttons double as the no-JS / slow-network /
+ * misdetection fallback.
+ *
+ * On a desktop: no forward. A desktop cannot install a phone app, and since
+ * 2026-09-13 the site no longer offers the web signup as the alternative
+ * (see `useSignupHref`), so the page says so and shows the two badges plus
+ * the short link to open on the phone.
  */
 export default function GetContent() {
   const t = useTranslations("getStarted");
   const trackCta = useCtaTracker("get_page");
+  // Server render and first paint assume a phone (the paid-traffic case);
+  // hydration corrects a desktop before the forward timer fires.
+  const [desktop, setDesktop] = useState(false);
 
   useEffect(() => {
+    const src =
+      new URLSearchParams(window.location.search).get("src") ?? "direct";
+    if (!isMobileVisitor()) {
+      setDesktop(true);
+      trackCta("store_page_desktop", { src });
+      return;
+    }
     const ua = navigator.userAgent || "";
     const isAndroid = /android/i.test(ua);
     const url = isAndroid ? ANDROID_APP_URL : IOS_APP_URL;
     const store = isAndroid ? "google_play" : "app_store";
-    const src =
-      new URLSearchParams(window.location.search).get("src") ?? "direct";
     track("get_redirect", { store, src });
     // PostHog-only, deliberately: a phone visitor reaches this page from a
     // "Start free" click that already fired the pixel's Lead, so counting the
@@ -38,10 +51,22 @@ export default function GetContent() {
   }, [trackCta]);
 
   return (
-    <main className="page-surface flex min-h-screen flex-col items-center justify-center gap-8 px-6">
-      <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-muted">
-        {t("redirecting")}
-      </p>
+    <main className="page-surface flex min-h-screen flex-col items-center justify-center gap-8 px-6 text-center">
+      {desktop ? (
+        <div className="max-w-md">
+          <h1 className="font-display font-light text-3xl leading-tight tracking-[-0.02em] text-ink mb-3">
+            {t("desktopTitle")}
+          </h1>
+          <p className="text-[15px] text-ink-soft leading-relaxed">
+            {t("desktopHint")}{" "}
+            <span className="font-mono text-ink">getstroyka.com/get</span>
+          </p>
+        </div>
+      ) : (
+        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-muted">
+          {t("redirecting")}
+        </p>
+      )}
       <div className="flex flex-wrap justify-center gap-3">
         <StoreBadge
           href={IOS_APP_URL}

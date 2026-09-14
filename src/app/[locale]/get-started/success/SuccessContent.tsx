@@ -11,7 +11,7 @@ import AmbientBackdrop from "@/components/ui/AmbientBackdrop";
 import FadeIn from "@/components/ui/FadeIn";
 import TextReveal from "@/components/ui/TextReveal";
 import { AppleGlyph, GooglePlayGlyph } from "@/components/ui/StoreGlyphs";
-import { IOS_APP_URL, ANDROID_APP_URL, SIGNUP_URL } from "@/lib/appLinks";
+import { IOS_APP_URL, ANDROID_APP_URL } from "@/lib/appLinks";
 import { PRICES } from "@/data/pricing";
 import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
 
@@ -119,42 +119,22 @@ export default function SuccessContent() {
             </div>
           </FadeIn>
 
-          {/* Next steps — the real flow: create the account on the web FIRST
-              (iOS app is sign-in-only), then download + sign in. */}
+          {/* Next steps: get the app, then create the account IN the app with
+              the checkout email — create-company links the pending Stripe
+              subscription by that email. The web signup used to be step 1;
+              the site stopped creating web accounts on 2026-09-13. */}
           <FadeIn delay={0.2}>
             <div className="card-stone border border-ink/15 rounded-2xl p-6 sm:p-8 text-left mb-6">
               <h2 className="font-display text-[20px] leading-snug text-ink mb-7">
                 {t("newToStroyka")}
               </h2>
 
-              {/* Step 1 — create account on the web */}
+              {/* Step 1 — download */}
               <div className="flex gap-4">
                 <StepDot>1</StepDot>
                 <div className="flex-1 pb-7">
                   <p className="text-[14.5px] text-ink-soft leading-relaxed mb-4">
                     {t("step1")}
-                  </p>
-                  <a
-                    href={SIGNUP_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-1.5 bg-ink text-bone hover:bg-brand-deep transition-colors rounded-full px-4 py-2 font-mono text-[11px] tracking-[0.1em] uppercase"
-                  >
-                    {t("createAccount")}
-                    <ArrowRight
-                      size={13}
-                      className="transition-transform group-hover:translate-x-0.5"
-                    />
-                  </a>
-                </div>
-              </div>
-
-              {/* Step 2 — download + sign in */}
-              <div className="flex gap-4">
-                <StepDot>2</StepDot>
-                <div className="flex-1">
-                  <p className="text-[14.5px] text-ink-soft leading-relaxed mb-4">
-                    {t("step2")}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <StoreBadge
@@ -172,6 +152,16 @@ export default function SuccessContent() {
                       />
                     )}
                   </div>
+                </div>
+              </div>
+
+              {/* Step 2 — create the account in the app */}
+              <div className="flex gap-4">
+                <StepDot>2</StepDot>
+                <div className="flex-1">
+                  <p className="text-[14.5px] text-ink-soft leading-relaxed">
+                    {t("step2")}
+                  </p>
                 </div>
               </div>
             </div>
