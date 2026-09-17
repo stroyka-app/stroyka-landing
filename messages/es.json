@@ -730,6 +730,13 @@
     "bullet2": "Precio fijo al mes, sin cobro por trabajador",
     "bullet3": "Gratis para empezar, sin tarjeta",
     "privacy": "Privacidad",
-    "terms": "Términos"
+    "terms": "Términos",
+    "ledgerJob": "Remodelación de cocina en Oak St. · todo el tiempo",
+    "ledgerLeft": "disponibles",
+    "ledgerOf": "de {total} · {pct} usado",
+    "ledgerLabor": "Mano de obra",
+    "ledgerMaterials": "Materiales",
+    "ledgerFuel": "Gasolina",
+    "ledgerPunch": "Lo supiste el día 12. No en marzo."
   }
 }

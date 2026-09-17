@@ -37,9 +37,19 @@ const DWELL_MS = 4200;
 export default function PhoneShowcase({
   screens,
   onSelect,
+  notes = true,
 }: {
   screens: Screen[];
   onSelect?: (key: string, how: "tap" | "auto") => void;
+  /**
+   * Show the per-screen field note (floating beside the phone on wide
+   * viewports, under it on narrow ones). Default true, which is /get.
+   *
+   * /start passes false: it carries LedgerCard, which makes the same point
+   * with the job's actual figures. Two stone cards of the same treatment
+   * sitting side by side collided at 1440 and said it twice.
+   */
+  notes?: boolean;
 }) {
   const prefersReduced = useReducedMotion();
   const [index, setIndex] = useState(0);
@@ -161,6 +171,7 @@ export default function PhoneShowcase({
 
         {/* The field note for this screen, stamped onto the phone's left edge
             (the gap side, so it never runs off the page's right margin). */}
+        {notes && (
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={screen.key}
@@ -177,12 +188,15 @@ export default function PhoneShowcase({
             <span className="block text-[12.5px] leading-snug text-ink">{screen.note}</span>
           </motion.div>
         </AnimatePresence>
+        )}
       </div>
 
       {/* Narrow: the note under the phone. */}
-      <div className="mx-auto mt-4 max-w-[300px] text-center sm:hidden">
-        <p className="text-[13px] leading-snug text-ink-soft">{screen.note}</p>
-      </div>
+      {notes && (
+        <div className="mx-auto mt-4 max-w-[300px] text-center sm:hidden">
+          <p className="text-[13px] leading-snug text-ink-soft">{screen.note}</p>
+        </div>
+      )}
 
       {/* Autoplay drain */}
       {!prefersReduced && (
