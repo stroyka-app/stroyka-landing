@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { withAttributionPath } from "@/lib/attribution";
+import { trackCta } from "@/lib/track";
 
 /**
  * The one client island on /start: the CTA's href.
@@ -13,6 +14,18 @@ import { withAttributionPath } from "@/lib/attribution";
  * lib/attribution). It no longer re-points desktops at the web signup: the
  * site stopped creating web accounts on 2026-09-13 (see `useSignupHref`).
  * No next-intl Link, no framer: the island must stay a few hundred bytes.
+ * `trackCta` adds nothing to that budget — posthog-js is already in this
+ * route's bundle via PostHogAnalytics, which sits outside SiteChrome and so
+ * still runs here even though the motion chrome does not.
+ *
+ * THE TAP IS THE ONLY CONVERSION THIS PAGE CAN REPORT. `/start` exists for
+ * paid traffic, and `cta_start_free` maps to the Meta standard event `Lead`
+ * (lib/track), so firing it is what lets the pixel optimise toward people who
+ * act instead of people whose page merely finished loading. The September
+ * review traced $57 of wasted Meta spend to exactly that: "Meta has been
+ * optimising toward page loaded, because that is all it can see." The home
+ * page was instrumented in that pass and this island was missed — it is the
+ * one page built solely for ads, so it is the one that could least afford it.
  */
 export default function StartCta({
   locale,
@@ -31,7 +44,12 @@ export default function StartCta({
   }, [storePath]);
 
   return (
-    <a href={href} className={className} data-cta="start-primary">
+    <a
+      href={href}
+      className={className}
+      data-cta="start-primary"
+      onClick={() => trackCta("cta_start_free", { location: "start", locale })}
+    >
       {label}
     </a>
   );
