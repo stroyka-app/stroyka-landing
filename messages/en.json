@@ -727,6 +727,13 @@
     "bullet2": "Flat monthly price, no per-worker fees",
     "bullet3": "Free to start, no card",
     "privacy": "Privacy",
-    "terms": "Terms"
+    "terms": "Terms",
+    "ledgerJob": "Oak St. Kitchen Remodel · all time",
+    "ledgerLeft": "left",
+    "ledgerOf": "of {total} · {pct} used",
+    "ledgerLabor": "Labor",
+    "ledgerMaterials": "Materials",
+    "ledgerFuel": "Fuel",
+    "ledgerPunch": "You knew on day 12. Not in March."
   }
 }
