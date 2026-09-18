@@ -259,7 +259,7 @@
       },
       "6": {
         "q": "¿Hay prueba gratis?",
-        "a": "Sí — el plan gratis es gratis para siempre y ahora incluye control de costos, ganancia por obra y facturación, con un límite de 2 obras activas y 3 facturas al mes. Starter cuesta $29 al mes con obras y facturas ilimitadas. O agenda una demo de 20 minutos y te mostramos la app en vivo con tus propios datos de ejemplo.",
+        "a": "Sí — el plan gratis es gratis para siempre y ahora incluye control de costos, ganancia por obra y facturación, con un límite de 3 obras activas y 3 facturas al mes. Starter cuesta $29 al mes con obras y facturas ilimitadas. O agenda una demo de 20 minutos y te mostramos la app en vivo con tus propios datos de ejemplo.",
         "meta": "Precios"
       },
       "7": {
@@ -272,7 +272,7 @@
   "pricing": {
     "eyebrow": "Precios",
     "heading": "Mensualidad fija. Sin cobro por usuario.",
-    "subhead": "Por asiento = por trabajador. Nosotros no hacemos eso. El control de costos y las facturas son gratis: solo pagas cuando llevas más de dos obras a la vez.",
+    "subhead": "Por asiento = por trabajador. Nosotros no hacemos eso. El control de costos y las facturas son gratis: solo pagas cuando llevas más de tres obras a la vez.",
     "monthly": "Mensual",
     "annual": "Anual",
     "annualSave": "−17%",
@@ -284,12 +284,12 @@
       "name": "Gratis",
       "description": "Todo lo necesario para costear bien una obra",
       "priceForever": "para siempre",
-      "limit": "2 obras activas · 3 facturas al mes",
+      "limit": "3 obras activas · 3 facturas al mes",
       "cta": "Empieza gratis",
       "features": {
         "0": "Costos y ganancia — lo que de verdad costó cada obra",
         "1": "Factura a tus clientes por correo — 3 al mes",
-        "2": "Hasta 2 obras activas a la vez",
+        "2": "Hasta 3 obras activas a la vez",
         "3": "Reloj checador con GPS, geocercas y bitácoras",
         "4": "Materiales — escanea un recibo y se agrupa cada línea",
         "5": "Contratos, tareas, mensajes y pedidos de material",
