@@ -27,7 +27,7 @@ export const PRICING_TIERS: readonly PricingTier[] = [
   {
     name: "Free",
     monthlyPrice: 0,
-    description: "Job costing, P&L and invoicing included, forever. Capped at 2 active jobs and 3 invoices a month. Time tracking, daily logs, tasks, supply requests, contracts, receipt scanning, offline-first sync.",
+    description: "Job costing, P&L and invoicing included, forever. Capped at 3 active jobs and 3 invoices a month. Time tracking, daily logs, tasks, supply requests, contracts, receipt scanning, offline-first sync.",
   },
   {
     name: "Starter",

@@ -258,7 +258,7 @@
       },
       "6": {
         "q": "Is there a free trial?",
-        "a": "Yes — the free plan is free forever, and it now includes job costing, P&L and invoicing, capped at 2 active jobs and 3 invoices a month. Starter is $29/month for unlimited jobs and invoices. Or book a 20-minute demo and we’ll walk you through the app live with your own sample data.",
+        "a": "Yes — the free plan is free forever, and it now includes job costing, P&L and invoicing, capped at 3 active jobs and 3 invoices a month. Starter is $29/month for unlimited jobs and invoices. Or book a 20-minute demo and we’ll walk you through the app live with your own sample data.",
         "meta": "Pricing"
       },
       "7": {
@@ -271,7 +271,7 @@
   "pricing": {
     "eyebrow": "Pricing",
     "heading": "Flat monthly. No per-seat games.",
-    "subhead": "Per-seat = per-worker. We don’t do that. Job costing and invoicing are free — you only pay once you’re running more than two jobs at a time.",
+    "subhead": "Per-seat = per-worker. We don’t do that. Job costing and invoicing are free — you only pay once you’re running more than three jobs at a time.",
     "monthly": "Monthly",
     "annual": "Annual",
     "annualSave": "−17%",
@@ -283,12 +283,12 @@
       "name": "Free",
       "description": "Everything you need to price one job right",
       "priceForever": "forever",
-      "limit": "2 active jobs · 3 invoices a month",
+      "limit": "3 active jobs · 3 invoices a month",
       "cta": "Start free",
       "features": {
         "0": "Job costing & P&L — what every job really cost",
         "1": "Invoice clients by email — 3 per month",
-        "2": "Up to 2 active jobs at a time",
+        "2": "Up to 3 active jobs at a time",
         "3": "GPS time clock, geofences & daily logs",
         "4": "Materials — scan a receipt once, every line grouped",
         "5": "Contracts, tasks, messaging & supply requests",
