@@ -663,7 +663,6 @@
     "continueToPayment": "Continuar al pago",
     "processing": "Procesando...",
     "alreadyHaveAccount": "¿Ya tienes cuenta?",
-    "login": "Inicia sesión →",
     "takingYouToCheckout": "Llevándote al pago seguro...",
     "poweredByStripe": "Procesado por Stripe. Tu información de pago nunca se guarda en nuestros servidores.",
     "subscriptionActive": "Suscripción activa",
@@ -681,13 +680,13 @@
     "noWorries": "Sin problema",
     "planUnchanged": "Tu plan no ha cambiado.",
     "subscribeAnytime": "Puedes suscribirte cuando quieras desde la página de precios.",
-    "backToPricing": "← Volver a precios"
+    "backToPricing": "← Volver a precios",
+    "signInInApp": "Inicia sesión en la app →"
   },
   "account": {
     "title": "Cuenta",
     "manageInApp": "Administra tu suscripción en la app",
     "managedInside": "Tu suscripción se gestiona dentro de Stroyka. Abre la app y ve a <highlight>Configuración → tu plan</highlight> para actualizar tu tarjeta, ver facturas o cambiar tu plan.",
-    "openStroyka": "Abrir Stroyka",
     "needHelp": "¿Necesitas ayuda? hello@getstroyka.com",
     "redirectingBilling": "Redirigiendo a facturación",
     "verifying": "Verificando tu sesión",
@@ -697,7 +696,8 @@
     "couldntVerify": "No pudimos verificar tu sesión",
     "tryFromApp": "Vuelve a intentarlo desde la app Stroyka, o contáctanos en <email>hello@getstroyka.com</email>.",
     "loading": "cargando",
-    "backToSite": "← Volver a getstroyka.com"
+    "backToSite": "← Volver a getstroyka.com",
+    "getTheApp": "Descargar la app"
   },
   "errors": {
     "eyebrow": "• Algo salió del plan",

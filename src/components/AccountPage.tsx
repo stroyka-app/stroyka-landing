@@ -161,8 +161,8 @@ function DirectVisitView() {
       </FadeIn>
       <FadeIn delay={0.22}>
         <div className="flex flex-col items-center gap-5">
-          <Button variant="primary" size="lg" href="https://app.getstroyka.com">
-            {t("openStroyka")}
+          <Button variant="primary" size="lg" href="https://www.getstroyka.com/get">
+            {t("getTheApp")}
           </Button>
           <a
             href="mailto:hello@getstroyka.com"
@@ -230,8 +230,8 @@ function SuccessView() {
       </FadeIn>
       <FadeIn delay={0.25}>
         <div className="flex flex-col items-center gap-5">
-          <Button variant="primary" size="lg" href="https://app.getstroyka.com">
-            {t("openStroyka")}
+          <Button variant="primary" size="lg" href="https://www.getstroyka.com/get">
+            {t("getTheApp")}
           </Button>
           <Link
             href="/"
@@ -278,8 +278,8 @@ function ErrorView() {
         </p>
       </FadeIn>
       <FadeIn delay={0.22}>
-        <Button variant="primary" size="lg" href="https://app.getstroyka.com">
-          {t("openStroyka")}
+        <Button variant="primary" size="lg" href="https://www.getstroyka.com/get">
+          {t("getTheApp")}
         </Button>
       </FadeIn>
     </PageShell>

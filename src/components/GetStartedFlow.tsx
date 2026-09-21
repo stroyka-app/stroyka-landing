@@ -668,12 +668,18 @@ export default function GetStartedFlow() {
                   </div>
 
                   <p className="text-xs text-ink-muted/60 text-center mt-2">
+                    {/* Points at the stores, not at a login page: there is
+                        no longer anywhere to sign in on the web. The browser
+                        app was retired on 2026-09-21 and app.getstroyka.com
+                        now serves a signpost, so "Log in" would have sent
+                        someone to a page telling them to install the app —
+                        one hop too many, and a confusing one mid-checkout. */}
                     {t("alreadyHaveAccount")}{" "}
                     <a
-                      href="https://app.getstroyka.com"
+                      href="https://www.getstroyka.com/get"
                       className="text-brand-forest hover:text-brand-sage transition-colors duration-200 underline"
                     >
-                      {t("login")}
+                      {t("signInInApp")}
                     </a>
                   </p>
                 </form>

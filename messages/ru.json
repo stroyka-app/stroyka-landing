@@ -663,7 +663,6 @@
     "continueToPayment": "Перейти к оплате",
     "processing": "Обработка...",
     "alreadyHaveAccount": "Уже есть аккаунт?",
-    "login": "Войти →",
     "takingYouToCheckout": "Переходим к безопасной оплате...",
     "poweredByStripe": "Обработка через Stripe. Данные карты никогда не хранятся на наших серверах.",
     "subscriptionActive": "Подписка активна",
@@ -681,13 +680,13 @@
     "noWorries": "Не переживай",
     "planUnchanged": "Твой тариф не изменился.",
     "subscribeAnytime": "Оформить подписку можно в любой момент на странице тарифов.",
-    "backToPricing": "← К тарифам"
+    "backToPricing": "← К тарифам",
+    "signInInApp": "Войти в приложении →"
   },
   "account": {
     "title": "Аккаунт",
     "manageInApp": "Управляйте подпиской в приложении",
     "managedInside": "Подписка управляется внутри Stroyka. Откройте приложение и перейдите в <highlight>Настройки → ваш тариф</highlight>, чтобы обновить карту, просмотреть счета или сменить тариф.",
-    "openStroyka": "Открыть Stroyka",
     "needHelp": "Нужна помощь? hello@getstroyka.com",
     "redirectingBilling": "Переходим к оплате",
     "verifying": "Проверяем сеанс",
@@ -697,7 +696,8 @@
     "couldntVerify": "Не удалось подтвердить сеанс",
     "tryFromApp": "Попробуйте снова из приложения Stroyka или напишите нам: <email>hello@getstroyka.com</email>.",
     "loading": "загрузка",
-    "backToSite": "← Назад на getstroyka.com"
+    "backToSite": "← Назад на getstroyka.com",
+    "getTheApp": "Установить приложение"
   },
   "errors": {
     "eyebrow": "• Что-то пошло не по плану",

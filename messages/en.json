@@ -661,7 +661,6 @@
     "continueToPayment": "Continue to Payment",
     "processing": "Processing...",
     "alreadyHaveAccount": "Already have an account?",
-    "login": "Log in →",
     "takingYouToCheckout": "Taking you to secure checkout...",
     "poweredByStripe": "Powered by Stripe. Your payment info is never stored on our servers.",
     "subscriptionActive": "Subscription active",
@@ -679,13 +678,13 @@
     "noWorries": "No worries",
     "planUnchanged": "Your plan hasn’t changed.",
     "subscribeAnytime": "You can subscribe anytime from the pricing page.",
-    "backToPricing": "← Back to pricing"
+    "backToPricing": "← Back to pricing",
+    "signInInApp": "Sign in from the app →"
   },
   "account": {
     "title": "Account",
     "manageInApp": "Manage your subscription in the app",
     "managedInside": "Your subscription is managed inside Stroyka. Open the app and go to <highlight>Settings → your plan</highlight> to update your card, view invoices, or change your plan.",
-    "openStroyka": "Open Stroyka",
     "needHelp": "Need help? hello@getstroyka.com",
     "redirectingBilling": "Redirecting to billing",
     "verifying": "Verifying your session",
@@ -695,7 +694,8 @@
     "couldntVerify": "We couldn’t verify your session",
     "tryFromApp": "Please try again from the Stroyka app, or contact us at <email>hello@getstroyka.com</email>.",
     "loading": "loading",
-    "backToSite": "← Back to getstroyka.com"
+    "backToSite": "← Back to getstroyka.com",
+    "getTheApp": "Get the app"
   },
   "errors": {
     "eyebrow": "• Something went off plan",
