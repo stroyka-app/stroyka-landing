@@ -68,6 +68,10 @@ export default function LegalPageLayout({
     return () => mq.removeEventListener("change", sync);
   }, []);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  // A section opened by a deep link. Must be STATE: `open` is a controlled
+  // prop, so setting el.open imperatively survives exactly until the next
+  // render — which on mobile closed the section the link had just opened.
+  const [linkedId, setLinkedId] = useState<string | null>(null);
   const articleRef = useRef<HTMLDivElement>(null);
 
   // Reading progress across the document body only — a rail that fills while
@@ -82,35 +86,77 @@ export default function LegalPageLayout({
     restDelta: 0.001,
   });
 
-  // Scroll-spy. The pill follows the reader instead of the reader driving it.
+  // Scroll-spy: the current section is the LAST one whose top has passed the
+  // reading line. An IntersectionObserver taking the topmost intersecting
+  // entry got this wrong — a section taller than the band stays intersecting
+  // while you read the one after it, so the pill lagged a whole section
+  // behind (measured: landing on §5 lit "4. Data Isolation").
   useEffect(() => {
-    const els = sections
-      .map((s) => document.getElementById(`section-${s.id}`))
-      .filter((el): el is HTMLElement => el !== null);
-    if (els.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible[0]) {
-          setActiveId(visible[0].target.id.replace("section-", ""));
-        }
-      },
-      // Top third of the viewport: a section counts as "being read" when its
-      // heading has reached where a person's eyes actually are.
-      { rootMargin: "-88px 0px -66% 0px", threshold: 0 },
-    );
-    els.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    let frame = 0;
+    const READING_LINE = 140;
+    const sync = () => {
+      frame = 0;
+      let current = sections[0]?.id ?? "";
+      for (const sec of sections) {
+        const el = document.getElementById(`section-${sec.id}`);
+        if (el && el.getBoundingClientRect().top <= READING_LINE)
+          current = sec.id;
+      }
+      setActiveId(current);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(sync);
+    };
+    sync();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, [sections]);
+
+  // A pasted deep link has to land on the section, which means three things,
+  // not one: the element has to be findable from the hash, a COLLAPSED section
+  // has to open first (on mobile it is closed and the browser will not scroll
+  // to something with no box), and the pill has to agree with where you are.
+  //
+  // The first version copied `#storage-security` while the element was
+  // `section-storage-security`, so the browser found no target and the page
+  // just sat where it was. Both spellings are accepted now; the clean one is
+  // what gets copied.
+  useEffect(() => {
+    const go = () => {
+      const raw = window.location.hash.replace(/^#/, "");
+      if (!raw) return;
+      const id = raw.replace(/^section-/, "");
+      const el = document.getElementById(`section-${id}`);
+      if (!el) return;
+      setLinkedId(id);
+      setActiveId(id);
+      // Two frames: one for React to render `open`, one for layout to
+      // settle. A collapsed <details> has no box and cannot be scrolled to.
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() =>
+          document
+            .getElementById(`section-${id}`)
+            ?.scrollIntoView({ behavior: "auto", block: "start" }),
+        ),
+      );
+    };
+    go();
+    window.addEventListener("hashchange", go);
+    return () => window.removeEventListener("hashchange", go);
+  }, []);
 
   const copyAnchor = async (id: string) => {
     try {
-      await navigator.clipboard.writeText(
-        `${window.location.origin}${window.location.pathname}#${id}`,
-      );
+      const url = `${window.location.origin}${window.location.pathname}#${id}`;
+      await navigator.clipboard.writeText(url);
+      // Reflect it in the address bar too — without this the person who just
+      // copied a link has no way to see what they copied.
+      window.history.replaceState(null, "", `#${id}`);
       setCopiedId(id);
       setTimeout(() => setCopiedId(null), 1600);
     } catch {
@@ -250,7 +296,7 @@ export default function LegalPageLayout({
                 <motion.details
                   key={section.id}
                   id={`section-${section.id}`}
-                  open={isWide || i === 0 || undefined}
+                  open={isWide || i === 0 || linkedId === section.id || undefined}
                   onToggle={(e) => {
                     // Desktop is a document: a stray click on a heading must
                     // not be able to collapse a section.
