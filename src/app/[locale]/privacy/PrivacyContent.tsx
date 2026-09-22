@@ -220,7 +220,7 @@ export default function PrivacyContent() {
     <LegalPageLayout
       title="Privacy Policy"
       subtitle="We respect your privacy and are committed to protecting your personal information."
-      effectiveDate="Effective Date: April 2026 · Last Updated: June 2026"
+      effectiveDate="Effective Date: April 2026 · Last Updated: September 2026"
       sections={sections}
     />
   );

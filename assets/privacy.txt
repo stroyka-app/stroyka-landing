@@ -65,7 +65,6 @@ We share your information only with the following categories of service provider
 Supabase (infrastructure): hosts our database (PostgreSQL on AWS), authentication system, file storage, and serverless functions. Data is stored in the US region. Supabase Privacy Policy: https://supabase.com/privacy
 Sentry (error tracking): receives error reports and crash data to help us identify and fix bugs. Sentry does not receive your project data, financial data, or personally identifiable information beyond a user ID. Sentry Privacy Policy: https://sentry.io/privacy/
 PostHog (analytics): receives anonymized usage analytics (user ID, company ID, role, page views, feature usage). PostHog does not receive your name, email, project data, or financial data. PostHog Privacy Policy: https://posthog.com/privacy
-Meta Platforms (advertising measurement): receives an event when someone visits the marketing website or clicks to get the app, via the Meta pixel. Marketing website only; it is not present in the app. Meta Privacy Policy: https://www.facebook.com/privacy/policy
 Resend (email delivery): processes transactional emails including account verification, password resets, and worker invitations. Resend receives the recipient email address and email content. Resend Privacy Policy: https://resend.com/legal/privacy-policy
 Stripe (payment processing): handles all subscription billing and payment processing. Stripe receives your payment information directly. Stroyka does not store or have access to your credit card numbers. Stripe Privacy Policy: https://stripe.com/privacy
 Vercel (hosting): hosts the Stroyka marketing website and web application. Vercel may process standard web server logs including IP addresses. Vercel Privacy Policy: https://vercel.com/legal/privacy-policy
@@ -112,8 +111,8 @@ Right to Lodge a Complaint with your local data protection authority
 The legal basis for processing your data is: (a) performance of a contract (providing the Service), (b) legitimate interests (improving the Service, preventing fraud), and (c) consent (where applicable, such as marketing communications).
 8. Cookies and Tracking
 8.1. The Stroyka web application uses essential cookies for authentication and session management. These cookies are strictly necessary for the Service to function and cannot be disabled.
-8.2. Our marketing website (getstroyka.com) uses analytics cookies via PostHog to understand how visitors interact with the site — pages viewed, referrer, and which buttons are clicked. We do not record your screen or your session.
-8.3. Our marketing website also loads the Meta (Facebook) advertising pixel, which sets third-party cookies and reports to Meta that a visit or a sign-up click happened, so we can measure whether our ads work. It runs on the marketing website only — never inside the Stroyka app, and never on your project, time, or financial data. If you would rather not be measured this way, your browser's tracking protection or an ad blocker will stop it, and the website works normally without it.
+8.2. Our marketing website (getstroyka.com) uses analytics cookies via PostHog to understand how visitors interact with the site. These cookies do not collect personally identifiable information.
+8.3. We do not use advertising cookies or tracking pixels. We do not participate in ad networks or retargeting programs.
 9. Third-Party Links
 The Service may contain links to third-party websites or services. We are not responsible for the privacy practices or content of these third parties. We encourage you to read the privacy policies of any third-party services you access.
 10. Children’s Privacy
