@@ -389,6 +389,14 @@
     background: none !important;
     padding-top: 0 !important;
     min-height: 0 !important;
+    /* `overflow: clip` on <main> (there to contain the vignette blur, and to
+       keep `position: sticky` working — see LegalPageLayout) truncates the
+       element to its first fragment when printing. Pages 3 onward came out
+       blank. Print has no sticky and no vignette to contain, so it goes. */
+    overflow: visible !important;
+  }
+  body:has(.legal-section) main > div {
+    overflow: visible !important;
   }
   .legal-section:not([open]) > .legal-body {
     display: block;
@@ -408,6 +416,14 @@
        Avoidance belongs on things that FIT on a page. */
   }
   /* A heading alone at the foot of a page, with its clause overleaf. */
+  /* Safety net if anyone ever reintroduces a scroll-triggered reveal here:
+     CSS !important beats a library's inline style, so print can never come
+     out blank again for that reason. */
+  body:has(.legal-section) .legal-section,
+  body:has(.legal-section) .legal-section * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
   /* The watermark numeral is decoration, and on paper it repeats a number the
      heading already carries. */
   body:has(.legal-section) .legal-section > span[aria-hidden] {

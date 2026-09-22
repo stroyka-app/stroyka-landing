@@ -291,9 +291,23 @@ export default function LegalPageLayout({
               </div>
             </nav>
 
+            {/* A PLAIN <details> below, not motion.details, and that is not a
+                style preference. It carried `whileInView`, which starts at
+                opacity 0 and animates only once scrolled into view — so every
+                section below the fold stayed INVISIBLE until you happened to
+                scroll past it. Measured on a fresh load: §2 through §12 at
+                computed opacity 0, open, full height. The page printed six
+                sheets with two of them legible, and looked correct afterwards
+                because the reveal fires once and stays, which is why it read
+                as intermittent. Maks saw it from the outside: print from the
+                top and pages 3+ are blank, scroll to the bottom first and they
+                are all there.
+
+                On a page whose job is to be readable, printable and
+                archivable, visibility must never depend on having scrolled. */}
             <div ref={articleRef} className="space-y-2 lg:space-y-6">
               {sections.map((section, i) => (
-                <motion.details
+                <details
                   key={section.id}
                   id={`section-${section.id}`}
                   open={isWide || i === 0 || linkedId === section.id || undefined}
@@ -304,10 +318,6 @@ export default function LegalPageLayout({
                       (e.currentTarget as HTMLDetailsElement).open = true;
                     }
                   }}
-                  initial={reduced ? false : { opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                   className="legal-section group card-stone relative overflow-hidden rounded-2xl border border-ink/15 scroll-mt-28"
                 >
                   {/* Oversized numeral — the Footer's move borrowed where it
@@ -351,7 +361,7 @@ export default function LegalPageLayout({
                       {section.content}
                     </div>
                   </div>
-                </motion.details>
+                </details>
               ))}
             </div>
           </div>
