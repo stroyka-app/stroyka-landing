@@ -50,6 +50,23 @@ export default function LegalPageLayout({
   const reduced = useReducedMotion();
 
   const [activeId, setActiveId] = useState(sections[0]?.id ?? "");
+  // Server-render every section OPEN: that is what puts the whole document in
+  // the HTML for print, archiving and crawlers. Mobile collapses after mount.
+  //
+  // `open` is driven from JS rather than CSS because CSS cannot reliably force
+  // a <details> open any more — Chrome 131+ and Safari 18.4+ moved the
+  // contents behind a `::details-content` pseudo with `content-visibility:
+  // hidden`, which `display: block` on the inner element does not touch. That
+  // exact assumption shipped broken on 2026-09-22: on desktop every section
+  // but the first rendered as a bare heading.
+  const [isWide, setIsWide] = useState(true);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const sync = () => setIsWide(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const articleRef = useRef<HTMLDivElement>(null);
 
@@ -118,7 +135,12 @@ export default function LegalPageLayout({
         className="fixed top-0 left-0 right-0 z-50 h-[2px] origin-left bg-gradient-to-r from-brand-forest via-brand-sage to-brand-sage/40"
       />
 
-      <main className="relative min-h-screen pt-28 pb-24 bg-gradient-to-b from-[#E3DCC9] to-[#D4CBB4] overflow-hidden">
+      {/* overflow-CLIP, not hidden: `overflow: hidden` on an ancestor makes
+          it a scroll container and silently kills `position: sticky` on the
+          section nav — measured 2026-09-22, the nav scrolled away at
+          navTop=-1445. `clip` clips the vignette blur identically without
+          creating that container. */}
+      <main className="relative min-h-screen pt-28 pb-24 bg-gradient-to-b from-[#E3DCC9] to-[#D4CBB4] overflow-clip">
         {/* Soft sage vignette top-left */}
         <div
           aria-hidden
@@ -228,7 +250,14 @@ export default function LegalPageLayout({
                 <motion.details
                   key={section.id}
                   id={`section-${section.id}`}
-                  open={i === 0}
+                  open={isWide || i === 0 || undefined}
+                  onToggle={(e) => {
+                    // Desktop is a document: a stray click on a heading must
+                    // not be able to collapse a section.
+                    if (isWide && !(e.currentTarget as HTMLDetailsElement).open) {
+                      (e.currentTarget as HTMLDetailsElement).open = true;
+                    }
+                  }}
                   initial={reduced ? false : { opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-80px" }}
@@ -239,7 +268,7 @@ export default function LegalPageLayout({
                       costs nothing: presence without another thing to read. */}
                   <span
                     aria-hidden
-                    className="pointer-events-none absolute -top-6 right-4 select-none font-display font-light leading-none text-[120px] text-ink/[0.045]"
+                    className="pointer-events-none absolute top-5 right-7 select-none font-display font-light leading-none text-[84px] text-ink/[0.05]"
                   >
                     {String(i + 1).padStart(2, "0")}
                   </span>
@@ -250,7 +279,7 @@ export default function LegalPageLayout({
                     onClick={() => copyAnchor(section.id)}
                     aria-label={t("copyLink")}
                     title={t("copyLink")}
-                    className="hidden lg:block absolute top-10 right-10 z-10 text-ink/35 opacity-0 transition-opacity duration-200 hover:text-brand-forest group-hover:opacity-100 focus-visible:opacity-100"
+                    className="hidden lg:block absolute top-[52px] left-3 z-10 text-ink/30 opacity-0 transition-opacity duration-200 hover:text-brand-forest group-hover:opacity-100 focus-visible:opacity-100"
                   >
                     {copiedId === section.id ? (
                       <Check className="w-4 h-4 text-brand-forest" />
@@ -272,7 +301,7 @@ export default function LegalPageLayout({
                   </summary>
 
                   <div className="legal-body px-5 py-5 border-t border-ink/10 lg:px-10 lg:pt-6 lg:pb-10 lg:border-t-0">
-                    <div className="relative legal-content legal-dropcap text-ink-soft lg:text-[15px] lg:leading-[1.7]">
+                    <div className="relative legal-content text-ink-soft lg:text-[15px] lg:leading-[1.7]">
                       {section.content}
                     </div>
                   </div>

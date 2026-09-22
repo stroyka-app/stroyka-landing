@@ -292,17 +292,12 @@
 
 /* ── Legal pages set as a document ──────────────────────────────────────── */
 
-/* The drop cap from the FounderNote, which is the register a policy should
-   have been in all along. First paragraph of a section only, and never on a
-   paragraph that opens with a clause number — "8." as a drop cap is noise. */
-.legal-dropcap > p:first-of-type::first-letter {
-  @apply font-display font-light text-brand-forest;
-  float: left;
-  font-size: 3.1em;
-  line-height: 0.82;
-  padding-right: 0.09em;
-  padding-top: 0.06em;
-}
+/* NO DROP CAP HERE, and the reason is worth keeping: the FounderNote's drop
+   cap works because that page is prose. These sections open with numbered
+   clauses, so the cap swallows the first character and "5.1." renders as a
+   giant 5 followed by "1." — mangled numbering in a legal document, which is
+   the one kind of page where numbering carries meaning. Borrowed registers
+   have to survive the content they land on. */
 
 /* Native <details>: the browser's own find-in-page reaches inside a CLOSED
    one and opens it, which a React-state accordion can never do. One tree
@@ -335,8 +330,16 @@
    control. CSS rather than JS so it is true before hydration, true without
    JavaScript, and true in the print stylesheet below. */
 @media (min-width: 1024px) {
+  /* Belt and braces only — the open state is driven from JS (see
+     LegalPageLayout). Chrome 131+ / Safari 18.4+ put the contents behind
+     `::details-content` with `content-visibility: hidden`, so the legacy rule
+     alone silently does nothing and the page ships as bare headings. */
   .legal-section:not([open]) > .legal-body {
     display: block;
+  }
+  .legal-section::details-content {
+    content-visibility: visible;
+    block-size: auto;
   }
   .legal-section > summary {
     cursor: default;
@@ -359,6 +362,10 @@
   .legal-section:not([open]) > .legal-body {
     display: block;
   }
+  .legal-section::details-content {
+    content-visibility: visible;
+    block-size: auto;
+  }
   .legal-section,
   .legal-section[open] {
     border: none !important;
@@ -379,11 +386,6 @@
   }
   .legal-details-marker {
     display: none !important;
-  }
-  .legal-dropcap > p:first-of-type::first-letter {
-    float: none !important;
-    font-size: inherit !important;
-    color: inherit !important;
   }
 }
 

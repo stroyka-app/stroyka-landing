@@ -186,7 +186,7 @@ const sections: LegalSection[] = [
   },
   {
     id: "children",
-    title: "10. Children&apos;s Privacy",
+    title: "10. Children\u2019s Privacy",
     content: (
       <p>The Service is not intended for use by individuals under the age of 18. We do not knowingly collect personal information from children under 18. If we become aware that we have collected personal information from a child under 18, we will take steps to delete that information promptly.</p>
     ),
