@@ -290,6 +290,103 @@
   @apply text-base font-heading font-semibold text-ink mt-6 mb-3;
 }
 
+/* ── Legal pages set as a document ──────────────────────────────────────── */
+
+/* The drop cap from the FounderNote, which is the register a policy should
+   have been in all along. First paragraph of a section only, and never on a
+   paragraph that opens with a clause number — "8." as a drop cap is noise. */
+.legal-dropcap > p:first-of-type::first-letter {
+  @apply font-display font-light text-brand-forest;
+  float: left;
+  font-size: 3.1em;
+  line-height: 0.82;
+  padding-right: 0.09em;
+  padding-top: 0.06em;
+}
+
+/* Native <details>: the browser's own find-in-page reaches inside a CLOSED
+   one and opens it, which a React-state accordion can never do. One tree
+   serves both layouts — see LegalPageLayout for why duplicating it was worse
+   than styling it twice. */
+.legal-section > summary::-webkit-details-marker,
+.legal-section > summary::marker {
+  display: none;
+  content: "";
+}
+.legal-section > summary {
+  transition: background-color 200ms ease;
+}
+.legal-section[open] > summary {
+  background-color: rgba(138, 170, 145, 0.08);
+  @apply text-ink;
+}
+.legal-section[open] {
+  border-color: rgba(138, 170, 145, 0.45);
+}
+.legal-details-marker {
+  transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.legal-section[open] .legal-details-marker {
+  transform: rotate(90deg);
+  @apply text-brand-forest;
+}
+
+/* DESKTOP: every section is open, always, and the summary stops being a
+   control. CSS rather than JS so it is true before hydration, true without
+   JavaScript, and true in the print stylesheet below. */
+@media (min-width: 1024px) {
+  .legal-section:not([open]) > .legal-body {
+    display: block;
+  }
+  .legal-section > summary {
+    cursor: default;
+    pointer-events: none;
+    background-color: transparent;
+  }
+  .legal-section[open] > summary {
+    background-color: transparent;
+  }
+  .legal-section,
+  .legal-section[open] {
+    border-color: rgba(43, 43, 43, 0.15);
+  }
+}
+
+/* PRINT — the reason this page was rebuilt. Every section open, no chrome,
+   no decoration, black on white. A privacy policy that cannot be printed or
+   archived is not really published. */
+@media print {
+  .legal-section:not([open]) > .legal-body {
+    display: block;
+  }
+  .legal-section,
+  .legal-section[open] {
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+  .legal-section > summary,
+  .legal-section[open] > summary {
+    background: none !important;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .legal-body {
+    padding-left: 0;
+    padding-right: 0;
+    border-top: none !important;
+  }
+  .legal-details-marker {
+    display: none !important;
+  }
+  .legal-dropcap > p:first-of-type::first-letter {
+    float: none !important;
+    font-size: inherit !important;
+    color: inherit !important;
+  }
+}
+
 .shimmer-streak {
   position: absolute;
   top: -50%;

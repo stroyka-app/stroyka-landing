@@ -713,7 +713,8 @@
   "legal": {
     "eyebrow": "Legal",
     "englishOnlyTitle": "Available in English",
-    "englishOnlyBody": "This document is provided in English. As a US product, the English version is authoritative."
+    "englishOnlyBody": "This document is provided in English. As a US product, the English version is authoritative.",
+    "copyLink": "Copy link to this section"
   },
   "start": {
     "metaTitle": "Stroyka: job costing for small construction crews",

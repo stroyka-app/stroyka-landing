@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useSpring, useReducedMotion } from "framer-motion";
+import { Link2, Check, ChevronRight } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -22,6 +22,22 @@ interface LegalPageLayoutProps {
   sections: LegalSection[];
 }
 
+/**
+ * A legal page, set as a DOCUMENT rather than a viewer.
+ *
+ * It used to hold `useState(sections[0].id)` and render only the active
+ * section, which meant the other eleven existed nowhere: you could not Ctrl-F
+ * the privacy policy, printing gave you section one, the Wayback Machine
+ * archived section one, and a crawler or a compliance check saw section one.
+ * We found it the hard way on 2026-09-22 — verifying a published change to
+ * section 8 meant reading the deployed JavaScript bundle, because the served
+ * HTML did not contain it.
+ *
+ * Everything is now in the DOM on every render. Desktop stacks the sections
+ * and the sidebar scrolls you to them; mobile keeps the accordion, but as a
+ * native <details>, whose contents browsers search and auto-expand on a
+ * find-in-page match. Print forces every section open (globals.css).
+ */
 export default function LegalPageLayout({
   title,
   subtitle,
@@ -31,13 +47,77 @@ export default function LegalPageLayout({
   const t = useTranslations("legal");
   const locale = useLocale();
   const showNotice = locale !== "en";
-  const [activeId, setActiveId] = useState(sections[0]?.id ?? "");
+  const reduced = useReducedMotion();
 
-  const activeSection = sections.find((s) => s.id === activeId);
+  const [activeId, setActiveId] = useState(sections[0]?.id ?? "");
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const articleRef = useRef<HTMLDivElement>(null);
+
+  // Reading progress across the document body only — a rail that fills while
+  // you are still in the header reads as broken.
+  const { scrollYProgress } = useScroll({
+    target: articleRef,
+    offset: ["start start", "end end"],
+  });
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
+  // Scroll-spy. The pill follows the reader instead of the reader driving it.
+  useEffect(() => {
+    const els = sections
+      .map((s) => document.getElementById(`section-${s.id}`))
+      .filter((el): el is HTMLElement => el !== null);
+    if (els.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]) {
+          setActiveId(visible[0].target.id.replace("section-", ""));
+        }
+      },
+      // Top third of the viewport: a section counts as "being read" when its
+      // heading has reached where a person's eyes actually are.
+      { rootMargin: "-88px 0px -66% 0px", threshold: 0 },
+    );
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [sections]);
+
+  const copyAnchor = async (id: string) => {
+    try {
+      await navigator.clipboard.writeText(
+        `${window.location.origin}${window.location.pathname}#${id}`,
+      );
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 1600);
+    } catch {
+      // Clipboard can be denied; the anchor still works as a plain link.
+    }
+  };
+
+  const scrollTo = (id: string) => {
+    document
+      .getElementById(`section-${id}`)
+      ?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+  };
 
   return (
     <>
       <Navbar />
+
+      {/* Reading progress — a hairline, not a loading bar. */}
+      <motion.div
+        aria-hidden
+        style={{ scaleX: reduced ? 1 : progress }}
+        className="fixed top-0 left-0 right-0 z-50 h-[2px] origin-left bg-gradient-to-r from-brand-forest via-brand-sage to-brand-sage/40"
+      />
+
       <main className="relative min-h-screen pt-28 pb-24 bg-gradient-to-b from-[#E3DCC9] to-[#D4CBB4] overflow-hidden">
         {/* Soft sage vignette top-left */}
         <div
@@ -83,86 +163,58 @@ export default function LegalPageLayout({
             </div>
           )}
 
-          {/* Mobile: Accordion layout */}
-          <div className="lg:hidden space-y-2">
-            {sections.map((section) => {
-              const isActive = section.id === activeId;
-              return (
-                <div
-                  key={section.id}
-                  className={`card-stone rounded-2xl border overflow-hidden transition-colors ${
-                    isActive ? "border-brand-sage/45" : "border-ink/15"
-                  }`}
-                >
-                  <button
-                    onClick={() => setActiveId(isActive ? "" : section.id)}
-                    className={`w-full flex items-center justify-between px-5 py-4 text-left transition-colors duration-200 ${
-                      isActive
-                        ? "bg-brand-sage/8 text-ink"
-                        : "text-ink-soft hover:bg-ink/5"
-                    }`}
-                  >
-                    <span className="font-display text-[16px] leading-snug">
-                      {section.title}
-                    </span>
-                    <motion.span
-                      animate={{ rotate: isActive ? 90 : 0 }}
-                      transition={{ duration: 0.25 }}
-                      className={`shrink-0 ${
-                        isActive ? "text-brand-forest" : "text-ink/40"
-                      }`}
-                    >
-                      <ChevronRight className="w-4 h-4" />
-                    </motion.span>
-                  </button>
-                  <AnimatePresence initial={false}>
-                    {isActive && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                        className="overflow-hidden"
-                      >
-                        <div className="px-5 py-5 border-t border-ink/10">
-                          <div className="legal-content text-ink-soft">
-                            {section.content}
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              );
-            })}
-          </div>
+          {/* ── ONE tree, styled two ways ──────────────────────────────
+              Rendering a mobile accordion AND a desktop stack put every
+              paragraph in the HTML twice, and left PRINT undecided: which
+              copy reaches the paper depends on the print viewport width.
+              Print is most of the reason this page was rebuilt.
 
-          {/* Desktop: Sidebar + Content */}
-          <div className="hidden lg:grid lg:grid-cols-[280px_1fr] gap-10">
-            {/* Sidebar */}
-            <nav className="sticky top-28 self-start">
+              So there is one <details> per section. Mobile gets the native
+              accordion, whose contents find-in-page can reach and open.
+              Desktop and print force the body visible in CSS (globals.css),
+              which needs no JavaScript and cannot disagree with itself. ── */}
+          <div className="lg:grid lg:grid-cols-[280px_1fr] lg:gap-10">
+            <nav
+              className="hidden lg:block sticky top-28 self-start"
+              aria-label={title}
+            >
               <div className="space-y-1">
                 {sections.map((section) => {
                   const isActive = section.id === activeId;
                   return (
                     <button
                       key={section.id}
-                      onClick={() => setActiveId(section.id)}
+                      onClick={() => scrollTo(section.id)}
+                      aria-current={isActive ? "true" : undefined}
                       className={`group relative w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-colors duration-200 ${
                         isActive
-                          ? "bg-brand-sage/12 text-ink"
+                          ? "text-ink"
                           : "text-ink-soft hover:text-ink hover:bg-ink/5"
                       }`}
                     >
+                      {/* One pill, moved between items by layout animation —
+                          the same primitive as the FAQ activation. */}
+                      {isActive && (
+                        <motion.span
+                          aria-hidden
+                          layoutId="legal-active-pill"
+                          transition={
+                            reduced
+                              ? { duration: 0 }
+                              : { type: "spring", stiffness: 420, damping: 38 }
+                          }
+                          className="absolute inset-0 rounded-xl bg-brand-sage/12"
+                        />
+                      )}
                       <span
                         aria-hidden
-                        className={`block w-1 h-5 rounded-full transition-colors duration-200 ${
+                        className={`relative block w-1 h-5 rounded-full transition-colors duration-200 ${
                           isActive
                             ? "bg-brand-forest"
                             : "bg-transparent group-hover:bg-ink/25"
                         }`}
                       />
-                      <span className="font-display text-[15px] leading-tight">
+                      <span className="relative font-display text-[15px] leading-tight">
                         {section.title}
                       </span>
                     </button>
@@ -171,27 +223,61 @@ export default function LegalPageLayout({
               </div>
             </nav>
 
-            {/* Content panel */}
-            <div className="min-h-[60vh]">
-              <AnimatePresence mode="wait">
-                {activeSection && (
-                  <motion.div
-                    key={activeSection.id}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -6 }}
-                    transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                    className="card-stone rounded-2xl border border-ink/15 p-9 lg:p-10"
+            <div ref={articleRef} className="space-y-2 lg:space-y-6">
+              {sections.map((section, i) => (
+                <motion.details
+                  key={section.id}
+                  id={`section-${section.id}`}
+                  open={i === 0}
+                  initial={reduced ? false : { opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="legal-section group card-stone relative overflow-hidden rounded-2xl border border-ink/15 scroll-mt-28"
+                >
+                  {/* Oversized numeral — the Footer's move borrowed where it
+                      costs nothing: presence without another thing to read. */}
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute -top-6 right-4 select-none font-display font-light leading-none text-[120px] text-ink/[0.045]"
                   >
-                    <h2 className="font-display font-light text-[26px] lg:text-[30px] leading-tight text-ink mb-6 tracking-[-0.01em]">
-                      {activeSection.title}
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+
+                  {/* OUTSIDE <summary> on purpose: a button nested in a
+                      summary is a control inside a control. */}
+                  <button
+                    onClick={() => copyAnchor(section.id)}
+                    aria-label={t("copyLink")}
+                    title={t("copyLink")}
+                    className="hidden lg:block absolute top-10 right-10 z-10 text-ink/35 opacity-0 transition-opacity duration-200 hover:text-brand-forest group-hover:opacity-100 focus-visible:opacity-100"
+                  >
+                    {copiedId === section.id ? (
+                      <Check className="w-4 h-4 text-brand-forest" />
+                    ) : (
+                      <Link2 className="w-4 h-4" />
+                    )}
+                  </button>
+
+                  <summary className="legal-summary flex items-center justify-between gap-3 px-5 py-4 lg:px-10 lg:pt-10 lg:pb-0 cursor-pointer list-none">
+                    <h2 className="font-display font-light text-[16px] leading-snug text-ink-soft lg:text-[30px] lg:leading-tight lg:text-ink lg:tracking-[-0.01em]">
+                      {section.title}
                     </h2>
-                    <div className="legal-content text-ink-soft text-[15px] leading-[1.7]">
-                      {activeSection.content}
+                    <span
+                      aria-hidden
+                      className="legal-details-marker shrink-0 text-ink/40 lg:hidden"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </span>
+                  </summary>
+
+                  <div className="legal-body px-5 py-5 border-t border-ink/10 lg:px-10 lg:pt-6 lg:pb-10 lg:border-t-0">
+                    <div className="relative legal-content legal-dropcap text-ink-soft lg:text-[15px] lg:leading-[1.7]">
+                      {section.content}
                     </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                  </div>
+                </motion.details>
+              ))}
             </div>
           </div>
         </div>
