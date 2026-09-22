@@ -402,6 +402,26 @@
     border: none !important;
     background: none !important;
     box-shadow: none !important;
+    /* NO `break-inside: avoid` here. These sections run to several pages, so
+       the browser cannot honour it and instead shunts each one to a fresh
+       sheet — it left page 1 holding the title and eight inches of nothing.
+       Avoidance belongs on things that FIT on a page. */
+  }
+  /* A heading alone at the foot of a page, with its clause overleaf. */
+  /* The watermark numeral is decoration, and on paper it repeats a number the
+     heading already carries. */
+  body:has(.legal-section) .legal-section > span[aria-hidden] {
+    display: none !important;
+  }
+  body:has(.legal-section) .legal-summary,
+  body:has(.legal-section) .legal-content h3 {
+    break-after: avoid;
+  }
+  /* No single lines stranded across a page break. */
+  body:has(.legal-section) .legal-content p,
+  body:has(.legal-section) .legal-content li {
+    orphans: 3;
+    widows: 3;
     break-inside: avoid;
   }
   .legal-section > summary,
