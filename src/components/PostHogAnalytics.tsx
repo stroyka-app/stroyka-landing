@@ -46,6 +46,20 @@ export default function PostHogAnalytics() {
       // initial-load capture would record the first page and nothing after.
       capture_pageview: false,
       person_profiles: "identified_only",
+      // Session replay OFF, asserted here rather than left to the project
+      // toggle — a dashboard switch is one click from recording every
+      // visitor's screen again, and nobody would notice.
+      //
+      // We were recording. Nothing read the recordings: they carry zero
+      // interactions, and the app does not record at all, so the one time we
+      // went looking for a replay of a real user session there was none. All
+      // exposure, no return.
+      //
+      // Replay is not covered by our privacy policy, has no consent gate, and
+      // reaches EU visitors (IE/SE/SK/EE in the last fortnight). Screen
+      // recording is also the most actively litigated item in US
+      // session-tracking claims, and our ad spend is US-targeted.
+      disable_session_recording: true,
     });
   }, [key, host]);
 

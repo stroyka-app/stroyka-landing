@@ -80,6 +80,7 @@ const sections: LegalSection[] = [
           <li><strong>Supabase</strong> (infrastructure): hosts our database (PostgreSQL on AWS), authentication system, file storage, and serverless functions. Data is stored in the US region.</li>
           <li><strong>Sentry</strong> (error tracking): receives error reports and crash data to help us identify and fix bugs. Sentry does not receive your project data, financial data, or personally identifiable information beyond a user ID.</li>
           <li><strong>PostHog</strong> (analytics): receives anonymized usage analytics (user ID, company ID, role, page views, feature usage). PostHog does not receive your name, email, project data, or financial data.</li>
+          <li><strong>Meta Platforms</strong> (advertising measurement): receives an event when someone visits the marketing website or clicks to get the app, via the Meta pixel. Marketing website only; it is not present in the app. <a href="https://www.facebook.com/privacy/policy" target="_blank" rel="noopener noreferrer">Meta Privacy Policy</a></li>
           <li><strong>Resend</strong> (email delivery): processes transactional emails including account verification, password resets, and worker invitations. Resend receives the recipient email address and email content.</li>
           <li><strong>Stripe</strong> (payment processing): handles all subscription billing and payment processing. Stripe receives your payment information directly. Stroyka does not store or have access to your credit card numbers.</li>
           <li><strong>Vercel</strong> (hosting): hosts the Stroyka marketing website and web application. Vercel may process standard web server logs including IP addresses.</li>
@@ -171,8 +172,8 @@ const sections: LegalSection[] = [
     content: (
       <>
         <p>8.1. The Stroyka web application uses essential cookies for authentication and session management. These cookies are strictly necessary for the Service to function and cannot be disabled.</p>
-        <p>8.2. Our marketing website (getstroyka.com) uses analytics cookies via PostHog to understand how visitors interact with the site. These cookies do not collect personally identifiable information.</p>
-        <p>8.3. We do not use advertising cookies or tracking pixels. We do not participate in ad networks or retargeting programs.</p>
+        <p>8.2. Our marketing website (getstroyka.com) uses analytics cookies via PostHog to understand how visitors interact with the site — pages viewed, referrer, and which buttons are clicked. We do not record your screen or your session.</p>
+        <p>8.3. Our marketing website also loads the Meta (Facebook) advertising pixel, which sets third-party cookies and reports to Meta that a visit or a sign-up click happened, so we can measure whether our ads work. It runs on the marketing website only — never inside the Stroyka app, and never on your project, time, or financial data. If you would rather not be measured this way, your browser&rsquo;s tracking protection or an ad blocker will stop it, and the website works normally without it.</p>
       </>
     ),
   },
