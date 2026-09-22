@@ -359,6 +359,37 @@
    no decoration, black on white. A privacy policy that cannot be printed or
    archived is not really published. */
 @media print {
+  /* Anything FIXED repeats or lands mid-page in print — Chrome put the
+     navbar across the top of page 3, over the text. Print has no viewport to
+     be fixed to. Confirmed on a real print preview 2026-09-22, which is the
+     only way to find this. */
+  /* Scoped to legal pages via :has — a global "hide everything fixed" rule
+     would silently change how every other page prints, which is not what this
+     task is. */
+  body:has(.legal-section) .fixed {
+    display: none !important;
+  }
+  /* The site footer is a full-page editorial flourish; on paper it is a
+     wasted sheet after a legal document. */
+  body:has(.legal-section) footer {
+    display: none !important;
+  }
+  /* The section nav is navigation. On paper it is a list of things you
+     cannot click, taking a quarter of the width from the text. Print
+     emulation caught it still rendering at desktop width. */
+  body:has(.legal-section) nav[aria-label] {
+    display: none !important;
+  }
+  /* One column, full measure — the sidebar's 280px track goes with it. */
+  body:has(.legal-section) main .lg\:grid {
+    display: block !important;
+  }
+  /* Paper is white; the gradient is ink nobody asked for. */
+  body:has(.legal-section) main {
+    background: none !important;
+    padding-top: 0 !important;
+    min-height: 0 !important;
+  }
   .legal-section:not([open]) > .legal-body {
     display: block;
   }
