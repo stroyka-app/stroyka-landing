@@ -57,10 +57,12 @@ export default function SceneTags({
 
       {/* Top of the real building */}
       <div ref={(el) => void (bridge.current.stack = el)} data-visible="0" className={base}>
-        <div className="-translate-x-full -translate-y-1/2 pr-3">
+        <div className="-translate-y-1/2 pl-2">
           <div className="flex items-center gap-2 whitespace-nowrap font-mono text-[10.5px] uppercase tracking-[0.18em] text-site-vis">
-            {t("tags.spent")} · <motion.span>{spentLabel}</motion.span>
             <span className="h-px w-6 bg-site-vis/80" />
+            <span className="rounded-full bg-site-night/75 px-2.5 py-1 ring-1 ring-site-vis/25 backdrop-blur-sm">
+              {t("tags.spent")} · <motion.span>{spentLabel}</motion.span>
+            </span>
           </div>
         </div>
       </div>

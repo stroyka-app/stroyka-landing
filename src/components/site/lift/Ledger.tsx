@@ -144,7 +144,7 @@ export default function Ledger({
               transition={{ type: "spring", stiffness: 380, damping: 14 }}
               className="pointer-events-none absolute -bottom-[74px] left-4 origin-center"
             >
-              <span className="relative block rounded-lg border-[2.5px] border-site-vis px-4 py-2 text-center font-flex text-site-vis [font-variation-settings:'wdth'_125] backdrop-blur-sm">
+              <span className="relative block rounded-lg border-[2.5px] border-site-vis px-4 py-2 text-center font-flex text-site-vis [font-variation-settings:'wdth'_125] bg-site-night/70 backdrop-blur-sm">
                 {!reduced && (
                   <motion.span
                     className="absolute inset-0 rounded-lg ring-2 ring-site-vis"

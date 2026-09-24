@@ -281,7 +281,9 @@ function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
     pin(b.hook, hookWorld.clone().setY(c.hookY - 0.2), camera, size, c.carrying >= 0);
     pin(b.budget, envelopeTop, camera, size, p > 0.08);
     const top = landedBaseY(c.landed);
-    stackTop.set(BUILDING.x - (BLOCK_W / 2), top, BUILDING.z + BLOCK_W / 2);
+    // Screen-right corner of the pad (camera sits at −x,+z), just outside the
+    // dashed budget outline, so the mast never passes in front of the tag.
+    stackTop.set(BUILDING.x + (BLOCK_W + 0.8) / 2, top, BUILDING.z + (BLOCK_W + 0.8) / 2);
     pin(b.stack, stackTop, camera, size, c.landed > 0);
   });
 

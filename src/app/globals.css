@@ -732,6 +732,11 @@
   --site-alert: 242 163 143;    /* over budget / no signal */
   --site-haze: 169 166 142;
   --site-shadow: 0 0 0;         /* text-shadow ink over the 3D scene */
+  /* hero legibility scrim strength (left wash on desktop): the headline
+     sits in the scene on dark skies; on a light sky it would read as a
+     highlight box, so the daylight palette turns it off */
+  --hero-scrim: 0.62;
+  --hero-scrim-soft: 0.28;
   /* sky over the scene: top (= iOS status zone), mid, horizon, sun glow */
   --sky-top: #485348;
   --sky-mid: #5b6558;
@@ -875,6 +880,8 @@ html[data-palette="bone"] {
   --site-alert: 180 83 58;
   --site-haze: 150 145 125;
   --site-shadow: 255 255 255;
+  --hero-scrim: 0;
+  --hero-scrim-soft: 0;
   --sky-top: #c9d1c4;
   --sky-mid: #d6d9cb;
   --sky-haze: #dcd7c5;

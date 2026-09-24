@@ -23,7 +23,7 @@ export default function LiftHero() {
       <div
         aria-hidden
         className="absolute inset-0 hidden md:block"
-        style={{ background: "linear-gradient(to right, rgb(var(--site-night) / 0.62) 0%, rgb(var(--site-night) / 0.28) 38%, rgb(var(--site-night) / 0) 58%)" }}
+        style={{ background: "linear-gradient(to right, rgb(var(--site-night) / var(--hero-scrim)) 0%, rgb(var(--site-night) / var(--hero-scrim-soft)) 38%, rgb(var(--site-night) / 0) 58%)" }}
       />
       <div
         aria-hidden
