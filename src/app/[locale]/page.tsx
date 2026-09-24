@@ -1,7 +1,7 @@
 // src/app/[locale]/page.tsx
 import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
-import HomeClient from "@/components/HomeClient";
+import SiteHome from "@/components/site/SiteHome";
 import StructuredData from "@/components/seo/StructuredData";
 import { localeAlternates, canonicalFor, ogLocale, ogAlternateLocales } from "@/i18n/alternates";
 
@@ -46,7 +46,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           "site" scope (Organization + WebSite), so nothing is emitted twice.
           See StructuredData. */}
       <StructuredData scope="page" />
-      <HomeClient />
+      <SiteHome />
     </>
   );
 }

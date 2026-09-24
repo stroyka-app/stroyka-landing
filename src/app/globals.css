@@ -668,3 +668,49 @@
   .crew-range::-webkit-slider-thumb,
   .crew-range::-moz-range-thumb { transition: none; }
 }
+
+/* ── Dusk site: hi-vis range slider (SeatMath) ─────────────────────────── */
+.vis-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 28px;
+  background: transparent;
+  cursor: pointer;
+}
+.vis-range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(to right, #d4ee5e 0 var(--fill), rgba(236, 230, 214, 0.12) var(--fill) 100%);
+}
+.vis-range::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(to right, #d4ee5e 0 var(--fill), rgba(236, 230, 214, 0.12) var(--fill) 100%);
+}
+.vis-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  margin-top: -11px;
+  height: 28px;
+  width: 28px;
+  border-radius: 999px;
+  background: #121713;
+  border: 3px solid #d4ee5e;
+  box-shadow: 0 0 0 6px rgba(212, 238, 94, 0.14);
+  transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+}
+.vis-range::-moz-range-thumb {
+  height: 22px;
+  width: 22px;
+  border-radius: 999px;
+  background: #121713;
+  border: 3px solid #d4ee5e;
+}
+.vis-range:active::-webkit-slider-thumb {
+  transform: scale(1.12);
+  box-shadow: 0 0 0 10px rgba(212, 238, 94, 0.18);
+}
+.vis-range:focus-visible {
+  outline: 2px solid #d4ee5e;
+  outline-offset: 6px;
+  border-radius: 999px;
+}

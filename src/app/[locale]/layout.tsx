@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Fraunces, JetBrains_Mono, Playfair_Display } from "next/font/google";
+import { Inter, Fraunces, JetBrains_Mono, Playfair_Display, Roboto_Flex } from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
@@ -35,6 +35,12 @@ const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"
 // its four files out of every <head>; on /en no element ever resolves to the
 // family, so the browser never requests them at all.
 const playfair = Playfair_Display({ subsets: ["latin", "cyrillic"], weight: ["400", "500", "600", "700"], style: ["normal", "italic"], variable: "--font-playfair", preload: false });
+
+// Roboto Flex: the display face of the dusk-site home. One variable file
+// carries weight AND width, so headlines can run wide and the hero can
+// thicken letters under the cursor. Cyrillic is in the family, so /ru keeps
+// the same voice without a stand-in.
+const flex = Roboto_Flex({ subsets: ["latin"], axes: ["wdth"], variable: "--font-flex" });
 
 export const metadata: Metadata = {
   title: {
@@ -82,7 +88,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${inter.variable} ${fraunces.variable} ${jetbrainsMono.variable} ${playfair.variable}`}
+      className={`${inter.variable} ${fraunces.variable} ${jetbrainsMono.variable} ${playfair.variable} ${flex.variable}`}
       style={locale === "ru" ? ({ ["--font-fraunces"]: "var(--font-playfair)" } as React.CSSProperties) : undefined}
     >
       {/* body = bone (globals.css): iOS frosts the body color into the

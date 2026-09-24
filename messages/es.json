@@ -739,5 +739,270 @@
     "ledgerMaterials": "Materiales",
     "ledgerFuel": "Gasolina",
     "ledgerPunch": "Lo supiste el día 12. No en marzo."
+  },
+  "site": {
+    "lift": {
+      "kicker": "Costeo de obra para cuadrillas de 1 a 25",
+      "h1a": "Sabe cuánto cuesta",
+      "h1b": "mientras la obra",
+      "h1c": "sigue subiendo.",
+      "sub": "Cada hora, cada carga, cada recibo entra a la obra en el momento en que pasa, así ves el número cuando todavía puedes hacer algo. Funciona en cualquier teléfono, incluso sin señal.",
+      "startFree": "Empieza gratis",
+      "bookDemo": "Agenda una demo",
+      "spec0": "$0 para empezar",
+      "spec1": "Cualquier teléfono",
+      "spec2": "Sin señal, no importa",
+      "scrollCue": "Desliza para mover la grúa",
+      "ledger": {
+        "job": "Obra 204 · Casa Johnson",
+        "live": "En vivo",
+        "spent": "Gastado a la fecha",
+        "budget": "Presupuesto",
+        "left": "Queda",
+        "pending": "En el patio",
+        "closed": "Cerrada",
+        "under": "{amount} bajo presupuesto"
+      },
+      "loads": {
+        "concrete": {
+          "name": "Concreto",
+          "note": "14 yd"
+        },
+        "steel": {
+          "name": "Acero",
+          "note": "Vigas W"
+        },
+        "lumber": {
+          "name": "Madera",
+          "note": "320 pies tabla"
+        },
+        "labor": {
+          "name": "Mano de obra",
+          "note": "212 h"
+        },
+        "windows": {
+          "name": "Ventanas",
+          "note": "12 unidades"
+        },
+        "roof": {
+          "name": "Techo",
+          "note": "Tejas"
+        }
+      },
+      "beats": {
+        "0": {
+          "title": "Escanea el recibo una vez.",
+          "body": "Tómale foto en la planta. Cada línea entra a la obra, agrupada. Sin caja de zapatos, sin volver a teclear el domingo en la noche."
+        },
+        "1": {
+          "title": "Apruébalo desde la camioneta.",
+          "body": "La cuadrilla pide materiales en la app. Un toque y queda aprobado, comprado y cargado al costo de la obra."
+        },
+        "2": {
+          "title": "¿Sin señal? Igual queda registrado.",
+          "body": "Sótano, terreno rural, estacionamiento. Se guarda en el teléfono y se sincroniza en cuanto vuelve la señal."
+        },
+        "3": {
+          "title": "Las horas se registran solas.",
+          "body": "Entrada por GPS con geocercas. 212 horas en esta obra y nadie mandó un mensaje con su horario."
+        },
+        "4": {
+          "title": "Plan contra real, en vivo.",
+          "body": "La línea del presupuesto se mueve cuando algo llega, no cuando el contador se pone al día a fin de mes."
+        },
+        "5": {
+          "title": "Factúralo antes de irte.",
+          "body": "Las horas y materiales sin facturar se vuelven una factura. Envíasela al cliente desde la obra."
+        },
+        "finale": {
+          "title": "Cerrada $2,610 por debajo.",
+          "body": "Lo supiste el martes, no en temporada de impuestos. De eso se trata."
+        }
+      },
+      "tags": {
+        "budget": "Presupuesto",
+        "spent": "Gastado"
+      }
+    },
+    "ticker": {
+      "events": [
+        "06:15 — cuadrilla registrada · 12 / 12",
+        "07:02 — recibo escaneado · $412.88 · 9 líneas",
+        "09:40 — pedido aprobado · 40 hojas de triplay",
+        "11:15 — sin señal · 3 registros guardados en el teléfono",
+        "11:52 — de vuelta en línea · sincronizado",
+        "14:30 — plan contra real · 4% por debajo",
+        "16:05 — factura enviada · Casa Johnson",
+        "17:20 — pagada"
+      ]
+    },
+    "shoebox": {
+      "kicker": "Así se hace hoy",
+      "headA": "Así se costea una obra",
+      "headB": "en casi todas las cuadrillas.",
+      "body": "Recibos en la camioneta. Horas en un chat de grupo. Notas en el tablero. El número real aparece en temporada de impuestos, cuando ya no se puede cambiar. Adelante, avienta los papeles.",
+      "afterA": "La misma obra.",
+      "afterB": "Ordenada.",
+      "afterBody": "Los mismos doce papeles, donde Stroyka los pone en el momento en que pasan: por tipo de costo, en la obra, con totales. Nadie se sentó a hacer esto.",
+      "sort": "Ordénalo",
+      "unsort": "Desordénalo otra vez",
+      "hint": "Arrastra · avienta",
+      "cats": {
+        "labor": "Mano de obra",
+        "materials": "Materiales",
+        "fuel": "Combustible",
+        "equipment": "Equipo"
+      },
+      "items": {
+        "0": "Home Depot #4471 — madera, tornillos",
+        "1": "Mike: 9.5 h hoy, salió a las 6",
+        "2": "Shell — diésel, camioneta 2",
+        "3": "Varilla #4 — 60 pzas. ¿¿Pagada??",
+        "4": "Sunbelt — minicargador, 1 día",
+        "5": "Horas extra sáb — 4 personas",
+        "6": "¿Aprobaste el triplay? 40 hojas",
+        "7": "Gasolina — podadora + generador",
+        "8": "Cuota de tiradero",
+        "9": "Floor & Decor — azulejo, boquilla",
+        "10": "Ana 8 h. Mándame las horas porfa",
+        "11": "Renta de disco — ¡devolver vie!"
+      }
+    },
+    "know": {
+      "prefix": "Conoce cada",
+      "words": [
+        "hora de cuadrilla.",
+        "recibo.",
+        "galón de diésel.",
+        "orden de cambio.",
+        "dólar."
+      ],
+      "foot": "No a fin de mes. No en temporada de impuestos. Mientras la obra sigue en marcha."
+    },
+    "stack": {
+      "headA": "Una sola app.",
+      "headB": "Para los dos lados de la cuadrilla.",
+      "items": {
+        "0": {
+          "kicker": "Sin conexión primero",
+          "title": "Funciona donde no hay señal.",
+          "body": "Cada teléfono guarda su propia copia. La cuadrilla registra horas, pedidos y tareas en el sótano o en el terreno, y todo se sincroniza solo cuando vuelve la señal. Nada se pierde, nada se cuenta dos veces."
+        },
+        "1": {
+          "kicker": "Jefe y cuadrilla",
+          "title": "Dos apps en una.",
+          "body": "El jefe ve presupuestos, aprobaciones y reportes de costos. Los trabajadores ven sus tareas, sus horas y un botón para pedir materiales. La misma app, y cada quien ve solo su parte."
+        },
+        "2": {
+          "kicker": "Costeo de obra",
+          "title": "El estado de resultados se hace solo.",
+          "body": "Cada compra, cada hoja de horas y cada viaje de combustible entran al estado de resultados de la obra en el momento. Mano de obra, materiales y presupuesto restante en un solo lugar."
+        },
+        "3": {
+          "kicker": "Aprobaciones",
+          "title": "Se acabó el «¿ya aprobaste eso?»",
+          "body": "Los pedidos llegan desde la obra. Los apruebas con un toque y lo aprobado se registra en los costos de la obra, con historial completo. Sin cadenas de mensajes."
+        }
+      },
+      "offline": {
+        "online": "En línea",
+        "offline": "Sin señal",
+        "kill": "Corta la señal",
+        "restore": "Regrésala",
+        "entries": [
+          "Entrada · Mike R. · 06:58",
+          "Foto · muro este",
+          "Pedido · 2 cajas de tornillos 3\""
+        ],
+        "savedOne": "En teléfono",
+        "syncedOne": "Sincronizado",
+        "idle": "Pruébalo: corta la señal",
+        "queued": "{count, plural, one {# registro guardado} other {# registros guardados}} en este teléfono",
+        "synced": "Todo sincronizado",
+        "empty": "Todo sincronizado. Nada pendiente."
+      },
+      "roles": {
+        "boss": "Jefe",
+        "crew": "Cuadrilla",
+        "bossItems": [
+          {
+            "k": "Presupuesto obra 204",
+            "v": "62% usado · en plan"
+          },
+          {
+            "k": "Pedidos por aprobar",
+            "v": "3"
+          },
+          {
+            "k": "En la obra ahora",
+            "v": "12 / 12"
+          },
+          {
+            "k": "Sin facturar esta semana",
+            "v": "$8,420"
+          }
+        ],
+        "crewItems": [
+          {
+            "k": "Hoy",
+            "v": "Armar muro este"
+          },
+          {
+            "k": "Entrada",
+            "v": "06:15 · 4 h 12 m"
+          },
+          {
+            "k": "Esta semana",
+            "v": "31.5 h"
+          },
+          {
+            "k": "¿Te falta algo?",
+            "v": "Pedir materiales"
+          }
+        ],
+        "foot": "La misma app · cada quien ve su parte"
+      },
+      "pnl": {
+        "plan": "Plan",
+        "actual": "Real",
+        "labor": "Mano de obra",
+        "materials": "Materiales",
+        "fuel": "Combustible",
+        "margin": "Margen de la obra 204"
+      },
+      "approve": {
+        "kicker": "Pedido de material",
+        "item": "40 hojas de triplay de ¾\"",
+        "from": "De Mike R. · hace 2 min",
+        "approve": "Aprobar",
+        "undo": "Deshacer",
+        "reject": "Rechazar",
+        "approved": "Aprobado",
+        "ledger": "Obra 204 · Materiales",
+        "row": "Triplay ¾\" × 40",
+        "prev0": "Home Depot #4471",
+        "prev1": "Varilla #4 × 60"
+      }
+    },
+    "seats": {
+      "kicker": "Las cuentas",
+      "headA": "Cobrar por usuario",
+      "headB": "castiga contratar.",
+      "body": "Arrastra hasta el tamaño de tu cuadrilla. Una factura por usuario sube con cada persona que contratas. La nuestra tiene tres precios y ahí se queda.",
+      "crew": "Tamaño de cuadrilla",
+      "workers": "trabajadores",
+      "them": "App por usuario",
+      "themNote": "Tarifa publicada de Workyard: $50 + $6 por usuario",
+      "perMonth": "/mes",
+      "keep": "En un año te ahorras",
+      "even": "A este tamaño la app por usuario cuesta más o menos lo mismo, o menos. Preferimos decirlo.",
+      "perYear": "/año",
+      "source": "La cifra por usuario es la tarifa anual publicada por Workyard, revisada el {date}. El pago mensual cuesta más.",
+      "caps": {
+        "Free": "3 obras activas · 3 facturas al mes",
+        "Starter": "Obras y facturas ilimitadas",
+        "Pro": "Trabajadores ilimitados"
+      }
+    }
   }
 }

@@ -11,6 +11,8 @@ import { motion, useSpring, useReducedMotion } from "framer-motion";
 export default function CursorDot() {
   const prefersReduced = useReducedMotion();
   const [visible, setVisible] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const [hovering, setHovering] = useState(false);
 
   const x = useSpring(0, { stiffness: 500, damping: 28 });
@@ -48,7 +50,10 @@ export default function CursorDot() {
     scale.set(hovering ? 1 : 0.3);
   }, [hovering, scale]);
 
-  if (prefersReduced) return null;
+  // Render nothing only AFTER mount: the server can't know the preference,
+  // and returning null on the client's first render is a hydration mismatch
+  // for every reduced-motion visitor. The dot starts at opacity 0 anyway.
+  if (prefersReduced && mounted) return null;
 
   return (
     <motion.div

@@ -5,6 +5,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // ─── Dusk site (experiment/opus55-wow home) ─────────────────────
+        site: {
+          sky:   "#485348", // = body / iOS status zone: the sky starts here
+          night: "#121713", // page base below the hero
+          slab:  "#1B211C", // raised surfaces on night
+          rule:  "#2A322B", // hairlines on night
+          paper: "#ECE6D6", // text on night
+          haze:  "#A9A68E",
+          vis:   "#D4EE5E", // hi-vis lime — the one accent
+        },
         // ─── v4: warm stone middle-ground ────────────────────────────────
         // Neutral warm-taupe ramp — not cream, not green. A quiet,
         // architectural palette that sits between light and dark. Sage
@@ -41,6 +51,7 @@ const config: Config = {
         },
       },
       fontFamily: {
+        flex:    ["var(--font-flex)", "var(--font-inter)", "system-ui", "sans-serif"],
         display: ["var(--font-fraunces)",      "Georgia", "serif"],
         // `heading` aliases to body (Inter) — Space Grotesk retired in v6
         // to trim to three faces: Fraunces (display), Inter (everything),

@@ -736,5 +736,270 @@
     "ledgerMaterials": "Materials",
     "ledgerFuel": "Fuel",
     "ledgerPunch": "You knew on day 12. Not in March."
+  },
+  "site": {
+    "lift": {
+      "kicker": "Job costing for crews of 1 to 25",
+      "h1a": "Know what it costs",
+      "h1b": "while it’s still",
+      "h1c": "going up.",
+      "sub": "Every hour, every load, every receipt lands on the job the moment it happens, so you see the number while you can still do something about it. Works on any phone, even with no signal.",
+      "startFree": "Start free",
+      "bookDemo": "Book a demo",
+      "spec0": "$0 to start",
+      "spec1": "Any phone",
+      "spec2": "No signal needed",
+      "scrollCue": "Scroll to run the crane",
+      "ledger": {
+        "job": "Job 204 · Johnson house",
+        "live": "Live",
+        "spent": "Spent to date",
+        "budget": "Budget",
+        "left": "Left",
+        "pending": "In the yard",
+        "closed": "Closed",
+        "under": "{amount} under budget"
+      },
+      "loads": {
+        "concrete": {
+          "name": "Concrete",
+          "note": "14 yd"
+        },
+        "steel": {
+          "name": "Steel",
+          "note": "W-beams"
+        },
+        "lumber": {
+          "name": "Lumber",
+          "note": "320 bd-ft"
+        },
+        "labor": {
+          "name": "Labor",
+          "note": "212 h"
+        },
+        "windows": {
+          "name": "Windows",
+          "note": "12 units"
+        },
+        "roof": {
+          "name": "Roof",
+          "note": "Shingles"
+        }
+      },
+      "beats": {
+        "0": {
+          "title": "Scan the receipt once.",
+          "body": "Snap it at the plant. Every line lands on the job, grouped. No shoebox, no retyping on Sunday night."
+        },
+        "1": {
+          "title": "Approve it from the truck.",
+          "body": "The crew asks for materials in the app. One tap and it’s approved, bought and on the job’s cost."
+        },
+        "2": {
+          "title": "No signal? Still logged.",
+          "body": "Basement, rural lot, parking garage. It saves on the phone and syncs the moment the bars come back."
+        },
+        "3": {
+          "title": "Hours log themselves.",
+          "body": "GPS clock-in with geofences. 212 hours on this job and nobody texted a timesheet."
+        },
+        "4": {
+          "title": "Plan vs. actual, live.",
+          "body": "The budget line moves when something lands, not when the bookkeeper catches up at month-end."
+        },
+        "5": {
+          "title": "Bill it before you leave.",
+          "body": "Unbilled hours and materials become an invoice. Email it to the client from the site."
+        },
+        "finale": {
+          "title": "Closed $2,610 under.",
+          "body": "You knew on Tuesday, not at tax time. That’s the whole idea."
+        }
+      },
+      "tags": {
+        "budget": "Budget",
+        "spent": "Spent"
+      }
+    },
+    "ticker": {
+      "events": [
+        "06:15 — crew clocked in · 12 / 12",
+        "07:02 — receipt scanned · $412.88 · 9 lines",
+        "09:40 — request approved · 40 sh plywood",
+        "11:15 — no signal · 3 entries saved on the phone",
+        "11:52 — back online · synced",
+        "14:30 — plan vs. actual · 4% under",
+        "16:05 — invoice sent · Johnson house",
+        "17:20 — paid"
+      ]
+    },
+    "shoebox": {
+      "kicker": "How it goes today",
+      "headA": "This is job costing",
+      "headB": "for most crews.",
+      "body": "Receipts in the truck. Hours in a group chat. Notes on the dash. The real number shows up at tax time, when it’s too late to change it. Go ahead, throw them around.",
+      "afterA": "Same job.",
+      "afterB": "Sorted.",
+      "afterBody": "The same twelve scraps, where Stroyka puts them the moment they happen: by cost type, on the job, with totals. Nobody sat down to do this.",
+      "sort": "Sort it out",
+      "unsort": "Mess it up again",
+      "hint": "Drag · throw",
+      "cats": {
+        "labor": "Labor",
+        "materials": "Materials",
+        "fuel": "Fuel",
+        "equipment": "Equipment"
+      },
+      "items": {
+        "0": "Home Depot #4471 — lumber, screws",
+        "1": "Mike: 9.5 hrs today, left at 6",
+        "2": "Shell — diesel, truck 2",
+        "3": "Rebar #4 — 60 pcs. Paid??",
+        "4": "Sunbelt — skid steer, 1 day",
+        "5": "Sat OT — crew of 4",
+        "6": "Did you approve the plywood? 40 sheets",
+        "7": "Gas — mower + generator",
+        "8": "Dump fee — landfill",
+        "9": "Floor & Decor — tile, grout",
+        "10": "Ana 8h. Send me the hours pls",
+        "11": "Blade rental — back Fri!"
+      }
+    },
+    "know": {
+      "prefix": "Know every",
+      "words": [
+        "crew hour.",
+        "receipt.",
+        "gallon of fuel.",
+        "change order.",
+        "dollar."
+      ],
+      "foot": "Not at month-end. Not at tax time. While the job is still running."
+    },
+    "stack": {
+      "headA": "One app.",
+      "headB": "Both ends of the crew.",
+      "items": {
+        "0": {
+          "kicker": "Offline-first",
+          "title": "Works where the signal doesn’t.",
+          "body": "Every phone keeps its own copy. The crew logs time, requests and tasks in the basement or out on the lot, and it syncs on its own when the bars come back. Nothing lost, nothing counted twice."
+        },
+        "1": {
+          "kicker": "Boss & crew",
+          "title": "Two apps in one.",
+          "body": "Bosses get budgets, approvals and cost reports. Workers get their tasks, their hours and a button to ask for materials. Same app, and each person sees only their side."
+        },
+        "2": {
+          "kicker": "Job costing",
+          "title": "The P&L writes itself.",
+          "body": "Every purchase, timesheet and fuel trip rolls into the job’s P&L as it happens. Labor, materials, budget left, all in one place, updated the moment a worker submits."
+        },
+        "3": {
+          "kicker": "Approvals",
+          "title": "No more “did you approve that?”",
+          "body": "Requests come in from the field. You approve them with one tap, and approved items log to the job’s costs with a full audit trail. No text threads."
+        }
+      },
+      "offline": {
+        "online": "Online",
+        "offline": "No signal",
+        "kill": "Kill the signal",
+        "restore": "Bring it back",
+        "entries": [
+          "Clock-in · Mike R. · 06:58",
+          "Photo · east wall framing",
+          "Request · 2 boxes 3\" screws"
+        ],
+        "savedOne": "On phone",
+        "syncedOne": "Synced",
+        "idle": "Try it: cut the signal",
+        "queued": "{count, plural, one {# entry} other {# entries}} saved on this phone",
+        "synced": "Everything synced",
+        "empty": "Everything is synced. Nothing waiting."
+      },
+      "roles": {
+        "boss": "Boss",
+        "crew": "Crew",
+        "bossItems": [
+          {
+            "k": "Job 204 budget",
+            "v": "62% used · on plan"
+          },
+          {
+            "k": "Requests waiting",
+            "v": "3"
+          },
+          {
+            "k": "On site now",
+            "v": "12 / 12"
+          },
+          {
+            "k": "Unbilled this week",
+            "v": "$8,420"
+          }
+        ],
+        "crewItems": [
+          {
+            "k": "Today",
+            "v": "Frame east wall"
+          },
+          {
+            "k": "Clocked in",
+            "v": "06:15 · 4 h 12 m"
+          },
+          {
+            "k": "This week",
+            "v": "31.5 h"
+          },
+          {
+            "k": "Need something?",
+            "v": "Request materials"
+          }
+        ],
+        "foot": "Same app · each person sees their side"
+      },
+      "pnl": {
+        "plan": "Plan",
+        "actual": "Actual",
+        "labor": "Labor",
+        "materials": "Materials",
+        "fuel": "Fuel",
+        "margin": "Margin on Job 204"
+      },
+      "approve": {
+        "kicker": "Supply request",
+        "item": "40 sheets plywood, ¾\"",
+        "from": "From Mike R. · 2 min ago",
+        "approve": "Approve",
+        "undo": "Undo",
+        "reject": "Reject",
+        "approved": "Approved",
+        "ledger": "Job 204 · Materials",
+        "row": "Plywood ¾\" × 40",
+        "prev0": "Home Depot #4471",
+        "prev1": "Rebar #4 × 60"
+      }
+    },
+    "seats": {
+      "kicker": "The math",
+      "headA": "Per-seat pricing",
+      "headB": "punishes hiring.",
+      "body": "Drag to your crew size. A per-seat bill goes up with every person you hire. Ours has three prices, and then it stops.",
+      "crew": "Crew size",
+      "workers": "workers",
+      "them": "Per-seat app",
+      "themNote": "Workyard’s published rate: $50 + $6 per user",
+      "perMonth": "/mo",
+      "keep": "Over a year, you keep",
+      "even": "At this size the per-seat app costs about the same or less. We’d rather say so.",
+      "perYear": "/yr",
+      "source": "Per-seat figure is Workyard’s own published annual-billing rate, checked {date}. Monthly billing costs more.",
+      "caps": {
+        "Free": "3 active jobs · 3 invoices a month",
+        "Starter": "Unlimited jobs and invoices",
+        "Pro": "Unlimited workers"
+      }
+    }
   }
 }
