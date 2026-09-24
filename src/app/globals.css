@@ -24,24 +24,27 @@
   html.has-lenis {
     scroll-behavior: auto;
   }
-  /* Chrome canvas — THE PROVEN MODEL (seven on-device deploys, 2026-07-31):
+  /* Chrome canvas — THE PROVEN MODEL (seven on-device deploys, 2026-07-31),
+     carried into the Morning Bone system (2026-09-24):
      - The TOP status zone (clock/battery strip) tracks the BODY background-
-       color and NOTHING else. Seven deploys of evidence: bone body → sand
-       band, #2B3D30 → dark green band, #485348 → hero-green; slivers, caps
-       (any z-index/height/poke) and the navbar never moved it once.
-     - Therefore body = #485348, the hero's rendered top tone. Combined
-       with the hero top scrim and the nav glass blend (same color), the
-       status zone reads as the page continuing — the "transparent" look.
-       Maks approved this exact at-rest look on device.
-     - The pale-sage BOTTOM plate was NEVER the body color: it was tint
-       LATCHING after SafariBottomTint was deleted (see its ⚠️ header —
-       its display toggles are iOS 26's only re-sample trigger). Dark body
-       + live sliver was deployed in session 1 and the bottom was clean.
-       Do not "fix" the top by lightening the body again — bone body =
-       the sand eyebrow. */
+       color and NOTHING else. So body = the tone directly under the status
+       zone. It used to be #485348 because every hero started dark; the old
+       "bone body = sand band" failure was bone above a DARK hero.
+     - Morning Bone pages start light: the home starts on the sky, every
+       other route on bone under bone nav glass. One token, --page-top,
+       carries that tone to html, body and #chrome-cap (set per route
+       below); the nav's phone glass also starts from it.
+     - The bottom plate was never the body colour — it was tint latching
+       (see SafariBottomTint's ⚠️ header). Do not remove that component. */
+  :root {
+    --page-top: #ece6d8; /* = rgb(var(--site-night)), the bone page */
+  }
+  html:has(.site-home) {
+    --page-top: var(--sky-top); /* the home starts on the morning sky */
+  }
   html,
   body {
-    background-color: #485348;
+    background-color: var(--page-top);
   }
   #chrome-cap {
     position: fixed;
@@ -49,68 +52,45 @@
     left: 0;
     right: 0;
     height: env(safe-area-inset-top, 0px);
-    background-color: #485348; /* hero's rendered top tone; = hero scrim + nav blend */
+    background-color: var(--page-top); /* = body = the tone under the status zone */
     /* MUST be the TOPMOST fixed element at the top edge: Safari's edge
        hit-test finds the topmost viewport-constrained element and reads
        ITS background-color — at z-40 the (transparent) navbar shadowed
        the cap and Safari fell through to the bone body = sand band.
        z-70 puts it above the navbar (50) and ScrollProgress (60); on
        iPhones everything it covers is the status zone (behind the OS
-       clock) plus 4px of #485348 scrim/nav-blend — nothing visible is
+       clock) plus 4px of --page-top nav blend — nothing visible is
        lost. Desktop height is 0 → no effect. */
     z-index: 70;
     pointer-events: none;
   }
-  /* Overscroll rubber-band follows scroll position (Safari 26 tracks LIVE
-     body background for overscroll ONLY — toolbars sample once at load, so
-     this cannot disturb them): hero green through the page, footer green by
-     the end of the document, so pulling past either edge reveals a matching
-     surface. Progressive — static #485348 where unsupported. */
-  @supports (animation-timeline: scroll()) {
-    body {
-      animation: chrome-canvas linear both;
-      animation-timeline: scroll(root);
-    }
-  }
-  /* Navbar scrolled glass (used by Navbar.tsx's absolute child — the fixed
-     <nav> itself must stay background-free so iOS 26's toolbar sampler
-     ignores it). Desktop: the original flat dark glass. Phones: the same
-     glass, but starting from the chrome tint (#485348 — what iOS paints
-     behind the clock) across the safe-area and easing into the dark glass
-     over the next 44px, so the status zone flows INTO the navbar instead of
-     sitting on it as a second band. */
+  /* (The scroll-driven body colour — dark hero green → dark footer green —
+     is retired: the Morning Bone page is bone top to bottom, so a static
+     body already matches both overscroll edges.) */
+  /* Navbar glass (Navbar.tsx's absolute child — the fixed <nav> itself stays
+     background-free so iOS 26's toolbar sampler ignores it). Bone glass;
+     on phones it starts from --page-top across the safe area and eases into
+     the glass over 44px, so the status zone flows into the bar. */
   .nav-glass-scrolled {
-    background-color: rgba(30, 46, 36, 0.72);
+    background-color: rgb(var(--site-night) / 0.82);
   }
   @media (max-width: 767.98px) {
     .nav-glass-scrolled {
       background-color: transparent;
       background-image: linear-gradient(
         180deg,
-        #485348 0,
-        #485348 env(safe-area-inset-top, 0px),
-        rgba(30, 46, 36, 0.72) calc(env(safe-area-inset-top, 0px) + 44px)
+        var(--page-top) 0,
+        var(--page-top) env(safe-area-inset-top, 0px),
+        rgb(var(--site-night) / 0.82) calc(env(safe-area-inset-top, 0px) + 44px)
       );
     }
   }
   .page-surface {
-    background-color: #E3DCC9; /* bone — the real page surface */
-  }
-  /* Very faint warm-earth grain at <3% — reads as plaster paper, not noise.
-     DESKTOP ONLY: on iPhone (3x DPR) the 3px dot tile aliases into a clearly
-     visible halftone grid wherever the raw surface shows (the marginalia
-     voids) — regardless of background-attachment, which was ruled out on
-     device. */
-  @media (min-width: 768px) {
-    .page-surface {
-      background-image:
-        radial-gradient(rgba(46, 38, 28, 0.04) 1px, transparent 1px);
-      background-size: 3px 3px;
-    }
+    background-color: rgb(var(--site-night)); /* the bone page */
   }
   ::selection {
-    background-color: #2E261C;
-    color: #E3DCC9;
+    background-color: rgb(var(--site-vis));
+    color: rgb(var(--site-on-vis));
   }
 
   /* iOS 26 Safari ("Liquid Glass") bottom-toolbar tint source — RESTORED
@@ -122,7 +102,7 @@
      TRANSPARENT GLASS bar (the page shows through it), which already looks
      clean over the hero + light/textured sections. SafariBottomTint.tsx flips
      data-active="true" (and sets the colour) ONLY while a flat-dark section
-     (#plan-to-done, #footer) is under the bar, so just those frost to a solid
+     (today: #finale, the forest CTA band) is under the bar, so just those frost to a solid
      tint instead of pale sage. Must toggle display (not opacity) — Safari still
      samples opacity:0 / transparent elements. Gated to iOS phones via the
      Apple-engine @supports probe + phone width, so desktop/Android never show
@@ -155,7 +135,7 @@
          or Safari's edge hit-test misses it entirely (the June bottom
          sliver pokes 4px in for the same reason — and the env()-only cap
          was missed on device: sand band returned). The extra 4px sits over
-         the hero scrim / nav glass blend, both #485348 → invisible. */
+         the nav glass blend, which starts from the same --page-top → invisible. */
       #chrome-cap {
         height: calc(env(safe-area-inset-top, 0px) + 4px);
       }
@@ -583,10 +563,6 @@
   background: linear-gradient(to bottom, var(--from) 0%, var(--to) 100%);
 }
 
-@keyframes chrome-canvas {
-  0%, 88% { background-color: #485348; }
-  100% { background-color: #2B3D30; }
-}
 
 /* ─── Crew-size range input (/compare/construction-job-costing-cost) ────
    A native <input type="range"> restyled rather than replaced. The native
@@ -762,91 +738,3 @@
   --scrap-ink: #2a261e;
 }
 
-/* ── Home chrome on the morning sky ───────────────────────────────────────
-   The shared Navbar and the iOS chrome were drawn for a DARK hero (#485348).
-   The home's hero is now a pale morning sky, so on the home only:
-   - the nav sits transparent on the sky with ink/forest type (the way the
-     dusk palettes let it melt into a dark sky), and turns into BONE glass
-     once scrolled instead of dark glass;
-   - the iOS status zone follows the same rule as before — it tracks the
-     BODY colour, so body = the hero's top tone — only the tone changed:
-     body, html and #chrome-cap = --sky-top. The scroll-driven body colour
-     animation is off here (it was tuned for the dark page).
-   Every other route keeps the dark model untouched. Needs an on-device check
-   (lesson_ios_chrome_invariants): top zone should read as sky, not a band. */
-html:has(.site-home),
-body:has(.site-home) {
-  background-color: var(--sky-top);
-}
-body:has(.site-home) {
-  animation: none;
-}
-body:has(.site-home) #chrome-cap {
-  background-color: var(--sky-top);
-}
-body:has(.site-home) nav .nav-glass-scrolled {
-  background-color: rgb(var(--site-night) / 0.82);
-  background-image: linear-gradient(
-    180deg,
-    var(--sky-top) 0,
-    var(--sky-top) env(safe-area-inset-top, 0px),
-    rgb(var(--site-night) / 0.82) calc(env(safe-area-inset-top, 0px) + 44px)
-  );
-  border-color: rgb(var(--site-paper) / 0.08);
-  box-shadow: 0 8px 30px -14px rgb(60 50 30 / 0.25);
-}
-/* Type: only the bar itself (2nd child). The mobile menu panel (3rd child)
-   keeps its own dark surface and bone type. */
-/* (Language dropdown items are menuitemradio links on their own dark
-   panel — excluded.) */
-body:has(.site-home) nav > div:nth-child(2) a:not([role^="menuitem"]),
-body:has(.site-home) nav > div:nth-child(2) button:not([role^="menuitem"]) {
-  color: rgb(var(--site-paper) / 0.78);
-}
-body:has(.site-home) nav > div:nth-child(2) a:not([role^="menuitem"]):hover,
-body:has(.site-home) nav > div:nth-child(2) button:not([role^="menuitem"]):hover {
-  color: rgb(var(--site-paper));
-}
-body:has(.site-home) nav > div:nth-child(2) button[aria-haspopup] svg {
-  color: rgb(var(--site-paper) / 0.55);
-}
-body:has(.site-home) nav > div:nth-child(2) [role="img"] span {
-  color: rgb(var(--site-paper)) !important;
-}
-body:has(.site-home) nav > div:nth-child(2) [role="img"] > div {
-  background: rgb(var(--site-paper) / 0.2) !important;
-}
-/* Logo bracket: the pale-sage stroke disappears on a pale sky. */
-body:has(.site-home) nav > div:nth-child(2) [role="img"] svg path:first-of-type {
-  stroke: rgb(var(--site-vis));
-}
-body:has(.site-home) nav > div:nth-child(2) [role="img"] svg circle:first-of-type {
-  fill: rgb(var(--site-vis));
-}
-body:has(.site-home) nav > div:nth-child(2) button[aria-haspopup],
-body:has(.site-home) nav > div:nth-child(2) a[href$="get-started"] {
-  border-color: rgb(var(--site-paper) / 0.22);
-  background-color: rgb(var(--site-paper) / 0.04);
-}
-body:has(.site-home) nav > div:nth-child(2) a[href$="get-started"] {
-  color: rgb(var(--site-on-vis));
-  background-color: rgb(var(--site-vis));
-  border-color: rgb(var(--site-vis));
-}
-body:has(.site-home) nav > div:nth-child(2) a[href$="get-started"]:hover {
-  color: rgb(var(--site-on-vis));
-  background-color: rgb(var(--site-vis-hover));
-}
-body:has(.site-home) nav > div:nth-child(2) button span.bg-bone {
-  background-color: rgb(var(--site-paper));
-}
-/* Shared chrome (Logo, LanguageSwitcher) is drawn for dark surfaces. On the
-   bone footer, darken the logo and seat the switcher on a dark chip. */
-.site-on-light-logo {
-  filter: brightness(0.18);
-}
-.site-on-light-chip {
-  display: inline-flex;
-  border-radius: 999px;
-  background: rgb(31 36 30);
-}

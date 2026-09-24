@@ -3,17 +3,17 @@
 import { useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { useReducedMotion } from "framer-motion";
-import { Crown, Zap, ArrowRight } from "lucide-react";
+import { motion } from "motion/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import AmbientBackdrop from "@/components/ui/AmbientBackdrop";
-import FadeIn from "@/components/ui/FadeIn";
-import TextReveal from "@/components/ui/TextReveal";
+import FlapText from "@/components/site/ui/FlapText";
+import { useReduced } from "@/components/site/ui/useReduced";
 import { AppleGlyph, GooglePlayGlyph } from "@/components/ui/StoreGlyphs";
 import { IOS_APP_URL, ANDROID_APP_URL } from "@/lib/appLinks";
 import { PRICES } from "@/data/pricing";
 import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
+
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
  * What the buyer just paid, from the params the checkout route put on its
@@ -50,7 +50,7 @@ export default function SuccessContent() {
   const plan = searchParams.get("plan");
   const billing = searchParams.get("billing");
   const sessionId = searchParams.get("session_id");
-  const prefersReduced = useReducedMotion();
+  const reduced = useReduced();
   const track = useCtaTracker("get_started_success");
   const reported = useRef(false);
 
@@ -69,124 +69,129 @@ export default function SuccessContent() {
 
   const planLabel =
     plan === "pro" ? t("pro.name") : plan === "starter" ? t("starter.name") : "";
-  const isPro = planLabel === t("pro.name");
-  const isStarter = planLabel === t("starter.name");
+
+  /** Content settles in after the headline has opened and the stamp landed. */
+  const rise = (i: number) => ({
+    initial: reduced ? false : ({ opacity: 0, y: 18 } as const),
+    animate: { opacity: 1, y: 0 },
+    transition: { delay: 0.55 + i * 0.08, duration: 0.45, ease: EASE },
+  });
 
   return (
     <>
       <Navbar />
-      <main className="relative min-h-screen pt-32 pb-20 bg-gradient-to-b from-[#E3DCC9] to-[#D4CBB4] overflow-hidden">
-        <AmbientBackdrop />
-        <div className="relative z-10 max-w-2xl mx-auto px-6">
-          {/* Live eyebrow — a pulsing sage dot signals the subscription just went
-              active. Folio detail on the right echoes /demo + /get-started. */}
-          <FadeIn>
-            <div className="flex items-baseline justify-between gap-4 mb-6">
-              <span className="inline-flex items-center gap-2.5 font-mono text-[11px] font-medium tracking-[0.22em] uppercase text-ink-soft">
+      <main className="relative overflow-hidden bg-site-night pb-16 pt-32 text-site-paper md:pb-24 md:pt-40">
+        {/* Low morning bloom — the home's sky, kept off the top edge. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute right-[-20%] top-[8%] h-[720px] w-[900px] max-w-none opacity-55"
+          style={{ background: "radial-gradient(closest-side, var(--sky-top), transparent)" }}
+        />
+
+        <div className="relative mx-auto max-w-[1200px] px-5 md:px-10">
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-16">
+            <div className="min-w-0">
+              {/* Live kicker — the subscription just went active. */}
+              <p className="mb-6 inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.22em] text-site-vis">
                 <span className="relative inline-flex h-1.5 w-1.5" aria-hidden>
-                  {!prefersReduced && (
-                    <span className="absolute inline-flex h-full w-full rounded-full bg-brand-sage opacity-75 animate-ping" />
+                  {!reduced && (
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-site-vis opacity-60" />
                   )}
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand-sage" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-site-vis" />
                 </span>
                 {t("subscriptionActive")}
-              </span>
-              <span
-                aria-hidden
-                className="hidden sm:block font-mono text-[9.5px] tracking-[0.24em] uppercase text-ink/35"
-              >
-                Field journal · Appendix C
-              </span>
-            </div>
-          </FadeIn>
-
-          <TextReveal
-            as="h1"
-            className="font-display font-light text-4xl lg:text-6xl leading-[0.98] tracking-[-0.02em] text-ink mb-4"
-          >
-            {t("welcome")}
-          </TextReveal>
-
-          <FadeIn delay={0.12}>
-            <div className="flex items-center gap-2 mb-12">
-              {isPro && <Crown size={16} className="text-brand-forest" />}
-              {isStarter && <Zap size={16} className="text-brand-forest" />}
-              <p className="font-mono text-[12px] tracking-[0.18em] uppercase text-ink-soft">
-                {planLabel
-                  ? t("planActive", { plan: planLabel })
-                  : t("planActiveGeneric")}
               </p>
+              <FlapText
+                as="h1"
+                immediate
+                lines={[t("welcome")]}
+                className="max-w-[15ch] font-flex text-[clamp(2.4rem,5.6vw,5rem)] font-semibold leading-[0.95] tracking-[-0.03em] [font-variation-settings:'wdth'_110] [overflow-wrap:anywhere]"
+              />
             </div>
-          </FadeIn>
+
+            {/* The stamp: the plan, inked onto the page. */}
+            <PlanStamp
+              reduced={reduced}
+              word={planLabel || t("subscriptionActive")}
+              note={planLabel ? t("planActive", { plan: planLabel }) : t("planActiveGeneric")}
+            />
+          </div>
 
           {/* Next steps: get the app, then create the account IN the app with
               the checkout email — create-company links the pending Stripe
               subscription by that email. The web signup used to be step 1;
               the site stopped creating web accounts on 2026-09-13. */}
-          <FadeIn delay={0.2}>
-            <div className="card-stone border border-ink/15 rounded-2xl p-6 sm:p-8 text-left mb-6">
-              <h2 className="font-display text-[20px] leading-snug text-ink mb-7">
+          <div className="mt-14 grid gap-4 md:mt-20 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
+            <motion.section
+              {...rise(0)}
+              className="rounded-[26px] bg-site-slab p-6 ring-1 ring-site-paper/[0.08] sm:p-8 md:rounded-[30px] md:p-10"
+            >
+              <h2 className="font-flex text-[clamp(1.6rem,2.6vw,2.1rem)] font-semibold leading-tight tracking-[-0.02em] [font-variation-settings:'wdth'_110]">
                 {t("newToStroyka")}
               </h2>
 
-              {/* Step 1 — download */}
-              <div className="flex gap-4">
-                <StepDot>1</StepDot>
-                <div className="flex-1 pb-7">
-                  <p className="text-[14.5px] text-ink-soft leading-relaxed mb-4">
-                    {t("step1")}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <StoreBadge
-                      href={IOS_APP_URL}
-                      label={t("appStore")}
-                      icon={<AppleGlyph className="h-3 w-3" />}
-                      onClick={() => track("store_badge_clicked", { store: "app_store" })}
-                    />
-                    {ANDROID_APP_URL !== "#" && (
+              <ol className="mt-8 border-t border-site-paper/10">
+                {/* Step 1 — download */}
+                <li className="flex gap-5 border-b border-site-paper/10 py-6 md:gap-8">
+                  <StepNum>01</StepNum>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-flex text-[18px] font-medium leading-snug tracking-[-0.01em] md:text-[20px]">
+                      {t("step1")}
+                    </p>
+                    <div className="mt-5 flex flex-wrap gap-2.5">
                       <StoreBadge
-                        href={ANDROID_APP_URL}
-                        label={t("googlePlay")}
-                        icon={<GooglePlayGlyph className="h-3 w-3" />}
-                        onClick={() => track("store_badge_clicked", { store: "google_play" })}
+                        href={IOS_APP_URL}
+                        label={t("appStore")}
+                        icon={<AppleGlyph className="h-4 w-4" />}
+                        onClick={() => track("store_badge_clicked", { store: "app_store" })}
                       />
-                    )}
+                      {ANDROID_APP_URL !== "#" && (
+                        <StoreBadge
+                          href={ANDROID_APP_URL}
+                          label={t("googlePlay")}
+                          icon={<GooglePlayGlyph className="h-4 w-4" />}
+                          onClick={() => track("store_badge_clicked", { store: "google_play" })}
+                        />
+                      )}
+                    </div>
                   </div>
-                </div>
-              </div>
+                </li>
 
-              {/* Step 2 — create the account in the app */}
-              <div className="flex gap-4">
-                <StepDot>2</StepDot>
-                <div className="flex-1">
-                  <p className="text-[14.5px] text-ink-soft leading-relaxed">
+                {/* Step 2 — create the account in the app */}
+                <li className="flex gap-5 pt-6 md:gap-8">
+                  <StepNum>02</StepNum>
+                  <p className="min-w-0 flex-1 font-flex text-[18px] font-medium leading-snug tracking-[-0.01em] md:text-[20px]">
                     {t("step2")}
                   </p>
-                </div>
-              </div>
-            </div>
-          </FadeIn>
+                </li>
+              </ol>
+            </motion.section>
 
-          {/* Already have an account — quiet secondary path */}
-          <FadeIn delay={0.28}>
-            <p className="text-[13.5px] text-ink-soft leading-relaxed mb-12">
-              <span className="text-ink font-medium">{t("haveApp")}</span>{" "}
-              {t("openSignIn")}
-            </p>
-          </FadeIn>
-
-          {/* Questions */}
-          <FadeIn delay={0.34}>
-            <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-muted">
-              {t("questions")}{" "}
-              <a
-                href="mailto:hello@getstroyka.com"
-                className="text-brand-forest hover:text-brand-deep transition-colors"
+            <div className="flex flex-col gap-4">
+              {/* Already have an account — quiet secondary path */}
+              <motion.div
+                {...rise(1)}
+                className="rounded-[26px] p-6 ring-1 ring-inset ring-site-paper/15 sm:p-8 md:rounded-[30px]"
               >
-                hello@getstroyka.com
-              </a>
-            </p>
-          </FadeIn>
+                <p className="font-flex text-[18px] font-semibold leading-snug tracking-[-0.01em]">{t("haveApp")}</p>
+                <p className="mt-2 text-[15px] leading-relaxed text-site-paper/65">{t("openSignIn")}</p>
+              </motion.div>
+
+              {/* Questions */}
+              <motion.p
+                {...rise(2)}
+                className="px-1 pt-2 font-mono text-[11px] uppercase leading-relaxed tracking-[0.2em] text-site-paper/50"
+              >
+                {t("questions")}{" "}
+                <a
+                  href="mailto:hello@getstroyka.com"
+                  className="normal-case tracking-[0.06em] text-site-vis underline decoration-site-vis/30 underline-offset-4 transition-colors hover:decoration-site-vis"
+                >
+                  hello@getstroyka.com
+                </a>
+              </motion.p>
+            </div>
+          </div>
         </div>
       </main>
       <Footer />
@@ -194,16 +199,46 @@ export default function SuccessContent() {
   );
 }
 
-/** Numbered step marker — sage-outlined coin with a mono numeral. */
-function StepDot({ children }: { children: React.ReactNode }) {
+/**
+ * The success stamp (spec: border-[2.5px] accent, font-flex extrabold
+ * uppercase, spring 380/14, rotate −8…−12°, impact ring 1 → 1.85). It lands
+ * once the headline's flap has opened.
+ */
+function PlanStamp({ reduced, word, note }: { reduced: boolean; word: string; note: string }) {
   return (
-    <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-brand-sage/45 bg-brand-sage/10 font-mono text-[12px] font-semibold text-brand-forest">
-      {children}
-    </div>
+    <motion.div
+      initial={reduced ? false : { scale: 0, rotate: -24, opacity: 0 }}
+      animate={{ scale: 1, rotate: -9, opacity: 1 }}
+      transition={{ type: "spring", stiffness: 380, damping: 14, delay: 0.45 }}
+      className="origin-center justify-self-start pl-2 lg:mb-3 lg:justify-self-end lg:pl-0 lg:pr-4"
+    >
+      <span className="relative block max-w-[300px] rounded-xl border-[2.5px] border-site-vis px-5 py-3 text-site-vis">
+        {!reduced && (
+          <motion.span
+            aria-hidden
+            className="absolute inset-[-2.5px] rounded-xl ring-2 ring-site-vis"
+            initial={{ scale: 1, opacity: 0 }}
+            animate={{ scale: [1, 1.85], opacity: [0.7, 0] }}
+            transition={{ duration: 0.7, ease: "easeOut", delay: 0.52 }}
+          />
+        )}
+        <span className="block break-words font-flex text-[clamp(1.6rem,3vw,2.2rem)] font-extrabold uppercase leading-none tracking-[0.03em] [font-variation-settings:'wdth'_125]">
+          {word}
+        </span>
+        <span className="mt-2 block font-mono text-[10px] uppercase leading-snug tracking-[0.18em]">{note}</span>
+      </span>
+    </motion.div>
   );
 }
 
-/** Pill store badge — dark ink chip with a brand glyph. */
+/** Step numeral — a mono micro-label in the accent, like the home's FAQ. */
+function StepNum({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="mt-1.5 font-mono text-[11px] tabular-nums tracking-[0.1em] text-site-vis">{children}</span>
+  );
+}
+
+/** Store badge — an ink pill with the store's glyph. */
 function StoreBadge({
   href,
   label,
@@ -221,7 +256,7 @@ function StoreBadge({
       target="_blank"
       rel="noopener noreferrer"
       onClick={onClick}
-      className="inline-flex items-center gap-1.5 rounded-full bg-ink px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-bone transition-colors hover:bg-brand-deep"
+      className="inline-flex h-12 items-center gap-2.5 rounded-full bg-site-paper px-5 text-[14.5px] font-medium text-site-night transition-[background-color,transform] duration-200 hover:bg-site-vis active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-site-vis focus-visible:ring-offset-2 focus-visible:ring-offset-site-slab"
     >
       {icon}
       {label}

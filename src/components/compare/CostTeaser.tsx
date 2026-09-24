@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion, useInView } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { motion, useInView } from "motion/react";
+import { ArrowUpRight } from "lucide-react";
 import { WORKYARD, stroykaPlanFor } from "@/data/competitors";
+import { useReduced } from "@/components/site/ui/useReduced";
 
 /**
  * The hook into /compare/construction-job-costing-cost.
@@ -57,13 +58,13 @@ function Figure({
   value: number;
   tone: "ours" | "theirs";
 }) {
-  const prefersReduced = useReducedMotion();
+  const prefersReduced = useReduced();
   return (
     <span className="inline-flex items-baseline">
       <motion.span
         key={value}
-        className={`font-heading text-[15px] font-semibold tabular-nums ${
-          tone === "ours" ? "text-ink" : "text-ink/55"
+        className={`inline-block font-flex text-[20px] font-semibold leading-none tracking-[-0.01em] tabular-nums ${
+          tone === "ours" ? "text-site-vis" : "text-site-paper"
         }`}
         initial={prefersReduced ? false : { y: 8, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -72,9 +73,7 @@ function Figure({
         ${value.toLocaleString("en-US")}
       </motion.span>
       <span
-        className={`text-[12px] font-normal ${
-          tone === "ours" ? "text-ink/50" : "text-ink/40"
-        }`}
+        className="ml-0.5 text-[12px] font-normal text-site-paper/50"
       >
         /mo
       </span>
@@ -84,13 +83,13 @@ function Figure({
 
 /** A 2px rule under each figure, scaled to its share of the widest bill. */
 function Rule({ value, tone }: { value: number; tone: "ours" | "theirs" }) {
-  const prefersReduced = useReducedMotion();
+  const prefersReduced = useReduced();
   return (
-    <span className="relative mt-1 block h-[2px] w-full overflow-hidden rounded-full bg-ink/10">
+    <span className="relative mt-2 block h-1.5 w-full overflow-hidden rounded-full bg-site-paper/[0.08]">
       <motion.span
         aria-hidden
         className={`absolute inset-y-0 left-0 w-full origin-left rounded-full ${
-          tone === "ours" ? "bg-brand-forest" : "bg-clay/60"
+          tone === "ours" ? "bg-site-vis" : "bg-site-paper/45"
         }`}
         initial={false}
         animate={{ scaleX: Math.max(0.02, value / SCALE_MAX) }}
@@ -105,7 +104,7 @@ function Rule({ value, tone }: { value: number; tone: "ours" | "theirs" }) {
 }
 
 export default function CostTeaser() {
-  const prefersReduced = useReducedMotion();
+  const prefersReduced = useReduced();
   const ref = useRef<HTMLAnchorElement>(null);
   const inView = useInView(ref, { margin: "-15%" });
   const [i, setI] = useState(1); // start on a crew of 10
@@ -136,7 +135,7 @@ export default function CostTeaser() {
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
       aria-label={`A crew of ${crew} costs $${ours} a month on Stroyka and $${theirs} on Workyard. Price your own crew against the full comparison.`}
-      className="group relative mt-7 inline-flex max-w-full flex-wrap items-center gap-x-5 gap-y-3 overflow-hidden rounded-2xl border border-ink/20 bg-bone/45 py-3.5 pl-5 pr-3.5 no-underline transition-[border-color,background-color,transform] duration-300 hover:-translate-y-0.5 hover:border-brand-forest/50 hover:bg-bone/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-forest"
+      className="group relative mt-7 inline-flex max-w-full flex-wrap items-center gap-x-6 gap-y-4 overflow-hidden rounded-[22px] bg-site-slab py-4 pl-5 pr-4 text-site-paper no-underline ring-1 ring-inset ring-site-paper/[0.08] transition-[box-shadow,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:ring-site-vis/40 active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-site-vis"
     >
       {/* Dwell indicator — a hairline that fills over each step, so the
           movement reads as deliberate rather than as something glitching.
@@ -145,7 +144,7 @@ export default function CostTeaser() {
         <motion.span
           key={i}
           aria-hidden
-          className="absolute inset-x-0 top-0 h-[2px] origin-left bg-brand-sage/70"
+          className="absolute inset-x-0 top-0 h-[2px] origin-left bg-site-vis/60"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: running ? 1 : 0.999 }}
           transition={{ duration: running ? DWELL / 1000 : 0, ease: "linear" }}
@@ -154,13 +153,13 @@ export default function CostTeaser() {
 
       {/* Crew size — the only thing the reader is told to watch. */}
       <span className="flex items-baseline gap-2">
-        <span className="font-mono text-[10.5px] font-medium uppercase tracking-[0.18em] text-ink/55">
+        <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-site-paper/55">
           A crew of
         </span>
-        <span className="relative inline-block w-[2.1ch] text-left">
+        <span className="relative inline-block w-[2.2ch] text-left">
           <motion.span
             key={crew}
-            className="font-display text-[22px] font-light leading-none tabular-nums text-ink"
+            className="inline-block font-flex text-[30px] font-semibold leading-none tracking-[-0.02em] tabular-nums text-site-paper"
             initial={prefersReduced ? false : { y: 10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
@@ -173,15 +172,15 @@ export default function CostTeaser() {
       {/* The two bills. Ours barely moves; theirs climbs every step — which
           is the entire point, made without a sentence. */}
       <span className="flex items-end gap-5">
-        <span className="min-w-[5.6rem]">
-          <span className="mb-0.5 block font-mono text-[9.5px] uppercase tracking-[0.16em] text-brand-forest">
+        <span className="min-w-[6rem]">
+          <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.18em] text-site-vis">
             Stroyka
           </span>
           <Figure value={ours} tone="ours" />
           <Rule value={ours} tone="ours" />
         </span>
-        <span className="min-w-[5.6rem]">
-          <span className="mb-0.5 block font-mono text-[9.5px] uppercase tracking-[0.16em] text-ink/40">
+        <span className="min-w-[6rem]">
+          <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.18em] text-site-paper/50">
             Workyard
           </span>
           <Figure value={theirs} tone="theirs" />
@@ -197,11 +196,20 @@ export default function CostTeaser() {
             the reader gets beats one that describes what the page contains.
             ("see the arithmetic" was the first attempt; Maks asked for
             something else, 2026-09-24.) */}
-        <span className="hidden font-body text-[13.5px] font-medium text-ink/70 transition-colors group-hover:text-ink sm:inline">
+        <span className="hidden text-[14px] font-medium text-site-paper/75 transition-colors group-hover:text-site-paper sm:inline">
           Price your crew
         </span>
-        <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-deep text-bone transition-transform duration-300 group-hover:translate-x-1">
-          <ArrowRight size={14} strokeWidth={2.5} />
+        <span className="relative grid h-9 w-9 flex-shrink-0 place-items-center overflow-hidden rounded-full bg-site-vis text-site-on-vis transition-colors duration-200 group-hover:bg-site-vis-hover">
+          <ArrowUpRight
+            size={16}
+            strokeWidth={2.2}
+            className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-6 group-hover:translate-x-6"
+          />
+          <ArrowUpRight
+            size={16}
+            strokeWidth={2.2}
+            className="absolute -translate-x-6 translate-y-6 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0 group-hover:translate-y-0"
+          />
         </span>
       </span>
     </Link>

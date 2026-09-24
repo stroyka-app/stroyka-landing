@@ -1,13 +1,13 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Lock, Check } from "lucide-react";
+import { motion } from "motion/react";
+import { Lock, Check } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import FadeIn from "@/components/ui/FadeIn";
-import SectionLabel from "@/components/ui/SectionLabel";
-import Button from "@/components/ui/Button";
 import CrewCostCalculator from "@/components/compare/CrewCostCalculator";
+import FlapText from "@/components/site/ui/FlapText";
+import VisButton from "@/components/site/ui/VisButton";
+import { useReduced } from "@/components/site/ui/useReduced";
 import { useSignupHref } from "@/lib/hooks/useSignupHref";
 import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
 import {
@@ -43,6 +43,11 @@ import {
  * page, and the "when to pick them instead" section is sincere. A comparison
  * page that only flatters its author is an ad, and assistants are getting
  * better at telling the difference.
+ *
+ * LOOK (2026-09-24): Morning Bone, the home's system. One bone page, the
+ * calculator as the hero object on a slab card, editorial sections set as
+ * kicker + headline on the left and argument on the right, hairline lists,
+ * mono footnotes, and the forest close the home ends on.
  */
 
 const WHEN_THEY_WIN = [
@@ -64,98 +69,158 @@ const WHEN_THEY_WIN = [
   },
 ];
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const H2 =
+  "font-flex text-[clamp(2rem,3.8vw,3.4rem)] font-semibold leading-[0.98] tracking-[-0.03em] [font-variation-settings:'wdth'_110]";
+
+const LINK =
+  "underline decoration-site-paper/30 underline-offset-[3px] transition-colors hover:text-site-vis hover:decoration-site-vis/60";
+
+/** Rise-in on scroll. Opacity + transform only; instant under reduced motion. */
+function Reveal({
+  children,
+  delay = 0,
+  className = "",
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  const reduced = useReduced();
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={reduced ? { duration: 0 } : { duration: 0.5, delay, ease: EASE }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/** Mono section kicker: index, then name, in the accent. */
+function Kicker({ n, children }: { n: string; children: React.ReactNode }) {
+  return (
+    <p className="mb-6 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-site-vis">
+      <span className="text-site-paper/40">{n}</span>
+      <span aria-hidden className="h-px w-6 bg-site-vis/40" />
+      {children}
+    </p>
+  );
+}
+
+/**
+ * An editorial section: kicker + headline on the left (sticky on desktop so
+ * it stays with its argument), the argument itself on the right.
+ */
+function Section({
+  n,
+  kicker,
+  title,
+  children,
+}: {
+  n: string;
+  kicker: string;
+  title: readonly string[];
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="mx-auto max-w-[1400px] px-5 md:px-10">
+      <div className="grid gap-10 border-t border-site-paper/10 py-20 md:py-28 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
+        <div className="lg:sticky lg:top-32 lg:self-start">
+          <Kicker n={n}>{kicker}</Kicker>
+          <FlapText lines={title} className={H2} />
+        </div>
+        <div className="min-w-0 lg:pt-10">{children}</div>
+      </div>
+    </section>
+  );
+}
+
 export default function CostContent() {
   const signupUrl = useSignupHref();
   const track = useCtaTracker("compare-cost");
-  const prefersReduced = useReducedMotion();
+  const reduced = useReduced();
 
   return (
     <>
       <Navbar />
-      {/* ONE CONTINUOUS RAMP, TOP TO BOTTOM.
-          #E3DCC9 → #D4CBB4 → #BFB49C → forest → #2B3D30, where every
-          section's `to` colour is the next section's `from`. The site's home
-          page has worked this way since v4 (see HomeClient's Bridge helper):
-          there is no hard edge anywhere, because a hard edge between two warm
-          stones reads as a rendering mistake rather than a section break.
-          The first version of this page set three of its five sections to a
-          flat bone and dropped straight into the dark CTA, which is exactly
-          what Maks caught on 2026-09-23. */}
-      <main className="bg-bone">
-      {/* ══ HERO ══════════════════════════════════════════════════════ */}
-      <section
-        className="relative overflow-clip px-6 pb-16 pt-28 sm:pt-36"
-        style={{ background: "linear-gradient(to bottom, #E3DCC9, #E3DCC9)" }}
-      >
-        {/* Ambient warmth behind the hero. Pure decoration, transform-free. */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 -top-40 h-[520px] opacity-70"
-          style={{
-            background:
-              "radial-gradient(60% 55% at 50% 40%, rgba(138,170,145,0.22), transparent 70%)",
-          }}
-        />
+      <main className="bg-site-night text-site-paper">
+        {/* ══ HERO + THE CALCULATOR ═══════════════════════════════════════ */}
+        <section className="relative mx-auto max-w-[1400px] px-5 pb-8 pt-32 md:px-10 md:pb-12 md:pt-40">
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={reduced ? { duration: 0 } : { duration: 0.45, delay: 0.05, ease: EASE }}
+            className="mb-7 flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.22em] text-site-vis"
+          >
+            <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-site-vis" />
+            Cost comparison · 2026
+          </motion.p>
 
-        <div className="relative mx-auto max-w-3xl text-center">
-          <FadeIn triggerOnMount>
-            <SectionLabel>Cost comparison · 2026</SectionLabel>
-          </FadeIn>
+          {/* Trailing spaces keep the h1's text content a sentence for
+              crawlers and assistants; the lines are blocks visually. */}
+          <FlapText
+            as="h1"
+            immediate
+            delay={0.1}
+            lines={[
+              "What job costing software ",
+              <>
+                <span className="text-site-vis">actually costs</span> for a{" "}
+              </>,
+              "10-person crew",
+            ]}
+            className="max-w-[16ch] font-flex text-[clamp(2.4rem,5.6vw,5rem)] font-semibold leading-[0.95] tracking-[-0.03em] [font-variation-settings:'wdth'_110] sm:max-w-none"
+          />
 
-          <FadeIn triggerOnMount delay={0.05}>
-            <h1 className="font-display text-[40px] font-light leading-[1.08] tracking-[-0.01em] text-ink sm:text-[58px]">
-              What job costing software
-              <br className="hidden sm:block" />{" "}
-              <span className="italic">actually costs</span> for a
-              <br className="hidden sm:block" /> 10-person crew
-            </h1>
-          </FadeIn>
-
-          <FadeIn triggerOnMount delay={0.12}>
-            <p className="mx-auto mt-7 max-w-xl font-body text-[17px] leading-relaxed text-ink-soft">
+          {/* Phones read intro → calculator → footnote; desktop puts the
+              footnote under the intro, beside the calculator. */}
+          <div className="mt-12 grid gap-10 md:mt-16 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:grid-rows-[auto_1fr] lg:gap-x-20 lg:gap-y-8">
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={reduced ? { duration: 0 } : { duration: 0.5, delay: 0.45, ease: EASE }}
+              className="max-w-md text-[17px] leading-relaxed text-site-paper/75 lg:col-start-1 lg:row-start-1"
+            >
               Most construction software charges per person. Hire a fourth
               framer and the bill goes up — again. Here is the arithmetic, with
               every figure taken from the vendor&rsquo;s own published page.
-            </p>
-          </FadeIn>
-        </div>
-      </section>
+            </motion.p>
 
-      {/* ══ THE CALCULATOR ════════════════════════════════════════════ */}
-      <section
-        className="px-6 pb-24"
-        style={{ background: "linear-gradient(to bottom, #E3DCC9, #E3DCC9)" }}
-      >
-        <div className="mx-auto max-w-2xl">
-          <FadeIn>
-            <CrewCostCalculator />
-          </FadeIn>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={reduced ? { duration: 0 } : { duration: 0.6, delay: 0.3, ease: EASE }}
+              className="min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1"
+            >
+              <CrewCostCalculator />
+            </motion.div>
 
-          <FadeIn delay={0.1}>
-            <p className="mt-5 text-center font-body text-[12.5px] leading-relaxed text-ink-muted">
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={reduced ? { duration: 0 } : { duration: 0.5, delay: 0.6, ease: EASE }}
+              className="-mt-4 max-w-md font-mono text-[11.5px] leading-relaxed text-site-paper/50 lg:col-start-1 lg:row-start-2 lg:mt-0 lg:self-start lg:border-t lg:border-site-paper/10 lg:pt-5"
+            >
               Drag to your crew size. Prices verified{" "}
               <time dateTime="2026-09-23">23 September 2026</time> from each
               vendor&rsquo;s published pricing — sources listed below.
-            </p>
-          </FadeIn>
-        </div>
-      </section>
+            </motion.p>
+          </div>
+        </section>
 
-      {/* ══ WHY THE SHAPE OF THE BILL MATTERS ═════════════════════════ */}
-      <section
-        className="px-6 py-24"
-        style={{ background: "linear-gradient(to bottom, #E3DCC9, #D4CBB4)" }}
-      >
-        <div className="mx-auto max-w-2xl">
-          <FadeIn>
-            <SectionLabel>The shape of the bill</SectionLabel>
-            <h2 className="font-display text-[30px] font-light leading-tight text-ink sm:text-[38px]">
-              Per-seat pricing taxes you for growing
-            </h2>
-          </FadeIn>
-
-          <FadeIn delay={0.08}>
-            <div className="mt-8 space-y-5 font-body text-[16px] leading-relaxed text-ink-soft">
+        {/* ══ WHY THE SHAPE OF THE BILL MATTERS ═══════════════════════════ */}
+        <Section
+          n="01"
+          kicker="The shape of the bill"
+          title={["Per-seat pricing ", "taxes you ", "for growing"]}
+        >
+          <Reveal>
+            <div className="max-w-[640px] space-y-5 text-[16.5px] leading-relaxed text-site-paper/70">
               <p>
                 Construction crews are not fixed. You are eight people in
                 February and fifteen in July, and a per-seat contract turns
@@ -167,262 +232,215 @@ export default function CostContent() {
                 that is supposed to tell you whether a job made money gets more
                 expensive precisely when you take on more work.
               </p>
-              <p className="font-medium text-ink">
+              <p className="font-medium text-site-paper">
                 Stroyka is flat. Free covers a crew of five, Starter covers
                 fifteen, Pro is unlimited. Adding a labourer on Monday does not
                 change what you pay on the first.
               </p>
             </div>
-          </FadeIn>
+          </Reveal>
 
           {/* Plan ladder */}
-          <FadeIn delay={0.14}>
-            <div className="mt-10 grid gap-3 sm:grid-cols-3">
-              {STROYKA_PLANS.map((p, i) => (
-                <motion.div
-                  key={p.name}
-                  initial={prefersReduced ? false : { opacity: 0, y: 14 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ delay: 0.05 * i, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                  className="rounded-2xl border border-bone-warm/45 bg-bone/70 p-5"
-                >
-                  <p className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink-muted">
-                    {p.name}
-                  </p>
-                  <p className="mt-2 font-display text-[30px] font-light leading-none text-ink">
+          <div className="mt-12 grid gap-3 sm:grid-cols-3">
+            {STROYKA_PLANS.map((p, i) => (
+              <motion.div
+                key={p.name}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={
+                  reduced ? { duration: 0 } : { delay: 0.06 * i, duration: 0.45, ease: EASE }
+                }
+                className="flex flex-col rounded-[22px] bg-site-slab p-6 ring-1 ring-site-paper/[0.08]"
+              >
+                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/55">
+                  {p.name}
+                </p>
+                <p className="mt-4 leading-none">
+                  <span className="font-flex text-[44px] font-semibold tracking-[-0.02em] tabular-nums">
                     ${p.monthly}
-                    <span className="ml-1 font-body text-[13px] text-ink-muted">/mo</span>
-                  </p>
-                  <p className="mt-3 font-body text-[13px] leading-snug text-ink-soft">
+                  </span>
+                  <span className="ml-1 text-[13px] text-site-paper/50">/mo</span>
+                </p>
+                <div className="mt-5 border-t border-site-paper/10 pt-4">
+                  <p className="text-[14px] font-medium leading-snug text-site-vis">
                     {p.maxWorkers === Infinity
                       ? "Unlimited workers"
                       : `Up to ${p.maxWorkers} workers`}
                   </p>
-                  <p className="mt-1 font-body text-[12.5px] leading-snug text-ink-muted">
-                    {p.caps}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </FadeIn>
-        </div>
-      </section>
+                  <p className="mt-1 text-[13px] leading-snug text-site-paper/55">{p.caps}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </Section>
 
-      {/* ══ THE ONES THAT WON'T TELL YOU ══════════════════════════════ */}
-      <section
-        className="px-6 py-24"
-        style={{ background: "linear-gradient(to bottom, #D4CBB4, #BFB49C)" }}
-      >
-        <div className="mx-auto max-w-2xl">
-          <FadeIn>
-            <SectionLabel>The quote wall</SectionLabel>
-            <h2 className="font-display text-[30px] font-light leading-tight text-ink sm:text-[38px]">
-              Most of this category won&rsquo;t tell you the price at all
-            </h2>
-            <p className="mt-6 font-body text-[16px] leading-relaxed text-ink-soft">
+        {/* ══ THE ONES THAT WON'T TELL YOU ════════════════════════════════ */}
+        <Section
+          n="02"
+          kicker="The quote wall"
+          title={["Most of this ", "category won’t ", "tell you the ", "price at all"]}
+        >
+          <Reveal>
+            <p className="max-w-[640px] text-[16.5px] leading-relaxed text-site-paper/70">
               Not as a comparison point — as a fact about your Sunday evening.
               You cannot find out what these cost without booking a call and
               sitting through a demo:
             </p>
-          </FadeIn>
+          </Reveal>
 
-          <FadeIn delay={0.08}>
-            <ul className="mt-8 divide-y divide-bone-warm/40 border-y border-bone-warm/40">
-              {HIDDEN_PRICING.map((h, i) => (
-                <motion.li
-                  key={h.name}
-                  initial={prefersReduced ? false : { opacity: 0, x: -8 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ delay: 0.035 * i, duration: 0.4 }}
-                  className="flex items-start gap-3 py-3.5"
-                >
-                  <Lock size={14} className="mt-1 flex-shrink-0 text-ink-muted" strokeWidth={2} />
-                  <span className="font-heading text-[15px] font-medium text-ink">{h.name}</span>
-                  <span className="ml-auto text-right font-body text-[13px] leading-snug text-ink-muted">
-                    {h.detail}
-                  </span>
-                </motion.li>
-              ))}
-            </ul>
-          </FadeIn>
+          <ul className="mt-9 border-t border-site-paper/15">
+            {HIDDEN_PRICING.map((h, i) => (
+              <motion.li
+                key={h.name}
+                initial={{ opacity: 0, x: -8 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={reduced ? { duration: 0 } : { delay: 0.035 * i, duration: 0.4, ease: EASE }}
+                className="grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-x-3 gap-y-1 border-b border-site-paper/10 py-4 sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:gap-x-4"
+              >
+                <Lock
+                  size={13}
+                  strokeWidth={2}
+                  className="translate-y-[1px] self-center text-site-paper/40"
+                  aria-hidden
+                />
+                <span className="text-[16px] font-medium">{h.name}</span>
+                <span className="col-start-2 text-[13.5px] leading-snug text-site-paper/55 sm:col-start-3 sm:max-w-[22rem] sm:text-right">
+                  {h.detail}
+                </span>
+              </motion.li>
+            ))}
+          </ul>
 
-          <FadeIn delay={0.12}>
-            <p className="mt-5 font-body text-[12.5px] leading-relaxed text-ink-muted">
+          <Reveal>
+            <p className="mt-5 font-mono text-[11.5px] leading-relaxed text-site-paper/50">
               Compiled from{" "}
               <a
                 href={HIDDEN_PRICING_SOURCE}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline decoration-ink-muted/40 underline-offset-2 hover:text-ink-soft"
+                className={LINK}
               >
                 Workyard&rsquo;s own comparison of job costing software
               </a>
               , 23 September 2026.
             </p>
-          </FadeIn>
+          </Reveal>
 
-          <FadeIn delay={0.16}>
-            <div className="mt-10 rounded-2xl border border-brand-sage/40 bg-brand-sage-mist/30 p-6">
-              <p className="flex items-start gap-3 font-body text-[15px] leading-relaxed text-ink">
-                <Check size={16} className="mt-1 flex-shrink-0 text-brand-forest" strokeWidth={2.5} />
-                <span>
-                  Stroyka&rsquo;s prices are on this page, on the pricing page,
-                  and in both app stores. You never have to ask anyone what it
-                  costs.
-                </span>
+          <Reveal delay={0.05}>
+            <div className="mt-10 flex items-start gap-4 rounded-[22px] bg-site-vis/[0.07] p-6 ring-1 ring-inset ring-site-vis/25 md:p-7">
+              <span className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-full bg-site-vis text-site-on-vis">
+                <Check size={14} strokeWidth={2.75} aria-hidden />
+              </span>
+              <p className="text-[16px] leading-relaxed text-site-paper">
+                Stroyka&rsquo;s prices are on this page, on the pricing page,
+                and in both app stores. You never have to ask anyone what it
+                costs.
               </p>
             </div>
-          </FadeIn>
-        </div>
-      </section>
+          </Reveal>
+        </Section>
 
-      {/* ══ WHEN TO PICK THEM INSTEAD ═════════════════════════════════ */}
-      <section
-        className="px-6 py-24"
-        style={{ background: "linear-gradient(to bottom, #BFB49C, #BFB49C)" }}
-      >
-        <div className="mx-auto max-w-2xl">
-          <FadeIn>
-            <SectionLabel>Honestly</SectionLabel>
-            <h2 className="font-display text-[30px] font-light leading-tight text-ink sm:text-[38px]">
-              When you should pick one of them instead
-            </h2>
-            <p className="mt-6 font-body text-[16px] leading-relaxed text-ink-soft">
+        {/* ══ WHEN TO PICK THEM INSTEAD ═══════════════════════════════════ */}
+        <Section
+          n="03"
+          kicker="Honestly"
+          title={["When you should ", "pick one of ", "them instead"]}
+        >
+          <Reveal>
+            <p className="max-w-[640px] text-[16.5px] leading-relaxed text-site-paper/70">
               Cheaper is not the same as right. Four cases where we are the
               wrong answer:
             </p>
-          </FadeIn>
+          </Reveal>
 
-          <div className="mt-9 space-y-6">
+          <ol className="mt-9 border-t border-site-paper/15">
             {WHEN_THEY_WIN.map((w, i) => (
-              <FadeIn key={w.who} delay={0.05 * i}>
-                <div className="border-l-2 border-clay/50 pl-5">
-                  <p className="font-heading text-[15px] font-semibold text-ink">{w.who}</p>
-                  <p className="mt-1.5 font-body text-[15px] leading-relaxed text-ink-soft">
-                    {w.why}
+              <li key={w.who} className="border-b border-site-paper/10 last:border-b-0">
+                <Reveal
+                  delay={0.05 * i}
+                  className="grid gap-2 py-6 sm:grid-cols-[minmax(0,13rem)_minmax(0,1fr)] sm:gap-8"
+                >
+                  <p className="flex items-baseline gap-3">
+                    <span className="font-mono text-[11px] text-site-paper/40">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="font-flex text-[19px] font-semibold leading-tight tracking-[-0.01em]">
+                      {w.who}
+                    </span>
                   </p>
-                </div>
-              </FadeIn>
+                  <p className="text-[15.5px] leading-relaxed text-site-paper/70">{w.why}</p>
+                </Reveal>
+              </li>
             ))}
-          </div>
-        </div>
-      </section>
+          </ol>
+        </Section>
 
-      {/* ══ SOURCES ═══════════════════════════════════════════════════ */}
-      <section
-        className="px-6 pb-28 pt-4"
-        style={{ background: "linear-gradient(to bottom, #BFB49C, #B3AC93)" }}
-      >
-        <div className="mx-auto max-w-2xl">
-          <FadeIn>
-            <h2 className="font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-ink-soft">
+        {/* ══ SOURCES ═════════════════════════════════════════════════════ */}
+        <section className="mx-auto max-w-[1400px] px-5 md:px-10">
+          <div className="grid gap-8 border-t border-site-paper/10 pb-24 pt-14 md:pb-32 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
+            <h2 className="flex h-fit items-center gap-3 font-mono text-[11px] font-normal uppercase tracking-[0.22em] text-site-vis">
+              <span className="text-site-paper/40">04</span>
+              <span aria-hidden className="h-px w-6 bg-site-vis/40" />
               Sources
             </h2>
-            <ul className="mt-4 space-y-3">
-              {COMPETITORS.map((c) => (
-                <li key={c.id} className="font-body text-[13px] leading-relaxed text-ink-muted">
-                  <span className="font-medium text-ink-soft">{c.name}</span> — {c.model}.{" "}
-                  {c.note}{" "}
-                  <a
-                    href={c.source}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline decoration-ink-muted/40 underline-offset-2 hover:text-ink-soft"
+            <Reveal>
+              <ol className="space-y-4">
+                {COMPETITORS.map((c, i) => (
+                  <li
+                    key={c.id}
+                    className="grid grid-cols-[2rem_minmax(0,1fr)] font-mono text-[12px] leading-relaxed text-site-paper/55"
                   >
-                    Source
-                  </a>
-                  , verified {c.verifiedOn}.
-                </li>
-              ))}
-            </ul>
-            <p className="mt-6 font-body text-[12.5px] leading-relaxed text-ink-muted">
-              Prices change. If you find a figure here that is out of date or
-              wrong, tell us and we will correct it — a comparison nobody can
-              trust is worth nothing to anybody.
-            </p>
-          </FadeIn>
-        </div>
-      </section>
+                    <span className="text-site-paper/35">[{i + 1}]</span>
+                    <span>
+                      <span className="font-medium text-site-paper/85">{c.name}</span> — {c.model}.{" "}
+                      {c.note}{" "}
+                      <a href={c.source} target="_blank" rel="noopener noreferrer" className={LINK}>
+                        Source
+                      </a>
+                      , <span className="whitespace-nowrap">verified {c.verifiedOn}.</span>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+              <p className="mt-8 max-w-[560px] border-t border-site-paper/10 pt-5 text-[13.5px] leading-relaxed text-site-paper/55">
+                Prices change. If you find a figure here that is out of date or
+                wrong, tell us and we will correct it — a comparison nobody can
+                trust is worth nothing to anybody.
+              </p>
+            </Reveal>
+          </div>
+        </section>
 
-      {/* ══ CTA ═══════════════════════════════════════════════════════ */}
-      {/* The stone-to-forest descent, lifted verbatim from CTABanner so the
-          two CTAs on the site land the same way. A flat `bg-brand-deep` here
-          cut straight from warm stone to dark green in one pixel and read as
-          a broken image — the whole point of the ramp is that the page
-          arrives at the dark rather than jumping to it. The drafting grid is
-          the home CTA's motif too, masked out before the footer so no
-          horizontal seam appears where the pattern stops. */}
-      <section className="relative overflow-hidden px-6 pb-40 pt-8">
-        {/* THE DESCENT. Nine stops, not four, and none of them grey.
-            The first attempt reused CTABanner's ramp verbatim, whose midpoint
-            is #8A8A74 — a desaturated olive. Between warm stone and forest
-            green that colour has no chroma to carry the eye across, so it
-            read as a dirty band rather than a transition (Maks, 2026-09-23).
-            On the home page it survives because it sits under a full-bleed
-            headline; here it was bare.
-
-            This path instead ADDS green while it drops lightness, one step
-            at a time, so every adjacent pair is close enough to blend and no
-            step is a colour the palette does not already contain. It also
-            starts from #B3AC93 — the colour the Sources section above ends
-            on — so there is no boundary to see, and it runs over a taller
-            section so the shift is gradual rather than compressed. */}
-        <div
-          aria-hidden
-          className="absolute inset-0 z-0"
-          style={{
-            background:
-              "linear-gradient(180deg, #B3AC93 0%, #ADA78F 8%, #A2A087 17%, #8F9779 26%, #778A6C 36%, #5C7458 46%, #475B48 56%, #384A3B 65%, #2F4134 72%, #2B3D30 78%, #2B3D30 100%)",
-          }}
-        />
-        {/* The grid now carries the GREEN as well as the dark. Held back to
-            the bottom half, it left the mid-green stretch as an untextured
-            wash, and a large flat field of one colour reads as "too much
-            green" even when the ramp itself is correct — Maks diagnosed it
-            exactly ("maybe bc the 3d grid takes too less space", 2026-09-24).
-            Starting it at 14% gives that region structure to sit on.
-
-            It is still fully gone by 88% — well before the section ends. The
-            footer is flat #2B3D30 with no texture, so a grid still running
-            at the boundary makes a seam out of a colour match: the tone is
-            identical either side, and the eye reads the texture stopping as
-            an edge. That is the line Maks saw under the CTA on 2026-09-23.
-            Same reason CTABanner masks its own grid; mine simply stopped too
-            late. */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 z-[1] opacity-[0.085]"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, #E3DCC9 1px, transparent 1px), linear-gradient(to bottom, #E3DCC9 1px, transparent 1px)",
-            backgroundSize: "72px 72px",
-            WebkitMaskImage:
-              "linear-gradient(to bottom, transparent 0%, transparent 14%, black 34%, black 74%, transparent 88%)",
-            maskImage:
-              "linear-gradient(to bottom, transparent 0%, transparent 14%, black 34%, black 74%, transparent 88%)",
-          }}
-        />
-
-        <div className="relative z-10 mx-auto max-w-2xl pt-[22vh] text-center sm:pt-[26vh]">
-          <FadeIn>
-            <h2 className="font-display text-[32px] font-light leading-tight text-bone sm:text-[44px]">
-              Run one job through it
-            </h2>
-            <p className="mx-auto mt-5 max-w-md font-body text-[16px] leading-relaxed text-brand-sage-mist">
-              Free covers three active jobs and a crew of five, with job costing
-              and invoicing included. No card, no call.
-            </p>
-            <div className="mt-9 flex justify-center">
-              <Button href={signupUrl} onClick={() => track("compare_cost_cta")}>
-                Start free
-                <ArrowRight size={16} strokeWidth={2.5} />
-              </Button>
+        {/* ══ CTA ═════════════════════════════════════════════════════════ */}
+        {/* The forest close, same field the home's Finale ends on, so the
+            two routes land the same way. */}
+        <section className="relative overflow-hidden bg-site-vis text-site-on-vis">
+          <div className="relative mx-auto max-w-[1400px] px-5 py-24 md:px-10 md:py-32">
+            <FlapText
+              lines={["Run one job ", "through it"]}
+              plate="rgb(var(--site-on-vis))"
+              className="font-flex text-[clamp(2.8rem,8vw,7.5rem)] font-bold leading-[0.9] tracking-[-0.04em] [font-variation-settings:'wdth'_118]"
+            />
+            <div className="mt-10 grid gap-8 md:mt-14 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+              <p className="max-w-md text-[17px] leading-relaxed text-site-on-vis/80 md:text-[18px]">
+                Free covers three active jobs and a crew of five, with job costing
+                and invoicing included. No card, no call.
+              </p>
+              <div>
+                <VisButton
+                  href={signupUrl}
+                  variant="dark"
+                  size="lg"
+                  onClick={() => track("compare_cost_cta")}
+                >
+                  Start free
+                </VisButton>
+              </div>
             </div>
-          </FadeIn>
-        </div>
-      </section>
+          </div>
+        </section>
       </main>
       <Footer />
     </>

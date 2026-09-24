@@ -3,19 +3,11 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
-import { motion, AnimatePresence, LayoutGroup, useReducedMotion } from "framer-motion";
-import {
-  Check,
-  ArrowRight,
-  ArrowLeft,
-  Loader2,
-  Zap,
-  Crown,
-} from "lucide-react";
-import Button from "@/components/ui/Button";
+import { motion, AnimatePresence, LayoutGroup } from "motion/react";
+import { Check, ArrowRight, ArrowLeft, Loader2, Lock } from "lucide-react";
 import { PRICES } from "@/data/pricing";
-import TextReveal from "@/components/ui/TextReveal";
-import AmbientBackdrop from "@/components/ui/AmbientBackdrop";
+import FlapText from "@/components/site/ui/FlapText";
+import { useReduced } from "@/components/site/ui/useReduced";
 import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
 
 /* ─── Types ────────────────────────────────────────────────────── */
@@ -37,6 +29,8 @@ interface FormData {
 
 /* ─── Animations ───────────────────────────────────────────────── */
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
 const stepVariants = {
   enter: (direction: number) => ({
     x: direction > 0 ? 80 : -80,
@@ -51,40 +45,144 @@ const stepVariants = {
 
 const stepTransition = {
   duration: 0.35,
-  ease: [0.22, 1, 0.36, 1] as const,
+  ease: EASE,
 };
+
+/* ─── Morning Bone styles (docs/design/morning-bone-system.md) ─── */
+
+const FIELD =
+  "h-12 w-full rounded-xl bg-site-night px-4 text-[15px] text-site-paper ring-1 ring-inset placeholder:text-site-paper/35 transition-shadow duration-200 focus:outline-none focus:ring-2 focus:ring-site-vis";
+const LABEL = "mb-2 block font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/55";
+const DISPLAY = "font-flex font-semibold tracking-[-0.03em] [font-variation-settings:'wdth'_110]";
 
 /* ─── Helpers ──────────────────────────────────────────────────── */
 
-function AnnualPriceDisplay({ plan, tone = "light" }: { plan: Plan; tone?: "light" | "dark" }) {
+/**
+ * The price digits roll when billing flips (same move as the home's Plans):
+ * the old figure leaves upward, the new one arrives from below.
+ */
+function RollingPrice({ value, reduced, className = "" }: { value: number; reduced: boolean; className?: string }) {
+  return (
+    <span className={`relative inline-block overflow-hidden tabular-nums ${className}`}>
+      <AnimatePresence mode="popLayout" initial={false}>
+        <motion.span
+          key={value}
+          className="block"
+          initial={reduced ? false : { y: "100%", opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: "-100%", opacity: 0 }}
+          transition={{ duration: 0.35, ease: EASE }}
+        >
+          ${value.toLocaleString("en-US")}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
+
+/** Price block for a plan card: big per-month figure, then the annual math. */
+function PlanPrice({
+  plan,
+  billing,
+  hot,
+  reduced,
+}: {
+  plan: Plan;
+  billing: Billing;
+  hot: boolean;
+  reduced: boolean;
+}) {
   const t = useTranslations("getStarted");
   const monthly = PRICES[plan].monthly;
   const annual = PRICES[plan].annual;
   const fullAnnual = monthly * 12;
   const saved = fullAnnual - annual;
-  const perMonth = Math.round(annual / 12);
-  const isDark = tone === "dark";
-
-  const primary = isDark ? "text-bone" : "text-ink";
-  const secondary = isDark ? "text-bone/75" : "text-ink";
-  const muted = isDark ? "text-bone/55" : "text-ink-muted";
-  const strike = isDark ? "text-bone/40" : "text-ink-muted/60";
-  const savings = isDark ? "text-brand-sage-bright" : "text-brand-forest";
+  const perMonth = billing === "annual" ? Math.round(annual / 12) : monthly;
+  const muted = hot ? "text-site-on-vis/65" : "text-site-paper/55";
 
   return (
     <div>
-      <div className="flex items-baseline gap-1">
-        <span className={`font-display text-5xl font-light ${primary} tabular-nums`}>${perMonth}</span>
-        <span className={`${muted} ml-2 font-mono text-[12px] tracking-[0.08em] uppercase`}>{t("perMonth")}</span>
+      <div className="flex items-end gap-2">
+        <RollingPrice
+          value={perMonth}
+          reduced={reduced}
+          className={`${DISPLAY} text-[clamp(3.2rem,6vw,4.2rem)] leading-[0.9]`}
+        />
+        <span className={`mb-1.5 font-mono text-[11px] uppercase tracking-[0.14em] ${muted}`}>{t("perMonth")}</span>
       </div>
-      <p className={`mt-2 font-mono text-[12px] tracking-[0.08em] uppercase tabular-nums ${secondary}`}>
-        ${annual.toLocaleString()} <span className={muted}>{t("billedAnnually")}</span>
-      </p>
-      <div className="flex items-center gap-2 mt-1.5 font-mono text-[11px] tracking-[0.08em] uppercase tabular-nums">
-        <span className={`${strike} line-through`}>${fullAnnual.toLocaleString()}</span>
-        <span className={`font-semibold ${savings}`}>{t("saveAmount", { amount: saved })}</span>
-      </div>
+      <AnimatePresence initial={false} mode="wait">
+        {billing === "annual" && (
+          <motion.div
+            key="annual"
+            initial={reduced ? false : { opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.25, ease: EASE }}
+            className="mt-3 space-y-1 font-mono text-[11px] uppercase tracking-[0.12em] tabular-nums"
+          >
+            <p className={hot ? "text-site-on-vis/85" : "text-site-paper/80"}>
+              ${annual.toLocaleString("en-US")} <span className={muted}>{t("billedAnnually")}</span>
+            </p>
+            <p className="flex flex-wrap items-center gap-x-2">
+              <span className={`line-through ${hot ? "text-site-on-vis/45" : "text-site-paper/40"}`}>
+                ${fullAnnual.toLocaleString("en-US")}
+              </span>
+              <span
+                className={`rounded-full px-2 py-0.5 font-semibold ${hot ? "bg-site-on-vis text-site-vis" : "bg-site-vis/10 text-site-vis"}`}
+              >
+                {t("saveAmount", { amount: saved })}
+              </span>
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
+  );
+}
+
+/** A pill button with the home's knob-arrow; `tone` picks its surface. */
+function KnobButton({
+  children,
+  tone,
+  type = "button",
+  disabled,
+  busy,
+  onClick,
+  className = "",
+}: {
+  children: React.ReactNode;
+  tone: "solid" | "dark";
+  type?: "button" | "submit";
+  disabled?: boolean;
+  busy?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  className?: string;
+}) {
+  const face =
+    tone === "solid"
+      ? "bg-site-vis text-site-on-vis hover:bg-site-vis-hover focus-visible:ring-site-vis"
+      : "bg-site-on-vis text-site-vis hover:bg-site-on-vis/85 focus-visible:ring-site-on-vis";
+  const knob = tone === "solid" ? "bg-site-on-vis text-site-vis" : "bg-site-vis text-site-on-vis";
+  const slide = "transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]";
+  return (
+    <button
+      type={type}
+      disabled={disabled}
+      onClick={onClick}
+      className={`group inline-flex h-14 items-center justify-between gap-4 rounded-full pl-7 pr-2 text-[16px] font-medium tracking-[-0.005em] transition-[background-color,transform] duration-200 ease-out active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-site-night ${face} ${className}`}
+    >
+      <span className="text-left">{children}</span>
+      <span className={`relative grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full ${knob}`}>
+        {busy ? (
+          <Loader2 size={17} strokeWidth={2.2} className="animate-spin" />
+        ) : (
+          <>
+            <ArrowRight size={17} strokeWidth={2.2} className={`${slide} group-hover:translate-x-7`} />
+            <ArrowRight size={17} strokeWidth={2.2} className={`absolute -translate-x-7 ${slide} group-hover:translate-x-0`} />
+          </>
+        )}
+      </span>
+    </button>
   );
 }
 
@@ -96,7 +194,7 @@ export default function GetStartedFlow() {
   // Stripe bills and receipts them in it — see the note there.
   const locale = useLocale();
   const searchParams = useSearchParams();
-  const prefersReduced = useReducedMotion();
+  const reduced = useReduced();
   const track = useCtaTracker("get_started");
 
   // URL params (initial values only)
@@ -254,67 +352,117 @@ export default function GetStartedFlow() {
     }
   };
 
-  /* ─── Shared styles ─────────────────────────────────────────── */
+    /* ─── Shared styles ─────────────────────────────────────────── */
 
   const inputCls = (field?: keyof FormData) =>
-    `w-full bg-bone-soft/80 border ${
-      field && fieldErrors[field]
-        ? "border-red-500/60"
-        : "border-ink/20 hover:border-ink/35"
-    } rounded-xl px-4 py-3 text-ink placeholder:text-ink-muted/55 focus:outline-none focus:border-brand-forest focus:bg-bone transition-colors duration-200 font-body text-[15px]`;
+    `${FIELD} ${
+      field && fieldErrors[field] ? "ring-site-alert/70" : "ring-site-paper/15 hover:ring-site-paper/30"
+    }`;
+
+  const errProps = (field: keyof FormData) =>
+    fieldErrors[field] ? { "aria-invalid": true as const, "aria-describedby": `gs-${field}-error` } : {};
+
+  const heading = step === 1 ? t("chooseYourPlan") : step === 2 ? t("almostThere") : t("redirecting");
+
+  const cards: { id: Plan; hot: boolean; features: string[] }[] = [
+    { id: "starter", hot: true, features: starterFeatures },
+    { id: "pro", hot: false, features: proFeatures },
+  ];
 
   /* ─── Render ────────────────────────────────────────────────── */
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-bone text-ink pt-28 pb-16">
-      <AmbientBackdrop />
-      <div className="relative z-10 max-w-4xl mx-auto px-6">
-        {/* Heading */}
-        <div className="text-center mb-8">
-          {/* Field-journal folio — decorative continuity with the homepage device */}
-          <div aria-hidden className="font-mono text-[9.5px] tracking-[0.24em] uppercase text-ink/35 mb-4">
-            Field journal · Appendix A
+    <div className="relative overflow-hidden bg-site-night pb-16 pt-32 text-site-paper md:pb-24 md:pt-40">
+      {/* Low morning bloom — the home's sky, kept off the top edge. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-[-25%] top-[18%] h-[760px] w-[980px] max-w-none opacity-45"
+        style={{ background: "radial-gradient(closest-side, var(--sky-top), transparent)" }}
+      />
+
+      <div className="relative mx-auto max-w-[1200px] px-5 md:px-10">
+        {/* Heading row: progress kicker + flap headline; billing toggle on the right. */}
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
+          <div className="min-w-0">
+            {step < 3 && (
+              <div
+                className="mb-6 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em]"
+                aria-label={`${step} / 2`}
+              >
+                <span className="tabular-nums text-site-vis">01</span>
+                <span aria-hidden className="flex gap-1.5">
+                  {[1, 2].map((s) => (
+                    <span key={s} className="relative h-[3px] w-8 overflow-hidden rounded-full bg-site-paper/15">
+                      <motion.span
+                        className="absolute inset-0 origin-left rounded-full bg-site-vis"
+                        initial={false}
+                        animate={{ scaleX: step >= s ? 1 : 0 }}
+                        transition={reduced ? { duration: 0 } : { duration: 0.4, ease: EASE }}
+                      />
+                    </span>
+                  ))}
+                </span>
+                <span className={`tabular-nums transition-colors duration-300 ${step >= 2 ? "text-site-vis" : "text-site-paper/45"}`}>02</span>
+              </div>
+            )}
+            <FlapText
+              key={step}
+              as="h1"
+              immediate
+              lines={[heading]}
+              className={`${DISPLAY} max-w-[16ch] text-[clamp(2.4rem,5.6vw,5rem)] leading-[0.95] [overflow-wrap:anywhere]`}
+            />
+            {step === 1 && (
+              <p className="mt-6 max-w-lg text-[16.5px] leading-relaxed text-site-paper/70">{t("noPerSeatFees")}</p>
+            )}
+            {step === 2 && (
+              <p className="mt-6 max-w-lg text-[16.5px] leading-relaxed text-site-paper/70">{t("enterDetails")}</p>
+            )}
           </div>
-          <TextReveal as="h1" className="text-4xl lg:text-5xl font-display font-light leading-tight tracking-[-0.02em] text-ink mb-3">
-            {step === 1 ? t("chooseYourPlan") : step === 2 ? t("almostThere") : t("redirecting")}
-          </TextReveal>
+
+          {/* Billing toggle — LayoutGroup shared pill, same as the home's Plans. */}
           {step === 1 && (
-            <p className="text-base text-ink-soft max-w-lg mx-auto">
-              {t("noPerSeatFees")}
-            </p>
-          )}
-          {step === 2 && (
-            <p className="text-base text-ink-soft max-w-lg mx-auto">
-              {t("enterDetails")}
-            </p>
+            <LayoutGroup id="getstarted-billing-toggle">
+              <div className="inline-flex shrink-0 self-start rounded-full bg-site-slab p-1 ring-1 ring-site-paper/[0.08] lg:self-auto">
+                {(["monthly", "annual"] as const).map((mode) => {
+                  const active = billing === mode;
+                  return (
+                    <button
+                      key={mode}
+                      type="button"
+                      onClick={() => setBilling(mode)}
+                      aria-pressed={active}
+                      className={`relative rounded-full px-5 py-2.5 text-[14px] font-medium transition-colors duration-200 ${
+                        active ? "text-site-on-vis" : "text-site-paper/70 hover:text-site-paper"
+                      }`}
+                    >
+                      {active && (
+                        <motion.span
+                          layoutId="getstarted-billing-pill"
+                          aria-hidden
+                          className="absolute inset-0 rounded-full bg-site-vis"
+                          transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 500, damping: 36 }}
+                        />
+                      )}
+                      <span className="relative flex items-center gap-2">
+                        {mode === "monthly" ? t("monthly") : t("annual")}
+                        {mode === "annual" && (
+                          <span
+                            className={`rounded-full px-1.5 py-0.5 font-mono text-[10px] ${
+                              active ? "bg-site-on-vis/15" : "bg-site-vis/15 text-site-vis"
+                            }`}
+                          >
+                            −17%
+                          </span>
+                        )}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </LayoutGroup>
           )}
         </div>
-
-        {/* Step indicators */}
-        {step < 3 && (
-          <div className="flex items-center justify-center gap-2 mb-10">
-            {[1, 2].map((s) => (
-              <div key={s} className="flex items-center gap-2">
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-heading font-semibold transition-colors duration-200 ${
-                    step >= s
-                      ? "bg-brand-deep text-bone shadow-[0_0_18px_-4px_rgba(52,69,58,0.5)]"
-                      : "bg-bone-soft/80 text-ink-muted border border-ink/20"
-                  }`}
-                >
-                  {step > s ? <Check size={14} /> : s}
-                </div>
-                {s < 2 && (
-                  <div
-                    className={`w-12 h-0.5 transition-colors duration-200 ${
-                      step > s ? "bg-brand-deep" : "bg-ink/15"
-                    }`}
-                  />
-                )}
-              </div>
-            ))}
-          </div>
-        )}
 
         {/* Steps with animated transitions */}
         <AnimatePresence mode="wait" custom={direction}>
@@ -323,186 +471,77 @@ export default function GetStartedFlow() {
             <motion.div
               key="step1"
               custom={direction}
-              variants={prefersReduced ? {} : stepVariants}
+              variants={reduced ? {} : stepVariants}
               initial="enter"
               animate="center"
               exit="exit"
               transition={stepTransition}
+              className="mt-12 grid items-stretch gap-4 md:mt-16 md:grid-cols-2"
             >
-              {/* Billing toggle — LayoutGroup sliding pill, matches the
-                  landing-page Pricing toggle exactly. Single shared
-                  motion.span pill animates between Monthly/Annual. */}
-              <div className="flex items-center justify-center mb-8">
-                <LayoutGroup id="getstarted-billing-toggle">
-                  <div className="relative inline-flex items-center bg-bone-soft/80 border border-ink/20 backdrop-blur-md rounded-full p-1">
-                    {(["monthly", "annual"] as const).map((mode) => {
-                      const active = billing === mode;
-                      return (
-                        <button
-                          key={mode}
-                          type="button"
-                          onClick={() => setBilling(mode)}
-                          className={`relative z-[1] font-mono text-[12px] tracking-[0.15em] uppercase px-5 py-2 rounded-full transition-colors duration-200 flex items-center gap-2 ${
-                            active ? "text-bone" : "text-ink/60 hover:text-ink"
-                          }`}
-                        >
-                          {active && (
-                            <motion.span
-                              layoutId="getstarted-billing-pill"
-                              aria-hidden
-                              className="absolute inset-0 rounded-full bg-brand-forest shadow-[0_0_20px_-4px_rgba(63,78,53,0.5)] -z-[1]"
-                              transition={{
-                                type: "spring",
-                                stiffness: 380,
-                                damping: 30,
-                              }}
-                            />
-                          )}
-                          <span className="relative">
-                            {mode === "monthly" ? t("monthly") : t("annual")}
-                          </span>
-                          {mode === "annual" && (
-                            <span
-                              className="relative text-[10px] font-bold px-2 py-0.5 rounded-full leading-none transition-colors bg-brand-sage-bright text-ink shadow-[0_2px_10px_-2px_rgba(184,212,189,0.55)]"
-                            >
-                              −17%
-                            </span>
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </LayoutGroup>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto items-stretch">
-                {/* Starter card — sage-highlighted (matches main Pricing) */}
-                <motion.div
-                  whileHover={prefersReduced ? {} : { y: -3 }}
-                  transition={{ duration: 0.2 }}
-                  className="card-stone-sage border border-brand-sage/45 rounded-2xl p-8 relative cursor-pointer flex flex-col shadow-[0_0_60px_-20px_rgba(138,170,145,0.35)]"
-                  onClick={() => setPlan("starter")}
+              {cards.map(({ id, hot, features }) => (
+                <div
+                  key={id}
+                  onClick={() => setPlan(id)}
+                  className={`relative flex cursor-pointer flex-col rounded-[28px] p-7 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] md:p-9 motion-safe:hover:-translate-y-1 ${
+                    hot ? "bg-site-vis text-site-on-vis" : "bg-site-slab ring-1 ring-site-paper/[0.08]"
+                  }`}
                 >
-                  <span className="absolute -top-3 left-8 bg-brand-deep text-bone font-mono text-[11px] tracking-[0.15em] uppercase font-semibold px-3 py-1 rounded-full">
-                    {t("mostPopular")}
-                  </span>
-
-                  <div className="flex items-center gap-2 mb-1">
-                    <Zap size={18} className="text-brand-forest" />
-                    <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-brand-forest">{t("starter.name")}</h3>
+                  <div className="flex items-center justify-between gap-3">
+                    <h2 className="font-flex text-[22px] font-semibold [font-variation-settings:'wdth'_115]">
+                      {t(`${id}.name`)}
+                    </h2>
+                    {hot && (
+                      <span className="rounded-full bg-site-on-vis px-3 py-1 text-center font-mono text-[10px] uppercase tracking-[0.16em] text-site-vis">
+                        {t("mostPopular")}
+                      </span>
+                    )}
                   </div>
-                  <p className="text-ink-soft text-sm mb-5 mt-1">
-                    {t("starter.description")}
+                  <p className={`mt-2 text-[14px] ${hot ? "text-site-on-vis/70" : "text-site-paper/60"}`}>
+                    {t(`${id}.description`)}
                   </p>
 
-                  <div className="mb-6 min-h-[112px]">
-                    {billing === "monthly" ? (
-                      <div>
-                        <div className="flex items-baseline gap-1">
-                          <span className="font-display text-5xl font-light text-ink tabular-nums">
-                            ${PRICES.starter.monthly}
-                          </span>
-                          <span className="text-ink-muted ml-2 font-mono text-[12px] tracking-[0.08em] uppercase">{t("perMonth")}</span>
-                        </div>
-                      </div>
-                    ) : (
-                      <AnnualPriceDisplay plan="starter" />
-                    )}
-                    <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-ink-muted mt-2">
-                      {t("starter.workerLimit")}
-                    </p>
+                  <div className="mt-8">
+                    <PlanPrice plan={id} billing={billing} hot={hot} reduced={reduced} />
                   </div>
+                  <p
+                    className={`mt-2 font-mono text-[10.5px] uppercase tracking-[0.14em] ${
+                      hot ? "text-site-on-vis/70" : "text-site-vis/90"
+                    }`}
+                  >
+                    {t(`${id}.workerLimit`)}
+                  </p>
 
-                  <ul className="flex flex-col gap-2.5 mb-8">
-                    {starterFeatures.map((f) => (
-                      <li
-                        key={f}
-                        className="flex items-start gap-2 text-sm text-ink-soft"
-                      >
-                        <span className="text-brand-forest mt-0.5">
-                          <Check size={14} />
-                        </span>
-                        {f}
+                  <ul
+                    className={`mt-8 space-y-3 border-t pt-6 text-[14px] ${
+                      hot ? "border-site-on-vis/15" : "border-site-paper/10"
+                    }`}
+                  >
+                    {features.map((f) => (
+                      <li key={f} className="flex gap-2.5">
+                        <Check
+                          size={15}
+                          strokeWidth={2.4}
+                          className={`mt-0.5 flex-shrink-0 ${hot ? "text-site-on-vis" : "text-site-vis"}`}
+                        />
+                        <span className={hot ? "text-site-on-vis/85" : "text-site-paper/80"}>{f}</span>
                       </li>
                     ))}
                   </ul>
 
-                  <Button
-                    variant="primary"
-                    size="md"
-                    className="mt-auto w-full"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      goToStep2("starter");
-                    }}
-                  >
-                    {t("continue")}
-                    <ArrowRight size={16} />
-                  </Button>
-                </motion.div>
-
-                {/* Pro card — premium dark (matches main Pricing Pro) */}
-                <motion.div
-                  whileHover={prefersReduced ? {} : { y: -3 }}
-                  transition={{ duration: 0.2 }}
-                  className="card-stone-dark border border-brand-sage/30 rounded-2xl p-8 relative cursor-pointer flex flex-col shadow-[0_30px_80px_-30px_rgba(20,30,24,0.5)]"
-                  onClick={() => setPlan("pro")}
-                >
-                  <div className="flex items-center gap-2 mb-1">
-                    <Crown size={18} className="text-brand-sage-bright" />
-                    <h3 className="font-mono text-[12px] tracking-[0.2em] uppercase text-brand-sage-bright">{t("pro.name")}</h3>
+                  <div className="mt-auto pt-9">
+                    <KnobButton
+                      tone={hot ? "dark" : "solid"}
+                      className="w-full"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        goToStep2(id);
+                      }}
+                    >
+                      {t("continue")}
+                    </KnobButton>
                   </div>
-                  <p className="text-bone/70 text-sm mb-5 mt-1">
-                    {t("pro.description")}
-                  </p>
-
-                  <div className="mb-6 min-h-[112px]">
-                    {billing === "monthly" ? (
-                      <div>
-                        <div className="flex items-baseline gap-1">
-                          <span className="font-display text-5xl font-light text-bone tabular-nums">
-                            ${PRICES.pro.monthly}
-                          </span>
-                          <span className="text-bone/60 ml-2 font-mono text-[12px] tracking-[0.08em] uppercase">{t("perMonth")}</span>
-                        </div>
-                      </div>
-                    ) : (
-                      <AnnualPriceDisplay plan="pro" tone="dark" />
-                    )}
-                    <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-brand-sage-bright/85 mt-2">
-                      {t("pro.workerLimit")}
-                    </p>
-                  </div>
-
-                  <ul className="flex flex-col gap-2.5 mb-8">
-                    {proFeatures.map((f) => (
-                      <li
-                        key={f}
-                        className="flex items-start gap-2 text-sm text-bone/85"
-                      >
-                        <span className="text-brand-sage-bright mt-0.5">
-                          <Check size={14} />
-                        </span>
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <Button
-                    variant="invert"
-                    size="md"
-                    className="mt-auto w-full"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      goToStep2("pro");
-                    }}
-                  >
-                    {t("continue")}
-                    <ArrowRight size={16} />
-                  </Button>
-                </motion.div>
-              </div>
-
+                </div>
+              ))}
             </motion.div>
           )}
 
@@ -511,179 +550,153 @@ export default function GetStartedFlow() {
             <motion.div
               key="step2"
               custom={direction}
-              variants={prefersReduced ? {} : stepVariants}
+              variants={reduced ? {} : stepVariants}
               initial="enter"
               animate="center"
               exit="exit"
               transition={stepTransition}
+              className="mt-12 grid items-start gap-4 md:mt-16 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-6"
             >
-              <div className="max-w-lg mx-auto">
-                {/* Selected plan summary */}
-                <div className="card-stone border border-ink/15 rounded-2xl p-5 mb-8">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-mono text-[11px] text-ink-muted uppercase tracking-[0.2em] mb-2">{t("selectedPlan")}</p>
-                      <p className="font-heading font-semibold text-xl capitalize flex items-center gap-2 text-ink">
-                        {plan === "pro" ? (
-                          <Crown size={18} className="text-brand-deep" />
-                        ) : (
-                          <Zap size={18} className="text-brand-forest" />
-                        )}
-                        {plan === "starter" ? t("starter.name") : plan === "pro" ? t("pro.name") : plan}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      {billing === "annual" ? (
-                        <div>
-                          <div className="flex items-baseline gap-2 justify-end">
-                            <span className="font-display text-3xl font-light text-ink tabular-nums">
-                              ${Math.round(PRICES[plan!].annual / 12)}
-                            </span>
-                            <span className="text-ink-muted text-sm">{t("perMonthShort")}</span>
-                          </div>
-                          <p className="text-xs text-ink-muted mt-0.5">
-                            ${PRICES[plan!].annual.toLocaleString()}{t("perYrBilledAnnually")}
-                          </p>
-                        </div>
-                      ) : (
-                        <div className="flex items-baseline gap-1">
-                          <span className="font-display text-3xl font-light text-ink tabular-nums">
-                            ${PRICES[plan!].monthly}
-                          </span>
-                          <span className="text-ink-muted text-sm">{t("perMonthShort")}</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
+              {/* Selected plan — a forest ticket; above the form on phones. */}
+              <aside className="relative overflow-hidden rounded-[26px] bg-site-vis p-7 text-site-on-vis md:rounded-[28px] md:p-9 lg:order-2 lg:sticky lg:top-32">
+                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-site-on-vis/65">{t("selectedPlan")}</p>
+                <div className="mt-3 flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+                  <p className="font-flex text-[30px] font-semibold leading-none tracking-[-0.02em] [font-variation-settings:'wdth'_115]">
+                    {plan === "starter" ? t("starter.name") : plan === "pro" ? t("pro.name") : plan}
+                  </p>
+                  <p className="flex items-baseline gap-1.5">
+                    <span className={`${DISPLAY} text-[40px] leading-none tabular-nums`}>
+                      ${billing === "annual" ? Math.round(PRICES[plan!].annual / 12) : PRICES[plan!].monthly}
+                    </span>
+                    <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-site-on-vis/65">
+                      {t("perMonthShort")}
+                    </span>
+                  </p>
+                </div>
+                {billing === "annual" && (
+                  <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.12em] tabular-nums text-site-on-vis/75">
+                    ${PRICES[plan!].annual.toLocaleString()}
+                    {t("perYrBilledAnnually")}
+                  </p>
+                )}
+                <p className="mt-7 flex gap-2.5 border-t border-site-on-vis/15 pt-5 text-[13px] leading-relaxed text-site-on-vis/70">
+                  <Lock size={14} strokeWidth={2} className="mt-[3px] shrink-0" aria-hidden />
+                  {t("poweredByStripe")}
+                </p>
+              </aside>
+
+              <form
+                onSubmit={handleSubmit}
+                className="flex flex-col gap-6 rounded-[26px] bg-site-slab p-6 ring-1 ring-site-paper/[0.08] sm:p-8 md:rounded-[30px] md:p-10 lg:order-1"
+              >
+                <div>
+                  <label htmlFor="gs-name" className={LABEL}>
+                    {t("form.nameLbl")}
+                  </label>
+                  <input
+                    id="gs-name"
+                    name="name"
+                    type="text"
+                    value={form.name}
+                    onChange={handleChange}
+                    className={inputCls("name")}
+                    placeholder={t("form.namePlaceholder")}
+                    autoComplete="name"
+                    {...errProps("name")}
+                  />
+                  {fieldErrors.name && (
+                    <p id="gs-name-error" className="mt-2 text-[13px] leading-snug text-site-alert">
+                      {fieldErrors.name}
+                    </p>
+                  )}
                 </div>
 
-                <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                  <div>
-                    <label
-                      htmlFor="gs-name"
-                      className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2"
-                    >
-                      {t("form.nameLbl")}
-                    </label>
-                    <input
-                      id="gs-name"
-                      name="name"
-                      type="text"
-                      value={form.name}
-                      onChange={handleChange}
-                      className={inputCls("name")}
-                      placeholder={t("form.namePlaceholder")}
-                      autoComplete="name"
-                    />
-                    {fieldErrors.name && (
-                      <p className="text-xs text-red-700 mt-1.5">{fieldErrors.name}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="gs-email"
-                      className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2"
-                    >
-                      {t("form.emailLbl")}
-                    </label>
-                    <input
-                      id="gs-email"
-                      name="email"
-                      type="email"
-                      value={form.email}
-                      onChange={handleChange}
-                      className={inputCls("email")}
-                      placeholder={t("form.emailPlaceholder")}
-                      autoComplete="email"
-                    />
-                    {fieldErrors.email && (
-                      <p className="text-xs text-red-700 mt-1.5">{fieldErrors.email}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="gs-companyName"
-                      className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2"
-                    >
-                      {t("form.companyLbl")}
-                    </label>
-                    <input
-                      id="gs-companyName"
-                      name="companyName"
-                      type="text"
-                      value={form.companyName}
-                      onChange={handleChange}
-                      className={inputCls("companyName")}
-                      placeholder={t("form.companyPlaceholder")}
-                      autoComplete="organization"
-                    />
-                    {fieldErrors.companyName && (
-                      <p className="text-xs text-red-700 mt-1.5">
-                        {fieldErrors.companyName}
-                      </p>
-                    )}
-                  </div>
-
-                  {submitError && (
-                    <div className="rounded-xl border border-red-400/40 bg-red-50 p-4 text-sm text-red-800">
-                      {submitError}{t("form.retryHint")}{" "}
-                      <a
-                        href="mailto:hello@getstroyka.com"
-                        className="underline hover:text-red-900"
-                      >
-                        hello@getstroyka.com
-                      </a>
-                    </div>
+                <div>
+                  <label htmlFor="gs-email" className={LABEL}>
+                    {t("form.emailLbl")}
+                  </label>
+                  <input
+                    id="gs-email"
+                    name="email"
+                    type="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    className={inputCls("email")}
+                    placeholder={t("form.emailPlaceholder")}
+                    autoComplete="email"
+                    {...errProps("email")}
+                  />
+                  {fieldErrors.email && (
+                    <p id="gs-email-error" className="mt-2 text-[13px] leading-snug text-site-alert">
+                      {fieldErrors.email}
+                    </p>
                   )}
+                </div>
 
-                  <div className="flex flex-col sm:flex-row gap-3 mt-2">
-                    <Button
-                      variant="secondary"
-                      size="md"
-                      onClick={goBack}
-                      className="sm:w-auto"
-                    >
-                      <ArrowLeft size={16} />
-                      {t("back")}
-                    </Button>
-                    <button
-                      type="submit"
-                      disabled={submitting}
-                      className="flex-1 relative inline-flex items-center justify-center gap-2 font-heading font-semibold tracking-wide rounded-full transition duration-200 cursor-pointer bg-brand-deep text-bone hover:bg-brand-midnight-dark active:scale-[0.97] text-base px-6 py-3 disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-forest/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bone"
-                    >
-                      {submitting ? (
-                        <>
-                          <Loader2 size={16} className="animate-spin" />
-                          {t("processing")}
-                        </>
-                      ) : (
-                        <>
-                          {t("continueToPayment")}
-                          <ArrowRight size={16} />
-                        </>
-                      )}
-                    </button>
-                  </div>
+                <div>
+                  <label htmlFor="gs-companyName" className={LABEL}>
+                    {t("form.companyLbl")}
+                  </label>
+                  <input
+                    id="gs-companyName"
+                    name="companyName"
+                    type="text"
+                    value={form.companyName}
+                    onChange={handleChange}
+                    className={inputCls("companyName")}
+                    placeholder={t("form.companyPlaceholder")}
+                    autoComplete="organization"
+                    {...errProps("companyName")}
+                  />
+                  {fieldErrors.companyName && (
+                    <p id="gs-companyName-error" className="mt-2 text-[13px] leading-snug text-site-alert">
+                      {fieldErrors.companyName}
+                    </p>
+                  )}
+                </div>
 
-                  <p className="text-xs text-ink-muted/60 text-center mt-2">
-                    {/* Points at the stores, not at a login page: there is
-                        no longer anywhere to sign in on the web. The browser
-                        app was retired on 2026-09-21 and app.getstroyka.com
-                        now serves a signpost, so "Log in" would have sent
-                        someone to a page telling them to install the app —
-                        one hop too many, and a confusing one mid-checkout. */}
-                    {t("alreadyHaveAccount")}{" "}
-                    <a
-                      href="https://www.getstroyka.com/get"
-                      className="text-brand-forest hover:text-brand-sage transition-colors duration-200 underline"
-                    >
-                      {t("signInInApp")}
+                {submitError && (
+                  <div
+                    role="alert"
+                    className="rounded-xl bg-site-alert/[0.08] p-4 text-[14px] leading-relaxed text-site-alert ring-1 ring-inset ring-site-alert/30"
+                  >
+                    {submitError}{t("form.retryHint")}{" "}
+                    <a href="mailto:hello@getstroyka.com" className="underline underline-offset-2 hover:text-site-paper">
+                      hello@getstroyka.com
                     </a>
-                  </p>
-                </form>
-              </div>
+                  </div>
+                )}
+
+                <div className="mt-2 flex flex-col-reverse gap-3 border-t border-site-paper/10 pt-7 sm:flex-row">
+                  <button
+                    type="button"
+                    onClick={goBack}
+                    className="inline-flex h-14 items-center justify-center gap-2 rounded-full px-6 text-[15px] font-medium text-site-paper ring-1 ring-inset ring-site-paper/25 transition-[background-color,box-shadow,transform] duration-200 hover:bg-site-paper/[0.05] hover:ring-site-paper/45 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-site-vis"
+                  >
+                    <ArrowLeft size={16} />
+                    {t("back")}
+                  </button>
+                  <KnobButton type="submit" tone="solid" disabled={submitting} busy={submitting} className="flex-1">
+                    {submitting ? t("processing") : t("continueToPayment")}
+                  </KnobButton>
+                </div>
+
+                <p className="text-[13px] text-site-paper/55">
+                  {/* Points at the stores, not at a login page: there is
+                      no longer anywhere to sign in on the web. The browser
+                      app was retired on 2026-09-21 and app.getstroyka.com
+                      now serves a signpost, so "Log in" would have sent
+                      someone to a page telling them to install the app —
+                      one hop too many, and a confusing one mid-checkout. */}
+                  {t("alreadyHaveAccount")}{" "}
+                  <a
+                    href="https://www.getstroyka.com/get"
+                    className="font-medium text-site-vis underline decoration-site-vis/30 underline-offset-4 transition-colors duration-200 hover:decoration-site-vis"
+                  >
+                    {t("signInInApp")}
+                  </a>
+                </p>
+              </form>
             </motion.div>
           )}
 
@@ -691,23 +704,21 @@ export default function GetStartedFlow() {
           {step === 3 && (
             <motion.div
               key="step3"
-              initial={prefersReduced ? {} : { opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3 }}
+              initial={reduced ? false : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: EASE }}
+              className="mt-12 md:mt-16"
             >
-              <div className="flex flex-col items-center justify-center py-20 gap-6">
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
-                >
-                  <Loader2 size={40} className="text-brand-forest" />
-                </motion.div>
-                <p className="font-heading text-lg text-ink-soft/80">
-                  {t("takingYouToCheckout")}
-                </p>
-                <p className="text-sm text-ink-muted/60">
-                  {t("poweredByStripe")}
-                </p>
+              <div className="flex max-w-xl items-center gap-5 rounded-[26px] bg-site-slab p-7 ring-1 ring-site-paper/[0.08] md:p-9">
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-site-vis text-site-on-vis">
+                  <Loader2 size={22} className="animate-spin" />
+                </span>
+                <div>
+                  <p className="font-flex text-[19px] font-medium leading-snug tracking-[-0.01em]">
+                    {t("takingYouToCheckout")}
+                  </p>
+                  <p className="mt-1.5 text-[13.5px] leading-relaxed text-site-paper/55">{t("poweredByStripe")}</p>
+                </div>
               </div>
             </motion.div>
           )}

@@ -3,103 +3,108 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "motion/react";
+import { ArrowUpRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import FadeIn from "@/components/ui/FadeIn";
-import SectionLabel from "@/components/ui/SectionLabel";
-import TextReveal from "@/components/ui/TextReveal";
-import Button from "@/components/ui/Button";
-import Logo from "@/components/Logo";
+import FlapText from "@/components/site/ui/FlapText";
+import { useReduced } from "@/components/site/ui/useReduced";
 
 type PageState = "loading" | "success" | "error" | "direct";
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+const APP_URL = "https://www.getstroyka.com/get";
+
 /* ────────────────────────────────────────────────────────────────────────────
- * Bone-editorial palette pieces — sage atoms used across the four states.
+ * Morning Bone pieces
  * ──────────────────────────────────────────────────────────────────────── */
 
-function LoadingDots({ label }: { label: string }) {
-  const prefersReduced = useReducedMotion();
-  if (prefersReduced) {
-    return (
-      <div className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-muted">
-        {label}
-      </div>
-    );
-  }
+/**
+ * The home's VisButton, as an EXTERNAL link. VisButton routes through the
+ * locale-aware Link and opens in place; this CTA has always opened the app
+ * page in a new tab (ui/Button's external branch), so it keeps doing that.
+ */
+function AppButton({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-2">
-      {[0, 1, 2].map((i) => (
-        <motion.span
-          key={i}
-          className="w-2 h-2 rounded-full bg-brand-forest"
-          animate={{ opacity: [0.25, 1, 0.25], y: [0, -3, 0] }}
-          transition={{
-            duration: 1.2,
-            repeat: Infinity,
-            delay: i * 0.15,
-            ease: "easeInOut",
-          }}
+    <a
+      href={APP_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group inline-flex h-12 items-center gap-4 rounded-full bg-site-vis pl-6 pr-1.5 text-[15px] font-medium tracking-[-0.005em] text-site-on-vis transition-[background-color,transform] duration-200 ease-out hover:bg-site-vis-hover active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-site-vis focus-visible:ring-offset-2 focus-visible:ring-offset-site-slab"
+    >
+      <span>{children}</span>
+      <span className="relative grid h-9 w-9 place-items-center overflow-hidden rounded-full bg-site-on-vis text-site-vis">
+        <ArrowUpRight
+          size={17}
+          strokeWidth={2.2}
+          className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-6 group-hover:translate-x-6"
         />
-      ))}
+        <ArrowUpRight
+          size={17}
+          strokeWidth={2.2}
+          className="absolute -translate-x-6 translate-y-6 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0 group-hover:translate-y-0"
+        />
+      </span>
+    </a>
+  );
+}
+
+const quietLink =
+  "font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/50 transition-colors hover:text-site-vis focus-visible:outline-none focus-visible:text-site-vis";
+
+/** An indeterminate hairline — a load moving along the rail. */
+function WorkingRail({ label }: { label: string }) {
+  const reduced = useReduced();
+  return (
+    <div className="flex items-center gap-4">
+      <div
+        aria-hidden
+        className="relative h-[2px] w-32 overflow-hidden rounded-full bg-site-paper/10"
+      >
+        {reduced ? (
+          <span className="absolute inset-y-0 left-0 w-1/3 rounded-full bg-site-vis" />
+        ) : (
+          <motion.span
+            className="absolute inset-y-0 left-0 w-1/3 rounded-full bg-site-vis"
+            initial={{ x: "-100%" }}
+            animate={{ x: "300%" }}
+            transition={{ duration: 1.1, repeat: Infinity, ease: [0.65, 0, 0.35, 1] }}
+          />
+        )}
+      </div>
+      <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/50">
+        {label}
+      </span>
     </div>
   );
 }
 
-/**
- * Sage stamp seal — circular, "DELIVERED" style. Reused for the success
- * page payoff. Fits the v9–v11 stamp language (Guarantee, Beat 5).
- */
-function StampSeal({ label }: { label: string }) {
-  const prefersReduced = useReducedMotion();
+/** The site's stamp: forest border, Flex extrabold, spring-landed. */
+function Stamp({ label }: { label: string }) {
+  const reduced = useReduced();
   return (
     <motion.div
-      className="relative w-32 h-32 mx-auto"
-      initial={prefersReduced ? false : { scale: 0, rotate: -12, opacity: 0 }}
-      animate={{ scale: 1, rotate: 0, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 380, damping: 14, mass: 0.45 }}
+      initial={reduced ? false : { scale: 0, rotate: -18, opacity: 0 }}
+      animate={{ scale: 1, rotate: -8, opacity: 1 }}
+      transition={{ type: "spring", stiffness: 380, damping: 14, delay: 0.35 }}
+      className="pointer-events-none absolute -top-5 right-5 origin-center md:-top-6 md:right-8"
     >
-      {!prefersReduced && (
-        <motion.span
-          aria-hidden
-          className="absolute inset-0 rounded-full border-2 border-brand-sage-bright/65"
-          initial={{ scale: 1, opacity: 0 }}
-          animate={{ scale: [1, 1.85], opacity: [0.8, 0] }}
-          transition={{ delay: 0.35, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        />
-      )}
-      <div
-        className="relative w-full h-full rounded-full flex flex-col items-center justify-center text-center"
-        style={{
-          background:
-            "radial-gradient(circle at 35% 30%, rgba(132,169,140,0.18) 0%, rgba(43,61,48,0.92) 65%)",
-          border: "2.5px solid #8AAA91",
-          boxShadow:
-            "0 0 60px rgba(132,169,140,0.35), inset 0 0 20px rgba(132,169,140,0.15)",
-        }}
-      >
-        <span
-          aria-hidden
-          className="absolute inset-2.5 rounded-full border border-brand-sage-bright/40"
-        />
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <motion.path
-            d="M5 12.5 L10 17.5 L19 7.5"
-            stroke="#B8D4BD"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            initial={prefersReduced ? false : { pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 0.5, delay: 0.45, ease: "easeOut" }}
+      <span className="relative block rounded-lg border-[2.5px] border-site-vis bg-site-night px-4 py-2 font-flex text-site-vis [font-variation-settings:'wdth'_125]">
+        {!reduced && (
+          <motion.span
+            aria-hidden
+            className="absolute inset-0 rounded-lg ring-2 ring-site-vis"
+            initial={{ scale: 1, opacity: 0.7 }}
+            animate={{ scale: 1.85, opacity: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut", delay: 0.42 }}
           />
-        </svg>
-        <div className="mt-1.5 font-mono text-[9px] tracking-[0.28em] text-brand-sage-bright font-bold">
+        )}
+        <span className="block text-[20px] font-extrabold uppercase leading-none tracking-[0.04em]">
           {label}
-        </div>
-      </div>
+        </span>
+      </span>
     </motion.div>
   );
 }
@@ -108,23 +113,41 @@ function StampSeal({ label }: { label: string }) {
  * Shell + state views
  * ──────────────────────────────────────────────────────────────────────── */
 
-function PageShell({ children }: { children: React.ReactNode }) {
+function PageShell({
+  heading,
+  children,
+  stamp,
+}: {
+  heading: string;
+  children: React.ReactNode;
+  stamp?: React.ReactNode;
+}) {
+  const t = useTranslations("account");
+  const reduced = useReduced();
   return (
     <>
       <Navbar />
-      <main className="relative min-h-screen pt-32 pb-20 bg-gradient-to-b from-[#E3DCC9] to-[#D4CBB4] overflow-hidden">
-        {/* Soft sage vignette top-right — matches Guarantee/FAQ ambience */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-20 right-0 w-[60vw] h-[60vw] opacity-30"
-          style={{
-            background:
-              "radial-gradient(ellipse 50% 50% at 80% 20%, rgba(184,212,189,0.32), transparent 70%)",
-            filter: "blur(80px)",
-          }}
-        />
-        <div className="relative max-w-xl mx-auto px-6 text-center">
-          {children}
+      <main className="relative flex min-h-screen items-center overflow-x-clip bg-site-night pb-24 pt-32 text-site-paper md:pb-36 md:pt-40">
+        <div className="mx-auto w-full max-w-[1400px] px-5 md:px-10">
+          <div className="relative mx-auto max-w-[560px] rounded-[28px] bg-site-slab p-7 ring-1 ring-inset ring-site-paper/[0.08] md:p-10">
+            {stamp}
+            <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.22em] text-site-vis">
+              {t("title")}
+            </p>
+            <FlapText
+              as="h1"
+              immediate
+              lines={[heading]}
+              className="font-flex text-[clamp(2rem,4.4vw,2.9rem)] font-semibold leading-[1] tracking-[-0.03em] [font-variation-settings:'wdth'_110]"
+            />
+            <motion.div
+              initial={reduced ? false : { opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.3, ease: EASE }}
+            >
+              {children}
+            </motion.div>
+          </div>
         </div>
       </main>
       <Footer />
@@ -132,46 +155,27 @@ function PageShell({ children }: { children: React.ReactNode }) {
   );
 }
 
+const bodyText = "mt-5 max-w-md text-[15.5px] leading-relaxed text-site-paper/70";
+const actions =
+  "mt-9 flex flex-col items-start gap-5 border-t border-site-paper/10 pt-7 sm:flex-row sm:items-center sm:justify-between";
+
 function DirectVisitView() {
   const t = useTranslations("account");
   return (
-    <PageShell>
-      <FadeIn>
-        <div className="flex justify-center mb-8">
-          <Logo variant="light" size={42} showWordmark={false} />
-        </div>
-      </FadeIn>
-      <FadeIn delay={0.05}>
-        <SectionLabel>{t("title")}</SectionLabel>
-      </FadeIn>
-      <TextReveal
-        as="h1"
-        className="font-display font-light text-4xl lg:text-5xl leading-[0.98] tracking-[-0.02em] text-ink mb-5"
-      >
-        {t("manageInApp")}
-      </TextReveal>
-      <FadeIn delay={0.15}>
-        <p className="text-[15px] lg:text-base text-ink-soft leading-relaxed mb-10 max-w-md mx-auto">
-          {t.rich("managedInside", {
-            highlight: (chunks) => (
-              <span className="text-ink font-medium">{chunks}</span>
-            ),
-          })}
-        </p>
-      </FadeIn>
-      <FadeIn delay={0.22}>
-        <div className="flex flex-col items-center gap-5">
-          <Button variant="primary" size="lg" href="https://www.getstroyka.com/get">
-            {t("getTheApp")}
-          </Button>
-          <a
-            href="mailto:hello@getstroyka.com"
-            className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-muted hover:text-brand-forest transition-colors"
-          >
-            {t("needHelp")}
-          </a>
-        </div>
-      </FadeIn>
+    <PageShell heading={t("manageInApp")}>
+      <p className={bodyText}>
+        {t.rich("managedInside", {
+          highlight: (chunks) => (
+            <span className="font-medium text-site-paper">{chunks}</span>
+          ),
+        })}
+      </p>
+      <div className={actions}>
+        <AppButton>{t("getTheApp")}</AppButton>
+        <a href="mailto:hello@getstroyka.com" className={quietLink}>
+          {t("needHelp")}
+        </a>
+      </div>
     </PageShell>
   );
 }
@@ -179,28 +183,13 @@ function DirectVisitView() {
 function LoadingView() {
   const t = useTranslations("account");
   return (
-    <PageShell>
-      <FadeIn>
-        <div className="flex justify-center mb-8">
-          <Logo variant="light" size={42} showWordmark={false} />
-        </div>
-      </FadeIn>
-      <FadeIn delay={0.05}>
-        <SectionLabel>{t("title")}</SectionLabel>
-      </FadeIn>
-      <FadeIn delay={0.1}>
-        <h1 className="font-display font-light text-3xl lg:text-4xl leading-tight text-ink mb-6">
-          {t("redirectingBilling")}
-        </h1>
-      </FadeIn>
-      <FadeIn delay={0.18}>
-        <div className="flex justify-center mb-4">
-          <LoadingDots label={t("loading")} />
-        </div>
-        <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-muted">
+    <PageShell heading={t("redirectingBilling")}>
+      <div className="mt-8" role="status" aria-live="polite">
+        <WorkingRail label={t("loading")} />
+        <p className="mt-4 text-[15px] leading-relaxed text-site-paper/60">
           {t("verifying")}
         </p>
-      </FadeIn>
+      </div>
     </PageShell>
   );
 }
@@ -208,39 +197,14 @@ function LoadingView() {
 function SuccessView() {
   const t = useTranslations("account");
   return (
-    <PageShell>
-      <FadeIn>
-        <StampSeal label={t("updated")} />
-      </FadeIn>
-      <FadeIn delay={0.1}>
-        <div className="mt-10">
-          <SectionLabel>{t("title")}</SectionLabel>
-        </div>
-      </FadeIn>
-      <TextReveal
-        as="h1"
-        className="font-display font-light text-4xl lg:text-5xl leading-[0.98] tracking-[-0.02em] text-ink mb-5"
-      >
-        {t("allSet")}
-      </TextReveal>
-      <FadeIn delay={0.18}>
-        <p className="text-[15px] lg:text-base text-ink-soft leading-relaxed mb-10 max-w-md mx-auto">
-          {t("changesSaved")}
-        </p>
-      </FadeIn>
-      <FadeIn delay={0.25}>
-        <div className="flex flex-col items-center gap-5">
-          <Button variant="primary" size="lg" href="https://www.getstroyka.com/get">
-            {t("getTheApp")}
-          </Button>
-          <Link
-            href="/"
-            className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-muted hover:text-brand-forest transition-colors"
-          >
-            {t("backToSite")}
-          </Link>
-        </div>
-      </FadeIn>
+    <PageShell heading={t("allSet")} stamp={<Stamp label={t("updated")} />}>
+      <p className={bodyText}>{t("changesSaved")}</p>
+      <div className={actions}>
+        <AppButton>{t("getTheApp")}</AppButton>
+        <Link href="/" className={quietLink}>
+          {t("backToSite")}
+        </Link>
+      </div>
     </PageShell>
   );
 }
@@ -248,40 +212,22 @@ function SuccessView() {
 function ErrorView() {
   const t = useTranslations("account");
   return (
-    <PageShell>
-      <FadeIn>
-        <div className="flex justify-center mb-8">
-          <Logo variant="light" size={42} showWordmark={false} />
-        </div>
-      </FadeIn>
-      <FadeIn delay={0.05}>
-        <SectionLabel>{t("title")}</SectionLabel>
-      </FadeIn>
-      <TextReveal
-        as="h1"
-        className="font-display font-light text-4xl lg:text-5xl leading-[0.98] tracking-[-0.02em] text-ink mb-5"
-      >
-        {t("couldntVerify")}
-      </TextReveal>
-      <FadeIn delay={0.15}>
-        <p className="text-[15px] lg:text-base text-ink-soft leading-relaxed mb-10 max-w-md mx-auto">
-          {t.rich("tryFromApp", {
-            email: (chunks) => (
-              <a
-                href="mailto:hello@getstroyka.com"
-                className="text-brand-forest hover:text-brand-deep underline underline-offset-2 transition-colors"
-              >
-                {chunks}
-              </a>
-            ),
-          })}
-        </p>
-      </FadeIn>
-      <FadeIn delay={0.22}>
-        <Button variant="primary" size="lg" href="https://www.getstroyka.com/get">
-          {t("getTheApp")}
-        </Button>
-      </FadeIn>
+    <PageShell heading={t("couldntVerify")}>
+      <p className={bodyText}>
+        {t.rich("tryFromApp", {
+          email: (chunks) => (
+            <a
+              href="mailto:hello@getstroyka.com"
+              className="text-site-vis underline decoration-site-vis/40 underline-offset-[3px] transition-colors hover:text-site-vis-hover hover:decoration-site-vis"
+            >
+              {chunks}
+            </a>
+          ),
+        })}
+      </p>
+      <div className={actions}>
+        <AppButton>{t("getTheApp")}</AppButton>
+      </div>
     </PageShell>
   );
 }
@@ -308,10 +254,12 @@ export default function AccountPage() {
 
     hasProcessed.current = true;
 
-    // Determine state BEFORE clearing URL
+    // Determine state BEFORE clearing URL. Clearing keeps the current PATH
+    // (only the token/status query goes): a hard-coded "/account" dropped the
+    // /es or /ru prefix, and Next's router then re-rendered in English.
     if (status === "success") {
       setPageState("success");
-      window.history.replaceState({}, "", "/account");
+      window.history.replaceState({}, "", window.location.pathname);
       return;
     }
 
@@ -322,7 +270,7 @@ export default function AccountPage() {
 
     // Token present — attempt portal redirect
     setPageState("loading");
-    window.history.replaceState({}, "", "/account");
+    window.history.replaceState({}, "", window.location.pathname);
 
     fetch("/api/billing/portal", {
       method: "POST",

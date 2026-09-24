@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { MotionConfig } from "framer-motion";
 import { track } from "@vercel/analytics";
 import { ANDROID_APP_URL, IOS_APP_URL } from "@/lib/appLinks";
 import { isMobileVisitor } from "@/lib/isMobileVisitor";
 import Navbar from "@/components/Navbar";
 import AmbientBackdrop from "@/components/ui/AmbientBackdrop";
 import FadeIn from "@/components/ui/FadeIn";
-import TextReveal from "@/components/ui/TextReveal";
+import FlapText from "@/components/site/ui/FlapText";
 import { AppleGlyph, GooglePlayGlyph } from "@/components/ui/StoreGlyphs";
 import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
 import HandoffCard from "./HandoffCard";
@@ -62,17 +63,21 @@ export default function GetContent() {
 
   if (!desktop) {
     return (
-      <main className="relative flex min-h-screen flex-col items-center justify-center gap-8 overflow-hidden bg-gradient-to-b from-[#E3DCC9] to-[#D4CBB4] px-6 pt-24 text-center">
+      <main className="relative flex min-h-screen flex-col items-center justify-center gap-8 overflow-hidden bg-site-night px-5 pt-24 text-center text-site-paper">
         <AmbientBackdrop />
-        <div className="relative z-10 flex flex-col items-center gap-8">
-          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-muted">
+        <div className="relative z-10 flex flex-col items-center gap-7">
+          <p className="flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/55">
+            <span className="relative flex h-2 w-2" aria-hidden>
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-site-vis opacity-60 motion-reduce:hidden" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-site-vis" />
+            </span>
             {t("redirecting")}
           </p>
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="flex flex-wrap justify-center gap-2.5">
             <StoreBadge
               href={IOS_APP_URL}
               label={t("appStore")}
-              icon={<AppleGlyph className="h-3 w-3" />}
+              icon={<AppleGlyph className="h-[15px] w-[15px]" />}
               onClick={() =>
                 trackCta("store_badge_clicked", { store: "app_store" })
               }
@@ -80,7 +85,7 @@ export default function GetContent() {
             <StoreBadge
               href={ANDROID_APP_URL}
               label={t("googlePlay")}
-              icon={<GooglePlayGlyph className="h-3 w-3" />}
+              icon={<GooglePlayGlyph className="h-[13px] w-[13px]" />}
               onClick={() =>
                 trackCta("store_badge_clicked", { store: "google_play" })
               }
@@ -112,32 +117,39 @@ export default function GetContent() {
   // stays on this page, so it gets the site's navbar like every other page
   // (Maks, 2026-09-13: "no way back to the landing").
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <Navbar />
-      <main className="relative overflow-hidden bg-gradient-to-b from-[#E3DCC9] to-[#D4CBB4] px-6 pb-10 pt-24 lg:pt-28">
+      <main className="relative overflow-hidden bg-site-night pb-10 pt-24 text-site-paper lg:pt-24">
         <AmbientBackdrop />
         {/* The hero is the page: one block, vertically centred in the
             viewport, so a tall window gets even air above and below instead
             of a void. Top: the claim + handoff on the left, the working phone
             on the right. Below: the proof strip. */}
-        <div className="relative z-10 mx-auto flex min-h-[calc(100svh-7rem)] max-w-6xl flex-col justify-center lg:min-h-[calc(100svh-8.5rem)]">
+        <div className="relative z-10 mx-auto flex min-h-[calc(100svh-7rem)] max-w-[1240px] flex-col justify-center px-5 md:px-10 lg:min-h-[calc(100svh-8.5rem)]">
           <div className="flex flex-col gap-12 lg:grid lg:grid-cols-12 lg:items-center lg:gap-x-10">
-            <div className="text-center lg:col-span-7 lg:text-left">
-              <FadeIn triggerOnMount>
-                <p className="mb-5 font-mono text-[11.5px] font-medium uppercase tracking-[0.14em] text-brand-deep">
+            <div className="flex flex-col items-center text-center lg:col-span-7 lg:items-start lg:text-left">
+              <FadeIn triggerOnMount className="flex flex-col items-center lg:items-start">
+                <p className="mb-6 flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.2em] text-site-vis">
+                  <span className="relative flex h-2 w-2" aria-hidden>
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-site-vis opacity-60 motion-reduce:hidden" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-site-vis" />
+                  </span>
                   {t("desktopKicker")}
                 </p>
-                <TextReveal
-                  as="h1"
-                  className="mx-auto mb-5 max-w-[12ch] font-display text-[clamp(2.4rem,4.6vw,3.9rem)] font-light leading-[1.02] tracking-[-0.025em] text-ink lg:mx-0"
-                >
-                  {t("desktopTitle")}
-                </TextReveal>
-                <p className="mx-auto mb-8 max-w-md text-[17px] leading-[1.55] text-ink-soft lg:mx-0">
+              </FadeIn>
+              <FlapText
+                as="h1"
+                immediate
+                delay={0.1}
+                className="mb-5 max-w-[13ch] font-flex text-[clamp(2.5rem,4.6vw,4.3rem)] font-semibold leading-[0.95] tracking-[-0.03em] text-site-paper [font-variation-settings:'wdth'_110]"
+                lines={[t("desktopTitle")]}
+              />
+              <FadeIn triggerOnMount delay={0.12}>
+                <p className="mx-auto mb-8 max-w-[30rem] text-[17px] leading-relaxed text-site-paper/70 lg:mx-0">
                   {t("desktopHint")}
                 </p>
               </FadeIn>
-              <FadeIn triggerOnMount delay={0.18} className="flex justify-center lg:justify-start">
+              <FadeIn triggerOnMount delay={0.22} className="flex w-full justify-center lg:justify-start">
                 <HandoffCard
                   qrAlt={t("desktopQrAlt")}
                   scanLabel={t("desktopScanLabel")}
@@ -159,16 +171,16 @@ export default function GetContent() {
             </FadeIn>
           </div>
 
-          <FadeIn triggerOnMount delay={0.3} className="mt-12 lg:mt-10">
+          <FadeIn triggerOnMount delay={0.3} className="mt-14 lg:mt-8">
             <ProofStrip items={proofs} />
           </FadeIn>
         </div>
       </main>
-    </>
+    </MotionConfig>
   );
 }
 
-/** Pill store badge — same register as the get-started success page. */
+/** Forest store pill for the phone fallback: glyph in a bone knob, then the name. */
 function StoreBadge({
   href,
   label,
@@ -184,9 +196,11 @@ function StoreBadge({
     <a
       href={href}
       onClick={onClick}
-      className="inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 font-mono text-[11px] uppercase tracking-[0.12em] text-bone transition-colors hover:bg-brand-deep"
+      className="inline-flex h-12 items-center gap-2.5 rounded-full bg-site-vis pl-2 pr-5 text-[15px] font-medium tracking-[-0.005em] text-site-on-vis transition-[background-color,transform] duration-200 ease-out hover:bg-site-vis-hover active:scale-[0.97]"
     >
-      {icon}
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-site-on-vis text-site-vis">
+        {icon}
+      </span>
       {label}
     </a>
   );

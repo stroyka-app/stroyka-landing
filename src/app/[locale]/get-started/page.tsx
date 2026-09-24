@@ -56,42 +56,47 @@ export async function generateMetadata({
 async function GetStartedFallback({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: "getStarted" });
   return (
-    <section className="mx-auto max-w-3xl px-6 pb-24 pt-32 text-center">
-      <h1 className="mb-3 font-display text-4xl font-light leading-tight tracking-[-0.02em] text-ink lg:text-5xl">
-        {t("chooseYourPlan")}
-      </h1>
-      <p className="mx-auto max-w-lg text-base text-ink-soft">
-        {t("noPerSeatFees")}
-      </p>
+    <section className="relative bg-site-night pb-16 pt-32 text-site-paper md:pb-24 md:pt-40">
+      <div className="mx-auto max-w-[1200px] px-5 md:px-10">
+        <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.22em] text-site-vis">01 / 02</p>
+        <h1 className="max-w-[16ch] font-flex text-[clamp(2.4rem,5.6vw,5rem)] font-semibold leading-[0.95] tracking-[-0.03em] [font-variation-settings:'wdth'_110]">
+          {t("chooseYourPlan")}
+        </h1>
+        <p className="mt-6 max-w-lg text-[16.5px] leading-relaxed text-site-paper/70">
+          {t("noPerSeatFees")}
+        </p>
 
-      {/*
-        The plans, server-rendered. An <h1> alone would not have fixed this:
-        "Crawled - currently not indexed" is Google's verdict on a page too
-        thin to be worth a slot, and Navbar + heading + subhead is still thin.
-        Reading PRICING_TIERS rather than hardcoding also means this stays
-        true through the repricing without anyone remembering to edit it.
-      */}
-      <ul className="mx-auto mt-10 grid max-w-2xl gap-4 text-left sm:grid-cols-3">
-        {PRICING_TIERS.map((tier) => (
-          <li
-            key={tier.name}
-            className="card-stone rounded-2xl border border-ink/10 p-5"
-          >
-            <p className="font-heading text-sm font-semibold text-ink">
-              {tier.name}
-            </p>
-            <p className="mt-1 font-display text-2xl font-light tabular-nums text-ink">
-              {tier.monthlyPrice === 0 ? "$0" : `$${tier.monthlyPrice}`}
-              <span className="ml-1 text-sm text-ink-muted">
-                {t("perMonthShort")}
-              </span>
-            </p>
-            <p className="mt-2 text-[13px] leading-relaxed text-ink-soft">
-              {tier.description}
-            </p>
-          </li>
-        ))}
-      </ul>
+        {/*
+          The plans, server-rendered. An <h1> alone would not have fixed this:
+          "Crawled - currently not indexed" is Google's verdict on a page too
+          thin to be worth a slot, and Navbar + heading + subhead is still thin.
+          Reading PRICING_TIERS rather than hardcoding also means this stays
+          true through the repricing without anyone remembering to edit it.
+        */}
+        <ul className="mt-12 grid gap-4 md:mt-16 md:grid-cols-3">
+          {PRICING_TIERS.map((tier) => (
+            <li
+              key={tier.name}
+              className="rounded-[28px] bg-site-slab p-7 ring-1 ring-site-paper/[0.08] md:p-9"
+            >
+              <p className="font-flex text-[22px] font-semibold [font-variation-settings:'wdth'_115]">
+                {tier.name}
+              </p>
+              <p className="mt-6 flex items-end gap-2">
+                <span className="font-flex text-[clamp(3.2rem,6vw,4.2rem)] font-semibold leading-[0.9] tracking-[-0.03em] tabular-nums [font-variation-settings:'wdth'_110]">
+                  {tier.monthlyPrice === 0 ? "$0" : `$${tier.monthlyPrice}`}
+                </span>
+                <span className="mb-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-site-paper/55">
+                  {t("perMonthShort")}
+                </span>
+              </p>
+              <p className="mt-4 text-[14px] leading-relaxed text-site-paper/65">
+                {tier.description}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 }

@@ -20,7 +20,13 @@ export default function FeatureStack() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
   return (
-    <section id="features" className="relative bg-site-night pb-24 pt-24 text-site-paper md:pt-36">
+    <section
+      id="features"
+      // overflow-x-clip, not hidden: a card tilting in (rotateX in perspective)
+      // renders its near edge wider than the card and pushed the page into a
+      // sideways scroll; `clip` trims it without breaking the sticky stack.
+      className="relative overflow-x-clip bg-site-night pb-24 pt-24 text-site-paper md:pt-36"
+    >
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
         <FlapText
           lines={[t("headA"), t("headB")]}

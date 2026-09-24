@@ -50,7 +50,35 @@ export default function StartCta({
       data-cta="start-primary"
       onClick={() => trackCta("cta_start_free", { location: "start", locale })}
     >
-      {label}
+      <span>{label}</span>
+      {/* The site's CTA knob (VisButton's shape) without its runtime: an
+          inline arrow that slips out of the corner and back on hover, pure
+          CSS, so the island stays a few hundred bytes. */}
+      <span
+        aria-hidden
+        className="relative grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full bg-site-on-vis text-site-vis"
+      >
+        <Arrow className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-6 group-hover:translate-x-6 motion-reduce:transition-none" />
+        <Arrow className="absolute -translate-x-6 translate-y-6 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0 group-hover:translate-y-0 motion-reduce:transition-none" />
+      </span>
     </a>
+  );
+}
+
+function Arrow({ className }: { className: string }) {
+  return (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M7 17 17 7M7 7h10v10" />
+    </svg>
   );
 }

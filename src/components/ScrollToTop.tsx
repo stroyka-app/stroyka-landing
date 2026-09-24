@@ -86,7 +86,7 @@ export default function ScrollToTop() {
                 cy={size / 2}
                 r={radius}
                 fill="none"
-                stroke="rgba(132,169,140,0.1)"
+                stroke="rgb(var(--site-paper) / 0.1)"
                 strokeWidth={strokeWidth}
               />
               {/* Progress */}
@@ -95,7 +95,7 @@ export default function ScrollToTop() {
                 cy={size / 2}
                 r={radius}
                 fill="none"
-                stroke="rgba(82,121,111,0.8)"
+                stroke="rgb(var(--site-vis))"
                 strokeWidth={strokeWidth}
                 strokeLinecap="round"
                 strokeDasharray={circumference}
@@ -105,10 +105,10 @@ export default function ScrollToTop() {
             </svg>
 
             {/* Button body */}
-            <div className="w-10 h-10 rounded-full bg-bone-soft/90 backdrop-blur-sm border border-ink/20 flex items-center justify-center group-hover:border-brand-sage/50 transition-[border-color] duration-200">
+            <div className="w-10 h-10 rounded-full bg-site-night/90 backdrop-blur-sm border border-site-paper/15 flex items-center justify-center shadow-[0_8px_20px_-10px_rgba(60,50,30,0.4)] group-hover:border-site-vis/50 transition-[border-color] duration-200">
               <ArrowUp
                 size={16}
-                className="text-ink/70 group-hover:text-brand-forest transition-colors duration-200"
+                className="text-site-paper/70 group-hover:text-site-vis transition-colors duration-200"
               />
             </div>
           </div>

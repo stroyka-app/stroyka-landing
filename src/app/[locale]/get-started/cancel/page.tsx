@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
-import { Link } from "@/i18n/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import Logo from "@/components/Logo";
-import Button from "@/components/ui/Button";
-import FadeIn from "@/components/ui/FadeIn";
-import SectionLabel from "@/components/ui/SectionLabel";
-import TextReveal from "@/components/ui/TextReveal";
+import FlapText from "@/components/site/ui/FlapText";
+import VisButton from "@/components/site/ui/VisButton";
 
 export const metadata: Metadata = {
   title: "Checkout Cancelled",
@@ -22,48 +18,31 @@ export default async function CancelPage({ params }: { params: Promise<{ locale:
   return (
     <>
       <Navbar />
-      <main className="relative min-h-screen pt-32 pb-20 bg-gradient-to-b from-[#E3DCC9] to-[#D4CBB4] overflow-hidden">
-        {/* Soft sage vignette to match the rest of the bone-editorial pages */}
+      <main className="relative flex min-h-[86svh] flex-col justify-center overflow-hidden bg-site-night pb-16 pt-32 text-site-paper md:pb-24 md:pt-40">
+        {/* Low morning bloom — the home's sky, kept off the top edge. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute -top-20 right-0 w-[60vw] h-[60vw] opacity-30"
-          style={{
-            background:
-              "radial-gradient(ellipse 50% 50% at 80% 20%, rgba(184,212,189,0.32), transparent 70%)",
-            filter: "blur(80px)",
-          }}
+          className="pointer-events-none absolute right-[-20%] top-[8%] h-[560px] w-[820px] max-w-none opacity-50"
+          style={{ background: "radial-gradient(closest-side, var(--sky-top), transparent)" }}
         />
 
-        <div className="relative max-w-xl mx-auto px-6 text-center">
-          <FadeIn>
-            <div className="flex justify-center mb-8">
-              <Link href="/">
-                <Logo variant="light" size={42} showWordmark />
-              </Link>
+        <div className="relative mx-auto w-full max-w-[1200px] px-5 md:px-10">
+          <div className="max-w-3xl">
+            <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.22em] text-site-vis">{t("noWorries")}</p>
+            <FlapText
+              as="h1"
+              immediate
+              lines={[t("planUnchanged")]}
+              className="max-w-[14ch] font-flex text-[clamp(2.4rem,5.6vw,5rem)] font-semibold leading-[0.95] tracking-[-0.03em] [font-variation-settings:'wdth'_110] [overflow-wrap:anywhere]"
+            />
+            <p className="mt-6 max-w-md text-[16.5px] leading-relaxed text-site-paper/70">{t("subscribeAnytime")}</p>
+
+            <div className="mt-10 border-t border-site-paper/10 pt-10">
+              <VisButton href="/#pricing" size="lg">
+                {t("backToPricing").replace(/\s*[←→]\s*/g, " ").trim()}
+              </VisButton>
             </div>
-          </FadeIn>
-
-          <FadeIn delay={0.05}>
-            <SectionLabel>{t("noWorries")}</SectionLabel>
-          </FadeIn>
-
-          <FadeIn delay={0.1}>
-            <TextReveal as="h1" className="font-display font-light text-4xl lg:text-5xl leading-[0.98] tracking-[-0.02em] text-ink mb-5">
-              {t("planUnchanged")}
-            </TextReveal>
-          </FadeIn>
-
-          <FadeIn delay={0.18}>
-            <p className="text-[15px] lg:text-base text-ink-soft leading-relaxed mb-10 max-w-md mx-auto">
-              {t("subscribeAnytime")}
-            </p>
-          </FadeIn>
-
-          <FadeIn delay={0.25}>
-            <Button variant="secondary" size="lg" href="/#pricing">
-              {t("backToPricing")}
-            </Button>
-          </FadeIn>
+          </div>
         </div>
       </main>
       <Footer />

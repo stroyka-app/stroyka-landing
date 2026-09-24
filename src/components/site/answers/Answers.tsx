@@ -18,7 +18,7 @@ export default function Answers() {
 
   return (
     <section id="faq" className="relative bg-site-night py-24 text-site-paper md:py-36">
-      <div className="mx-auto grid max-w-[1400px] gap-12 px-5 md:px-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-20">
+      <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-12 px-5 md:px-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-20">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.22em] text-site-vis">{t("eyebrow")}</p>
           <FlapText

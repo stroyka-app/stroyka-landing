@@ -27,7 +27,7 @@ export default function AmbientBackdrop({ className = "" }: AmbientBackdropProps
         className="ambient-grid absolute -inset-[72px]"
         style={{
           backgroundImage:
-            "linear-gradient(to right, rgba(52,69,58,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(52,69,58,0.05) 1px, transparent 1px)",
+            "linear-gradient(to right, rgb(var(--site-vis) / 0.06) 1px, transparent 1px), linear-gradient(to bottom, rgb(var(--site-vis) / 0.06) 1px, transparent 1px)",
           backgroundSize: "72px 72px",
           WebkitMaskImage:
             "linear-gradient(to bottom, black 0%, black 45%, transparent 80%)",
@@ -39,7 +39,7 @@ export default function AmbientBackdrop({ className = "" }: AmbientBackdropProps
       <div
         className="ambient-bloom absolute -top-40 right-0 w-[55vw] h-[55vw] opacity-30"
         style={{
-          background: "radial-gradient(circle, #B8D4BD 0%, transparent 60%)",
+          background: "radial-gradient(circle, var(--sky-top) 0%, transparent 60%)",
           filter: "blur(80px)",
         }}
       />

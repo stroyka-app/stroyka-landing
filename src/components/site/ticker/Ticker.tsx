@@ -21,11 +21,15 @@ export default function Ticker() {
     </div>
   );
   return (
-    <div className="relative z-10 -rotate-[1.2deg] bg-site-night py-6">
-      <div className="group flex overflow-hidden bg-site-vis py-3.5 text-site-on-vis">
-        <div className="flex animate-marquee group-hover:[animation-play-state:paused] motion-reduce:animate-none">
-          {row}
-          {row}
+    // The unrotated wrapper clips: a full-width band tilted 1.2° pokes its
+    // corners ~30px past the viewport and gave the page a sideways scroll.
+    <div className="relative z-10 overflow-hidden bg-site-night py-8">
+      <div className="-mx-4 -rotate-[1.2deg]">
+        <div className="group flex overflow-hidden bg-site-vis py-3.5 text-site-on-vis">
+          <div className="flex animate-marquee group-hover:[animation-play-state:paused] motion-reduce:animate-none">
+            {row}
+            {row}
+          </div>
         </div>
       </div>
     </div>

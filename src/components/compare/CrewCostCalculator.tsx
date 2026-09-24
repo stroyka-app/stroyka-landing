@@ -1,13 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useMotionValueEvent,
-  useReducedMotion,
-} from "framer-motion";
+import { animate, motion, useMotionValue, useMotionValueEvent } from "motion/react";
+import { useReduced } from "@/components/site/ui/useReduced";
 import {
   COMPETITORS,
   KNOWIFY_PUBLISHED_MAX,
@@ -29,30 +24,34 @@ import {
  * bars stay comparable as you drag. A self-scaling axis would keep the
  * longest bar full-width at every crew size and hide the growth — which is
  * the one thing worth showing.
+ *
+ * Styled as the big sibling of the home's SeatMath (Morning Bone): same
+ * slab card, same `.vis-range` slider, same bars and rolling counts.
  */
 
 /** Fixed axis maximum, in $/month. Knowify at 10 ($329) is the tallest bar. */
 const AXIS_MAX = 350;
 
-function Ticker({ value, prefix = "$" }: { value: number; prefix?: string }) {
-  const prefersReduced = useReducedMotion();
+/** Slider ticks at their true positions: Stroyka's plan steps, and ten. */
+const TICKS = [1, 5, 10, 15, MAX_CREW] as const;
+
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+/** A dollar figure that rolls to its new value (same as SeatMath's Count). */
+function Count({ value }: { value: number }) {
+  const reduced = useReduced();
   const mv = useMotionValue(value);
-  const spring = useSpring(mv, { stiffness: 220, damping: 30, mass: 0.6 });
   const [shown, setShown] = useState(value);
-
+  useMotionValueEvent(mv, "change", (v) => setShown(Math.round(v)));
   useEffect(() => {
-    if (prefersReduced) setShown(value);
-    else mv.set(value);
-  }, [value, mv, prefersReduced]);
-
-  useMotionValueEvent(spring, "change", (v) => setShown(Math.round(v)));
-
-  return (
-    <span className="tabular-nums">
-      {prefix}
-      {(prefersReduced ? value : shown).toLocaleString("en-US")}
-    </span>
-  );
+    if (reduced) {
+      mv.set(value);
+      return;
+    }
+    const c = animate(mv, value, { duration: 0.45, ease: EASE });
+    return () => c.stop();
+  }, [value, mv, reduced]);
+  return <span className="tabular-nums">${shown.toLocaleString("en-US")}</span>;
 }
 
 function Bar({
@@ -71,27 +70,24 @@ function Bar({
   /** Derived by us from two published points, not published at this size. */
   estimated?: boolean;
 }) {
-  const prefersReduced = useReducedMotion();
+  const reduced = useReduced();
   const ours = tone === "ours";
   const pct = amount === null ? 0 : Math.min(1, amount / AXIS_MAX);
 
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)] gap-1.5">
-      <div className="flex items-baseline justify-between gap-4">
-        <span
-          className={`font-heading text-[15px] ${
-            ours ? "font-semibold text-ink" : "font-medium text-ink-soft"
-          }`}
-        >
-          {label}
-        </span>
-        <span
-          className={`font-mono text-[15px] font-semibold ${
-            ours ? "text-brand-forest" : "text-ink-soft"
-          }`}
-        >
+    <div>
+      <div className="mb-2.5 flex items-end justify-between gap-4">
+        <div className="min-w-0">
+          <div className={`text-[15px] font-medium ${ours ? "text-site-vis" : "text-site-paper"}`}>
+            {label}
+          </div>
+          <div className="mt-1 font-mono text-[10.5px] uppercase leading-snug tracking-[0.12em] text-site-paper/50">
+            {sublabel}
+          </div>
+        </div>
+        <div className="shrink-0 whitespace-nowrap text-right leading-none">
           {amount === null ? (
-            <span className="text-[12px] font-medium tracking-wide text-ink-muted">
+            <span className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-site-paper/45">
               not published
             </span>
           ) : (
@@ -104,42 +100,51 @@ function Bar({
                   thing that would make this page actionable against us. */}
               {estimated && (
                 <span
-                  className="mr-0.5 text-ink-muted"
+                  className="mr-0.5 font-flex text-[24px] text-site-paper/45 md:text-[26px]"
                   title="Interpolated between two published price points"
                 >
                   ~
                 </span>
               )}
-              <Ticker value={amount} />
-              <span className="text-[11px] font-normal text-ink-muted">/mo</span>
+              <span
+                className={`font-flex text-[24px] font-semibold tracking-[-0.01em] md:text-[26px] ${
+                  ours ? "text-site-vis" : "text-site-paper"
+                }`}
+              >
+                <Count value={amount} />
+              </span>
+              <span className="ml-1 text-[12px] text-site-paper/50">/mo</span>
             </>
           )}
-        </span>
+        </div>
       </div>
 
       {/* Track. The bar animates scaleX from a left origin — transform only,
-          never width, so it stays on the compositor. */}
-      <div className="relative h-2.5 overflow-hidden rounded-full bg-bone-deep/60">
+          never width, so it stays on the compositor. With no published price
+          the track is hatched: no data, drawn as no data. */}
+      <div
+        className="relative h-3 overflow-hidden rounded-full bg-site-paper/[0.07]"
+        style={
+          amount === null
+            ? {
+                backgroundImage:
+                  "repeating-linear-gradient(135deg, rgb(var(--site-paper) / 0.12) 0 2px, transparent 2px 8px)",
+              }
+            : undefined
+        }
+      >
         <motion.div
           aria-hidden
           className={`absolute inset-y-0 left-0 w-full origin-left rounded-full ${
-            ours
-              ? "bg-gradient-to-r from-brand-forest to-brand-sage"
-              : "bg-gradient-to-r from-bone-warm to-clay-soft"
+            ours ? "bg-site-vis" : "bg-site-paper/45"
           }`}
           initial={false}
-          animate={{ scaleX: pct }}
+          animate={{ scaleX: amount === null ? 0 : Math.max(0.004, pct) }}
           transition={
-            prefersReduced
-              ? { duration: 0 }
-              : { type: "spring", stiffness: 190, damping: 28, mass: 0.7, delay }
+            reduced ? { duration: 0 } : { type: "spring", stiffness: 260, damping: 30, delay }
           }
         />
       </div>
-
-      <p className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-muted">
-        {sublabel}
-      </p>
     </div>
   );
 }
@@ -148,7 +153,7 @@ function Bar({
  * A literal id, not `useId()`. The generated id came out different on the
  * server and on the client here and produced a hydration mismatch on every
  * load — React only guarantees `useId` stability when both renders agree on
- * the tree, and this one sits inside a framer-motion wrapper. There is
+ * the tree, and this one sits inside a motion wrapper. There is
  * exactly one of these on exactly one page, so a constant is both correct
  * and one less thing that can drift. If it is ever rendered twice on a page,
  * give it an `id` prop rather than reaching for useId again.
@@ -190,47 +195,53 @@ export default function CrewCostCalculator() {
   const progress = (crew - 1) / (MAX_CREW - 1);
 
   return (
-    <div className="rounded-3xl border border-bone-warm/40 bg-bone/50 p-6 shadow-[0_1px_0_rgba(255,255,255,0.6)_inset,0_18px_50px_-30px_rgba(46,38,28,0.45)] backdrop-blur-sm sm:p-9">
+    <div className="rounded-[28px] bg-site-slab p-6 text-site-paper ring-1 ring-site-paper/[0.08] md:p-10">
       {/* ── Crew size control ─────────────────────────────────────────── */}
-      <div className="mb-9">
-        <div className="mb-4 flex flex-wrap items-baseline justify-between gap-3">
-          <label
-            htmlFor={SLIDER_ID}
-            className="font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-ink-soft"
-          >
-            Your crew
-          </label>
-          <p className="font-display text-[34px] font-light leading-none text-ink sm:text-[40px]">
-            <Ticker value={crew} prefix="" />
-            <span className="ml-2 font-body text-[14px] font-normal text-ink-muted">
-              {crew === 1 ? "person" : "people"}
-            </span>
-          </p>
-        </div>
+      <div className="flex items-end justify-between gap-3">
+        <label
+          htmlFor={SLIDER_ID}
+          className="pb-1 font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/60"
+        >
+          Your crew
+        </label>
+        <p className="leading-none">
+          <span className="font-flex text-[44px] font-semibold tabular-nums tracking-[-0.02em] md:text-[56px]">
+            {crew}
+          </span>
+          <span className="ml-2 text-[15px] text-site-paper/55">
+            {crew === 1 ? "person" : "people"}
+          </span>
+        </p>
+      </div>
 
-        <div className="relative">
-          <input
-            id={SLIDER_ID}
-            type="range"
-            min={1}
-            max={MAX_CREW}
-            step={1}
-            value={crew}
-            onChange={(e) => setCrew(Number(e.target.value))}
-            aria-label="Crew size"
-            aria-valuetext={`${crew} ${crew === 1 ? "person" : "people"}`}
-            className="crew-range w-full"
-            style={{ ["--progress" as string]: `${progress * 100}%` }}
-          />
-          <div className="mt-2 flex justify-between font-mono text-[10px] uppercase tracking-[0.16em] text-ink-muted">
-            <span>1</span>
-            <span>{MAX_CREW}+</span>
-          </div>
-        </div>
+      <input
+        id={SLIDER_ID}
+        type="range"
+        min={1}
+        max={MAX_CREW}
+        step={1}
+        value={crew}
+        onChange={(e) => setCrew(Number(e.target.value))}
+        aria-label="Crew size"
+        aria-valuetext={`${crew} ${crew === 1 ? "person" : "people"}`}
+        className="vis-range mt-6 w-full"
+        style={{ ["--fill" as string]: `${progress * 100}%` }}
+      />
+      {/* Ticks at their true positions: where Stroyka's plan steps happen. */}
+      <div aria-hidden className="relative mt-2 h-4 font-mono text-[10px] text-site-paper/40">
+        {TICKS.map((n) => (
+          <span
+            key={n}
+            className="absolute -translate-x-1/2 first:translate-x-0 last:-translate-x-full"
+            style={{ left: `${((n - 1) / (MAX_CREW - 1)) * 100}%` }}
+          >
+            {n === MAX_CREW ? `${n}+` : n}
+          </span>
+        ))}
       </div>
 
       {/* ── The bars ──────────────────────────────────────────────────── */}
-      <div className="flex flex-col gap-6">
+      <div className="mt-10 space-y-7">
         <Bar
           label="Stroyka"
           sublabel={`${plan.name} — flat, any crew size`}
@@ -253,20 +264,20 @@ export default function CrewCostCalculator() {
 
       {/* ── The takeaway ──────────────────────────────────────────────── */}
       {saving !== null && saving > 0 && (
-        <div className="mt-9 border-t border-bone-warm/40 pt-6">
-          <p className="font-body text-[15px] leading-relaxed text-ink-soft">
+        <div className="mt-10 border-t border-site-paper/10 pt-6">
+          <p className="text-[16px] leading-relaxed text-site-paper/75 md:text-[17px]">
             At {crew} {crew === 1 ? "person" : "people"}, the cheapest published
             alternative costs{" "}
-            <span className="font-mono font-semibold text-ink">
-              <Ticker value={saving} />
+            <span className="font-flex font-semibold text-site-paper">
+              <Count value={saving} />
             </span>{" "}
             a month more than Stroyka —{" "}
-            <span className="font-mono font-semibold text-ink">
-              <Ticker value={saving * 12} />
+            <span className="font-flex text-[1.3em] font-semibold leading-none text-site-vis">
+              <Count value={saving * 12} />
             </span>{" "}
             a year.
           </p>
-          <p className="mt-3 font-body text-[13px] leading-relaxed text-ink-muted">
+          <p className="mt-3 text-[13.5px] leading-relaxed text-site-paper/55">
             {plan.maxWorkers === Infinity ? (
               <>Hire another ten and that gap grows. Ours stops moving here — Pro is unlimited.</>
             ) : (

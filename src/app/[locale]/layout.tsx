@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Fraunces, JetBrains_Mono, Playfair_Display, Roboto_Flex } from "next/font/google";
+import { Inter, JetBrains_Mono, Roboto_Flex } from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
@@ -13,29 +13,14 @@ import SafariBottomTint from "@/components/SafariBottomTint";
 import { routing } from "@/i18n/routing";
 import { ANDROID_APP_URL, IOS_APP_URL } from "@/lib/appLinks";
 
-// Font budget: FOUR preloaded woff2 files on /en, down from ten (2026-09-12).
-// Every face here is a Google VARIABLE font, so the `weight` list never
-// changes which file ships: one woff2 per preloaded subset per style, shared
-// by every declared weight (verified in .next/static/css). What the weight
-// list does control is which `font-weight` descriptors exist, so it must
-// still cover what the design actually uses: Fraunces 300 is `font-light` on
-// 41 display headings, Inter/JetBrains 700 is `font-bold` on 16 labels.
-// Dropping those would re-weight the locked design for zero bytes saved.
-// The savings come from `subsets`: only latin is PRELOADED. Cyrillic stays
-// declared in the CSS with its own unicode-range, so /ru still loads it, on
-// demand, and /en never pays for it.
+// Font budget (Morning Bone, 2026-09-24): Inter (body), JetBrains Mono
+// (micro-labels, data) and Roboto Flex (display — weight AND width axes,
+// Cyrillic in the family). Fraunces and its Cyrillic stand-in Playfair are
+// gone with the serif. Every face is a Google VARIABLE font: one woff2 per
+// preloaded subset. Only latin is PRELOADED; Cyrillic stays declared with
+// its own unicode-range, so /ru loads it on demand and /en never pays.
 const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-inter" });
-// Italic is a second file (true italics are separate on Google Fonts), kept
-// because the hero's third line, the founder note and the CTA banner set
-// Fraunces italic; a synthesized slant of Fraunces looks like a different face.
-const fraunces = Fraunces({ subsets: ["latin"], weight: ["300", "400", "500", "600"], style: ["normal", "italic"], variable: "--font-fraunces" });
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-jetbrains-mono" });
-// Playfair is the Cyrillic stand-in for Fraunces and is referenced ONLY via
-// the --font-fraunces override on the `ru` <html> (below). preload:false keeps
-// its four files out of every <head>; on /en no element ever resolves to the
-// family, so the browser never requests them at all.
-const playfair = Playfair_Display({ subsets: ["latin", "cyrillic"], weight: ["400", "500", "600", "700"], style: ["normal", "italic"], variable: "--font-playfair", preload: false });
-
 // Roboto Flex: the display face of the dusk-site home. One variable file
 // carries weight AND width, so headlines can run wide and the hero can
 // thicken letters under the cursor. Cyrillic is in the family, so /ru keeps
@@ -88,20 +73,16 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${inter.variable} ${fraunces.variable} ${jetbrainsMono.variable} ${playfair.variable} ${flex.variable}`}
-      style={locale === "ru" ? ({ ["--font-fraunces"]: "var(--font-playfair)" } as React.CSSProperties) : undefined}
+      className={`${inter.variable} ${jetbrainsMono.variable} ${flex.variable}`}
     >
-      {/* body = bone (globals.css): iOS frosts the body color into the
-          bottom bar zone, so it must stay light — the proven-stable config.
-          .page-surface carries the in-document surface. */}
+      {/* body colour = --page-top (globals.css): the tone directly under the
+          iOS status zone — the morning sky on the home, bone elsewhere. */}
       <body className="text-ink antialiased font-body">
-        {/* iOS status-zone tint source. Static + server-rendered on purpose:
-            Safari 26 hit-tests fixed elements at the screen edges ONCE at
-            initial render and adopts their background-color as the bar tint
-            (JS toggles are never re-sampled — the June static sliver is the
-            only variant ever proven on device). Exactly env(safe-area-inset-
-            top) tall → invisible on desktop/Android. Color = hero top tone,
-            continued by the hero scrim and the navbar glass blend. */}
+        {/* iOS status-zone cap. Static + server-rendered on purpose: Safari 26
+            hit-tests fixed elements at the screen edges once at initial
+            render. Exactly env(safe-area-inset-top) tall (+4px on iPhones) →
+            invisible on desktop/Android. Colour = --page-top, the same as
+            body and the nav glass's safe-area start. */}
         <div id="chrome-cap" aria-hidden />
         {/* Month-proven bottom-bar system, restored (see globals.css note:
             its display toggles are also what force Safari to re-sample the

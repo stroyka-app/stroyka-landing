@@ -30,9 +30,12 @@ import { useEffect } from "react";
  * those sections sits under the bar. The CSS gate keeps it iOS-phone-only;
  * this effect just toggles data-active + the color.
  */
+// Morning Bone (2026-09-24): the page is bone top to bottom and the footer
+// is bone too, so the only flat-DARK band left is the forest Finale CTA.
+// (The old targets — the 3D-house canvas and the dark footer — are gone;
+// tinting #footer dark now would paint a dark plate over a light footer.)
 const TARGETS: ReadonlyArray<{ id: string; color: string }> = [
-  { id: "plan-to-done", color: "#4E6253" }, // flat sage-olive 3D canvas
-  { id: "footer", color: "#2B3D30" }, // flat forest footer
+  { id: "finale", color: "#2F5B45" }, // flat forest CTA band (--site-vis)
 ];
 
 export default function SafariBottomTint() {

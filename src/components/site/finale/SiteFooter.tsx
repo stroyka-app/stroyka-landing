@@ -33,8 +33,10 @@ const head = "mb-5 font-mono text-[11px] uppercase tracking-[0.22em] text-site-p
 const link = "text-[15px] text-site-paper/75 transition-colors duration-200 hover:text-site-vis";
 
 /**
- * The dusk site's footer: the shared Footer's links and tracking, on night,
- * closed by a full-width STROYKA whose letters swell under the cursor.
+ * The site footer (every route — `@/components/Footer` re-exports it): the
+ * product/company/contact links, store badges with tracking, the crawlable
+ * locale roots, and a full-width STROYKA whose letters swell under the
+ * cursor.
  */
 export default function SiteFooter() {
   const t = useTranslations("footer");
@@ -48,9 +50,7 @@ export default function SiteFooter() {
       <div className="mx-auto max-w-[1400px] px-5 pt-20 md:px-10">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:gap-16">
           <div>
-            <span className="site-on-light-logo inline-block">
-              <Logo variant="dark" size={30} />
-            </span>
+            <Logo variant="light" size={30} />
             <p className="mt-5 max-w-xs text-[15px] leading-relaxed text-site-paper/60">{t("tagline")}</p>
           </div>
           <div>
@@ -113,9 +113,7 @@ export default function SiteFooter() {
         <div className="mt-16 flex flex-col gap-4 border-t border-site-paper/10 pt-8 font-mono text-[11px] uppercase tracking-[0.18em] text-site-paper/45 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} Stroyka — {t("rights")}</p>
           <div className="flex items-center gap-5">
-            <span className="site-on-light-chip">
-              <LanguageSwitcher placement="top" align="left" />
-            </span>
+            <LanguageSwitcher placement="top" align="left" />
             <nav aria-label={t("languagesNavLabel")} className="hidden gap-3 sm:flex">
               {LOCALE_ROOTS.map(({ locale, href, label }) => (
                 <a key={locale} href={href} hrefLang={locale} className="transition-colors hover:text-site-vis">

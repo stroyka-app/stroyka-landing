@@ -6,10 +6,10 @@ import {
   AnimatePresence,
   motion,
   useMotionValue,
-  useReducedMotion,
   useSpring,
   useTransform,
 } from "framer-motion";
+import { useReduced } from "@/components/site/ui/useReduced";
 
 export interface Screen {
   key: string;
@@ -33,6 +33,11 @@ const DWELL_MS = 4200;
  * stamps itself onto the phone. A slow whole-pixel bob and a magnetic tilt
  * while hovered (2D at rest so the screenshot text stays crisp). Reduced
  * motion: no bob, no tilt, no autoplay; the chips still switch screens.
+ *
+ * Morning Bone (2026-09-24): the shell is ink, not slate, so the device
+ * reads as an object on the bone page; the chip row is a slab track with a
+ * forest pill; the field note is a slab tag with a forest pin; the drain bar
+ * fills by `scaleX` (transform only), not width.
  */
 export default function PhoneShowcase({
   screens,
@@ -51,7 +56,7 @@ export default function PhoneShowcase({
    */
   notes?: boolean;
 }) {
-  const prefersReduced = useReducedMotion();
+  const prefersReduced = useReduced();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [cycle, setCycle] = useState(0); // restarts the drain bar
@@ -98,7 +103,7 @@ export default function PhoneShowcase({
       <div
         role="tablist"
         aria-label="App screens"
-        className="mx-auto mb-5 flex w-fit max-w-full gap-1 rounded-full bg-ink/[0.06] p-1 backdrop-blur-sm"
+        className="mx-auto mb-5 flex w-fit max-w-full gap-0.5 rounded-full bg-site-slab p-1 ring-1 ring-site-paper/[0.08]"
       >
         {screens.map((s, i) => {
           const active = i === index;
@@ -109,14 +114,14 @@ export default function PhoneShowcase({
               aria-selected={active}
               onClick={() => go(i, "tap")}
               onMouseEnter={() => go(i, "tap")}
-              className={`relative rounded-full px-3.5 py-1.5 font-heading text-[12.5px] font-semibold transition-colors ${
-                active ? "text-bone" : "text-ink-soft hover:text-ink"
+              className={`relative rounded-full px-3 py-1.5 text-[13px] font-medium tracking-[-0.005em] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-site-vis sm:px-3.5 ${
+                active ? "text-site-on-vis" : "text-site-paper/65 hover:text-site-paper"
               }`}
             >
               {active && (
                 <motion.span
                   layoutId="get-chip"
-                  className="absolute inset-0 rounded-full bg-brand-deep"
+                  className="absolute inset-0 rounded-full bg-site-vis"
                   transition={{ type: "spring", stiffness: 420, damping: 34 }}
                 />
               )}
@@ -128,6 +133,12 @@ export default function PhoneShowcase({
 
       {/* Phone */}
       <div className="relative mx-auto w-[260px] sm:w-[300px] lg:w-[320px]">
+        {/* Contact shadow: the phone stands on the bone page rather than
+            floating in a glow. Static, so the bob reads as lift. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-[12%] -bottom-5 h-10 rounded-[50%] bg-site-paper/[0.16] blur-2xl"
+        />
         <motion.div
           animate={prefersReduced ? undefined : { y: [0, -6, 0] }}
           transition={{ duration: 6, ease: "easeInOut", repeat: Infinity }}
@@ -137,10 +148,16 @@ export default function PhoneShowcase({
             onMouseEnter={() => setHover(true)}
             onMouseMove={onMove}
             onMouseLeave={() => { setHover(false); px.set(0.5); py.set(0.5); }}
-            style={tilt ? { rotateX, rotateY, transformStyle: "preserve-3d" } : undefined}
-            className="relative m-0 rounded-[44px] bg-gradient-to-br from-[#3a4a52] to-[#24313a] p-[10px] shadow-[0_40px_80px_-24px_rgba(20,28,22,0.65),0_0_0_1px_rgba(202,210,197,0.10),0_0_90px_rgba(82,121,111,0.16)]"
+            style={{
+              ...(tilt ? { rotateX, rotateY, transformStyle: "preserve-3d" as const } : {}),
+              background:
+                "linear-gradient(150deg, rgb(var(--site-paper) / 0.86) 0%, rgb(var(--site-paper)) 55%)",
+              boxShadow:
+                "0 44px 70px -34px rgb(var(--site-paper) / 0.55), 0 0 0 1px rgb(var(--site-paper) / 0.9), inset 0 1px 0 rgb(var(--site-on-vis) / 0.14)",
+            }}
+            className="relative m-0 rounded-[46px] p-[9px]"
           >
-            <div className="relative aspect-[960/1791] overflow-hidden rounded-[34px] bg-[#1d3a30]">
+            <div className="relative aspect-[960/1791] overflow-hidden rounded-[37px] bg-site-slab">
               {/* Every screen stays mounted (no reload on switch); the active
                   one slides in over the last. */}
               {screens.map((s, i) => (
@@ -161,16 +178,25 @@ export default function PhoneShowcase({
                 </motion.div>
               ))}
             </div>
+            {/* Glass: one soft diagonal sheen across the screen. */}
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-[10px] rounded-[34px]"
-              style={{ background: "linear-gradient(115deg, rgba(255,253,243,0.10) 0%, rgba(255,253,243,0.02) 28%, transparent 46%)" }}
+              className="pointer-events-none absolute inset-[9px] z-[3] rounded-[37px]"
+              style={{
+                background:
+                  "linear-gradient(115deg, rgb(var(--site-on-vis) / 0.12) 0%, rgb(var(--site-on-vis) / 0.03) 28%, transparent 46%)",
+              }}
             />
+            {/* Side keys, so the shell reads as hardware and not a frame. */}
+            <span aria-hidden className="absolute -left-[3px] top-[22%] h-9 w-[3px] rounded-l-sm bg-site-paper" />
+            <span aria-hidden className="absolute -left-[3px] top-[31%] h-14 w-[3px] rounded-l-sm bg-site-paper" />
+            <span aria-hidden className="absolute -right-[3px] top-[27%] h-20 w-[3px] rounded-r-sm bg-site-paper" />
           </motion.figure>
         </motion.div>
 
         {/* The field note for this screen, stamped onto the phone's left edge
-            (the gap side, so it never runs off the page's right margin). */}
+            (the gap side, so it never runs off the page's right margin). A
+            slab tag with a forest pin where it meets the shell. */}
         {notes && (
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
@@ -180,12 +206,14 @@ export default function PhoneShowcase({
             exit={{ opacity: 0, scale: 0.94, transition: { duration: 0.18 } }}
             transition={{ type: "spring", stiffness: 380, damping: 16, mass: 0.7 }}
             style={{ top: `${screen.noteTop}%` }}
-            className="card-stone-sage absolute right-[calc(100%-22px)] hidden w-[200px] rounded-[14px] px-3.5 py-3 sm:block"
+            className="absolute right-[calc(100%-22px)] z-10 hidden w-[208px] rounded-[16px] bg-site-slab px-4 py-3.5 ring-1 ring-site-paper/[0.1] sm:block"
           >
-            <span className="mb-1 block font-mono text-[10px] uppercase tracking-[0.18em] text-brand-forest">
+            <span aria-hidden className="absolute -right-[5px] top-4 h-2.5 w-2.5 rounded-full bg-site-vis ring-[3px] ring-site-slab" />
+            <span className="mb-1.5 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-site-vis">
+              <span aria-hidden className="h-px w-3 bg-site-vis" />
               {screen.label}
             </span>
-            <span className="block text-[12.5px] leading-snug text-ink">{screen.note}</span>
+            <span className="block text-[13px] leading-snug text-site-paper/80">{screen.note}</span>
           </motion.div>
         </AnimatePresence>
         )}
@@ -193,19 +221,20 @@ export default function PhoneShowcase({
 
       {/* Narrow: the note under the phone. */}
       {notes && (
-        <div className="mx-auto mt-4 max-w-[300px] text-center sm:hidden">
-          <p className="text-[13px] leading-snug text-ink-soft">{screen.note}</p>
+        <div className="mx-auto mt-6 max-w-[300px] text-center sm:hidden">
+          <p className="mb-1 font-mono text-[10px] uppercase tracking-[0.2em] text-site-vis">{screen.label}</p>
+          <p className="text-[13.5px] leading-snug text-site-paper/70">{screen.note}</p>
         </div>
       )}
 
-      {/* Autoplay drain */}
+      {/* Autoplay drain: a forest rule that fills by scaleX (transform only). */}
       {!prefersReduced && (
-        <div className="mx-auto mt-5 h-[3px] w-[120px] overflow-hidden rounded-full bg-ink/10" aria-hidden>
+        <div className="mx-auto mt-6 h-[3px] w-[120px] overflow-hidden rounded-full bg-site-paper/10" aria-hidden>
           <motion.div
             key={cycle}
-            className="h-full rounded-full bg-brand-forest"
-            initial={{ width: "0%" }}
-            animate={{ width: paused ? undefined : "100%" }}
+            className="h-full w-full origin-left rounded-full bg-site-vis"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: paused ? undefined : 1 }}
             transition={{ duration: DWELL_MS / 1000, ease: "linear" }}
           />
         </div>

@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useSpring, useReducedMotion } from "framer-motion";
+import { motion, useScroll, useSpring } from "motion/react";
 import { Link2, Check, ChevronRight } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import FadeIn from "@/components/ui/FadeIn";
-import SectionLabel from "@/components/ui/SectionLabel";
+import FlapText from "@/components/site/ui/FlapText";
+import { useReduced } from "@/components/site/ui/useReduced";
 
 export interface LegalSection {
   id: string;
@@ -20,6 +20,32 @@ interface LegalPageLayoutProps {
   subtitle: string;
   effectiveDate: string;
   sections: LegalSection[];
+}
+
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+/**
+ * Prose inside a section. globals.css still carries base `.legal-content`
+ * rules (unlayered, so they outrank utilities) and its print rules key off
+ * that class — so the class stays, and the Morning Bone reading type is laid
+ * over it with `!`. Bullets are short forest rules, not discs.
+ */
+const PROSE = [
+  "[&_p]:!mb-5 [&_p]:!text-[15.5px] [&_p]:!leading-[1.75] [&_p]:!text-site-paper/70 lg:[&_p]:!text-[16.5px]",
+  "[&_ul]:!mb-6 [&_ul]:!space-y-2.5",
+  "[&_li]:relative [&_li]:!ml-0 [&_li]:!list-none [&_li]:pl-6 [&_li]:!text-[15.5px] [&_li]:!leading-[1.7] [&_li]:!text-site-paper/70 lg:[&_li]:!text-[16.5px]",
+  "[&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:top-[0.85em] [&_li]:before:h-[2px] [&_li]:before:w-3 [&_li]:before:rounded-full [&_li]:before:bg-site-vis [&_li]:before:content-['']",
+  "[&_strong]:!font-semibold [&_strong]:!text-site-paper",
+  "[&_a]:!text-site-vis [&_a]:decoration-site-vis/40 [&_a]:underline-offset-[3px] [&_a:hover]:!text-site-vis-hover [&_a:hover]:decoration-site-vis",
+  "[&_h3]:!mb-3 [&_h3]:!mt-9 [&_h3]:!font-flex [&_h3]:!text-[17px] [&_h3]:!font-semibold [&_h3]:!tracking-[-0.01em] [&_h3]:!text-site-paper lg:[&_h3]:!text-[19px] [&_h3:first-child]:!mt-0",
+].join(" ");
+
+/** "7. Your Rights" → { num: "07", label: "Your Rights" }. Presentation only. */
+function splitTitle(title: string, i: number) {
+  const m = title.match(/^(\d+)\.\s+(.*)$/);
+  return m
+    ? { num: m[1].padStart(2, "0"), label: m[2] }
+    : { num: String(i + 1).padStart(2, "0"), label: title };
 }
 
 /**
@@ -47,7 +73,7 @@ export default function LegalPageLayout({
   const t = useTranslations("legal");
   const locale = useLocale();
   const showNotice = locale !== "en";
-  const reduced = useReducedMotion();
+  const reduced = useReduced();
 
   const [activeId, setActiveId] = useState(sections[0]?.id ?? "");
   // Server-render every section OPEN: that is what puts the whole document in
@@ -170,64 +196,66 @@ export default function LegalPageLayout({
       ?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
   };
 
+  const total = String(sections.length).padStart(2, "0");
+  const activeIndex = Math.max(
+    0,
+    sections.findIndex((s) => s.id === activeId),
+  );
+
   return (
     <>
       <Navbar />
 
-      {/* Reading progress — a hairline, not a loading bar. */}
-      <motion.div
-        aria-hidden
-        style={{ scaleX: reduced ? 1 : progress }}
-        className="fixed top-0 left-0 right-0 z-50 h-[2px] origin-left bg-gradient-to-r from-brand-forest via-brand-sage to-brand-sage/40"
-      />
-
       {/* overflow-CLIP, not hidden: `overflow: hidden` on an ancestor makes
           it a scroll container and silently kills `position: sticky` on the
           section nav — measured 2026-09-22, the nav scrolled away at
-          navTop=-1445. `clip` clips the vignette blur identically without
-          creating that container. */}
-      <main className="relative min-h-screen pt-28 pb-24 bg-gradient-to-b from-[#E3DCC9] to-[#D4CBB4] overflow-clip">
-        {/* Soft sage vignette top-left */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute top-0 left-0 w-[55vw] h-[55vw] opacity-30"
-          style={{
-            background:
-              "radial-gradient(ellipse 50% 50% at 15% 15%, rgba(184,212,189,0.28), transparent 70%)",
-            filter: "blur(70px)",
-          }}
-        />
-
-        <div className="relative max-w-6xl mx-auto px-6">
-          {/* Header */}
-          <div className="mb-14">
-            <FadeIn>
-              <SectionLabel>{t("eyebrow")}</SectionLabel>
-            </FadeIn>
-            <FadeIn delay={0.05}>
-              <h1 className="font-display font-light text-4xl lg:text-6xl leading-[0.98] tracking-[-0.02em] text-ink mb-3">
-                {title}
-              </h1>
-            </FadeIn>
-            <FadeIn delay={0.12}>
-              <p className="text-[15px] text-ink-soft mb-1.5 max-w-xl">
+          navTop=-1445. `clip` keeps sticky working (and print resets it in
+          globals.css, where it used to truncate the document). */}
+      <main className="relative min-h-screen overflow-clip bg-site-night pb-24 pt-32 text-site-paper md:pb-36 md:pt-40">
+        <div className="relative mx-auto max-w-[1400px] px-5 md:px-10">
+          {/* Header — the title opens like the home's site board. */}
+          <header className="mb-10 border-b border-site-paper/10 pb-10 md:mb-16 md:pb-14">
+            <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.22em] text-site-vis">
+              {t("eyebrow")}
+            </p>
+            <FlapText
+              as="h1"
+              immediate
+              lines={[title]}
+              className="font-flex text-[clamp(2.4rem,5.6vw,5rem)] font-semibold leading-[0.95] tracking-[-0.03em] [font-variation-settings:'wdth'_110]"
+            />
+            <div className="mt-8 grid gap-5 print:block md:mt-10 md:grid-cols-[minmax(0,1fr)_auto] md:items-end md:gap-10">
+              <motion.p
+                initial={reduced ? false : { opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.3, ease: EASE }}
+                className="max-w-xl text-[16px] leading-relaxed text-site-paper/70 md:text-[17px]"
+              >
                 {subtitle}
-              </p>
-              <p className="font-mono text-[11px] tracking-[0.18em] uppercase text-ink-muted">
+              </motion.p>
+              <motion.p
+                initial={reduced ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, delay: 0.4, ease: EASE }}
+                className="font-mono text-[11px] uppercase leading-relaxed tracking-[0.2em] text-site-paper/50 md:text-right"
+              >
                 {effectiveDate}
-              </p>
-            </FadeIn>
-          </div>
+              </motion.p>
+            </div>
+          </header>
 
           {/* English-only notice for non-en locales */}
           {showNotice && (
-            <div className="mb-10 rounded-2xl border border-brand-sage/40 bg-brand-sage/8 px-6 py-5">
-              <p className="font-display text-[15px] font-medium text-ink mb-1.5">
-                {t("englishOnlyTitle")}
-              </p>
-              <p className="text-[14px] text-ink-soft leading-relaxed">
-                {t("englishOnlyBody")}
-              </p>
+            <div className="mb-10 flex max-w-3xl gap-4 rounded-[22px] bg-site-slab p-5 ring-1 ring-inset ring-site-paper/[0.08] md:mb-16 md:p-7">
+              <span aria-hidden className="w-[3px] shrink-0 self-stretch rounded-full bg-site-vis" />
+              <div>
+                <p className="mb-1.5 font-mono text-[11px] uppercase tracking-[0.2em] text-site-vis">
+                  {t("englishOnlyTitle")}
+                </p>
+                <p className="max-w-2xl text-[15px] leading-relaxed text-site-paper/70">
+                  {t("englishOnlyBody")}
+                </p>
+              </div>
             </div>
           )}
 
@@ -240,55 +268,73 @@ export default function LegalPageLayout({
               So there is one <details> per section. Mobile gets the native
               accordion, whose contents find-in-page can reach and open.
               Desktop and print force the body visible in CSS (globals.css),
-              which needs no JavaScript and cannot disagree with itself. ── */}
-          <div className="lg:grid lg:grid-cols-[280px_1fr] lg:gap-10">
+              which needs no JavaScript and cannot disagree with itself.
+
+              The `lg:grid` class below is load-bearing for print: globals.css
+              collapses `main .lg\:grid` to one column on paper. ── */}
+          <div className="lg:grid lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-20 xl:grid-cols-[300px_minmax(0,1fr)] xl:gap-28">
             <nav
-              className="hidden lg:block sticky top-28 self-start"
+              className="sticky top-28 hidden max-h-[calc(100dvh-8rem)] self-start overflow-y-auto pb-4 [scrollbar-width:none] lg:block"
               aria-label={title}
             >
-              <div className="space-y-1">
-                {sections.map((section) => {
+              {/* Where you are: section counter + document progress. */}
+              <div className="mb-5 flex items-baseline justify-between font-mono text-[11px] uppercase tracking-[0.2em] tabular-nums">
+                <span className="text-site-vis">
+                  § {String(activeIndex + 1).padStart(2, "0")}
+                </span>
+                <span className="text-site-paper/40">/ {total}</span>
+              </div>
+              <div aria-hidden className="relative mb-6 h-[2px] overflow-hidden rounded-full bg-site-paper/10">
+                <motion.span
+                  className="absolute inset-0 origin-left rounded-full bg-site-vis"
+                  style={{ scaleX: progress }}
+                />
+              </div>
+
+              <ol className="border-t border-site-paper/10">
+                {sections.map((section, i) => {
                   const isActive = section.id === activeId;
+                  const { num, label } = splitTitle(section.title, i);
                   return (
-                    <button
-                      key={section.id}
-                      onClick={() => scrollTo(section.id)}
-                      aria-current={isActive ? "true" : undefined}
-                      className={`group relative w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-colors duration-200 ${
-                        isActive
-                          ? "text-ink"
-                          : "text-ink-soft hover:text-ink hover:bg-ink/5"
-                      }`}
-                    >
-                      {/* One pill, moved between items by layout animation —
-                          the same primitive as the FAQ activation. */}
-                      {isActive && (
-                        <motion.span
-                          aria-hidden
-                          layoutId="legal-active-pill"
-                          transition={
-                            reduced
-                              ? { duration: 0 }
-                              : { type: "spring", stiffness: 420, damping: 38 }
-                          }
-                          className="absolute inset-0 rounded-xl bg-brand-sage/12"
-                        />
-                      )}
-                      <span
-                        aria-hidden
-                        className={`relative block w-1 h-5 rounded-full transition-colors duration-200 ${
+                    <li key={section.id} className="border-b border-site-paper/10">
+                      <button
+                        onClick={() => scrollTo(section.id)}
+                        aria-current={isActive ? "true" : undefined}
+                        className={`group relative flex w-full items-baseline gap-4 py-2.5 pl-4 pr-2 text-left transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-site-vis ${
                           isActive
-                            ? "bg-brand-forest"
-                            : "bg-transparent group-hover:bg-ink/25"
+                            ? "text-site-paper"
+                            : "text-site-paper/55 hover:text-site-paper"
                         }`}
-                      />
-                      <span className="relative font-display text-[15px] leading-tight">
-                        {section.title}
-                      </span>
-                    </button>
+                      >
+                        {/* One accent bar, moved between items by layout
+                            animation — the same primitive as before. */}
+                        {isActive && (
+                          <motion.span
+                            aria-hidden
+                            layoutId="legal-active-bar"
+                            transition={
+                              reduced
+                                ? { duration: 0 }
+                                : { type: "spring", stiffness: 420, damping: 38 }
+                            }
+                            className="absolute inset-y-2 left-0 w-[3px] rounded-full bg-site-vis"
+                          />
+                        )}
+                        <span
+                          className={`w-5 shrink-0 font-mono text-[11px] tabular-nums tracking-[0.08em] transition-colors duration-200 ${
+                            isActive ? "text-site-vis" : "text-site-paper/35"
+                          }`}
+                        >
+                          {num}
+                        </span>
+                        <span className="text-[14.5px] font-medium leading-snug tracking-[-0.005em]">
+                          {label}
+                        </span>
+                      </button>
+                    </li>
                   );
                 })}
-              </div>
+              </ol>
             </nav>
 
             {/* A PLAIN <details> below, not motion.details, and that is not a
@@ -305,64 +351,62 @@ export default function LegalPageLayout({
 
                 On a page whose job is to be readable, printable and
                 archivable, visibility must never depend on having scrolled. */}
-            <div ref={articleRef} className="space-y-2 lg:space-y-6">
-              {sections.map((section, i) => (
-                <details
-                  key={section.id}
-                  id={`section-${section.id}`}
-                  open={isWide || i === 0 || linkedId === section.id || undefined}
-                  onToggle={(e) => {
-                    // Desktop is a document: a stray click on a heading must
-                    // not be able to collapse a section.
-                    if (isWide && !(e.currentTarget as HTMLDetailsElement).open) {
-                      (e.currentTarget as HTMLDetailsElement).open = true;
-                    }
-                  }}
-                  className="legal-section group card-stone relative overflow-hidden rounded-2xl border border-ink/15 scroll-mt-28"
-                >
-                  {/* Oversized numeral — the Footer's move borrowed where it
-                      costs nothing: presence without another thing to read. */}
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute top-5 right-7 select-none font-display font-light leading-none text-[84px] text-ink/[0.05]"
+            <div ref={articleRef} className="relative space-y-3 lg:space-y-0">
+              {sections.map((section, i) => {
+                const { num, label } = splitTitle(section.title, i);
+                return (
+                  <details
+                    key={section.id}
+                    id={`section-${section.id}`}
+                    open={isWide || i === 0 || linkedId === section.id || undefined}
+                    onToggle={(e) => {
+                      // Desktop is a document: a stray click on a heading must
+                      // not be able to collapse a section.
+                      if (isWide && !(e.currentTarget as HTMLDetailsElement).open) {
+                        (e.currentTarget as HTMLDetailsElement).open = true;
+                      }
+                    }}
+                    className="legal-section group relative scroll-mt-28 rounded-[20px] bg-site-slab ring-1 ring-inset ring-site-paper/[0.08] lg:rounded-none lg:bg-transparent lg:pb-4 lg:pt-12 lg:ring-0 lg:[&+&]:border-t lg:[&+&]:!border-site-paper/10 lg:first:pt-0"
                   >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-
-                  {/* OUTSIDE <summary> on purpose: a button nested in a
-                      summary is a control inside a control. */}
-                  <button
-                    onClick={() => copyAnchor(section.id)}
-                    aria-label={t("copyLink")}
-                    title={t("copyLink")}
-                    className="hidden lg:block absolute top-[52px] left-3 z-10 text-ink/30 opacity-0 transition-opacity duration-200 hover:text-brand-forest group-hover:opacity-100 focus-visible:opacity-100"
-                  >
-                    {copiedId === section.id ? (
-                      <Check className="w-4 h-4 text-brand-forest" />
-                    ) : (
-                      <Link2 className="w-4 h-4" />
-                    )}
-                  </button>
-
-                  <summary className="legal-summary flex items-center justify-between gap-3 px-5 py-4 lg:px-10 lg:pt-10 lg:pb-0 cursor-pointer list-none">
-                    <h2 className="font-display font-light text-[16px] leading-snug text-ink-soft lg:text-[30px] lg:leading-tight lg:text-ink lg:tracking-[-0.01em]">
-                      {section.title}
-                    </h2>
-                    <span
-                      aria-hidden
-                      className="legal-details-marker shrink-0 text-ink/40 lg:hidden"
+                    {/* OUTSIDE <summary> on purpose: a button nested in a
+                        summary is a control inside a control. */}
+                    <button
+                      onClick={() => copyAnchor(section.id)}
+                      aria-label={t("copyLink")}
+                      title={t("copyLink")}
+                      className="absolute right-0 top-[81px] z-10 hidden h-9 w-9 place-items-center rounded-full text-site-paper/45 opacity-0 ring-1 ring-inset ring-site-paper/15 transition-[opacity,color,background-color] duration-200 hover:bg-site-paper/[0.05] hover:text-site-vis focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-site-vis group-hover:opacity-100 lg:grid print:!hidden [.legal-section:first-child>&]:top-[33px]"
                     >
-                      <ChevronRight className="w-4 h-4" />
-                    </span>
-                  </summary>
+                      {copiedId === section.id ? (
+                        <Check className="h-4 w-4 text-site-vis" />
+                      ) : (
+                        <Link2 className="h-4 w-4" />
+                      )}
+                    </button>
 
-                  <div className="legal-body px-5 py-5 border-t border-ink/10 lg:px-10 lg:pt-6 lg:pb-10 lg:border-t-0">
-                    <div className="relative legal-content text-ink-soft lg:text-[15px] lg:leading-[1.7]">
-                      {section.content}
+                    <summary className="legal-summary flex cursor-pointer list-none items-center justify-between gap-4 !bg-transparent px-5 py-5 lg:p-0 lg:pr-14">
+                      <h2 className="flex items-baseline gap-4 font-flex text-[18px] font-semibold leading-snug tracking-[-0.015em] text-site-paper lg:block lg:text-[clamp(1.75rem,2.4vw,2.25rem)] lg:leading-[1.05] lg:tracking-[-0.025em] lg:[font-variation-settings:'wdth'_108]">
+                        <span className="shrink-0 font-mono text-[11px] font-normal tabular-nums tracking-[0.1em] text-site-vis lg:mb-4 lg:block lg:tracking-[0.2em]">
+                          <span className="hidden lg:inline">§ </span>
+                          {num}
+                        </span>{" "}
+                        <span>{label}</span>
+                      </h2>
+                      <span
+                        aria-hidden
+                        className="legal-details-marker grid h-8 w-8 shrink-0 place-items-center rounded-full text-site-paper/60 ring-1 ring-inset ring-site-paper/20 lg:hidden"
+                      >
+                        <ChevronRight className="h-4 w-4" />
+                      </span>
+                    </summary>
+
+                    <div className="legal-body border-t border-site-paper/10 px-5 pb-6 pt-5 lg:border-t-0 lg:px-0 lg:pb-4 lg:pt-7">
+                      <div className={`legal-content relative max-w-[68ch] ${PROSE}`}>
+                        {section.content}
+                      </div>
                     </div>
-                  </div>
-                </details>
-              ))}
+                  </details>
+                );
+              })}
             </div>
           </div>
         </div>

@@ -27,13 +27,15 @@ const config: Config = {
         // Hex values chosen to form a continuous lightness ramp so
         // gradient bridges between any two adjacent tones read as seamless.
         bone: {
-          DEFAULT: "#E3DCC9", // palest warm stone
-          deep:    "#D4CBB4", // light stone
-          soft:    "#BFB49C", // mid stone — the signature middle-ground
-          warm:    "#A89E85", // deeper warm taupe
+          // Remapped onto Morning Bone (2026-09-24) so any legacy class
+          // lands in the new system. Prefer the site-* tokens in new code.
+          DEFAULT: "#ECE6D8", // = site-night, the bone page
+          deep:    "#E1D9C6", // = site-slab
+          soft:    "#CFC5AE", // = site-rule
+          warm:    "#B9B199",
         },
         ink: {
-          DEFAULT: "#2E261C", // near-black warm earth — primary text
+          DEFAULT: "#1F1C16", // = site-paper, the ink
           soft:    "#4A4033", // deep walnut — secondary text
           muted:   "#7A6E5B", // warm taupe — tertiary
         },
@@ -47,17 +49,21 @@ const config: Config = {
           "sage-mist":     "#cad2c5",
           "sage-bright":   "#B8D4BD",
           sage:            "#8AAA91",
-          forest:          "#4B5F4E",
-          deep:            "#34453A",
-          midnight:        "#34453A",
-          "midnight-dark": "#2B3D30",
+          // Dark sage family → Morning Bone forest (= site-vis and deeper).
+          forest:          "#2F5B45",
+          deep:            "#2F5B45",
+          midnight:        "#264C39",
+          "midnight-dark": "#1F3A2C",
           amber:           "#d97706",
           "amber-bright":  "#f59e0b",
         },
       },
       fontFamily: {
         flex:    ["var(--font-flex)", "var(--font-inter)", "system-ui", "sans-serif"],
-        display: ["var(--font-fraunces)",      "Georgia", "serif"],
+        // Morning Bone's display face is Roboto Flex; `font-display` follows
+        // it so legacy headings join the system. (Fraunces stays loaded only
+        // while something still asks for it by name.)
+        display: ["var(--font-flex)", "var(--font-inter)", "system-ui", "sans-serif"],
         // `heading` aliases to body (Inter) — Space Grotesk retired in v6
         // to trim to three faces: Fraunces (display), Inter (everything),
         // JetBrains Mono (small tech/data accents).

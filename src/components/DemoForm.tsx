@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { Link } from "@/i18n/navigation";
-import { motion } from "framer-motion";
-import { HardHat, Mail, ArrowRight } from "lucide-react";
+import { motion } from "motion/react";
+import { ArrowRight, Check, ChevronDown, Loader2, Mail } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
+import { useReduced } from "@/components/site/ui/useReduced";
 
 interface FormData {
   name: string;
@@ -27,8 +28,19 @@ const INITIAL: FormData = {
   honeypot: "",
 };
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+/* Morning Bone field styles — see docs/design/morning-bone-system.md. */
+const FIELD =
+  "w-full rounded-xl bg-site-night px-4 text-[15px] ring-1 ring-inset placeholder:text-site-paper/35 transition-shadow duration-200 focus:outline-none focus:ring-2 focus:ring-site-vis";
+const LABEL = "mb-2 block font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/55";
+
+/** The copy's own arrows ("→") would double up with the knob's arrow. */
+const bare = (s: string) => s.replace(/\s*[→←]\s*/g, " ").trim();
+
 export default function DemoForm() {
   const t = useTranslations("demo");
+  const reduced = useReduced();
   const [form, setForm] = useState<FormData>(INITIAL);
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
@@ -103,199 +115,201 @@ export default function DemoForm() {
   };
 
   if (status === "success") {
-    const stagger = {
-      hidden: { opacity: 0, y: 16 },
-      show: (i: number) => ({
-        opacity: 1,
-        y: 0,
-        transition: { delay: i * 0.12, duration: 0.5, ease: "easeOut" as const },
-      }),
-    };
+    const rise = (i: number) => ({
+      initial: reduced ? false : ({ opacity: 0, y: 14 } as const),
+      animate: { opacity: 1, y: 0 },
+      transition: { delay: 0.35 + i * 0.09, duration: 0.4, ease: EASE },
+    });
 
     return (
-      <div className="text-center py-12 space-y-6">
-        {/* Animated checkmark */}
+      <div className="py-4 md:py-6" role="status">
+        {/* The seal lands like a stamp: overshoot spring + impact ring. */}
         <motion.div
-          initial={{ scale: 0, rotate: -45 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.1 }}
-          className="flex justify-center"
+          initial={reduced ? false : { scale: 0, rotate: -12, opacity: 0 }}
+          animate={{ scale: 1, rotate: 0, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 380, damping: 14 }}
+          className="relative grid h-16 w-16 place-items-center rounded-full bg-site-vis text-site-on-vis"
         >
-          <div className="w-20 h-20 rounded-full bg-brand-sage/15 border border-brand-sage/45 flex items-center justify-center shadow-[0_8px_24px_-10px_rgba(63,78,53,0.45)]">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.4, type: "spring", stiffness: 300 }}
-            >
-              <HardHat size={32} strokeWidth={1.6} className="text-brand-forest" />
-            </motion.div>
-          </div>
+          {!reduced && (
+            <motion.span
+              aria-hidden
+              className="absolute inset-0 rounded-full ring-2 ring-site-vis"
+              initial={{ scale: 1, opacity: 0.7 }}
+              animate={{ scale: 1.85, opacity: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut", delay: 0.08 }}
+            />
+          )}
+          <Check size={28} strokeWidth={2.4} />
         </motion.div>
 
         <motion.h2
-          custom={1}
-          variants={stagger}
-          initial="hidden"
-          animate="show"
-          className="font-display font-light text-3xl lg:text-4xl leading-tight text-ink tracking-[-0.01em]"
+          {...rise(0)}
+          className="mt-8 font-flex text-[clamp(1.9rem,3.4vw,2.8rem)] font-semibold leading-[0.98] tracking-[-0.03em] [font-variation-settings:'wdth'_110]"
         >
           {t("successTitle")}
         </motion.h2>
 
-        <motion.p
-          custom={2}
-          variants={stagger}
-          initial="hidden"
-          animate="show"
-          className="text-ink-soft max-w-md mx-auto text-[15px] lg:text-base leading-relaxed"
-        >
+        <motion.p {...rise(1)} className="mt-4 max-w-md text-[16px] leading-relaxed text-site-paper/70">
           {t("successBody")}
         </motion.p>
 
-        {/* Email notice card — bone stone surface */}
         <motion.div
-          custom={3}
-          variants={stagger}
-          initial="hidden"
-          animate="show"
-          className="card-stone border border-ink/15 rounded-2xl p-5 max-w-sm mx-auto"
+          {...rise(2)}
+          className="mt-8 flex gap-4 rounded-2xl bg-site-night p-5 ring-1 ring-inset ring-site-paper/10"
         >
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-9 h-9 rounded-full bg-brand-sage/15 border border-brand-sage/40 text-brand-forest flex items-center justify-center shrink-0">
-              <Mail size={16} strokeWidth={1.8} />
-            </div>
-            <div className="text-left">
-              <p className="text-ink text-sm font-medium">
-                {t("confirmSent")}
-              </p>
-              <p className="text-ink-muted text-[11px] font-mono tracking-[0.08em] mt-0.5">
-                {t("fromEmail")}
-              </p>
-            </div>
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-site-vis/10 text-site-vis">
+            <Mail size={17} strokeWidth={1.9} />
+          </span>
+          <div className="min-w-0">
+            <p className="text-[15px] font-medium text-site-paper">{t("confirmSent")}</p>
+            <p className="mt-1 break-words font-mono text-[11px] uppercase tracking-[0.14em] text-site-paper/50">
+              {t("fromEmail")}
+            </p>
+            <p className="mt-3 text-[13px] leading-relaxed text-site-paper/55">{t("checkSpam")}</p>
           </div>
-          <p className="text-ink-muted text-[11px] text-left font-mono tracking-[0.05em]">
-            {t("checkSpam")}
-          </p>
         </motion.div>
 
-        <motion.div
-          custom={4}
-          variants={stagger}
-          initial="hidden"
-          animate="show"
-        >
+        <motion.div {...rise(3)} className="mt-9">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.22em] uppercase text-ink-muted hover:text-brand-forest transition-colors duration-200 group"
+            className="group inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/60 transition-colors duration-200 hover:text-site-vis"
           >
             {t("backHome")}
-            <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform duration-200" />
+            <ArrowRight size={13} className="transition-transform duration-200 group-hover:translate-x-0.5" />
           </Link>
         </motion.div>
       </div>
     );
   }
 
-  const inputCls = (field?: keyof FormData) =>
-    `w-full bg-bone-soft/80 border ${
-      field && fieldErrors[field]
-        ? "border-red-500/60"
-        : "border-ink/20 hover:border-ink/35"
-    } rounded-xl px-4 py-3 text-ink placeholder:text-ink-muted/55 focus:outline-none focus:border-brand-forest focus:bg-bone transition-colors duration-200 font-body text-[15px]`;
+  const ring = (field?: keyof FormData, ink = "text-site-paper") =>
+    `${ink} ${field && fieldErrors[field] ? "ring-site-alert/70" : "ring-site-paper/15 hover:ring-site-paper/30"}`;
 
   const FieldError = ({ field }: { field: keyof FormData }) =>
     fieldErrors[field] ? (
-      <p className="text-[12px] text-red-600 mt-1.5">{fieldErrors[field]}</p>
+      <p id={`${field}-error`} className="mt-2 text-[13px] leading-snug text-site-alert">
+        {fieldErrors[field]}
+      </p>
     ) : null;
 
+  const errProps = (field: keyof FormData) =>
+    fieldErrors[field]
+      ? { "aria-invalid": true as const, "aria-describedby": `${field}-error` }
+      : {};
+
+  const Req = () => (
+    <span aria-hidden className="ml-1 text-site-vis">
+      *
+    </span>
+  );
+
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-      <div className="grid md:grid-cols-2 gap-5">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+      <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <label htmlFor="name" className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2">
-            {t("name")} *
+          <label htmlFor="name" className={LABEL}>
+            {t("name")}
+            <Req />
           </label>
           <input
             id="name"
             name="name"
             type="text"
+            autoComplete="name"
             value={form.name}
             onChange={handleChange}
-            className={inputCls("name")}
+            className={`${FIELD} h-12 ${ring("name")}`}
             placeholder={t("namePlaceholder")}
+            {...errProps("name")}
           />
           <FieldError field="name" />
         </div>
         <div>
-          <label htmlFor="company" className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2">
-            {t("company")} *
+          <label htmlFor="company" className={LABEL}>
+            {t("company")}
+            <Req />
           </label>
           <input
             id="company"
             name="company"
             type="text"
+            autoComplete="organization"
             value={form.company}
             onChange={handleChange}
-            className={inputCls("company")}
+            className={`${FIELD} h-12 ${ring("company")}`}
             placeholder={t("companyPlaceholder")}
+            {...errProps("company")}
           />
           <FieldError field="company" />
         </div>
       </div>
-      <div className="grid md:grid-cols-2 gap-5">
+      <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <label htmlFor="crewSize" className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2">
-            {t("crewSize")} *
+          <label htmlFor="crewSize" className={LABEL}>
+            {t("crewSize")}
+            <Req />
           </label>
-          <select
-            id="crewSize"
-            name="crewSize"
-            value={form.crewSize}
-            onChange={handleChange}
-            className={inputCls("crewSize")}
-          >
-            <option value="" disabled>
-              {t("crewSizePlaceholder")}
-            </option>
-            <option value="1-5">{t("crew1to5")}</option>
-            <option value="5-10">{t("crew5to10")}</option>
-            <option value="10-25">{t("crew10to25")}</option>
-            <option value="25+">{t("crew25plus")}</option>
-          </select>
+          <div className="relative">
+            <select
+              id="crewSize"
+              name="crewSize"
+              value={form.crewSize}
+              onChange={handleChange}
+              className={`${FIELD} h-12 cursor-pointer appearance-none pr-11 ${ring("crewSize", form.crewSize ? "text-site-paper" : "text-site-paper/40")}`}
+              {...errProps("crewSize")}
+            >
+              <option value="" disabled>
+                {t("crewSizePlaceholder")}
+              </option>
+              <option value="1-5" className="text-site-paper">{t("crew1to5")}</option>
+              <option value="5-10" className="text-site-paper">{t("crew5to10")}</option>
+              <option value="10-25" className="text-site-paper">{t("crew10to25")}</option>
+              <option value="25+" className="text-site-paper">{t("crew25plus")}</option>
+            </select>
+            <ChevronDown
+              aria-hidden
+              size={17}
+              className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-site-paper/50"
+            />
+          </div>
           <FieldError field="crewSize" />
         </div>
         <div>
-          <label htmlFor="email" className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2">
-            {t("email")} *
+          <label htmlFor="email" className={LABEL}>
+            {t("email")}
+            <Req />
           </label>
           <input
             id="email"
             name="email"
             type="email"
+            autoComplete="email"
             value={form.email}
             onChange={handleChange}
-            className={inputCls("email")}
+            className={`${FIELD} h-12 ${ring("email")}`}
             placeholder={t("emailPlaceholder")}
+            {...errProps("email")}
           />
           <FieldError field="email" />
         </div>
       </div>
       <div>
-        <label htmlFor="phone" className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2">
+        <label htmlFor="phone" className={LABEL}>
           {t("phone")}
         </label>
         <input
           id="phone"
           name="phone"
           type="tel"
+          autoComplete="tel"
           value={form.phone}
           onChange={handleChange}
-          className={inputCls()}
+          className={`${FIELD} h-12 ${ring()}`}
           placeholder={t("phonePlaceholder")}
         />
       </div>
       <div>
-        <label htmlFor="challenge" className="block font-mono text-[11px] tracking-[0.18em] uppercase text-ink-soft mb-2">
+        <label htmlFor="challenge" className={LABEL}>
           {t("challenge")}
         </label>
         <textarea
@@ -304,7 +318,7 @@ export default function DemoForm() {
           rows={4}
           value={form.challenge}
           onChange={handleChange}
-          className={inputCls()}
+          className={`${FIELD} min-h-[128px] resize-y py-3 leading-relaxed ${ring()}`}
           placeholder={t("challengePlaceholder")}
         />
       </div>
@@ -328,41 +342,43 @@ export default function DemoForm() {
       />
 
       {status === "error" && (
-        <div className="rounded-xl border border-red-500/35 bg-red-50/70 p-4 text-sm text-red-700">
+        <div
+          role="alert"
+          className="rounded-xl bg-site-alert/[0.08] p-4 text-[14px] leading-relaxed text-site-alert ring-1 ring-inset ring-site-alert/30"
+        >
           {errorMsg.includes("Too many") || errorMsg.includes("429")
             ? t("errors.tooManyRequests")
             : t("errors.genericError")}
         </div>
       )}
 
-      <button
-        type="submit"
-        disabled={status === "sending"}
-        className="w-full md:w-auto md:self-start relative inline-flex items-center justify-center font-heading font-semibold tracking-wide rounded-full transition duration-200 cursor-pointer bg-brand-deep text-bone hover:bg-brand-midnight-dark active:scale-[0.97] shadow-[0_10px_28px_-12px_rgba(43,61,48,0.5)] text-[15px] px-7 py-3.5 disabled:opacity-60 disabled:cursor-not-allowed gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-forest/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bone"
-      >
-        {status === "sending" ? (
-          <>
-            <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              />
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8v8H4z"
-              />
-            </svg>
-            {t("submitting")}
-          </>
-        ) : (
-          t("submit")
-        )}
-      </button>
+      <div className="mt-2 border-t border-site-paper/10 pt-7">
+        <button
+          type="submit"
+          disabled={status === "sending"}
+          className="group inline-flex h-14 w-full items-center justify-between gap-4 rounded-full bg-site-vis pl-7 pr-2 text-[16px] font-medium tracking-[-0.005em] text-site-on-vis transition-[background-color,transform] duration-200 ease-out hover:bg-site-vis-hover active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-site-vis focus-visible:ring-offset-2 focus-visible:ring-offset-site-slab sm:w-auto"
+        >
+          <span>{status === "sending" ? t("submitting") : bare(t("submit"))}</span>
+          <span className="relative grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full bg-site-on-vis text-site-vis">
+            {status === "sending" ? (
+              <Loader2 size={17} strokeWidth={2.2} className="animate-spin" />
+            ) : (
+              <>
+                <ArrowRight
+                  size={17}
+                  strokeWidth={2.2}
+                  className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-7"
+                />
+                <ArrowRight
+                  size={17}
+                  strokeWidth={2.2}
+                  className="absolute -translate-x-7 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0"
+                />
+              </>
+            )}
+          </span>
+        </button>
+      </div>
     </form>
   );
 }

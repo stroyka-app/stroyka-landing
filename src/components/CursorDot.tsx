@@ -66,11 +66,11 @@ export default function CursorDot() {
         translateX: "-50%",
         translateY: "-50%",
         backgroundColor: hovering
-          ? "rgba(132,169,140,0.15)"
-          : "rgba(132,169,140,0.8)",
+          ? "rgb(var(--site-vis) / 0.12)"
+          : "rgb(var(--site-vis) / 0.75)",
         boxShadow: hovering
-          ? "0 0 20px rgba(132,169,140,0.2)"
-          : "0 0 12px rgba(132,169,140,0.3)",
+          ? "0 0 20px rgb(var(--site-vis) / 0.18)"
+          : "0 0 12px rgb(var(--site-vis) / 0.25)",
         opacity: visible ? 1 : 0,
         transition:
           "background-color 0.2s cubic-bezier(0.23,1,0.32,1), box-shadow 0.2s cubic-bezier(0.23,1,0.32,1), opacity 0.2s cubic-bezier(0.23,1,0.32,1)",

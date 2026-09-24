@@ -3,10 +3,7 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import DemoForm from "@/components/DemoForm";
-import AmbientBackdrop from "@/components/ui/AmbientBackdrop";
-import FadeIn from "@/components/ui/FadeIn";
-import SectionLabel from "@/components/ui/SectionLabel";
-import TextReveal from "@/components/ui/TextReveal";
+import FlapText from "@/components/site/ui/FlapText";
 import { localeAlternates, canonicalFor, ogLocale, ogAlternateLocales } from "@/i18n/alternates";
 
 export async function generateMetadata({
@@ -47,59 +44,68 @@ export default async function DemoPage({ params }: { params: Promise<{ locale: s
   return (
     <>
       <Navbar />
-      <main className="relative min-h-screen pt-32 pb-20 bg-gradient-to-b from-[#E3DCC9] to-[#D4CBB4] overflow-hidden">
-        <AmbientBackdrop />
-        <div className="relative z-10 max-w-4xl mx-auto px-6">
-          <FadeIn>
-            <div className="flex items-baseline justify-between gap-4">
-              <SectionLabel>{t("eyebrow")}</SectionLabel>
-              {/* Field-journal folio — continuity with the homepage device */}
-              <span aria-hidden className="hidden sm:block font-mono text-[9.5px] tracking-[0.24em] uppercase text-ink/35">
-                Field journal · Appendix B
-              </span>
+      <main className="relative overflow-hidden bg-site-night pb-16 pt-32 text-site-paper md:pb-24 md:pt-40">
+        {/* A low morning bloom behind the form — the home's sky, kept off the
+            top edge so the status zone stays bone (iOS chrome invariant). */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute right-[-20%] top-[12%] h-[720px] w-[900px] max-w-none opacity-55"
+          style={{ background: "radial-gradient(closest-side, var(--sky-top), transparent)" }}
+        />
+
+        <div className="relative mx-auto grid max-w-[1400px] gap-12 px-5 md:px-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
+          {/* Left: the proposition, then what happens after you send it. */}
+          <div className="lg:sticky lg:top-36 lg:self-start">
+            <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.22em] text-site-vis">{t("eyebrow")}</p>
+            <FlapText
+              as="h1"
+              immediate
+              lines={[t("title")]}
+              className="max-w-[14ch] font-flex text-[clamp(2.4rem,5.6vw,5rem)] font-semibold leading-[0.95] tracking-[-0.03em] [font-variation-settings:'wdth'_110] [overflow-wrap:anywhere]"
+            />
+            <p className="mt-6 max-w-md text-[16.5px] leading-relaxed text-site-paper/70">{t("subtitle")}</p>
+
+            <div className="mt-12 hidden border-t border-site-paper/10 pt-8 lg:block">
+              <NextSteps t={t} />
             </div>
-          </FadeIn>
-          <FadeIn delay={0.05}>
-            <TextReveal as="h1" className="font-display font-light text-4xl lg:text-6xl leading-[0.98] tracking-[-0.02em] text-ink mb-5">
-              {t("title")}
-            </TextReveal>
-          </FadeIn>
-          <FadeIn delay={0.12}>
-            <p className="text-[15px] lg:text-base text-ink-soft leading-relaxed mb-10 max-w-lg">
-              {t("subtitle")}
-            </p>
-          </FadeIn>
-          <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_250px] lg:gap-14 lg:items-start">
-            <FadeIn delay={0.2}>
+          </div>
+
+          {/* Right: the form, on a raised slab. */}
+          <div>
+            <div className="rounded-[26px] bg-site-slab p-6 ring-1 ring-site-paper/[0.08] sm:p-8 md:rounded-[30px] md:p-10">
               <DemoForm />
-            </FadeIn>
-            {/* What happens next — reassurance rail fills the desktop margin */}
-            <FadeIn delay={0.3}>
-              <aside className="hidden lg:block lg:sticky lg:top-32 border-l border-ink/15 pl-7">
-                <h2 className="font-mono text-[11px] tracking-[0.2em] uppercase text-ink/60 mb-6">
-                  {t("nextTitle")}
-                </h2>
-                <ol className="space-y-6">
-                  {(["next1", "next2", "next3"] as const).map((key, i) => (
-                    <li key={key} className="flex gap-4">
-                      <span className="font-mono text-[11px] text-brand-forest pt-0.5">
-                        0{i + 1}
-                      </span>
-                      <span className="text-[13.5px] leading-relaxed text-ink-soft">
-                        {t(key)}
-                      </span>
-                    </li>
-                  ))}
-                </ol>
-                <p className="mt-8 pt-6 border-t border-ink/10 font-mono text-[10.5px] tracking-[0.06em] leading-relaxed text-ink/45">
-                  {t("nextNote")}
-                </p>
-              </aside>
-            </FadeIn>
+            </div>
+            <div className="mt-12 lg:hidden">
+              <NextSteps t={t} />
+            </div>
           </div>
         </div>
       </main>
       <Footer />
+    </>
+  );
+}
+
+/** "What happens next" — three numbered promises and the fine print. */
+function NextSteps({ t }: { t: Awaited<ReturnType<typeof getTranslations<"demo">>> }) {
+  return (
+    <>
+      <h2 className="mb-6 font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/55">{t("nextTitle")}</h2>
+      <ol className="space-y-5">
+        {(["next1", "next2", "next3"] as const).map((key, i) => (
+          <li key={key} className="flex items-baseline gap-5">
+            <span className="font-mono text-[11px] tabular-nums tracking-[0.1em] text-site-vis">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <span className="font-flex text-[18px] font-medium leading-snug tracking-[-0.01em] md:text-[19px]">
+              {t(key)}
+            </span>
+          </li>
+        ))}
+      </ol>
+      <p className="mt-8 font-mono text-[11px] uppercase leading-relaxed tracking-[0.14em] text-site-paper/45">
+        {t("nextNote")}
+      </p>
     </>
   );
 }

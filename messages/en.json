@@ -999,7 +999,8 @@
         "Free": "3 active jobs · 3 invoices a month",
         "Starter": "Unlimited jobs and invoices",
         "Pro": "Unlimited workers"
-      }
+      },
+      "compareLink": "See every vendor, every source"
     }
   }
 }

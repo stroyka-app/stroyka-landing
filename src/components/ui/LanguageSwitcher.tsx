@@ -144,17 +144,17 @@ export default function LanguageSwitcher({
               transition={{ duration: 0.16, ease: EASE_OUT, delay: reduce ? 0 : i * 0.035 }}
               className={`flex w-full items-center justify-between gap-6 rounded-xl px-3 py-2 text-left transition-colors duration-150 active:scale-[0.98] ${
                 isActive
-                  ? "bg-brand-sage-bright/20 text-bone"
-                  : "text-bone/70 hover:bg-bone/5 hover:text-bone"
+                  ? "bg-site-vis/10 text-site-paper"
+                  : "text-site-paper/70 hover:bg-site-paper/[0.05] hover:text-site-paper"
               }`}
             >
               <span className="flex items-baseline gap-2.5">
-                <span className="w-5 font-mono text-[11px] tracking-[0.12em] uppercase text-bone/55">
+                <span className="w-5 font-mono text-[11px] tracking-[0.12em] uppercase text-site-paper/45">
                   {LABELS[loc].code}
                 </span>
                 <span className="font-body text-[13.5px]">{LABELS[loc].name}</span>
               </span>
-              {isActive && <Check size={14} className="shrink-0 text-brand-sage-bright" aria-hidden />}
+              {isActive && <Check size={14} className="shrink-0 text-site-vis" aria-hidden />}
             </motion.a>
           </li>
         );
@@ -173,17 +173,17 @@ export default function LanguageSwitcher({
           aria-expanded={open}
           aria-label={t("changeLanguage")}
           onClick={() => setOpen((v) => !v)}
-          className="flex items-center justify-between rounded-xl py-1 text-bone/80 transition-colors hover:text-bone"
+          className="flex items-center justify-between rounded-xl py-1 text-site-paper/80 transition-colors hover:text-site-paper"
         >
           <span className="flex items-center gap-3 font-mono text-[12px] tracking-[0.15em] uppercase">
-            <Globe size={15} className="text-bone/60" aria-hidden />
+            <Globe size={15} className="text-site-paper/55" aria-hidden />
             {LABELS[active].name}
           </span>
           <motion.span
             animate={{ rotate: open ? 180 : 0 }}
             transition={reduce ? { duration: 0 } : { duration: 0.2, ease: EASE_OUT }}
           >
-            <ChevronDown size={16} className="text-bone/40" aria-hidden />
+            <ChevronDown size={16} className="text-site-paper/40" aria-hidden />
           </motion.span>
         </button>
         <AnimatePresence initial={false}>
@@ -213,16 +213,16 @@ export default function LanguageSwitcher({
         aria-expanded={open}
         aria-label={t("changeLanguage")}
         onClick={() => setOpen((v) => !v)}
-        className="group inline-flex items-center gap-1.5 rounded-full border border-bone/15 bg-brand-sage-bright/5 py-1.5 pl-2.5 pr-2 text-bone/80 transition-[background-color,border-color,transform] duration-150 hover:border-bone/25 hover:bg-brand-sage-bright/10 hover:text-bone active:scale-[0.97]"
+        className="group inline-flex h-10 items-center gap-1.5 rounded-full border border-site-paper/15 bg-site-paper/[0.03] pl-3 pr-2.5 text-site-paper/75 transition-[background-color,border-color,transform] duration-150 hover:border-site-paper/30 hover:bg-site-paper/[0.06] hover:text-site-paper active:scale-[0.97]"
       >
-        <Globe size={14} className="shrink-0 text-bone/55 transition-colors group-hover:text-bone/75" aria-hidden />
+        <Globe size={14} className="shrink-0 text-site-paper/50 transition-colors group-hover:text-site-paper/75" aria-hidden />
         <span className="font-mono text-[11px] tracking-[0.12em] uppercase">{LABELS[active].code}</span>
         <motion.span
           animate={{ rotate: open ? 180 : 0 }}
           transition={reduce ? { duration: 0 } : { duration: 0.2, ease: EASE_OUT }}
           className="flex"
         >
-          <ChevronDown size={13} className="text-bone/40" aria-hidden />
+          <ChevronDown size={13} className="text-site-paper/40" aria-hidden />
         </motion.span>
       </button>
 
@@ -235,7 +235,7 @@ export default function LanguageSwitcher({
             exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.97, y: placement === "top" ? 2 : -2 }}
             transition={{ duration: 0.18, ease: EASE_OUT }}
             style={{ transformOrigin: `${placement === "top" ? "bottom" : "top"} ${align}` }}
-            className={`absolute z-50 min-w-[176px] rounded-2xl border border-bone/12 bg-[rgba(30,46,36,0.97)] p-1.5 shadow-[0_18px_50px_-12px_rgba(0,0,0,0.6)] backdrop-blur-xl ${
+            className={`absolute z-50 min-w-[176px] rounded-2xl border border-site-paper/10 bg-site-night/95 p-1.5 shadow-[0_22px_50px_-16px_rgba(60,50,30,0.45)] backdrop-blur-xl ${
               align === "left" ? "left-0" : "right-0"
             } ${placement === "top" ? "bottom-full mb-2" : "top-full mt-2"}`}
           >

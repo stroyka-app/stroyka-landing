@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import {animate, motion, useMotionValue, useMotionValueEvent} from "motion/react";
+import { ArrowUpRight } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import FlapText from "../ui/FlapText";
 import { WORKYARD, stroykaPlanFor } from "@/data/competitors";
 import { useReduced } from "../ui/useReduced";
@@ -42,7 +44,7 @@ export default function SeatMath() {
 
   return (
     <section id="math" className="relative bg-site-night py-24 text-site-paper md:py-36">
-      <div className="mx-auto grid max-w-[1400px] gap-12 px-5 md:px-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
+      <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-12 px-5 md:px-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
         <div>
           <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.22em] text-site-vis">{t("kicker")}</p>
           <FlapText
@@ -118,6 +120,14 @@ export default function SeatMath() {
           <p className="mt-4 font-mono text-[10px] leading-relaxed text-site-paper/35">
             {t("source", { date: WORKYARD.verifiedOn })}
           </p>
+          {/* The long-form, sourced version of this argument (SEO page). */}
+          <Link
+            href="/compare/construction-job-costing-cost"
+            className="group mt-5 inline-flex items-center gap-2 text-[14px] font-medium text-site-vis"
+          >
+            {t("compareLink")}
+            <ArrowUpRight size={15} className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </Link>
         </div>
       </div>
     </section>

@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useReducedMotion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 import { useScrollPosition } from "@/lib/hooks/useScrollPosition";
 import Logo from "@/components/Logo";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
@@ -19,128 +20,111 @@ const NAV_LINKS: Array<{ key: NavKey; hash: string }> = [
 ];
 
 /**
- * Navbar — single aesthetic across all sections.
+ * Navbar — Morning Bone.
  *
- * Before: transparent on hero, solid bone/sand when scrolled. The sand
- * state clashed with the dark R3F section and made the "Get Started"
- * button feel stuck-on.
+ * On the home it sits transparent on the morning sky (it's part of the
+ * hero, not a band over it) and turns into bone glass once you scroll.
+ * Every other route starts on the bone page, so it's bone glass from the
+ * top. Ink type, forest "Get started".
  *
- * After: transparent on hero, then a dark-sage glass bar (brand-midnight
- * with blur + subtle bone border) on scroll. Bone text + logo are
- * readable over every section — sand, dark R3F, or footer — because the
- * nav itself carries its own dark surface.
+ * iOS: the glass lives on the absolute child, NOT the fixed <nav> — iOS 26
+ * samples fixed elements' background-color into the toolbar tint, so the
+ * fixed element stays background-free. The glass starts from --page-top
+ * across the safe area on phones (globals.css .nav-glass-scrolled).
  *
- * The "Get Started" CTA is a bespoke sage-tinted pill (not the shared
- * Button component) so it integrates with the glass bar instead of
- * sitting on top of it.
+ * Phones get a full bone sheet instead of a dropdown strip: big links,
+ * the language list inline, one forest CTA at the thumb.
  */
 export default function Navbar() {
   const t = useTranslations("nav");
   const active = useLocale();
-  const homeHash = (hash: string) =>
-    active === "en" ? `/#${hash}` : `/${active}#${hash}`;
+  const homeHash = (hash: string) => (active === "en" ? `/#${hash}` : `/${active}#${hash}`);
   const scrollY = useScrollPosition();
   const pathname = usePathname();
-  // Only the landing page has a dark hero behind the navbar — everywhere
-  // else the page surface is bone-tinted from the very top, so the
-  // transparent navbar would render bone-on-bone (invisible). Force the
-  // dark-glass "scrolled" treatment from scroll=0 on every non-home route.
   const isHome = pathname === "/";
   const scrolled = !isHome || scrollY > 50;
   const prefersReduced = useReducedMotion();
   const [mobileOpen, setMobileOpen] = useState(false);
   const track = useCtaTracker("navbar");
 
-  // Smooth scroll-bound height + logo-scale shrink. Anchored to first 320px
-  // of vertical scroll so the bar settles by the time the hero copy clears.
   const { scrollY: rawY } = useScroll();
-  const heightMV = useTransform(rawY, [0, 320], [72, 56]);
-  const logoScaleMV = useTransform(rawY, [0, 320], [1, 0.86]);
+  const heightMV = useTransform(rawY, [0, 320], [72, 60]);
+  const logoScaleMV = useTransform(rawY, [0, 320], [1, 0.9]);
   const height = useSpring(heightMV, { stiffness: 220, damping: 30, mass: 0.4 });
   const logoScale = useSpring(logoScaleMV, { stiffness: 220, damping: 30, mass: 0.4 });
 
-  // Logo + nav text stay light across the whole page now — nav provides
-  // its own dark surface once scrolled.
-  const textBase = "text-bone/80 hover:text-bone";
+  // The sheet owns the screen while open: lock the page behind it.
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const prev = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMobileOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.documentElement.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [mobileOpen]);
+
+  const glass = scrolled || mobileOpen;
 
   return (
-    <nav
-      // pt safe-area: viewport-fit=cover puts the page under the notch; pad
-      // the bar so the logo clears it. env() = 0 on desktop → no change.
-      // The glass lives on the absolute child, NOT the nav itself: iOS 26
-      // samples the background-color of fixed elements (latching it into the
-      // status-bar tint at render-tree changes — e.g. the mobile menu
-      // mounting), so the fixed element must stay background-free. The
-      // child's .nav-glass-scrolled (globals.css) also blends the phone
-      // status zone (#485348) into the glass so the two read as one surface.
-      className="fixed top-0 left-0 right-0 z-50 pt-[env(safe-area-inset-top,0px)]"
-    >
+    <nav className="fixed left-0 right-0 top-0 z-50 pt-[env(safe-area-inset-top,0px)]">
       <div
         aria-hidden
         className={`absolute inset-0 -z-10 transition-[background-color,backdrop-filter,border-color,box-shadow] duration-300 ${
-          scrolled
-            ? "nav-glass-scrolled backdrop-blur-xl border-b border-bone/10 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.45)]"
-            : "bg-transparent border-b border-transparent"
+          glass
+            ? "nav-glass-scrolled border-b border-site-paper/[0.07] shadow-[0_10px_30px_-18px_rgba(60,50,30,0.35)] backdrop-blur-xl"
+            : "border-b border-transparent bg-transparent"
         }`}
       />
-      <motion.div
-        style={{ height }}
-        className="max-w-[1400px] mx-auto px-6 lg:px-10 flex items-center justify-between"
-      >
-        <Link href="/" aria-label="Home" className="flex items-center">
-          {/* variant="dark" = "on dark bg" → renders bone text + sage-mist
-              bracket. Our nav surface is always dark (transparent over
-              the hero video, dark-sage glass when scrolled), so this
-              stays fixed — no variant swap on scroll. */}
+      <motion.div style={{ height }} className="mx-auto flex max-w-[1400px] items-center justify-between px-5 lg:px-10">
+        <Link href="/" aria-label="Home" className="flex items-center" onClick={() => setMobileOpen(false)}>
           <motion.div style={{ scale: logoScale, transformOrigin: "left center" }}>
-            <Logo variant="dark" size={30} />
+            <Logo variant="light" size={30} />
           </motion.div>
         </Link>
 
-        <div className="hidden md:flex items-center gap-5 lg:gap-9">
+        <div className="hidden items-center gap-6 md:flex lg:gap-9">
           {NAV_LINKS.map((link) => (
             <a
               key={link.hash}
               href={homeHash(link.hash)}
-              className={`font-mono text-[12px] tracking-[0.12em] lg:tracking-[0.15em] uppercase transition-colors duration-200 ${textBase}`}
+              className="group relative font-mono text-[12px] uppercase tracking-[0.13em] text-site-paper/70 transition-colors duration-200 hover:text-site-paper lg:tracking-[0.15em]"
             >
               {t(link.key)}
+              <span className="absolute -bottom-1.5 left-0 h-px w-full origin-left scale-x-0 bg-site-vis transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100" />
             </a>
           ))}
         </div>
 
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden items-center gap-3 md:flex">
           <LanguageSwitcher />
           <Link
             href="/get-started"
-            className="group relative inline-flex items-center rounded-full px-5 py-2 font-heading text-[13.5px] font-medium tracking-wide text-bone border border-brand-sage-bright/40 bg-brand-sage-bright/10 hover:bg-brand-sage-bright/20 hover:border-brand-sage-bright/70 transition-[background-color,border-color,transform] duration-200 active:scale-[0.97]"
+            className="group inline-flex h-10 items-center gap-2 rounded-full bg-site-vis pl-5 pr-4 text-[13.5px] font-medium text-site-on-vis transition-[background-color,transform] duration-200 hover:bg-site-vis-hover active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-site-vis focus-visible:ring-offset-2 focus-visible:ring-offset-site-night"
             onClick={() => track("cta_get_started", { placement: "desktop" })}
           >
             {t("getStarted")}
+            <ArrowUpRight size={15} className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </Link>
         </div>
 
         <button
-          className="md:hidden flex flex-col gap-1.5 p-2"
+          className="relative -mr-2 flex h-11 w-11 flex-col items-center justify-center gap-1.5 md:hidden"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={t("toggleMenu")}
           aria-expanded={mobileOpen}
+          aria-controls="mobile-menu"
         >
           <motion.span
-            className="block w-6 h-0.5 bg-bone"
-            animate={mobileOpen
-              ? prefersReduced ? { opacity: 0 } : { rotate: 45, y: 4 }
-              : prefersReduced ? { opacity: 1 } : { rotate: 0, y: 0 }}
+            className="block h-0.5 w-6 rounded-full bg-site-paper"
+            animate={mobileOpen ? (prefersReduced ? { opacity: 0 } : { rotate: 45, y: 4 }) : prefersReduced ? { opacity: 1 } : { rotate: 0, y: 0 }}
           />
+          <motion.span className="block h-0.5 w-6 rounded-full bg-site-paper" animate={mobileOpen ? { opacity: 0 } : { opacity: 1 }} />
           <motion.span
-            className="block w-6 h-0.5 bg-bone"
-            animate={mobileOpen ? { opacity: 0 } : { opacity: 1 }}
-          />
-          <motion.span
-            className="block w-6 h-0.5 bg-bone"
-            animate={mobileOpen
-              ? prefersReduced ? { opacity: 0 } : { rotate: -45, y: -4 }
-              : prefersReduced ? { opacity: 1 } : { rotate: 0, y: 0 }}
+            className="block h-0.5 w-6 rounded-full bg-site-paper"
+            animate={mobileOpen ? (prefersReduced ? { opacity: 0 } : { rotate: -45, y: -4 }) : prefersReduced ? { opacity: 1 } : { rotate: 0, y: 0 }}
           />
         </button>
       </motion.div>
@@ -148,37 +132,49 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden overflow-hidden bg-[rgba(30,46,36,0.92)] backdrop-blur-xl border-b border-bone/10"
+            id="mobile-menu"
+            initial={prefersReduced ? { opacity: 0 } : { opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={prefersReduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
+            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            className="flex h-[calc(100svh-72px-env(safe-area-inset-top,0px))] flex-col overflow-y-auto bg-site-night px-5 pb-[calc(env(safe-area-inset-bottom,0px)+20px)] pt-6 md:hidden"
           >
-            <div className="flex flex-col px-6 py-6 gap-5">
-              {NAV_LINKS.map((link) => (
-                <a
+            <ul className="flex flex-col border-t border-site-paper/10">
+              {NAV_LINKS.map((link, i) => (
+                <motion.li
                   key={link.hash}
-                  href={homeHash(link.hash)}
-                  className="font-mono text-[12px] tracking-[0.15em] uppercase text-bone/80 hover:text-bone transition-colors"
-                  onClick={() => setMobileOpen(false)}
+                  initial={prefersReduced ? false : { opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.28, delay: 0.04 + i * 0.04, ease: [0.22, 1, 0.36, 1] }}
+                  className="border-b border-site-paper/10"
                 >
-                  {t(link.key)}
-                </a>
+                  <a
+                    href={homeHash(link.hash)}
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center justify-between py-5 font-flex text-[30px] font-semibold tracking-[-0.02em] text-site-paper [font-variation-settings:'wdth'_110]"
+                  >
+                    {t(link.key)}
+                    <span className="font-mono text-[11px] font-normal tracking-[0.1em] text-site-paper/40">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </a>
+                </motion.li>
               ))}
-              <Link
-                href="/get-started"
-                className="inline-flex items-center justify-center rounded-full px-5 py-2.5 font-heading text-[14px] font-medium text-bone border border-brand-sage-bright/50 bg-brand-sage-bright/15 hover:bg-brand-sage-bright/25"
-                onClick={() => {
-                  track("cta_get_started", { placement: "mobile_menu" });
-                  setMobileOpen(false);
-                }}
-              >
-                {t("getStarted")}
-              </Link>
-              <div className="pt-2 border-t border-bone/10">
-                <LanguageSwitcher variant="inline" />
-              </div>
+            </ul>
+            <div className="mt-8">
+              <LanguageSwitcher variant="inline" />
             </div>
+            <Link
+              href="/get-started"
+              className="mt-auto flex h-14 items-center justify-center gap-2 rounded-full bg-site-vis text-[16px] font-medium text-site-on-vis active:scale-[0.98]"
+              onClick={() => {
+                track("cta_get_started", { placement: "mobile_menu" });
+                setMobileOpen(false);
+              }}
+            >
+              {t("getStarted")}
+              <ArrowUpRight size={17} />
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>

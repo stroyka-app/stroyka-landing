@@ -72,23 +72,25 @@ export default function Button({
   // drop-shadow added on top. Ghost stays shadowless — it's a text button
   // and a shadow would look like leftover artifact.
   const base =
-    "relative inline-flex items-center justify-center font-heading font-semibold tracking-wide rounded-full transition-[colors,box-shadow] duration-200 cursor-pointer";
+    "relative inline-flex items-center justify-center font-medium tracking-[-0.005em] rounded-full transition-[background-color,border-color,color,box-shadow] duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-site-vis focus-visible:ring-offset-2 focus-visible:ring-offset-site-night";
   const variants = {
+    // Morning Bone: forest pill (primary), ink outline (secondary), and the
+    // same shapes as the home's VisButton so every route speaks one language.
     primary:
-      "bg-brand-deep text-bone hover:bg-brand-midnight-dark hover:shadow-[0_14px_30px_-12px_rgba(47,62,70,0.55)]",
+      "bg-site-vis text-site-on-vis hover:bg-site-vis-hover hover:shadow-[0_14px_30px_-14px_rgb(var(--site-vis)/0.6)]",
     secondary:
-      "border border-ink/50 text-ink hover:bg-ink hover:text-bone hover:border-ink hover:shadow-[0_14px_30px_-12px_rgba(20,28,22,0.45)]",
+      "border border-site-paper/25 text-site-paper hover:bg-site-paper/[0.05] hover:border-site-paper/45",
     outline:
-      "bg-transparent border border-current/40 hover:border-current/80 hover:bg-current/[0.06] hover:shadow-[0_10px_24px_-12px_rgba(20,28,22,0.35)]",
+      "bg-transparent border border-current/40 hover:border-current/80 hover:bg-current/[0.06]",
     invert:
-      "bg-bone text-ink hover:bg-bone-deep hover:shadow-[0_14px_30px_-12px_rgba(20,28,22,0.4)]",
+      "bg-site-night text-site-paper hover:bg-site-slab hover:shadow-[0_14px_30px_-12px_rgba(60,50,30,0.35)]",
     ghost:
-      "text-ink hover:text-brand-forest",
+      "text-site-paper hover:text-site-vis",
   };
   const sizes = {
-    sm: "text-sm px-5 py-2",
-    md: "text-[15px] px-6 py-3",
-    lg: "text-[15px] px-7 py-3.5",
+    sm: "text-sm h-10 px-5",
+    md: "text-[15px] h-12 px-6",
+    lg: "text-[16px] h-14 px-7",
   };
 
   const cls = cn(base, variants[variant], sizes[size], className);

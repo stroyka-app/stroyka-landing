@@ -25,9 +25,13 @@ const SIZE = { width: 1200, height: 630 };
 // `public` shadow routes of the same name.
 // ────────────────────────────────────────────────────────────────────────────
 
-const BONE = "#E3DCC9";
-const SAGE_BRIGHT = "#B8D4BD";
-const AMBER = "#f59e0b";
+// Morning Bone (docs/design/morning-bone-system.md). Satori can't read CSS
+// variables, so the tokens are spelled out here.
+const BONE = "#ECE6D8";
+const SLAB = "#E1D9C6";
+const INK = "#1F1C16";
+const FOREST = "#2F5B45";
+const SKY = "#C9D1C4";
 
 async function googleFont(
   family: string,
@@ -55,21 +59,33 @@ async function googleFont(
 export async function GET(request: Request) {
   const url = new URL(request.url);
 
-  const [fraunces, frauncesItalic, mono, monoBold] = await Promise.all([
-    googleFont("Fraunces", 600),
-    googleFont("Fraunces", 600, true),
-    googleFont("JetBrains+Mono", 400),
-    googleFont("JetBrains+Mono", 700),
+  const [flex, mono] = await Promise.all([
+    // Inter Tight 600 stands in for the site's Roboto Flex semibold: Google
+    // only serves Flex as a variable file, and Satori renders a variable
+    // font at its default (400) instance.
+    googleFont("Inter+Tight", 600),
+    googleFont("JetBrains+Mono", 500),
   ]);
 
   const fonts = [
-    fraunces && { name: "Fraunces", data: fraunces, weight: 600 as const, style: "normal" as const },
-    frauncesItalic && { name: "Fraunces", data: frauncesItalic, weight: 600 as const, style: "italic" as const },
-    mono && { name: "JetBrains Mono", data: mono, weight: 400 as const, style: "normal" as const },
-    monoBold && { name: "JetBrains Mono", data: monoBold, weight: 700 as const, style: "normal" as const },
-  ].filter(Boolean) as {
-    name: string; data: ArrayBuffer; weight: 400 | 600 | 700; style: "normal" | "italic";
-  }[];
+    flex && { name: "Display", data: flex, weight: 600 as const, style: "normal" as const },
+    mono && { name: "JetBrains Mono", data: mono, weight: 500 as const, style: "normal" as const },
+  ].filter(Boolean) as { name: string; data: ArrayBuffer; weight: 500 | 600; style: "normal" }[];
+
+  // The Lift, drawn: a tower crane and Job 204 rising inside its dashed
+  // budget envelope, each storey a cost. Pure SVG (Satori renders it).
+  const floors = [
+    { h: 34, c: "#A19F90" },
+    { h: 54, c: "#5F7079" },
+    { h: 25, c: "#C09A69" },
+    { h: 58, c: "#5E8F73" },
+    { h: 44, c: "#86A9A4" },
+  ];
+  let y = 560;
+  const storeys = floors.map((f) => {
+    y -= f.h;
+    return { ...f, y };
+  });
 
   return new ImageResponse(
     (
@@ -80,88 +96,64 @@ export async function GET(request: Request) {
           display: "flex",
           position: "relative",
           fontFamily: "JetBrains Mono",
-          background: "#25352B",
+          backgroundImage: `linear-gradient(180deg, ${SKY} 0%, #D6D9CB 42%, ${BONE} 78%, ${SLAB} 100%)`,
         }}
       >
-        {/* Satori renders this to a raster, not to a browser DOM: next/image
-            has nothing to optimise here and alt text reaches no reader. Both
-            rules are about pages, and this is a picture. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          alt=""
-          src={`${url.origin}/og/depth.jpg`}
-          width={1200}
-          height={630}
-          style={{ position: "absolute", left: 0, top: 0 }}
-        />
+        <svg width="1200" height="630" viewBox="0 0 1200 630" style={{ position: "absolute", left: 0, top: 0 }}>
+          {/* ground line + grid ticks */}
+          <line x1="560" y1="560" x2="1200" y2="560" stroke={FOREST} strokeOpacity="0.25" strokeWidth="2" />
+          {/* mast */}
+          <rect x="826" y="130" width="22" height="430" fill="none" stroke={FOREST} strokeWidth="4" />
+          {Array.from({ length: 14 }).map((_, i) => (
+            <line key={i} x1="826" y1={560 - i * 30} x2="848" y2={530 - i * 30} stroke={FOREST} strokeWidth="3" />
+          ))}
+          {/* jib + counter-jib + apex ties */}
+          <line x1="690" y1="130" x2="1150" y2="130" stroke={FOREST} strokeWidth="7" />
+          <line x1="837" y1="70" x2="1150" y2="130" stroke={FOREST} strokeWidth="2" />
+          <line x1="837" y1="70" x2="690" y2="130" stroke={FOREST} strokeWidth="2" />
+          <line x1="837" y1="70" x2="837" y2="130" stroke={FOREST} strokeWidth="5" />
+          <rect x="690" y="134" width="46" height="34" fill="#8F8D7E" />
+          {/* trolley, cable and the load on the hook */}
+          <rect x="1016" y="130" width="22" height="10" fill={INK} />
+          <line x1="1027" y1="140" x2="1027" y2="230" stroke={INK} strokeWidth="2" />
+          <rect x="992" y="230" width="70" height="40" fill="#6E5242" />
+          {/* budget envelope */}
+          <rect x="930" y="290" width="104" height="270" fill="none" stroke={INK} strokeOpacity="0.55" strokeWidth="2" strokeDasharray="9 7" />
+          {/* the building = the spend */}
+          {storeys.map((s, i) => (
+            <rect key={i} x="938" y={s.y} width="88" height={s.h} fill={s.c} stroke={BONE} strokeWidth="1.5" />
+          ))}
+          <rect x="920" y="560" width="124" height="10" fill="#9A927C" />
+        </svg>
 
-        {/* A gentle left-to-right scrim. The art already leaves the left half
-            empty, so this only deepens it rather than hiding anything. */}
-        <div
-          style={{
-            position: "absolute",
-            left: 0,
-            top: 0,
-            width: 1200,
-            height: 630,
-            backgroundImage:
-              "linear-gradient(90deg, rgba(21,31,25,0.88) 0%, rgba(21,31,25,0.72) 34%, rgba(21,31,25,0.18) 58%, rgba(21,31,25,0) 74%)",
-          }}
-        />
-
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            width: 660,
-            padding: "0 0 0 64px",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 30 }}>
-            <div style={{ fontSize: 23, fontWeight: 700, color: BONE, letterSpacing: 6 }}>
-              STROYKA
-            </div>
-            <div style={{ width: 1, height: 19, background: "rgba(227,220,201,0.3)" }} />
-            <div style={{ fontSize: 12, color: SAGE_BRIGHT, letterSpacing: 2.6 }}>
-              JOB COSTING
-            </div>
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", width: 700, padding: "0 0 0 72px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 34 }}>
+            <div style={{ fontSize: 22, fontWeight: 500, color: INK, letterSpacing: 6 }}>STROYKA</div>
+            <div style={{ width: 1, height: 18, background: "rgba(31,28,22,0.25)" }} />
+            <div style={{ fontSize: 13, color: FOREST, letterSpacing: 2.6 }}>JOB COSTING</div>
           </div>
 
           <div
             style={{
               display: "flex",
               flexDirection: "column",
-              fontFamily: "Fraunces",
+              fontFamily: "Display",
               fontWeight: 600,
-              fontSize: 66,
-              lineHeight: 1.05,
-              color: BONE,
+              fontSize: 72,
+              lineHeight: 0.98,
+              letterSpacing: -2,
+              color: INK,
             }}
           >
-            <div style={{ display: "flex" }}>Construction</div>
-            <div style={{ display: "flex" }}>management,</div>
-            <div style={{ display: "flex", flexDirection: "column", alignSelf: "flex-start" }}>
-              <div style={{ display: "flex", fontStyle: "italic" }}>for real crews.</div>
-              <div style={{ display: "flex", height: 2, background: SAGE_BRIGHT, opacity: 0.7, marginTop: 7 }} />
-            </div>
+            <div style={{ display: "flex" }}>Know what it costs</div>
+            <div style={{ display: "flex" }}>while it’s still</div>
+            <div style={{ display: "flex", color: FOREST }}>going up.</div>
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
-              marginTop: 34,
-              fontSize: 14,
-              letterSpacing: 2.2,
-              color: "rgba(227,220,201,0.72)",
-            }}
-          >
-            <div style={{ display: "flex", color: AMBER, fontWeight: 700 }}>$0</div>
-            <div style={{ display: "flex" }}>TO START</div>
-            <div style={{ width: 4, height: 4, borderRadius: 2, background: SAGE_BRIGHT }} />
-            <div style={{ display: "flex" }}>getstroyka.com</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 38, fontSize: 15, letterSpacing: 2.2, color: "rgba(31,28,22,0.65)" }}>
+            <div style={{ display: "flex", color: FOREST }}>$0 TO START</div>
+            <div style={{ width: 4, height: 4, borderRadius: 2, background: FOREST }} />
+            <div style={{ display: "flex" }}>ANY PHONE · NO SIGNAL NEEDED</div>
           </div>
         </div>
       </div>

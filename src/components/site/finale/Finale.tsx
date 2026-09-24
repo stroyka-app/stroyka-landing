@@ -24,7 +24,7 @@ export default function Finale() {
   const x = useTransform(scrollYProgress, [0, 1], ["18%", "-22%"]);
 
   return (
-    <section ref={ref} className="relative overflow-hidden bg-site-vis text-site-on-vis">
+    <section id="finale" ref={ref} className="relative overflow-hidden bg-site-vis text-site-on-vis">
       {!reduced && (
         <motion.svg
           aria-hidden

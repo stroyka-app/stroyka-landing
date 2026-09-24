@@ -11,18 +11,37 @@
 // above instead, which costs no dynamic API.
 import { useTranslations } from "next-intl";
 
+/**
+ * A bone curtain: the page colour, one forest load travelling a hairline
+ * rail, a mono label. Pure CSS on purpose — this file ships in the static
+ * shell of every route (including the bare, speed-first /start), so it must
+ * not pull the motion runtime in. Reduced motion parks the load mid-rail via
+ * the media query, which cannot disagree with the server render.
+ */
 export default function Loading() {
   const t = useTranslations("errors");
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#E3DCC9] to-[#D4CBB4]">
+    <main
+      className="flex min-h-screen items-center justify-center bg-site-night text-site-paper"
+      role="status"
+      aria-live="polite"
+    >
+      <style>{`
+        @keyframes stroyka-load { from { transform: translateX(-100%); } to { transform: translateX(300%); } }
+        .stroyka-load { animation: stroyka-load 1.1s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+        @media (prefers-reduced-motion: reduce) {
+          .stroyka-load { animation: none; transform: translateX(100%); }
+        }
+      `}</style>
       <div className="flex flex-col items-center gap-5">
-        <div className="flex items-end gap-1.5">
-          <span className="block w-2 h-2 rounded-full bg-brand-forest animate-[bounce_1.2s_ease-in-out_infinite] motion-reduce:animate-none" />
-          <span className="block w-2 h-2 rounded-full bg-brand-forest animate-[bounce_1.2s_ease-in-out_0.15s_infinite] motion-reduce:animate-none" />
-          <span className="block w-2 h-2 rounded-full bg-brand-forest animate-[bounce_1.2s_ease-in-out_0.3s_infinite] motion-reduce:animate-none" />
+        <div
+          aria-hidden
+          className="relative h-[2px] w-40 overflow-hidden rounded-full bg-site-paper/10"
+        >
+          <span className="stroyka-load absolute inset-y-0 left-0 w-1/3 rounded-full bg-site-vis" />
         </div>
-        <p className="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-muted">
+        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-site-paper/50">
           {t("loading")}
         </p>
       </div>

@@ -14,7 +14,7 @@ export default function SectionLabel({ children, tone = "default" }: SectionLabe
   const text = tone === "invert" ? "text-brand-sage-mist" : "text-ink-soft";
   return (
     <p className={`font-mono text-[11px] font-medium tracking-[0.22em] uppercase ${text} mb-6 inline-flex items-center gap-2.5`}>
-      <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-sage" aria-hidden />
+      <span className="inline-block w-1.5 h-1.5 rounded-full bg-site-vis" aria-hidden />
       {children}
     </p>
   );
