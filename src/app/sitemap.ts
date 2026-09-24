@@ -27,6 +27,12 @@ const ROUTES: RouteConfig[] = [
   { path: "/get-started", lastModified: "2026-08-30", changeFrequency: "monthly", priority: 0.9 },
   { path: "/demo",        lastModified: "2026-07-02", changeFrequency: "monthly", priority: 0.8 },
   // PrivacyContent.tsx / TermsContent.tsx, the files that hold the text.
+  // The comparison page. `legalOnly` is reused for its real meaning here —
+  // English-authoritative — because the page quotes English-language vendor
+  // pricing and its own canonical points every locale at the EN URL. Emitting
+  // /es/ and /ru/ copies would contradict that canonical, which is exactly
+  // what cost us indexing on the legal pages in August.
+  { path: "/compare/construction-job-costing-cost", lastModified: "2026-09-23", changeFrequency: "monthly", priority: 0.8, legalOnly: true },
   { path: "/privacy",     lastModified: "2026-08-26", changeFrequency: "yearly",  priority: 0.3, legalOnly: true },
   { path: "/terms",       lastModified: "2026-08-26", changeFrequency: "yearly",  priority: 0.3, legalOnly: true },
 ];

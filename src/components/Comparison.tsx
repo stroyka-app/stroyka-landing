@@ -1,10 +1,11 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { motion, useReducedMotion } from "framer-motion";
 import { Check, X, Minus, HardHat } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import TextReveal from "@/components/ui/TextReveal";
+import CostTeaser from "@/components/compare/CostTeaser";
 
 type CellValue = "yes" | "no" | "partial";
 
@@ -124,6 +125,7 @@ function Cell({
 
 export default function Comparison() {
   const t = useTranslations("comparison");
+  const locale = useLocale();
 
   return (
     <section id="comparison" className="relative bg-gradient-to-b from-[#BFB49C] to-[#D4CBB4] py-24 lg:py-32 overflow-hidden">
@@ -151,6 +153,22 @@ export default function Comparison() {
               {t("subhead")}
             </p>
           </FadeIn>
+
+          {/* ── Pointer to the cost page ─────────────────────────────────
+              ABOVE the table, not below it. Below, it was a postscript
+              nobody reached; here it sits where the reader is still deciding
+              whether the table is worth their time, and it answers what the
+              table structurally cannot: what does this cost me. The table's
+              own first row is "Flat monthly pricing", so this sets up the row
+              they are about to read.
+
+              See CostTeaser for why it cycles rather than sliding.
+
+              EN ONLY: the destination quotes English-language vendor pricing
+              and is English-authoritative, so its canonical sends every
+              locale to the EN URL. Drop the gate when it is translated AND
+              its figures re-verified in that language. */}
+          {locale === "en" && <CostTeaser />}
         </div>
 
         {/* Table — desktop / tablet (≥md) */}
@@ -364,6 +382,7 @@ export default function Comparison() {
             </span>
           </div>
         </FadeIn>
+
       </div>
     </section>
   );

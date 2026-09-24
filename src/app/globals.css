@@ -587,3 +587,84 @@
   0%, 88% { background-color: #485348; }
   100% { background-color: #2B3D30; }
 }
+
+/* ─── Crew-size range input (/compare/construction-job-costing-cost) ────
+   A native <input type="range"> restyled rather than replaced. The native
+   control already carries keyboard support, the correct ARIA role and
+   touch behaviour on iOS — a div-and-pointer-events reimplementation
+   would have to earn all of that back and usually doesn't.
+
+   The filled portion is painted with a hard-stop gradient driven by the
+   --progress custom property the component sets, because the track is a
+   single pseudo-element and there is no cross-browser ::-webkit-slider-
+   fill. */
+.crew-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 34px;
+  background: transparent;
+  cursor: grab;
+}
+.crew-range:active { cursor: grabbing; }
+
+.crew-range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    #4B5F4E 0%,
+    #8AAA91 var(--progress, 40%),
+    rgba(212, 203, 180, 0.85) var(--progress, 40%),
+    rgba(212, 203, 180, 0.85) 100%);
+}
+.crew-range::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(212, 203, 180, 0.85);
+}
+.crew-range::-moz-range-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(to right, #4B5F4E, #8AAA91);
+}
+
+.crew-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  margin-top: -10px;
+  border-radius: 999px;
+  background: #FFFDF7;
+  border: 2px solid #4B5F4E;
+  box-shadow: 0 2px 10px -2px rgba(46, 38, 28, 0.45);
+  transition: transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.crew-range::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: #FFFDF7;
+  border: 2px solid #4B5F4E;
+  box-shadow: 0 2px 10px -2px rgba(46, 38, 28, 0.45);
+  transition: transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.crew-range:hover::-webkit-slider-thumb,
+.crew-range:active::-webkit-slider-thumb { transform: scale(1.12); }
+.crew-range:hover::-moz-range-thumb,
+.crew-range:active::-moz-range-thumb { transform: scale(1.12); }
+
+.crew-range:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid #4B5F4E;
+  outline-offset: 3px;
+}
+.crew-range:focus-visible::-moz-range-thumb {
+  outline: 2px solid #4B5F4E;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crew-range::-webkit-slider-thumb,
+  .crew-range::-moz-range-thumb { transition: none; }
+}

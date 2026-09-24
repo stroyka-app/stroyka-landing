@@ -32,9 +32,20 @@ export default function CTABanner() {
       />
 
       {/* Fine drafting grid — cream hairlines, very faint, mask-faded at
-          the bottom so the grid disappears before meeting the footer
-          edge. Prevents the visible horizontal line where the pattern
-          cut off in v4. */}
+          BOTH ends.
+
+          The bottom fade has been here since v4, to stop the pattern cutting
+          off against the footer. The top one is new (2026-09-24): the mask
+          began `black 0%`, so the grid switched on at full strength on the
+          section's first pixel and drew a hard horizontal rule the whole
+          width of the page, right where FAQ hands over to the CTA. The
+          colours either side match exactly — it is purely the texture
+          starting — which is the same illusion that made the CTA look
+          detached from the footer before the bottom fade was added. Solving
+          one edge and not the other left the seam at the other end.
+
+          Spotted by Maks against /compare/construction-job-costing-cost,
+          whose grid fades in and out for exactly this reason. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-[1] opacity-[0.08]"
@@ -43,9 +54,9 @@ export default function CTABanner() {
             "linear-gradient(to right, #E3DCC9 1px, transparent 1px), linear-gradient(to bottom, #E3DCC9 1px, transparent 1px)",
           backgroundSize: "72px 72px",
           WebkitMaskImage:
-            "linear-gradient(to bottom, black 0%, black 45%, transparent 78%)",
+            "linear-gradient(to bottom, transparent 0%, black 16%, black 45%, transparent 78%)",
           maskImage:
-            "linear-gradient(to bottom, black 0%, black 45%, transparent 78%)",
+            "linear-gradient(to bottom, transparent 0%, black 16%, black 45%, transparent 78%)",
         }}
       />
 
