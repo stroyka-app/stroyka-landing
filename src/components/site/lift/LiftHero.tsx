@@ -27,8 +27,8 @@ export default function LiftHero() {
       />
       <div
         aria-hidden
-        className="absolute inset-x-0 top-0 h-[70%] md:hidden"
-        style={{ background: "linear-gradient(to bottom, var(--sky-top) 0%, rgb(var(--site-night) / 0.55) 55%, rgb(var(--site-night) / 0) 100%)" }}
+        className="absolute inset-x-0 top-0 h-[78%] md:hidden"
+        style={{ background: "linear-gradient(to bottom, var(--sky-top) 0%, rgb(var(--site-night) / 0.72) 62%, rgb(var(--site-night) / 0) 100%)" }}
       />
 
       <div className="relative mx-auto flex h-full max-w-[1400px] flex-col justify-start px-5 pt-28 md:justify-center md:px-10 md:pt-16">
@@ -102,7 +102,7 @@ export default function LiftHero() {
       </div>
 
       {!reduced && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-7 flex flex-col items-center gap-3 text-site-paper/70">
+        <div className="pointer-events-none absolute inset-x-0 bottom-[calc(var(--toolbar-gap,0px)+28px)] flex flex-col items-center gap-3 text-site-paper/70">
           <span className="font-mono text-[10.5px] uppercase tracking-[0.24em]">{t("scrollCue")}</span>
           <span className="relative h-10 w-px overflow-hidden bg-site-paper/20">
             <motion.span

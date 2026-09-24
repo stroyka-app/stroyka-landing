@@ -7,7 +7,7 @@ import { Check, CloudOff, CloudUpload, HardHat, Signal, SignalZero, UserRound } 
 import { useRef } from "react";
 import { useReduced } from "../ui/useReduced";
 
-const panel = "relative h-full min-h-[280px] md:min-h-[320px] overflow-hidden rounded-[22px] bg-site-night p-5 ring-1 ring-site-paper/[0.08] md:p-6";
+const panel = "relative flex h-full min-h-[280px] flex-col md:min-h-[320px] overflow-hidden rounded-[22px] bg-site-night p-5 ring-1 ring-site-paper/[0.08] md:p-6";
 
 /* ── 01 · Offline ──────────────────────────────────────────────────────── */
 
@@ -82,7 +82,7 @@ export function OfflineVignette() {
         </AnimatePresence>
       </ul>
 
-      <div className="absolute inset-x-5 bottom-5 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.16em] text-site-paper/55 md:inset-x-6">
+      <div className="mt-auto flex items-center gap-2 pt-6 font-mono text-[11px] uppercase tracking-[0.16em] text-site-paper/55">
         {synced ? <CloudUpload size={14} className="text-site-vis" /> : <CloudOff size={14} />}
         {queued === 0 ? t("idle") : synced ? t("synced") : t("queued", { count: queued })}
       </div>
@@ -143,7 +143,7 @@ export function RolesVignette() {
           ))}
         </motion.ul>
       </AnimatePresence>
-      <p className="absolute bottom-5 left-5 right-5 font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/45 md:left-6">
+      <p className="mt-auto pt-6 font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/45">
         {t("foot")}
       </p>
     </div>
@@ -173,7 +173,7 @@ export function PnlVignette() {
         <span className="flex items-center gap-2"><span className="h-2 w-4 rounded-sm bg-site-paper/25" />{t("plan")}</span>
         <span className="flex items-center gap-2"><span className="h-2 w-4 rounded-sm bg-site-vis" />{t("actual")}</span>
       </div>
-      <div className="mt-6 space-y-5">
+      <div className="mb-6 mt-6 space-y-5">
         {PNL.map((row, i) => {
           const over = row.actual > row.plan;
           const diff = row.actual - row.plan;
@@ -206,7 +206,7 @@ export function PnlVignette() {
           );
         })}
       </div>
-      <div className="absolute bottom-5 left-5 right-5 flex items-baseline justify-between border-t border-site-paper/10 pt-3 md:left-6 md:right-6">
+      <div className="mt-auto flex items-baseline justify-between border-t border-site-paper/10 pt-3">
         <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/55">{t("margin")}</span>
         <span className="font-flex text-[26px] font-semibold tabular-nums text-site-vis">18.4%</span>
       </div>

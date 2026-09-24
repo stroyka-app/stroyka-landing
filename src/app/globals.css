@@ -46,6 +46,19 @@
   body {
     background-color: var(--page-top);
   }
+  /* The home, on device (2026-09-24): the status zone samples the body
+     colour ONCE at load (we're at the top, over the sky → sky), but the
+     area under Safari's collapsed toolbar at the end of the page shows the
+     LIVE body colour — a static sky body left a pale-sage strip under the
+     bone footer. So the home's body fades sky → bone as you scroll out of
+     the hero (same scroll-timeline technique as the old chrome-canvas). */
+  @supports (animation-timeline: scroll()) {
+    html:has(.site-home),
+    html:has(.site-home) body {
+      animation: home-canvas linear both;
+      animation-timeline: scroll(root);
+    }
+  }
   #chrome-cap {
     position: fixed;
     top: 0;
@@ -738,3 +751,8 @@
   --scrap-ink: #2a261e;
 }
 
+
+@keyframes home-canvas {
+  0% { background-color: var(--sky-top); }
+  3%, 100% { background-color: rgb(var(--site-night)); }
+}

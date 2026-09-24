@@ -16,6 +16,14 @@ export default function Beats({ beat, compact }: { beat: number; compact: boolea
   const step = Math.min(beat + 1, LOADS.length);
 
   return (
+    <>
+    {compact && (
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-[46%]"
+        style={{ background: "linear-gradient(to bottom, rgb(var(--site-night) / 0.92) 0%, rgb(var(--site-night) / 0.8) 55%, rgb(var(--site-night) / 0) 100%)" }}
+      />
+    )}
     <div
       className={
         compact
@@ -51,5 +59,6 @@ export default function Beats({ beat, compact }: { beat: number; compact: boolea
         </motion.div>
       </AnimatePresence>
     </div>
+    </>
   );
 }

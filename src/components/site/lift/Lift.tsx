@@ -81,7 +81,14 @@ export default function Lift() {
       className="relative"
       style={{ height: reduced ? "auto" : "760vh" }}
     >
-      <div className={`${reduced ? "relative" : "sticky"} top-0 h-[100svh] min-h-[600px] overflow-hidden`}>
+      {/* 100lvh, not svh: iOS 26 draws the page UNDER its floating toolbar,
+          so a small-viewport box left a strip of bone page under the URL bar
+          (a "solid bar" over the scene). The scene now runs under the glass;
+          --toolbar-gap keeps bottom UI above the bar when it's expanded. */}
+      <div
+        className={`${reduced ? "relative" : "sticky"} top-0 h-[100lvh] min-h-[600px] overflow-hidden`}
+        style={{ ["--toolbar-gap" as string]: "calc(100lvh - 100svh)" }}
+      >
         {/* Sky. Starts at #485348 — the body colour iOS paints behind the
             status bar — so the top of the phone and the sky are one. */}
         <div

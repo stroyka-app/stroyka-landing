@@ -40,7 +40,7 @@ export default function Ledger({
 
   if (compact) {
     return (
-      <div className="absolute inset-x-3 bottom-3 rounded-2xl bg-site-night/85 p-4 text-site-paper ring-1 ring-site-paper/10 backdrop-blur-xl">
+      <div className="absolute inset-x-3 bottom-[calc(var(--toolbar-gap,0px)+12px)] rounded-2xl bg-site-night/85 p-4 text-site-paper ring-1 ring-site-paper/10 backdrop-blur-xl">
         <div className="flex items-baseline justify-between">
           <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-site-paper/55">{t("job")}</span>
           <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-site-paper/55">

@@ -24,11 +24,11 @@ export default function ScrollToTop() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Hide while inside the plan-to-done scroll story on mobile — its mobile
-  // cost-row stack at bottom-4 collides with the floating button, and the
-  // section already has its own progress affordance (telemetry pill).
+  // Hide while inside the home's pinned crane story (#how-it-works, the
+  // Lift) on phones — its ledger strip sits at the bottom where the button
+  // floats, and the section has its own progress (step counter, ledger).
   useEffect(() => {
-    const target = document.getElementById("plan-to-done");
+    const target = document.getElementById("how-it-works");
     if (!target) return;
     const mql = window.matchMedia("(max-width: 767px)");
     let intersecting = false;

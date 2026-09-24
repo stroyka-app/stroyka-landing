@@ -156,7 +156,7 @@ function Row({
       <div className="mb-2.5 flex items-baseline justify-between gap-4">
         <div className="min-w-0">
           <div className={`text-[15px] font-medium ${tone === "us" ? "text-site-vis" : ""}`}>{name}</div>
-          <div className="truncate text-[12.5px] text-site-paper/50">{sub}</div>
+          <div className="text-[12.5px] leading-snug text-site-paper/50">{sub}</div>
         </div>
         <div className="font-flex text-[24px] font-semibold">
           <Count value={amount} />
