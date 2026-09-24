@@ -1,10 +1,12 @@
 "use client";
 
+import { useRef } from "react";
 import { motion } from "motion/react";
 import { Lock, Check } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CrewCostCalculator from "@/components/compare/CrewCostCalculator";
+import DozerPass from "@/components/compare/DozerPass";
 import FlapText from "@/components/site/ui/FlapText";
 import VisButton from "@/components/site/ui/VisButton";
 import { useReduced } from "@/components/site/ui/useReduced";
@@ -144,6 +146,7 @@ export default function CostContent() {
   const signupUrl = useSignupHref();
   const track = useCtaTracker("compare-cost");
   const reduced = useReduced();
+  const closeRef = useRef<HTMLElement>(null);
 
   return (
     <>
@@ -416,8 +419,12 @@ export default function CostContent() {
         {/* ══ CTA ═════════════════════════════════════════════════════════ */}
         {/* The forest close, same field the home's Finale ends on, so the
             two routes land the same way. */}
-        <section className="relative overflow-hidden bg-site-vis text-site-on-vis">
-          <div className="relative mx-auto max-w-[1400px] px-5 py-24 md:px-10 md:py-32">
+        {/* A bulldozer crosses the band on scroll (DozerPass), scraping up
+            the receipts along its lane — the compare page's answer to the
+            crane crossing the home's Finale. The bottom padding is its lane. */}
+        <section ref={closeRef} className="relative overflow-hidden bg-site-vis text-site-on-vis">
+          <DozerPass target={closeRef} />
+          <div className="relative mx-auto max-w-[1400px] px-5 pb-[190px] pt-24 md:px-10 md:pb-[260px] md:pt-32">
             <FlapText
               lines={["Run one job ", "through it"]}
               plate="rgb(var(--site-on-vis))"
