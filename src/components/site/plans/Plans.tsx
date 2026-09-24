@@ -76,7 +76,7 @@ export default function Plans() {
                   type="button"
                   onClick={() => setBilling(mode)}
                   aria-pressed={billing === mode}
-                  className={`relative rounded-full px-5 py-2.5 text-[14px] font-medium transition-colors duration-200 ${billing === mode ? "text-site-night" : "text-site-paper/70 hover:text-site-paper"}`}
+                  className={`relative rounded-full px-5 py-2.5 text-[14px] font-medium transition-colors duration-200 ${billing === mode ? "text-site-on-vis" : "text-site-paper/70 hover:text-site-paper"}`}
                 >
                   {billing === mode && (
                     <motion.span
@@ -88,7 +88,7 @@ export default function Plans() {
                   <span className="relative flex items-center gap-2">
                     {mode === "monthly" ? t("monthly") : t("annual")}
                     {mode === "annual" && (
-                      <span className={`rounded-full px-1.5 py-0.5 font-mono text-[10px] ${billing === "annual" ? "bg-site-night/15" : "bg-site-vis/15 text-site-vis"}`}>
+                      <span className={`rounded-full px-1.5 py-0.5 font-mono text-[10px] ${billing === "annual" ? "bg-site-on-vis/15" : "bg-site-vis/15 text-site-vis"}`}>
                         {t("annualSave")}
                       </span>
                     )}
@@ -109,17 +109,17 @@ export default function Plans() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-10% 0px" }}
                 transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                className={`relative flex flex-col rounded-[28px] p-7 md:p-9 ${hot ? "bg-site-vis text-site-night lg:-translate-y-4" : "bg-site-slab ring-1 ring-site-paper/[0.08]"}`}
+                className={`relative flex flex-col rounded-[28px] p-7 md:p-9 ${hot ? "bg-site-vis text-site-on-vis lg:-translate-y-4" : "bg-site-slab ring-1 ring-site-paper/[0.08]"}`}
               >
                 <div className="flex items-center justify-between">
                   <span className="font-flex text-[22px] font-semibold [font-variation-settings:'wdth'_115]">{t(`${p.id}.name`)}</span>
                   {hot && (
-                    <span className="rounded-full bg-site-night px-3 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-site-vis">
+                    <span className="rounded-full bg-site-on-vis px-3 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-site-vis">
                       {t("mostPopular")}
                     </span>
                   )}
                 </div>
-                <p className={`mt-2 text-[14px] ${hot ? "text-site-night/70" : "text-site-paper/60"}`}>{t(`${p.id}.description`)}</p>
+                <p className={`mt-2 text-[14px] ${hot ? "text-site-on-vis/70" : "text-site-paper/60"}`}>{t(`${p.id}.description`)}</p>
 
                 <div className="mt-8 flex items-end gap-2">
                   <span className="font-flex text-[64px] font-semibold leading-[0.85] tracking-[-0.03em]">$</span>
@@ -137,17 +137,17 @@ export default function Plans() {
                       </motion.span>
                     </AnimatePresence>
                   </span>
-                  <span className={`mb-1 text-[13px] ${hot ? "text-site-night/65" : "text-site-paper/55"}`}>{p.note}</span>
+                  <span className={`mb-1 text-[13px] ${hot ? "text-site-on-vis/65" : "text-site-paper/55"}`}>{p.note}</span>
                 </div>
-                <p className={`mt-3 font-mono text-[10.5px] uppercase tracking-[0.14em] ${hot ? "text-site-night/70" : "text-site-vis/90"}`}>
+                <p className={`mt-3 font-mono text-[10.5px] uppercase tracking-[0.14em] ${hot ? "text-site-on-vis/70" : "text-site-vis/90"}`}>
                   {t(`${p.id}.limit`)}
                 </p>
 
-                <ul className={`mt-8 space-y-3 border-t pt-6 text-[14px] ${hot ? "border-site-night/15" : "border-site-paper/10"}`}>
+                <ul className={`mt-8 space-y-3 border-t pt-6 text-[14px] ${hot ? "border-site-on-vis/15" : "border-site-paper/10"}`}>
                   {Array.from({ length: FEATURE_COUNT[p.id] }).map((_, k) => (
                     <li key={k} className="flex gap-2.5">
-                      <Check size={15} strokeWidth={2.4} className={`mt-0.5 flex-shrink-0 ${hot ? "text-site-night" : "text-site-vis"}`} />
-                      <span className={hot ? "text-site-night/85" : "text-site-paper/80"}>{t(`${p.id}.features.${k}`)}</span>
+                      <Check size={15} strokeWidth={2.4} className={`mt-0.5 flex-shrink-0 ${hot ? "text-site-on-vis" : "text-site-vis"}`} />
+                      <span className={hot ? "text-site-on-vis/85" : "text-site-paper/80"}>{t(`${p.id}.features.${k}`)}</span>
                     </li>
                   ))}
                 </ul>

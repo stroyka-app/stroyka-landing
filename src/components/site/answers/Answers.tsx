@@ -49,7 +49,7 @@ export default function Answers() {
                       {t(`items.${i}.q`)}
                     </span>
                     <span
-                      className={`mt-0.5 grid h-8 w-8 flex-shrink-0 place-items-center rounded-full ring-1 ring-inset transition-[transform,background-color,color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${isOpen ? "rotate-45 bg-site-vis text-site-night ring-site-vis" : "text-site-paper/70 ring-site-paper/20"}`}
+                      className={`mt-0.5 grid h-8 w-8 flex-shrink-0 place-items-center rounded-full ring-1 ring-inset transition-[transform,background-color,color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${isOpen ? "rotate-45 bg-site-vis text-site-on-vis ring-site-vis" : "text-site-paper/70 ring-site-paper/20"}`}
                     >
                       <Plus size={16} />
                     </span>

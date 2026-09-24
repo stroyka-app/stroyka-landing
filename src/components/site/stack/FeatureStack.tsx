@@ -91,7 +91,7 @@ function Card({
             </span>
           </div>
           <div>{children}</div>
-          {!reduced && <motion.div aria-hidden className="pointer-events-none absolute inset-0 bg-black" style={{ opacity: dim }} />}
+          {!reduced && <motion.div aria-hidden className="pointer-events-none absolute inset-0 bg-site-night" style={{ opacity: dim }} />}
         </div>
       </motion.div>
     </div>

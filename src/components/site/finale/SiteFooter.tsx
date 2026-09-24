@@ -48,7 +48,9 @@ export default function SiteFooter() {
       <div className="mx-auto max-w-[1400px] px-5 pt-20 md:px-10">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:gap-16">
           <div>
-            <Logo variant="dark" size={30} />
+            <span className="site-on-light-logo inline-block">
+              <Logo variant="dark" size={30} />
+            </span>
             <p className="mt-5 max-w-xs text-[15px] leading-relaxed text-site-paper/60">{t("tagline")}</p>
           </div>
           <div>
@@ -111,7 +113,9 @@ export default function SiteFooter() {
         <div className="mt-16 flex flex-col gap-4 border-t border-site-paper/10 pt-8 font-mono text-[11px] uppercase tracking-[0.18em] text-site-paper/45 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} Stroyka — {t("rights")}</p>
           <div className="flex items-center gap-5">
-            <LanguageSwitcher placement="top" align="left" />
+            <span className="site-on-light-chip">
+              <LanguageSwitcher placement="top" align="left" />
+            </span>
             <nav aria-label={t("languagesNavLabel")} className="hidden gap-3 sm:flex">
               {LOCALE_ROOTS.map(({ locale, href, label }) => (
                 <a key={locale} href={href} hrefLang={locale} className="transition-colors hover:text-site-vis">

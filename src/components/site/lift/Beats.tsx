@@ -42,10 +42,10 @@ export default function Beats({ beat, compact }: { beat: number; compact: boolea
           exit={{ opacity: 0, y: -12 }}
           transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
         >
-          <h3 className="font-flex text-[clamp(1.6rem,3.2vw,2.9rem)] font-semibold leading-[1] tracking-[-0.02em] text-site-paper [font-variation-settings:'wdth'_112] [text-shadow:0_2px_24px_rgba(0,0,0,0.35)]">
+          <h3 className="font-flex text-[clamp(1.6rem,3.2vw,2.9rem)] font-semibold leading-[1] tracking-[-0.02em] text-site-paper [font-variation-settings:'wdth'_112] [text-shadow:0_2px_24px_rgb(var(--site-shadow)/0.35)]">
             {t(`${key}.title`)}
           </h3>
-          <p className="mt-3 max-w-[27rem] text-[14.5px] leading-relaxed text-site-paper/80 [text-shadow:0_1px_12px_rgba(0,0,0,0.4)] md:text-[15.5px]">
+          <p className="mt-3 max-w-[27rem] text-[14.5px] leading-relaxed text-site-paper/80 [text-shadow:0_1px_12px_rgb(var(--site-shadow)/0.4)] md:text-[15.5px]">
             {t(`${key}.body`)}
           </p>
         </motion.div>

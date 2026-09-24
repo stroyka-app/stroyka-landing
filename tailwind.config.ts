@@ -7,13 +7,18 @@ const config: Config = {
       colors: {
         // ─── Dusk site (experiment/opus55-wow home) ─────────────────────
         site: {
-          sky:   "#485348", // = body / iOS status zone: the sky starts here
-          night: "#121713", // page base below the hero
-          slab:  "#1B211C", // raised surfaces on night
-          rule:  "#2A322B", // hairlines on night
-          paper: "#ECE6D6", // text on night
-          haze:  "#A9A68E",
-          vis:   "#D4EE5E", // hi-vis lime — the one accent
+          // Token-driven (globals.css → "Dusk site palettes"), so the
+          // whole home can be re-skinned at runtime via <html data-palette>.
+          sky:     "var(--sky-top)",
+          night:   "rgb(var(--site-night) / <alpha-value>)",
+          slab:    "rgb(var(--site-slab) / <alpha-value>)",
+          rule:    "rgb(var(--site-rule) / <alpha-value>)",
+          paper:   "rgb(var(--site-paper) / <alpha-value>)",
+          haze:    "rgb(var(--site-haze) / <alpha-value>)",
+          vis:     "rgb(var(--site-vis) / <alpha-value>)",
+          "vis-hover": "rgb(var(--site-vis-hover) / <alpha-value>)",
+          "on-vis": "rgb(var(--site-on-vis) / <alpha-value>)",
+          alert:   "rgb(var(--site-alert) / <alpha-value>)",
         },
         // ─── v4: warm stone middle-ground ────────────────────────────────
         // Neutral warm-taupe ramp — not cream, not green. A quiet,

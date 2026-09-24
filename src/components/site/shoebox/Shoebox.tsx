@@ -215,10 +215,10 @@ export default function Shoebox() {
             <button
               type="button"
               onClick={toggleSort}
-              className="group inline-flex h-12 items-center gap-3 rounded-full bg-site-vis pl-6 pr-2 text-[15px] font-medium text-site-night transition-[background-color,transform] duration-200 hover:bg-[#E0F77A] active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-site-vis focus-visible:ring-offset-2 focus-visible:ring-offset-site-night"
+              className="group inline-flex h-12 items-center gap-3 rounded-full bg-site-vis pl-6 pr-2 text-[15px] font-medium text-site-on-vis transition-[background-color,transform] duration-200 hover:bg-site-vis-hover active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-site-vis focus-visible:ring-offset-2 focus-visible:ring-offset-site-night"
             >
               {sorted ? t("unsort") : t("sort")}
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-site-night text-site-vis transition-transform duration-300 group-hover:rotate-180">
+              <span className="grid h-8 w-8 place-items-center rounded-full bg-site-on-vis text-site-vis transition-transform duration-300 group-hover:rotate-180">
                 ⇅
               </span>
             </button>
@@ -231,7 +231,7 @@ export default function Shoebox() {
           className="relative h-[440px] touch-none select-none overflow-hidden rounded-[28px] bg-site-slab ring-1 ring-site-paper/[0.08] md:h-[560px]"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(236,230,214,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(236,230,214,0.035) 1px, transparent 1px)",
+              "linear-gradient(rgb(var(--site-paper) / 0.035) 1px, transparent 1px), linear-gradient(90deg, rgb(var(--site-paper) / 0.035) 1px, transparent 1px)",
             backgroundSize: "28px 28px",
           }}
         >
@@ -290,10 +290,10 @@ function Scrap({
   if (small) {
     const tone =
       kind === "text"
-        ? "rounded-[12px] rounded-bl-[3px] bg-[#2F3A33] text-site-paper"
+        ? "rounded-[12px] rounded-bl-[3px] bg-[var(--scrap-text)] text-[#F1ECDD]"
         : kind === "note"
-          ? "bg-[#E3E68C] text-[#2A2A1A]"
-          : "bg-[#F1ECDD] text-[#2A261E]";
+          ? "bg-[var(--scrap-note)] text-[var(--scrap-ink)]"
+          : "bg-[var(--scrap-receipt)] text-[var(--scrap-ink)]";
     return (
       <div className={`flex h-full w-full flex-col justify-between p-1.5 shadow-[0_8px_18px_-8px_rgba(0,0,0,0.6)] ${tone}`}>
         <span className="line-clamp-2 font-mono text-[8.5px] leading-[1.2]">{label}</span>
@@ -303,9 +303,9 @@ function Scrap({
   }
   if (kind === "text") {
     return (
-      <div className="flex h-full w-full flex-col justify-between rounded-[16px] rounded-bl-[4px] bg-[#2F3A33] p-2.5 text-site-paper shadow-[0_10px_24px_-10px_rgba(0,0,0,0.6)] ring-1 ring-white/5 md:p-3">
+      <div className="flex h-full w-full flex-col justify-between rounded-[16px] rounded-bl-[4px] bg-[var(--scrap-text)] p-2.5 text-[#F1ECDD] shadow-[0_10px_24px_-10px_rgba(0,0,0,0.6)] ring-1 ring-white/5 md:p-3">
         <span className="line-clamp-2 text-[11px] leading-snug md:text-[12.5px]">{label}</span>
-        <span className="flex items-center justify-between font-mono text-[10px] text-site-paper/60 md:text-[11px]">
+        <span className="flex items-center justify-between font-mono text-[10px] text-[#F1ECDD]/60 md:text-[11px]">
           <span>{amount}</span>
           <span>{sorted ? tag : "✓✓"}</span>
         </span>
@@ -314,7 +314,7 @@ function Scrap({
   }
   if (kind === "note") {
     return (
-      <div className="flex h-full w-full flex-col justify-between bg-[#E3E68C] p-2.5 text-[#2A2A1A] shadow-[0_10px_24px_-10px_rgba(0,0,0,0.6)] md:p-3">
+      <div className="flex h-full w-full flex-col justify-between bg-[var(--scrap-note)] p-2.5 text-[var(--scrap-ink)] shadow-[0_10px_24px_-10px_rgba(0,0,0,0.6)] md:p-3">
         <span className="line-clamp-2 font-mono text-[10.5px] leading-snug md:text-[12px]">{label}</span>
         <span className="font-mono text-[12px] font-bold md:text-[14px]">{amount}</span>
       </div>
@@ -322,7 +322,7 @@ function Scrap({
   }
   return (
     <div
-      className="flex h-full w-full flex-col justify-between bg-[#F1ECDD] p-2.5 text-[#2A261E] shadow-[0_10px_24px_-10px_rgba(0,0,0,0.6)] md:p-3"
+      className="flex h-full w-full flex-col justify-between bg-[var(--scrap-receipt)] p-2.5 text-[var(--scrap-ink)] shadow-[0_10px_24px_-10px_rgba(0,0,0,0.6)] md:p-3"
       style={{
         // Torn bottom edge.
         clipPath:

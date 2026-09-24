@@ -23,12 +23,12 @@ export default function LiftHero() {
       <div
         aria-hidden
         className="absolute inset-0 hidden md:block"
-        style={{ background: "linear-gradient(to right, rgba(18,23,19,0.62) 0%, rgba(18,23,19,0.28) 38%, rgba(18,23,19,0) 58%)" }}
+        style={{ background: "linear-gradient(to right, rgb(var(--site-night) / 0.62) 0%, rgb(var(--site-night) / 0.28) 38%, rgb(var(--site-night) / 0) 58%)" }}
       />
       <div
         aria-hidden
         className="absolute inset-x-0 top-0 h-[70%] md:hidden"
-        style={{ background: "linear-gradient(to bottom, rgba(72,83,72,0.9) 0%, rgba(38,46,39,0.55) 55%, rgba(18,23,19,0) 100%)" }}
+        style={{ background: "linear-gradient(to bottom, var(--sky-top) 0%, rgb(var(--site-night) / 0.55) 55%, rgb(var(--site-night) / 0) 100%)" }}
       />
 
       <div className="relative mx-auto flex h-full max-w-[1400px] flex-col justify-start px-5 pt-28 md:justify-center md:px-10 md:pt-16">
@@ -49,7 +49,7 @@ export default function LiftHero() {
           as="h1"
           immediate
           delay={0.15}
-          plate="#D4EE5E"
+          plate="rgb(var(--site-vis))"
           className="font-flex text-[clamp(2.6rem,6.4vw,6.9rem)] leading-[0.92] tracking-[-0.025em] text-site-paper md:max-w-[58vw]"
           lines={lines.map((line, i) => (
             <ProximityText

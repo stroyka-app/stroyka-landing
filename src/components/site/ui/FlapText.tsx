@@ -17,7 +17,7 @@ export default function FlapText({
   as = "h2",
   className = "",
   lineClassName = "",
-  plate = "#D4EE5E",
+  plate = "rgb(var(--site-vis))",
   delay = 0,
   immediate = false,
 }: {
@@ -68,7 +68,7 @@ export default function FlapText({
                 />
                 {/* The plate's seam: a hairline that flashes as it splits. */}
                 <motion.span
-                  className="absolute inset-x-[-0.08em] top-1/2 h-px bg-black/40"
+                  className="absolute inset-x-[-0.08em] top-1/2 h-px bg-site-on-vis/40"
                   initial={{ opacity: 1 }}
                   animate={open ? { opacity: 0 } : undefined}
                   transition={{ duration: 0.2, delay: d + 0.1 }}

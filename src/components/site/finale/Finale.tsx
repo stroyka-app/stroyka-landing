@@ -24,7 +24,7 @@ export default function Finale() {
   const x = useTransform(scrollYProgress, [0, 1], ["18%", "-22%"]);
 
   return (
-    <section ref={ref} className="relative overflow-hidden bg-site-vis text-site-night">
+    <section ref={ref} className="relative overflow-hidden bg-site-vis text-site-on-vis">
       {!reduced && (
         <motion.svg
           aria-hidden
@@ -50,11 +50,11 @@ export default function Finale() {
       <div className="relative mx-auto max-w-[1400px] px-5 py-28 md:px-10 md:py-40">
         <FlapText
           lines={[t("run"), t("cleaner"), t("jobsite")]}
-          plate="#121713"
+          plate="rgb(var(--site-on-vis))"
           className="font-flex text-[clamp(3.4rem,11vw,11.5rem)] font-bold leading-[0.86] tracking-[-0.04em] [font-variation-settings:'wdth'_118]"
         />
         <div className="mt-12 grid gap-10 md:mt-16 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
-          <p className="max-w-xl text-[17px] leading-relaxed text-site-night/80 md:text-[19px]">{t("subhead")}</p>
+          <p className="max-w-xl text-[17px] leading-relaxed text-site-on-vis/80 md:text-[19px]">{t("subhead")}</p>
           <div className="flex flex-wrap gap-3">
             <VisButton href={signupHref} variant="dark" size="lg" onClick={() => track("cta_start_free")}>
               {t("startFree")}
@@ -69,7 +69,7 @@ export default function Finale() {
             </VisButton>
           </div>
         </div>
-        <p className="mt-20 border-t border-site-night/20 pt-8 font-mono text-[11px] uppercase tracking-[0.2em] text-site-night/70">
+        <p className="mt-20 border-t border-site-on-vis/20 pt-8 font-mono text-[11px] uppercase tracking-[0.2em] text-site-on-vis/70">
           {t("freeUpTo5")}
           <span className="mx-3 opacity-40">/</span>
           {t("jobCostingFree")}

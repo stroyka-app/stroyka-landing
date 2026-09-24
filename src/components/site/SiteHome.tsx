@@ -13,6 +13,7 @@ import Plans from "./plans/Plans";
 import Answers from "./answers/Answers";
 import Finale from "./finale/Finale";
 import SiteFooter from "./finale/SiteFooter";
+import PaletteSwitcher from "./ui/PaletteSwitcher";
 
 /**
  * The dusk-site home (experiment/opus55-wow).
@@ -35,7 +36,7 @@ export default function SiteHome() {
       <Navbar />
       <Lift />
       {/* Ground of the scene → night page. */}
-      <div aria-hidden className="h-24 bg-gradient-to-b from-[#353C33] to-site-night md:h-32" />
+      <div aria-hidden className="h-24 bg-gradient-to-b from-[var(--scene-ground)] to-site-night md:h-32" />
       <Ticker />
       <Shoebox />
       <KnowEvery />
@@ -45,6 +46,7 @@ export default function SiteHome() {
       <Answers />
       <Finale />
       <SiteFooter />
+      <PaletteSwitcher />
     </main>
     </MotionConfig>
   );

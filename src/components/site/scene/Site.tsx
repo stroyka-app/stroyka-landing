@@ -4,8 +4,8 @@ import { useLayoutEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { BLOCK_W, BUDGET, BUILDING, heightOf } from "./choreo";
+import type { ScenePalette } from "./palette";
 
-export const HAZE = "#8E927E";
 
 /** Seeded PRNG so the skyline is the same on every visit and every render. */
 function rng(seed: number) {
@@ -17,39 +17,39 @@ function rng(seed: number) {
 }
 
 /** Ground, drafting grid, the two concrete pads. */
-export function Ground() {
+export function Ground({ pal }: { pal: ScenePalette }) {
   const grid = useMemo(() => {
-    const g = new THREE.GridHelper(220, 110, "#D4EE5E", "#D4EE5E");
+    const g = new THREE.GridHelper(220, 110, pal.grid, pal.grid);
     const mat = g.material as THREE.LineBasicMaterial;
     mat.transparent = true;
     mat.opacity = 0.07;
     mat.depthWrite = false;
     return g;
-  }, []);
+  }, [pal.grid]);
 
   return (
     <group>
       <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <circleGeometry args={[240, 48]} />
-        <meshStandardMaterial color="#384034" roughness={1} />
+        <meshStandardMaterial color={pal.ground} roughness={1} />
       </mesh>
       <primitive object={grid} position={[0, 0.02, 0]} />
       {/* Laydown yard */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[9, 0.03, 13]} receiveShadow>
         <planeGeometry args={[22, 15]} />
-        <meshStandardMaterial color="#4A4F43" roughness={1} />
+        <meshStandardMaterial color={pal.yard} roughness={1} />
       </mesh>
       {/* Building pad */}
       <mesh position={[BUILDING.x, 0.15, BUILDING.z]} receiveShadow>
         <boxGeometry args={[BLOCK_W + 3, 0.3, BLOCK_W + 3]} />
-        <meshStandardMaterial color="#6B6A5E" roughness={0.95} />
+        <meshStandardMaterial color={pal.pad} roughness={0.95} />
       </mesh>
     </group>
   );
 }
 
 /** A far-off skyline, lost in the haze. Gives the site a horizon. */
-export function Skyline() {
+export function Skyline({ color }: { color: string }) {
   const ref = useRef<THREE.InstancedMesh>(null);
   const COUNT = 64;
   useLayoutEffect(() => {
@@ -76,13 +76,13 @@ export function Skyline() {
   return (
     <instancedMesh ref={ref} args={[undefined, undefined, COUNT]}>
       <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color="#737A68" roughness={1} />
+      <meshStandardMaterial color={color} roughness={1} />
     </instancedMesh>
   );
 }
 
 /** Slow dust in the low sun. */
-export function Dust({ count = 260, animate = true }: { count?: number; animate?: boolean }) {
+export function Dust({ count = 260, animate = true, color = "#F3F0DF" }: { count?: number; animate?: boolean; color?: string }) {
   const ref = useRef<THREE.Points>(null);
   const positions = useMemo(() => {
     const r = rng(7);
@@ -108,7 +108,7 @@ export function Dust({ count = 260, animate = true }: { count?: number; animate?
       </bufferGeometry>
       <pointsMaterial
         size={0.12}
-        color="#F3F0DF"
+        color={color}
         transparent
         opacity={0.55}
         depthWrite={false}
@@ -122,7 +122,7 @@ export function Dust({ count = 260, animate = true }: { count?: number; animate?
  * The budget, drawn as a dashed wireframe box on the pad: the building the
  * money allows. The real building rises inside it, block by block.
  */
-export function BudgetEnvelope({ opacityRef }: { opacityRef?: React.RefObject<THREE.LineDashedMaterial | null> }) {
+export function BudgetEnvelope({ color }: { color: string }) {
   const h = heightOf(BUDGET);
   const w = BLOCK_W + 0.8;
   const geo = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(w, h, w)), [w, h]);
@@ -133,8 +133,7 @@ export function BudgetEnvelope({ opacityRef }: { opacityRef?: React.RefObject<TH
   return (
     <lineSegments ref={ref} geometry={geo} position={[BUILDING.x, 0.3 + h / 2, BUILDING.z]}>
       <lineDashedMaterial
-        ref={opacityRef}
-        color="#F3F0DF"
+        color={color}
         dashSize={0.5}
         gapSize={0.35}
         transparent

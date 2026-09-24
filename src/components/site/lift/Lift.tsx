@@ -89,7 +89,7 @@ export default function Lift() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(60% 40% at 18% 46%, rgba(255,228,184,0.42), rgba(255,228,184,0) 70%), linear-gradient(to bottom, #485348 0%, #5B6558 26%, #8E927E 46%, #8E927E 100%)",
+              "radial-gradient(60% 40% at 18% 46%, rgb(var(--sky-sun) / 0.42), rgb(var(--sky-sun) / 0) 70%), linear-gradient(to bottom, var(--sky-top) 0%, var(--sky-mid) 26%, var(--sky-haze) 46%, var(--sky-haze) 100%)",
           }}
         />
         <motion.div
@@ -97,7 +97,7 @@ export default function Lift() {
           className="absolute inset-0"
           style={{
             opacity: night,
-            background: "linear-gradient(to bottom, #1A211C 0%, #262E28 30%, #343C35 46%, #343C35 100%)",
+            background: "linear-gradient(to bottom, var(--sky-night-top) 0%, var(--sky-night-mid) 30%, var(--sky-night-haze) 46%, var(--sky-night-haze) 100%)",
           }}
         />
 

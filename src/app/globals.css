@@ -680,12 +680,12 @@
 .vis-range::-webkit-slider-runnable-track {
   height: 6px;
   border-radius: 999px;
-  background: linear-gradient(to right, #d4ee5e 0 var(--fill), rgba(236, 230, 214, 0.12) var(--fill) 100%);
+  background: linear-gradient(to right, rgb(var(--site-vis)) 0 var(--fill), rgb(var(--site-paper) / 0.12) var(--fill) 100%);
 }
 .vis-range::-moz-range-track {
   height: 6px;
   border-radius: 999px;
-  background: linear-gradient(to right, #d4ee5e 0 var(--fill), rgba(236, 230, 214, 0.12) var(--fill) 100%);
+  background: linear-gradient(to right, rgb(var(--site-vis)) 0 var(--fill), rgb(var(--site-paper) / 0.12) var(--fill) 100%);
 }
 .vis-range::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -693,24 +693,225 @@
   height: 28px;
   width: 28px;
   border-radius: 999px;
-  background: #121713;
-  border: 3px solid #d4ee5e;
-  box-shadow: 0 0 0 6px rgba(212, 238, 94, 0.14);
+  background: rgb(var(--site-night));
+  border: 3px solid rgb(var(--site-vis));
+  box-shadow: 0 0 0 6px rgb(var(--site-vis) / 0.14);
   transition: transform 150ms ease-out, box-shadow 150ms ease-out;
 }
 .vis-range::-moz-range-thumb {
   height: 22px;
   width: 22px;
   border-radius: 999px;
-  background: #121713;
-  border: 3px solid #d4ee5e;
+  background: rgb(var(--site-night));
+  border: 3px solid rgb(var(--site-vis));
 }
 .vis-range:active::-webkit-slider-thumb {
   transform: scale(1.12);
-  box-shadow: 0 0 0 10px rgba(212, 238, 94, 0.18);
+  box-shadow: 0 0 0 10px rgb(var(--site-vis) / 0.18);
 }
 .vis-range:focus-visible {
-  outline: 2px solid #d4ee5e;
+  outline: 2px solid rgb(var(--site-vis));
   outline-offset: 6px;
   border-radius: 999px;
+}
+
+/* ── Dusk site palettes ───────────────────────────────────────────────────
+   Every colour on the new home (DOM *and* the three.js scene, which reads
+   these at runtime) comes from these tokens. Channels are "r g b" so
+   Tailwind's `bg-site-x/50` opacity modifiers keep working.
+   Default = v1 "Hi-Vis Lime". Others via <html data-palette="…">,
+   set by the dev PaletteSwitcher (or ?palette=…). */
+:root {
+  --site-night: 18 23 19;       /* page base */
+  --site-slab: 27 33 28;        /* raised surface */
+  --site-rule: 42 50 43;
+  --site-paper: 236 230 214;    /* foreground text */
+  --site-vis: 212 238 94;       /* the one accent */
+  --site-vis-hover: 224 247 122;
+  --site-on-vis: 18 23 19;      /* text on the accent */
+  --site-alert: 242 163 143;    /* over budget / no signal */
+  --site-haze: 169 166 142;
+  --site-shadow: 0 0 0;         /* text-shadow ink over the 3D scene */
+  /* sky over the scene: top (= iOS status zone), mid, horizon, sun glow */
+  --sky-top: #485348;
+  --sky-mid: #5b6558;
+  --sky-haze: #8e927e;
+  --sky-sun: 255 228 184;
+  --sky-night-top: #1a211c;
+  --sky-night-mid: #262e28;
+  --sky-night-haze: #343c35;
+  /* 3D materials */
+  --scene-steel: #d4ee5e;
+  --scene-steel-dark: #1c221d;
+  --scene-ground: #384034;
+  --scene-yard: #4a4f43;
+  --scene-pad: #6b6a5e;
+  --scene-skyline: #737a68;
+  --scene-grid: #d4ee5e;
+  --scene-line: #f3f0df;
+  --scene-hemi-sky: #d5d8c2;
+  --scene-hemi-ground: #2a2f26;
+  --scene-sun: #ffe6bf;
+  --scene-window: #ffe9b0;
+  --scene-labor: #d4ee5e;
+  /* the shoebox scraps */
+  --scrap-receipt: #f1ecdd;
+  --scrap-note: #e3e68c;
+  --scrap-text: #2f3a33;
+  --scrap-ink: #2a261e;
+}
+
+/* Field Sage — the old brand's sage + bone, carried into the dusk scene. */
+html[data-palette="sage"] {
+  --site-night: 22 32 26;
+  --site-slab: 31 43 35;
+  --site-rule: 46 60 50;
+  --site-paper: 227 220 201;
+  --site-vis: 184 212 189;
+  --site-vis-hover: 202 226 206;
+  --site-on-vis: 22 32 26;
+  --site-alert: 226 160 140;
+  --sky-top: #485348;
+  --sky-mid: #5f6e60;
+  --sky-haze: #93a08f;
+  --sky-sun: 240 232 205;
+  --sky-night-top: #18231c;
+  --sky-night-mid: #223027;
+  --sky-night-haze: #2f3d33;
+  --scene-steel: #cad6c2;
+  --scene-steel-dark: #1d2a22;
+  --scene-ground: #34443a;
+  --scene-yard: #45574a;
+  --scene-pad: #6a7266;
+  --scene-skyline: #6f7e6f;
+  --scene-grid: #b8d4bd;
+  --scene-hemi-sky: #d3dccd;
+  --scene-hemi-ground: #26332b;
+  --scene-sun: #f6ecd2;
+  --scene-labor: #b8d4bd;
+  --scrap-note: #cfe0c7;
+  --scrap-text: #2a3a30;
+}
+
+/* Blueprint — drafting navy, plan-sheet cyan, white steel. */
+html[data-palette="blueprint"] {
+  --site-night: 12 22 34;
+  --site-slab: 19 33 49;
+  --site-rule: 30 48 69;
+  --site-paper: 228 236 242;
+  --site-vis: 143 211 255;
+  --site-vis-hover: 176 225 255;
+  --site-on-vis: 12 22 34;
+  --site-alert: 255 150 140;
+  --site-haze: 111 129 150;
+  --sky-top: #243447;
+  --sky-mid: #33475d;
+  --sky-haze: #6f8196;
+  --sky-sun: 205 230 255;
+  --sky-night-top: #0b1520;
+  --sky-night-mid: #122131;
+  --sky-night-haze: #1b2c3f;
+  --scene-steel: #e4ecf2;
+  --scene-steel-dark: #13202e;
+  --scene-ground: #1f2f40;
+  --scene-yard: #2a3d52;
+  --scene-pad: #50637a;
+  --scene-skyline: #4d6078;
+  --scene-grid: #8fd3ff;
+  --scene-line: #e4ecf2;
+  --scene-hemi-sky: #c9d8e6;
+  --scene-hemi-ground: #16222f;
+  --scene-sun: #e3eeff;
+  --scene-window: #cfeaff;
+  --scene-labor: #8fd3ff;
+  --scrap-receipt: #eef3f7;
+  --scrap-note: #bfe3fb;
+  --scrap-text: #1d3047;
+  --scrap-ink: #13202e;
+}
+
+/* Machine Yellow — graphite and heavy-equipment yellow. */
+html[data-palette="yellow"] {
+  --site-night: 21 21 21;
+  --site-slab: 31 31 30;
+  --site-rule: 46 46 44;
+  --site-paper: 241 236 226;
+  --site-vis: 244 196 48;
+  --site-vis-hover: 250 212 92;
+  --site-on-vis: 21 21 21;
+  --site-alert: 240 140 120;
+  --site-haze: 163 156 140;
+  --sky-top: #4a4843;
+  --sky-mid: #5f5b53;
+  --sky-haze: #a39c8c;
+  --sky-sun: 255 222 170;
+  --sky-night-top: #161615;
+  --sky-night-mid: #22211f;
+  --sky-night-haze: #33312d;
+  --scene-steel: #f4c430;
+  --scene-steel-dark: #1d1d1c;
+  --scene-ground: #3a3833;
+  --scene-yard: #4b4841;
+  --scene-pad: #726d62;
+  --scene-skyline: #7a7468;
+  --scene-grid: #f4c430;
+  --scene-hemi-sky: #e0d8c6;
+  --scene-hemi-ground: #2b2925;
+  --scene-sun: #ffe2b3;
+  --scene-labor: #f4c430;
+  --scrap-note: #f6dc7a;
+  --scrap-text: #2e2d2a;
+}
+
+/* Morning Bone — the daylight site: bone page, ink type, forest accent. */
+html[data-palette="bone"] {
+  --site-night: 236 230 216;
+  --site-slab: 225 217 198;
+  --site-rule: 207 197 174;
+  --site-paper: 31 28 22;
+  --site-vis: 47 91 69;
+  --site-vis-hover: 38 76 57;
+  --site-on-vis: 241 236 223;
+  --site-alert: 180 83 58;
+  --site-haze: 150 145 125;
+  --site-shadow: 255 255 255;
+  --sky-top: #c9d1c4;
+  --sky-mid: #d6d9cb;
+  --sky-haze: #dcd7c5;
+  --sky-sun: 255 244 214;
+  --sky-night-top: #d8c9a8;
+  --sky-night-mid: #e0d2b3;
+  --sky-night-haze: #d9c9a6;
+  --scene-steel: #2f5b45;
+  --scene-steel-dark: #2a2a24;
+  --scene-ground: #b9b199;
+  --scene-yard: #aaa288;
+  --scene-pad: #9a927c;
+  --scene-skyline: #c4c0ad;
+  --scene-grid: #2f5b45;
+  --scene-line: #3a3a30;
+  --scene-hemi-sky: #fbf6e8;
+  --scene-hemi-ground: #8a846f;
+  --scene-sun: #fff4dc;
+  --scene-labor: #5e8f73;
+  --scrap-receipt: #fbf8f0;
+  --scrap-note: #e9e39a;
+  --scrap-text: #2f5b45;
+}
+/* The shared Navbar is bone-on-transparent over the hero, which vanishes on
+   a light sky: in the daylight palette, keep its dark glass on from the top. */
+html[data-palette="bone"] nav > div[aria-hidden]:first-child {
+  background-color: rgb(31 36 30 / 0.9) !important;
+  backdrop-filter: blur(20px);
+}
+
+/* Shared chrome (Logo, LanguageSwitcher) is drawn for dark surfaces. On the
+   daylight palette, darken the logo and seat the switcher on a dark chip. */
+html[data-palette="bone"] .site-on-light-logo {
+  filter: brightness(0.18);
+}
+html[data-palette="bone"] .site-on-light-chip {
+  display: inline-flex;
+  border-radius: 999px;
+  background: rgb(31 36 30);
 }

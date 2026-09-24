@@ -5,7 +5,8 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import type { MotionValue } from "motion/react";
 import * as THREE from "three";
 import Crane from "./Crane";
-import { BudgetEnvelope, Dust, Ground, HAZE, Skyline } from "./Site";
+import { BudgetEnvelope, Dust, Ground, Skyline } from "./Site";
+import { useScenePalette, type ScenePalette } from "./palette";
 import {
   BLOCK_W,
   BUDGET,
@@ -85,9 +86,7 @@ function pin(
 }
 
 const lerp = THREE.MathUtils.lerp;
-const HAZE_DAY = new THREE.Color(HAZE);
-export const NIGHT_HAZE = "#343C35";
-const HAZE_NIGHT = new THREE.Color(NIGHT_HAZE);
+
 
 /* ── scene ────────────────────────────────────────────────────────────── */
 
@@ -104,6 +103,11 @@ function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
   const hemiRef = useRef<THREE.HemisphereLight>(null);
   const sunRef = useRef<THREE.DirectionalLight>(null);
   const { camera, size, scene } = useThree();
+  const pal = useScenePalette();
+  const haze = useMemo(
+    () => ({ day: new THREE.Color(pal.hazeDay), night: new THREE.Color(pal.hazeNight) }),
+    [pal.hazeDay, pal.hazeNight],
+  );
 
   // Parallax reads the pointer from the WINDOW: the hero copy and HUD sit
   // above the canvas, so the canvas itself rarely receives pointer events.
@@ -221,7 +225,7 @@ function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
 
     /* the day ends as the job closes: haze cools, sun drops, windows glow */
     const night = c.finale * 0.85;
-    if (scene.fog) (scene.fog as THREE.Fog).color.lerpColors(HAZE_DAY, HAZE_NIGHT, night);
+    if (scene.fog) (scene.fog as THREE.Fog).color.lerpColors(haze.day, haze.night, night);
     if (hemiRef.current) hemiRef.current.intensity = lerp(1.1, 0.4, night);
     if (sunRef.current) sunRef.current.intensity = lerp(2.6, 0.7, night);
 
@@ -283,14 +287,14 @@ function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
 
   return (
     <>
-      <fog attach="fog" args={[HAZE, 90, 250]} />
-      <hemisphereLight ref={hemiRef} args={["#D5D8C2", "#2A2F26", 1.1]} />
+      <fog attach="fog" args={[pal.hazeDay, 90, 250]} />
+      <hemisphereLight ref={hemiRef} args={[pal.hemiSky, pal.hemiGround, 1.1]} color={pal.hemiSky} groundColor={pal.hemiGround} />
       <ambientLight intensity={0.15} />
       <directionalLight
         ref={sunRef}
         position={[-42, 34, 26]}
         intensity={2.6}
-        color="#FFE6BF"
+        color={pal.sun}
         castShadow
         shadow-mapSize={compact ? [1024, 1024] : [2048, 2048]}
         shadow-camera-left={-40}
@@ -303,22 +307,22 @@ function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
       />
       <pointLight ref={floodRef} position={[BUILDING.x - 8, 6, BUILDING.z + 10]} color="#F4F7D9" intensity={0} distance={60} />
 
-      <Ground />
-      <Skyline />
-      <Dust count={compact ? 140 : 260} animate={!reduced} />
-      <BudgetEnvelope />
+      <Ground pal={pal} />
+      <Skyline color={pal.skyline} />
+      <Dust count={compact ? 140 : 260} animate={!reduced} color={pal.line} />
+      <BudgetEnvelope color={pal.line} />
 
-      <Crane slewRef={slewRef} trolleyRef={trolleyRef} beaconRef={beaconRef} />
+      <Crane slewRef={slewRef} trolleyRef={trolleyRef} beaconRef={beaconRef} pal={pal} />
 
       {/* Hook block */}
       <group ref={hookRef}>
         <mesh castShadow>
           <boxGeometry args={[0.8, 1.1, 0.5]} />
-          <meshStandardMaterial color="#1C221D" roughness={0.6} />
+          <meshStandardMaterial color={pal.steelDark} roughness={0.6} />
         </mesh>
         <mesh position={[0, -0.1, 0.26]}>
           <boxGeometry args={[0.8, 0.22, 0.02]} />
-          <meshStandardMaterial color="#D4EE5E" emissive="#D4EE5E" emissiveIntensity={0.4} />
+          <meshStandardMaterial color={pal.steel} emissive={pal.steel} emissiveIntensity={0.4} />
         </mesh>
       </group>
       <mesh ref={cableRef}>
@@ -336,6 +340,7 @@ function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
         <LoadBlock
           key={load.id}
           index={i}
+          pal={pal}
           groupRef={(g) => void (blockRefs.current[i] = g)}
           windowRef={(m) => void (windowMats.current[i] = m)}
         />
@@ -350,10 +355,12 @@ function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
  */
 function LoadBlock({
   index,
+  pal,
   groupRef,
   windowRef,
 }: {
   index: number;
+  pal: ScenePalette;
   groupRef: (g: THREE.Group | null) => void;
   windowRef: (m: THREE.MeshStandardMaterial | null) => void;
 }) {
@@ -367,12 +374,12 @@ function LoadBlock({
     <group ref={groupRef} position={[slot.x, h / 2, slot.z]}>
       <mesh castShadow receiveShadow>
         <boxGeometry args={[BLOCK_W, h, BLOCK_W]} />
-        <meshStandardMaterial color={load.color} roughness={0.75} metalness={load.id === "steel" ? 0.35 : 0.05} />
+        <meshStandardMaterial color={load.id === "labor" ? pal.labor : load.color} roughness={0.75} metalness={load.id === "steel" ? 0.35 : 0.05} />
       </mesh>
       <lineSegments geometry={edges}>
-        <lineBasicMaterial color="#F3F0DF" transparent opacity={0.35} />
+        <lineBasicMaterial color={pal.line} transparent opacity={0.35} />
       </lineSegments>
-      {glazed && <Windows h={h} materialRef={windowRef} />}
+      {glazed && <Windows h={h} materialRef={windowRef} glow={pal.window} />}
       {load.id === "roof" && (
         <mesh position={[0, h / 2 + 0.35, 0]} castShadow>
           <boxGeometry args={[BLOCK_W * 0.4, 0.7, BLOCK_W * 0.4]} />
@@ -386,7 +393,15 @@ function LoadBlock({
 const PANE_X = [-2.1, -1.05, 0, 1.05, 2.1];
 
 /** A ring of window panes around one storey: 5 per face, one draw call. */
-function Windows({ h, materialRef }: { h: number; materialRef: (m: THREE.MeshStandardMaterial | null) => void }) {
+function Windows({
+  h,
+  materialRef,
+  glow,
+}: {
+  h: number;
+  materialRef: (m: THREE.MeshStandardMaterial | null) => void;
+  glow: string;
+}) {
   const ref = useRef<THREE.InstancedMesh>(null);
   const paneH = Math.min(h * 0.46, 1.25);
   const count = PANE_X.length * 4;
@@ -413,7 +428,7 @@ function Windows({ h, materialRef }: { h: number; materialRef: (m: THREE.MeshSta
       <meshStandardMaterial
         ref={materialRef}
         color="#243030"
-        emissive="#FFE9B0"
+        emissive={glow}
         emissiveIntensity={0.05}
         roughness={0.2}
         metalness={0.4}

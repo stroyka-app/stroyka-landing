@@ -4,9 +4,7 @@ import { useMemo, type RefObject } from "react";
 import * as THREE from "three";
 import Lattice, { jibStruts, mastStruts, type Strut } from "./Lattice";
 import { JIB_REACH, JIB_Y } from "./choreo";
-
-const STEEL = "#D4EE5E";
-const DARK = "#1C221D";
+import type { ScenePalette } from "./palette";
 
 /**
  * A flat-top-ish hammerhead tower crane, built from struts.
@@ -21,19 +19,24 @@ export default function Crane({
   slewRef,
   trolleyRef,
   beaconRef,
+  pal,
 }: {
   slewRef: RefObject<THREE.Group | null>;
   trolleyRef: RefObject<THREE.Group | null>;
   beaconRef: RefObject<THREE.MeshStandardMaterial | null>;
+  pal: ScenePalette;
 }) {
   const steel = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: STEEL, roughness: 0.5, metalness: 0.25 }),
+    () => new THREE.MeshStandardMaterial({ roughness: 0.5, metalness: 0.25 }),
     [],
   );
   const dark = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: DARK, roughness: 0.8, metalness: 0.1 }),
+    () => new THREE.MeshStandardMaterial({ roughness: 0.8, metalness: 0.1 }),
     [],
   );
+  // Re-skin in place when the palette changes (no remount, no rebuild).
+  steel.color.set(pal.steel);
+  dark.color.set(pal.steelDark);
 
   const mast = useMemo(() => mastStruts(1.9, JIB_Y - 0.6, 2.1), []);
   const jib = useMemo(() => jibStruts(1.2, JIB_REACH + 0.6, 1.5, 1.6, 2.2), []);

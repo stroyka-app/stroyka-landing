@@ -40,7 +40,7 @@ export function OfflineVignette() {
   return (
     <div className={panel}>
       <div className="flex items-center justify-between">
-        <span className={`flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] ${online ? "text-site-vis" : "text-[#F2A38F]"}`}>
+        <span className={`flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] ${online ? "text-site-vis" : "text-site-alert"}`}>
           {online ? <Signal size={15} /> : <SignalZero size={15} />}
           {online ? t("online") : t("offline")}
         </span>
@@ -108,7 +108,7 @@ export function RolesVignette() {
               type="button"
               onClick={() => setRole(r)}
               aria-pressed={role === r}
-              className={`relative flex items-center gap-2 rounded-full px-4 py-2 text-[13px] font-medium transition-colors duration-200 ${role === r ? "text-site-night" : "text-site-paper/70 hover:text-site-paper"}`}
+              className={`relative flex items-center gap-2 rounded-full px-4 py-2 text-[13px] font-medium transition-colors duration-200 ${role === r ? "text-site-on-vis" : "text-site-paper/70 hover:text-site-paper"}`}
             >
               {role === r && (
                 <motion.span
@@ -181,7 +181,7 @@ export function PnlVignette() {
             <div key={row.key} onPointerEnter={() => setHover(row.key)} onPointerLeave={() => setHover(null)} className="group">
               <div className="mb-2 flex items-baseline justify-between text-[13.5px]">
                 <span>{t(row.key)}</span>
-                <span className={`font-mono text-[12px] tabular-nums ${over ? "text-[#F2A38F]" : "text-site-vis"}`}>
+                <span className={`font-mono text-[12px] tabular-nums ${over ? "text-site-alert" : "text-site-vis"}`}>
                   {diff > 0 ? "+" : "−"}${Math.abs(diff).toLocaleString("en-US")}
                 </span>
               </div>
@@ -193,7 +193,7 @@ export function PnlVignette() {
                   transition={{ duration: reduced ? 0 : 0.9, delay: 0.1 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
                 />
                 <motion.div
-                  className={`absolute bottom-0 left-0 h-[9px] w-full origin-left rounded-full ${over ? "bg-[#F2A38F]" : "bg-site-vis"}`}
+                  className={`absolute bottom-0 left-0 h-[9px] w-full origin-left rounded-full ${over ? "bg-site-alert" : "bg-site-vis"}`}
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: on ? row.actual / PNL_MAX : 0 }}
                   transition={{ duration: reduced ? 0 : 1.1, delay: 0.3 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
@@ -236,7 +236,7 @@ export function ApproveVignette() {
           <button
             type="button"
             onClick={() => setApproved((a) => !a)}
-            className={`h-10 flex-1 rounded-full text-[13.5px] font-medium transition-[background-color,color,transform] duration-200 active:scale-[0.97] ${approved ? "bg-site-paper/10 text-site-paper/70" : "bg-site-vis text-site-night hover:bg-[#E0F77A]"}`}
+            className={`h-10 flex-1 rounded-full text-[13.5px] font-medium transition-[background-color,color,transform] duration-200 active:scale-[0.97] ${approved ? "bg-site-paper/10 text-site-paper/70" : "bg-site-vis text-site-on-vis hover:bg-site-vis-hover"}`}
           >
             {approved ? t("undo") : t("approve")}
           </button>

@@ -44,21 +44,21 @@ export default function VisButton({
 
   const tone =
     variant === "solid"
-      ? "bg-site-vis text-site-night hover:bg-[#E0F77A]"
+      ? "bg-site-vis text-site-on-vis hover:bg-site-vis-hover"
       : variant === "dark"
-        ? "bg-site-night text-site-paper hover:bg-black"
+        ? "bg-site-on-vis text-site-vis hover:bg-site-on-vis/85"
         : variant === "line"
-          ? "bg-transparent text-site-night ring-1 ring-inset ring-site-night/40 hover:bg-site-night/10"
+          ? "bg-transparent text-site-on-vis ring-1 ring-inset ring-site-on-vis/40 hover:bg-site-on-vis/10"
           : "bg-site-paper/[0.06] text-site-paper ring-1 ring-inset ring-site-paper/25 hover:bg-site-paper/[0.12] hover:ring-site-paper/45 backdrop-blur-md";
   const pad = size === "lg" ? "h-14 pl-7 pr-2 text-[16px]" : "h-12 pl-6 pr-1.5 text-[15px]";
   const knob = size === "lg" ? "h-10 w-10" : "h-9 w-9";
   const knobTone =
     variant === "solid"
-      ? "bg-site-night text-site-vis"
+      ? "bg-site-on-vis text-site-vis"
       : variant === "dark"
-        ? "bg-site-vis text-site-night"
+        ? "bg-site-vis text-site-on-vis"
         : variant === "line"
-          ? "bg-site-night text-site-vis"
+          ? "bg-site-on-vis text-site-vis"
           : "bg-site-paper/15 text-site-paper";
 
   return (
