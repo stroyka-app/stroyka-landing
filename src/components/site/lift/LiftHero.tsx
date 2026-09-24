@@ -50,7 +50,7 @@ export default function LiftHero() {
           immediate
           delay={0.15}
           plate="rgb(var(--site-vis))"
-          className="font-flex text-[clamp(2.6rem,6.4vw,6.9rem)] leading-[0.92] tracking-[-0.025em] text-site-paper md:max-w-[58vw]"
+          className="font-flex text-[clamp(2.6rem,6.4vw,6.9rem)] leading-[0.92] tracking-[-0.025em] text-site-headline md:max-w-[58vw]"
           lines={lines.map((line, i) => (
             <ProximityText
               key={i}

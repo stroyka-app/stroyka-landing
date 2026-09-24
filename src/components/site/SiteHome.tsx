@@ -13,7 +13,6 @@ import Plans from "./plans/Plans";
 import Answers from "./answers/Answers";
 import Finale from "./finale/Finale";
 import SiteFooter from "./finale/SiteFooter";
-import PaletteSwitcher from "./ui/PaletteSwitcher";
 
 /**
  * The dusk-site home (experiment/opus55-wow).
@@ -31,7 +30,7 @@ import PaletteSwitcher from "./ui/PaletteSwitcher";
 export default function SiteHome() {
   return (
     <MotionConfig reducedMotion="user">
-    <main className="relative bg-site-night">
+    <main className="site-home relative bg-site-night">
       <HashScroll />
       <Navbar />
       <Lift />
@@ -46,7 +45,6 @@ export default function SiteHome() {
       <Answers />
       <Finale />
       <SiteFooter />
-      <PaletteSwitcher />
     </main>
     </MotionConfig>
   );
