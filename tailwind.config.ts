@@ -19,7 +19,6 @@ const config: Config = {
           "vis-hover": "rgb(var(--site-vis-hover) / <alpha-value>)",
           "on-vis": "rgb(var(--site-on-vis) / <alpha-value>)",
           alert:   "rgb(var(--site-alert) / <alpha-value>)",
-          headline: "rgb(var(--site-headline) / <alpha-value>)",
         },
         // ─── v4: warm stone middle-ground ────────────────────────────────
         // Neutral warm-taupe ramp — not cream, not green. A quiet,

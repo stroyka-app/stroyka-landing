@@ -76,9 +76,7 @@ export function Skyline({ color }: { color: string }) {
   return (
     <instancedMesh ref={ref} args={[undefined, undefined, COUNT]}>
       <boxGeometry args={[1, 1, 1]} />
-      {/* Unlit: flat silhouettes that dissolve into the fog. Lit faces read
-          as solid slabs behind the hero headline. */}
-      <meshBasicMaterial color={color} />
+      <meshStandardMaterial color={color} roughness={1} />
     </instancedMesh>
   );
 }
