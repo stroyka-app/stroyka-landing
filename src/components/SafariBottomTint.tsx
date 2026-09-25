@@ -49,7 +49,11 @@ export default function SafariBottomTint() {
       // Probe just above the very bottom edge, where the toolbar sits.
       const probeY = window.innerHeight - 2;
       let color: string | null = null;
-      for (const t of TARGETS) {
+      // A full-screen sheet (the phone menu) is open: it's a fixed element at
+      // the bottom edge, so Safari goes solid anyway — make that solid the
+      // sheet's own bone instead of the body colour (sky at the page top).
+      if (document.documentElement.dataset.sheet === "open") color = "#ECE6D8";
+      for (const t of color ? [] : TARGETS) {
         const node = document.getElementById(t.id);
         if (!node) continue;
         const r = node.getBoundingClientRect();
@@ -72,9 +76,15 @@ export default function SafariBottomTint() {
     };
 
     apply();
+    // Sheets opening/closing: the display toggle this triggers is what makes
+    // Safari re-sample (without it the sheet's tint latched after closing —
+    // a sky-blue strip under the URL bar, 2026-09-24).
+    const onSheet = () => schedule();
+    window.addEventListener("site:sheet", onSheet);
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule, { passive: true });
     return () => {
+      window.removeEventListener("site:sheet", onSheet);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
       if (raf) cancelAnimationFrame(raf);

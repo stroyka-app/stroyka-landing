@@ -47,7 +47,10 @@ export default function CraneScene(props: Props) {
       dpr={props.compact ? [1, 1.5] : [1, 2]}
       frameloop={props.active ? "always" : "never"}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-      camera={{ position: [-40, 21, 62], fov: 36, near: 0.5, far: 400 }}
+      // near 4 (nothing in the scene comes closer than ~40 units): at 0.5 the
+      // depth buffer had too little precision out at the skyline (~200u) and
+      // the overlapping towers z-fought — a shimmer on scroll on phones.
+      camera={{ position: [-40, 21, 62], fov: 36, near: 4, far: 400 }}
     >
       <Contents {...props} />
     </Canvas>

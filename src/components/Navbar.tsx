@@ -53,6 +53,14 @@ export default function Navbar() {
   const height = useSpring(heightMV, { stiffness: 220, damping: 30, mass: 0.4 });
   const logoScale = useSpring(logoScaleMV, { stiffness: 220, damping: 30, mass: 0.4 });
 
+  // Tell SafariBottomTint (iOS toolbar tint) the sheet is up / down.
+  useEffect(() => {
+    const html = document.documentElement;
+    if (mobileOpen) html.dataset.sheet = "open";
+    else delete html.dataset.sheet;
+    window.dispatchEvent(new Event("site:sheet"));
+  }, [mobileOpen]);
+
   // The sheet owns the screen while open: lock the page behind it.
   useEffect(() => {
     if (!mobileOpen) return;
@@ -137,7 +145,15 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={prefersReduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            className="flex h-[calc(100svh-72px-env(safe-area-inset-top,0px))] flex-col overflow-y-auto bg-site-night px-5 pb-[calc(env(safe-area-inset-bottom,0px)+20px)] pt-6 md:hidden"
+            // Inline: Tailwind's arbitrary-value parser spaces out the hyphens
+            // inside env(safe-area-inset-top), which voided the height. lvh
+            // so the sheet runs under Safari's toolbar; the bottom padding
+            // keeps the CTA above it.
+            style={{
+              height: "calc(100lvh - 72px - env(safe-area-inset-top, 0px))",
+              paddingBottom: "calc(100lvh - 100svh + 20px)",
+            }}
+            className="flex flex-col overflow-y-auto bg-site-night px-5 pt-6 md:hidden"
           >
             <ul className="flex flex-col border-t border-site-paper/10">
               {NAV_LINKS.map((link, i) => (
