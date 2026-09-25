@@ -786,3 +786,8 @@
      crept up to a toolbar's height and bared a bone strip at 70%). */
   to { transform: translateY(calc(760vh - 100dvh)); }
 }
+
+/* The phone menu sheet owns the screen: no floating scroll-to-top over it. */
+html[data-sheet="open"] [aria-label="Scroll to top"] {
+  display: none;
+}

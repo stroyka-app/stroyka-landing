@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useReducedMotion } from "framer-motion";
@@ -44,7 +45,15 @@ export default function Navbar() {
   const isHome = pathname === "/";
   const scrolled = !isHome || scrollY > 50;
   const prefersReduced = useReducedMotion();
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileOpen, setMobileOpenRaw] = useState(false);
+  // Scroll offset the sheet is pinned to (captured when it opens).
+  const [sheetTop, setSheetTop] = useState(0);
+  const setMobileOpen = (open: boolean) => {
+    if (open) setSheetTop(window.scrollY);
+    setMobileOpenRaw(open);
+  };
+  const [portalReady, setPortalReady] = useState(false);
+  useEffect(() => setPortalReady(true), []);
   const track = useCtaTracker("navbar");
 
   const { scrollY: rawY } = useScroll();
@@ -77,6 +86,7 @@ export default function Navbar() {
   const glass = scrolled || mobileOpen;
 
   return (
+    <>
     <nav className="fixed left-0 right-0 top-0 z-50 pt-[env(safe-area-inset-top,0px)]">
       <div
         aria-hidden
@@ -137,63 +147,74 @@ export default function Navbar() {
         </button>
       </motion.div>
 
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            id="mobile-menu"
-            initial={prefersReduced ? { opacity: 0 } : { opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={prefersReduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
-            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            // Inline: Tailwind's arbitrary-value parser spaces out the hyphens
-            // inside env(safe-area-inset-top), which voided the height. lvh
-            // so the sheet runs under Safari's toolbar; the bottom padding
-            // keeps the CTA above it.
-            style={{
-              height: "calc(100lvh - 72px - env(safe-area-inset-top, 0px))",
-              paddingBottom: "calc(100lvh - 100svh + 20px)",
-            }}
-            className="flex flex-col overflow-y-auto bg-site-night px-5 pt-6 md:hidden"
-          >
-            <ul className="flex flex-col border-t border-site-paper/10">
-              {NAV_LINKS.map((link, i) => (
-                <motion.li
-                  key={link.hash}
-                  initial={prefersReduced ? false : { opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.28, delay: 0.04 + i * 0.04, ease: [0.22, 1, 0.36, 1] }}
-                  className="border-b border-site-paper/10"
-                >
-                  <a
-                    href={homeHash(link.hash)}
-                    onClick={() => setMobileOpen(false)}
-                    className="flex items-center justify-between py-5 font-flex text-[30px] font-semibold tracking-[-0.02em] text-site-paper [font-variation-settings:'wdth'_110]"
-                  >
-                    {t(link.key)}
-                    <span className="font-mono text-[11px] font-normal tracking-[0.1em] text-site-paper/40">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                  </a>
-                </motion.li>
-              ))}
-            </ul>
-            <div className="mt-8">
-              <LanguageSwitcher variant="inline" />
-            </div>
-            <Link
-              href="/get-started"
-              className="mt-auto flex h-14 items-center justify-center gap-2 rounded-full bg-site-vis text-[16px] font-medium text-site-on-vis active:scale-[0.98]"
-              onClick={() => {
-                track("cta_get_started", { placement: "mobile_menu" });
-                setMobileOpen(false);
-              }}
-            >
-              {t("getStarted")}
-              <ArrowUpRight size={17} />
-            </Link>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </nav>
+    {/* The phone sheet lives in <body>, outside the fixed nav (see above). */}
+    {portalReady &&
+      createPortal(
+      <AnimatePresence>
+          {mobileOpen && (
+            <motion.div
+              id="mobile-menu"
+              initial={prefersReduced ? { opacity: 0 } : { opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={prefersReduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
+              transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+              // PAGE CONTENT, not a fixed overlay: iOS 26 clips fixed elements
+              // at the toolbar line (proven in the simulator, 2026-09-24), so a
+              // fixed sheet stopped there and the page showed through the glass
+              // below it. The page is scroll-locked while the sheet is open, so
+              // an absolute sheet placed at the current scroll offset stays put
+              // and runs on behind the toolbar like the crane stage does.
+              // Inline sizes: Tailwind mangles hyphens inside env().
+              style={{
+                top: sheetTop,
+                height: "calc(100lvh + 140px)",
+                paddingTop: "calc(72px + env(safe-area-inset-top, 0px) + 24px)",
+                paddingBottom: "calc(100lvh - 100svh + 160px)",
+              }}
+              className="absolute inset-x-0 z-[45] flex flex-col overflow-y-auto bg-site-night px-5 md:hidden"
+            >
+              <ul className="flex flex-col border-t border-site-paper/10">
+                {NAV_LINKS.map((link, i) => (
+                  <motion.li
+                    key={link.hash}
+                    initial={prefersReduced ? false : { opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.28, delay: 0.04 + i * 0.04, ease: [0.22, 1, 0.36, 1] }}
+                    className="border-b border-site-paper/10"
+                  >
+                    <a
+                      href={homeHash(link.hash)}
+                      onClick={() => setMobileOpen(false)}
+                      className="flex items-center justify-between py-5 font-flex text-[30px] font-semibold tracking-[-0.02em] text-site-paper [font-variation-settings:'wdth'_110]"
+                    >
+                      {t(link.key)}
+                      <span className="font-mono text-[11px] font-normal tracking-[0.1em] text-site-paper/40">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                    </a>
+                  </motion.li>
+                ))}
+              </ul>
+              <div className="mt-8">
+                <LanguageSwitcher variant="inline" />
+              </div>
+              <Link
+                href="/get-started"
+                className="mt-auto flex h-14 items-center justify-center gap-2 rounded-full bg-site-vis text-[16px] font-medium text-site-on-vis active:scale-[0.98]"
+                onClick={() => {
+                  track("cta_get_started", { placement: "mobile_menu" });
+                  setMobileOpen(false);
+                }}
+              >
+                {t("getStarted")}
+                <ArrowUpRight size={17} />
+              </Link>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
+    </>
   );
 }

@@ -426,6 +426,7 @@ function Windows({
       }
     }
     mesh.instanceMatrix.needsUpdate = true;
+    mesh.computeBoundingSphere(); // real instance bounds, or it gets culled wrongly
   }, [paneH]);
   return (
     <instancedMesh ref={ref} args={[undefined, undefined, count]}>

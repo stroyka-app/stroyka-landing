@@ -65,13 +65,19 @@ export function Skyline({ color }: { color: string }) {
       const w = 5 + r() * 9;
       const h = 6 + Math.pow(r(), 2.4) * 34;
       m.compose(
-        new THREE.Vector3(Math.cos(a) * d, h / 2, -Math.sin(a) * d),
+        // Sunk 1.5 units: a base face exactly on the ground plane is
+        // coplanar with it, and at ~200 units the two z-fight (flicker).
+        new THREE.Vector3(Math.cos(a) * d, h / 2 - 1.5, -Math.sin(a) * d),
         new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), r() * Math.PI),
         new THREE.Vector3(w, h, w * (0.6 + r() * 0.8)),
       );
       mesh.setMatrixAt(i, m);
     }
     mesh.instanceMatrix.needsUpdate = true;
+    // Without this the instanced mesh keeps the unit box's bounds at the
+    // origin, so three.js frustum-culls the WHOLE skyline whenever that
+    // point leaves the view — the towers blinked on scroll (phones).
+    mesh.computeBoundingSphere();
   }, []);
   return (
     <instancedMesh ref={ref} args={[undefined, undefined, COUNT]}>
