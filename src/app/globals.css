@@ -732,7 +732,6 @@
   --sky-night-top: #d8c9a8;
   --sky-night-mid: #e0d2b3;
   --sky-night-haze: #d9c9a6;
-  --lift-floor: #bdb6a2; /* the crane scene's ground at the toolbar line */
   --scene-steel: #2f5b45;
   --scene-steel-dark: #2a2a24;
   --scene-ground: #b9b199;
@@ -756,4 +755,34 @@
 @keyframes home-canvas {
   0% { background-color: var(--sky-top); }
   3%, 100% { background-color: rgb(var(--site-night)); }
+}
+
+/* ── The Lift's pin: scroll-driven, not sticky ─────────────────────────────
+   iOS 26 Safari turns its toolbar solid over any sticky/fixed element at the
+   bottom edge. Here the stage is absolutely positioned and translated down
+   by exactly the distance scrolled through the section (view timeline,
+   `contain` range = the span where the section fills the viewport), so it
+   holds still on screen while being ordinary content — glass toolbar.
+   Travel = section height (760vh) − the current viewport (100dvh). */
+@supports (animation-timeline: view()) {
+  .lift-section {
+    view-timeline: --lift block;
+    overflow: clip;
+  }
+  .lift-stage {
+    position: absolute;
+    left: 0;
+    right: 0;
+    animation: lift-pin linear both;
+    animation-timeline: --lift;
+    animation-range: contain 0% contain 100%;
+  }
+}
+@keyframes lift-pin {
+  from { transform: translateY(0); }
+  /* 100dvh, not lvh: the view timeline's contain range is (section − the
+     CURRENT visible viewport), which changes as Safari's toolbar expands
+     and collapses. dvh tracks it, so the stage never drifts (with lvh it
+     crept up to a toolbar's height and bared a bone strip at 70%). */
+  to { transform: translateY(calc(760vh - 100dvh)); }
 }

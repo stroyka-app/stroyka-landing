@@ -264,7 +264,7 @@ function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
     const shift = heroShift ? -0.24 * heroW + 0.1 * (1 - heroW) : 0;
     // Phones: the hero copy owns the top, so drop the site into the lower
     // half while it's up; the lifts centre it between caption and ledger.
-    const lower = compact ? -0.34 * heroW + 0.04 * (1 - heroW) : 0;
+    const lower = compact ? -0.24 * heroW + 0.04 * (1 - heroW) : 0;
     if (shift !== 0 || lower !== 0) {
       cam.setViewOffset(size.width, size.height, size.width * shift, size.height * lower, size.width, size.height);
     } else if (cam.view) {

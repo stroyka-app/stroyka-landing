@@ -78,20 +78,25 @@ export default function Lift() {
       id="how-it-works"
       ref={sectionRef}
       aria-label="Stroyka"
-      className="relative"
+      className={reduced ? "relative" : "lift-section relative"}
       style={{ height: reduced ? "auto" : "760vh" }}
     >
-      {/* 100lvh, not svh: iOS 26 draws the page UNDER its floating toolbar,
-          so a small-viewport box left a strip of bone page under the URL bar
-          (a "solid bar" over the scene). The scene now runs under the glass;
-          --toolbar-gap keeps bottom UI above the bar when it's expanded. */}
+      {/* The stage is pinned by a scroll-driven CSS animation (.lift-stage,
+          globals.css), NOT position: sticky. iOS 26 Safari forces a solid
+          toolbar tint over any sticky/fixed element at the bottom edge — the
+          one "bar" left on the page. A transformed, normally-positioned
+          stage is just page content to Safari, so the scene shows through
+          the glass under the URL bar exactly like every other section.
+          Browsers without scroll-driven animations fall back to sticky.
+          100lvh: the scene runs under the floating toolbar; --toolbar-gap
+          keeps bottom UI above the bar when it's expanded. */}
       <div
-        className={`${reduced ? "relative" : "sticky"} top-0 h-[100lvh] min-h-[600px] overflow-hidden`}
-        // iOS 26 goes to a SOLID toolbar tint over this pinned stage; the
-        // colour comes from SafariBottomTint (target #how-it-works =
-        // --lift-floor), and the scene fades into exactly that colour below,
-        // so the tint reads as the ground running on under the glass.
-        style={{ ["--toolbar-gap" as string]: "calc(100lvh - 100svh)", backgroundColor: "var(--lift-floor)" }}
+        // Phones: the stage runs --stage-extra past the viewport bottom so the
+        // scene also fills the strip under Safari's toolbar buttons (which
+        // otherwise showed the page colour as a light edge over the dark
+        // ground). Bottom UI subtracts it via --toolbar-gap.
+        className={`${reduced ? "relative" : "lift-stage sticky"} top-0 h-[calc(100lvh+var(--stage-extra))] min-h-[600px] overflow-hidden [--stage-extra:140px] md:[--stage-extra:0px]`}
+        style={{ ["--toolbar-gap" as string]: "calc(100lvh - 100svh + var(--stage-extra))" }}
       >
         {/* Sky. Starts at #485348 — the body colour iOS paints behind the
             status bar — so the top of the phone and the sky are one. */}
@@ -122,19 +127,6 @@ export default function Lift() {
             active={active}
           />
         </div>
-
-        {/* Bottom fade into the night page below. */}
-        <div
-          aria-hidden
-          // Dissolves the scene into the floor colour BEFORE the toolbar line
-          // (the visible bottom, 100svh), then holds it underneath: with the
-          // tint = --lift-floor, nothing is cut by the toolbar edge, so no band.
-          className="pointer-events-none absolute inset-x-0 bottom-0"
-          style={{
-            height: "calc(var(--toolbar-gap) + 170px)",
-            background: "linear-gradient(to bottom, transparent 0, var(--lift-floor) 170px, var(--lift-floor) 100%)",
-          }}
-        />
 
         {!reduced && <SceneTags bridge={bridge} spent={spent} landed={landed} opacity={hudOpacity} />}
 
