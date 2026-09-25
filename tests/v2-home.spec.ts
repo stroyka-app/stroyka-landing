@@ -43,3 +43,27 @@ test.describe("V2 phase 1 — ledger", () => {
     await expect.poll(() => first.getAttribute("d"), { timeout: 8000 }).not.toBe(before);
   });
 });
+
+test("reduced motion: home hydrates without errors", async ({ browser }) => {
+  const ctx = await browser.newContext({ reducedMotion: "reduce", viewport: { width: 1440, height: 900 } });
+  const page = await ctx.newPage();
+  const errors: string[] = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
+  await page.goto("/");
+  await page.waitForTimeout(2000);
+  expect(errors.filter((e) => /hydrat|did not match/i.test(e))).toEqual([]);
+  await expect(page.locator('path[data-leader][data-on="1"]')).toHaveCount(0);
+  await ctx.close();
+});
+
+test("390px: the home never scrolls sideways", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  for (const y of [0, 0.25, 0.5, 0.75, 1]) {
+    await page.evaluate((f) => window.scrollTo(0, f * document.documentElement.scrollHeight), y);
+    await page.waitForTimeout(300);
+    const [sw, cw] = await page.evaluate(() => [document.documentElement.scrollWidth, document.documentElement.clientWidth]);
+    expect(sw).toBeLessThanOrEqual(cw);
+  }
+});
