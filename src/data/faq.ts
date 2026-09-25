@@ -13,7 +13,7 @@ export const QUESTIONS: readonly FaqItem[] = [
   },
   {
     q: "How do workers join?",
-    a: "The boss sends email invites directly from the app. Workers click the link, create a password, and they're in. No app store download required for web — it runs in the browser on any phone.",
+    a: "The boss sends email invites directly from the app. Workers tap the link, set a password, and sign in on the Stroyka app for iPhone or Android.",
     meta: "Setup",
   },
   {
@@ -33,7 +33,7 @@ export const QUESTIONS: readonly FaqItem[] = [
   },
   {
     q: "Why not just use enterprise construction software?",
-    a: "Most construction platforms are designed for large general contractors with dedicated office staff and IT teams. They cost $500–$1,000+/month, take weeks to onboard, and charge per seat. Stroyka is purpose-built for small crews of 5–25 workers — the people who actually swing hammers. Flat pricing, no per-seat fees, no training required. Your crew can be up and running the same day.",
+    a: "Most construction platforms are designed for large general contractors with dedicated office staff and IT teams. They cost $500–$1,000+/month, take weeks to onboard, and charge per seat. Stroyka is purpose-built for small crews — the people who actually swing hammers. Flat pricing, no per-seat fees, no training required. Your crew can be up and running the same day.",
     meta: "Comparison",
   },
   {
@@ -45,5 +45,10 @@ export const QUESTIONS: readonly FaqItem[] = [
     q: "How do I bill my clients?",
     a: "Generate an invoice from any project's unbilled hours, materials, and fuel — add markup or custom line items, then email the PDF to your client right from the app. If an invoice goes overdue, send a one-tap payment reminder, or turn on automatic reminders and Stroyka politely follows up for you (up to 3 times).",
     meta: "Invoicing",
+  },
+  {
+    q: "Can my crew use it in Spanish?",
+    a: "Yes. Every screen is in English, Spanish and Russian, and each person picks their own language. You can run the job in English while your crew clocks in and logs materials in Spanish.",
+    meta: "Language",
   },
 ];
