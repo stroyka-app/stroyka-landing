@@ -126,7 +126,14 @@ export default function Lift() {
         {/* Bottom fade into the night page below. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-gradient-to-b from-transparent to-[var(--lift-floor)]"
+          // Dissolves the scene into the floor colour BEFORE the toolbar line
+          // (the visible bottom, 100svh), then holds it underneath: with the
+          // tint = --lift-floor, nothing is cut by the toolbar edge, so no band.
+          className="pointer-events-none absolute inset-x-0 bottom-0"
+          style={{
+            height: "calc(var(--toolbar-gap) + 170px)",
+            background: "linear-gradient(to bottom, transparent 0, var(--lift-floor) 170px, var(--lift-floor) 100%)",
+          }}
         />
 
         {!reduced && <SceneTags bridge={bridge} spent={spent} landed={landed} opacity={hudOpacity} />}
