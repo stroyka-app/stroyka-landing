@@ -36,13 +36,17 @@ function useMats(pal: ScenePalette): Mats {
     }),
     [],
   );
-  // Re-skin in place when the palette changes (no remount, no rebuild).
-  m.body.color.set(pal.machine);
-  m.dark.color.set(pal.steelDark);
-  m.glass.color.set(pal.steelDark);
-  m.lamp.color.set(pal.window);
-  m.lamp.emissive.set(pal.window);
-  LOADS.forEach((l, i) => m.cargo[i].color.set(l.id === "labor" ? pal.labor : l.color));
+  // Re-skin in place when the palette changes (no remount, no rebuild). In
+  // an effect, keyed on the palette fields actually read — not on every
+  // render, so render stays a pure read of `m`.
+  useEffect(() => {
+    m.body.color.set(pal.machine);
+    m.dark.color.set(pal.steelDark);
+    m.glass.color.set(pal.steelDark);
+    m.lamp.color.set(pal.window);
+    m.lamp.emissive.set(pal.window);
+    LOADS.forEach((l, i) => m.cargo[i].color.set(l.id === "labor" ? pal.labor : l.color));
+  }, [m, pal.machine, pal.steelDark, pal.window, pal.labor]);
 
   useEffect(
     () => () => {
