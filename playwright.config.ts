@@ -5,6 +5,7 @@ const BASE_URL = `http://localhost:${PORT}`;
 
 export default defineConfig({
   testDir: "./tests",
+  testIgnore: ["unit/**", "visual/**"],
   timeout: 30_000,
   use: { baseURL: BASE_URL },
   webServer: {
