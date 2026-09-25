@@ -6,6 +6,7 @@ import {animate, motion, useInView, useMotionValue, useMotionValueEvent, useScro
 import type { SceneBridge } from "../scene/CraneScene";
 import { BUDGET, beatAt, craneAt, spentAfter } from "../scene/choreo";
 import LiftHero from "./LiftHero";
+import { diag } from "../scene/diag";
 import Ledger from "./Ledger";
 import Beats from "./Beats";
 import SceneTags from "./SceneTags";
@@ -66,6 +67,10 @@ export default function Lift() {
     return () => ctl.stop();
   }, [landed, reduced, spent]);
 
+  // TEMP diag (dev only): read after mount so SSR and client agree.
+  const [diagSticky, setDiagSticky] = useState(false);
+  useEffect(() => setDiagSticky(diag("sticky")), []);
+
   const bridge = useRef<SceneBridge>({ hook: null, budget: null, stack: null });
 
   const heroOpacity = useTransform(progress, [0, 0.055], [1, 0]);
@@ -95,7 +100,7 @@ export default function Lift() {
         // scene also fills the strip under Safari's toolbar buttons (which
         // otherwise showed the page colour as a light edge over the dark
         // ground). Bottom UI subtracts it via --toolbar-gap.
-        className={`${reduced ? "relative" : "lift-stage sticky"} top-0 h-[calc(100lvh+var(--stage-extra))] min-h-[600px] overflow-hidden [--stage-extra:140px] md:[--stage-extra:0px]`}
+        className={`${reduced ? "relative" : diagSticky ? "sticky" : "lift-stage sticky"} top-0 h-[calc(100lvh+var(--stage-extra))] min-h-[600px] overflow-hidden [--stage-extra:140px] md:[--stage-extra:0px]`}
         style={{ ["--toolbar-gap" as string]: "calc(100lvh - 100svh + var(--stage-extra))" }}
       >
         {/* Sky. Starts at #485348 — the body colour iOS paints behind the

@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useMemo, useRef, type MutableRefObject } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, type MutableRefObject } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import type { MotionValue } from "motion/react";
 import * as THREE from "three";
 import Crane from "./Crane";
 import { BudgetEnvelope, Dust, Ground, Skyline } from "./Site";
 import { useScenePalette, type ScenePalette } from "./palette";
+import { diag } from "./diag";
+import Sky, { type SkyUniforms } from "./Sky";
 import {
   BLOCK_W,
   BUDGET,
@@ -43,16 +45,19 @@ type Props = {
 export default function CraneScene(props: Props) {
   return (
     <Canvas
-      shadows
+      shadows={!diag("noshadow")}
       // Phones up to 2x (was 1.5): the crane's lattice needs the pixels, or its
       // thinnest members fall between them and shimmer on scroll.
-      dpr={[1, 2]}
+      dpr={diag("dpr1") ? 1 : [1, 2]}
       frameloop={props.active ? "always" : "never"}
       // logarithmicDepthBuffer: iPhone WebGL can hand us a coarse depth buffer,
       // and at ~200 units nearly-touching surfaces (the skyline) resolved to
       // the same depth and flickered on scroll. Log depth keeps precision at
       // distance on every device; the scene is small enough not to notice.
-      gl={{ antialias: true, alpha: true, powerPreference: "high-performance", logarithmicDepthBuffer: true }}
+      // alpha: false — the sky is drawn in WebGL (Sky.tsx), so the canvas is
+      // opaque; a transparent canvas moved by the scroll-driven pin shimmered
+      // on iOS where the crane stood against the sky. (?diag=alpha = old way)
+      gl={{ antialias: !diag("noaa"), alpha: diag("alpha"), powerPreference: "high-performance", logarithmicDepthBuffer: !diag("nolog") }}
       // near 10: nothing in the scene comes within ~50 units of the camera;
       // a far-out near plane is the other half of depth precision.
       camera={{ position: [-40, 21, 62], fov: 36, near: 10, far: 400 }}
@@ -112,6 +117,8 @@ function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
   const sunRef = useRef<THREE.DirectionalLight>(null);
   const { camera, size, scene } = useThree();
   const pal = useScenePalette();
+  const skyU = useRef<SkyUniforms | null>(null);
+  const setSkyU = useCallback((u: SkyUniforms) => void (skyU.current = u), []);
   const haze = useMemo(
     () => ({ day: new THREE.Color(pal.hazeDay), night: new THREE.Color(pal.hazeNight) }),
     [pal.hazeDay, pal.hazeNight],
@@ -157,9 +164,10 @@ function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
     const s = sim.current;
 
     /* crane pose — plus a lazy idle drift while the hero is up */
-    const idleSwing = reduced ? 0 : c.idle * Math.sin(t * 0.22) * 0.28;
+    const still = reduced || diag("still");
+    const idleSwing = still ? 0 : c.idle * Math.sin(t * 0.22) * 0.28;
     const theta = c.theta + idleSwing;
-    const r = c.r + (reduced ? 0 : c.idle * Math.sin(t * 0.31 + 1) * 2.5);
+    const r = c.r + (still ? 0 : c.idle * Math.sin(t * 0.31 + 1) * 2.5);
     if (slewRef.current) slewRef.current.rotation.y = theta;
     if (trolleyRef.current) trolleyRef.current.position.x = r;
 
@@ -236,6 +244,7 @@ function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
 
     /* the day ends as the job closes: haze cools, sun drops, windows glow */
     const night = c.finale * 0.85;
+    if (skyU.current) skyU.current.uNight.value = night;
     if (scene.fog) (scene.fog as THREE.Fog).color.lerpColors(haze.day, haze.night, night);
     if (hemiRef.current) hemiRef.current.intensity = lerp(1.1, 0.4, night);
     if (sunRef.current) sunRef.current.intensity = lerp(2.6, 0.7, night);
@@ -301,6 +310,7 @@ function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
   return (
     <>
       <fog attach="fog" args={[pal.hazeDay, 90, 250]} />
+      {!diag("alpha") && <Sky pal={pal} uniformsRef={setSkyU} />}
       <hemisphereLight ref={hemiRef} args={[pal.hemiSky, pal.hemiGround, 1.1]} color={pal.hemiSky} groundColor={pal.hemiGround} />
       <ambientLight intensity={0.15} />
       <directionalLight
@@ -326,7 +336,7 @@ function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
           spacing — none fully cured it on device), and at phone size they
           were faint shapes in the haze anyway. Desktop keeps them. */}
       {!compact && <Skyline color={pal.skyline} />}
-      <Dust count={compact ? 140 : 260} animate={!reduced} color={pal.line} />
+      {!diag("nodust") && <Dust count={compact ? 140 : 260} animate={!reduced} color={pal.line} />}
       <BudgetEnvelope color={pal.line} />
 
       <Crane slewRef={slewRef} trolleyRef={trolleyRef} beaconRef={beaconRef} pal={pal} compact={compact} />

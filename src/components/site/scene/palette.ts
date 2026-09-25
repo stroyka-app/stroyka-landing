@@ -25,6 +25,12 @@ export type ScenePalette = {
   labor: string;
   hazeDay: string;
   hazeNight: string;
+  skyTop: string;
+  skyMid: string;
+  skyNightTop: string;
+  skyNightMid: string;
+  /** "r g b" channels */
+  skySun: string;
 };
 
 const VARS: Record<keyof ScenePalette, [string, string]> = {
@@ -43,6 +49,11 @@ const VARS: Record<keyof ScenePalette, [string, string]> = {
   labor: ["--scene-labor", "#d4ee5e"],
   hazeDay: ["--sky-haze", "#8e927e"],
   hazeNight: ["--sky-night-haze", "#343c35"],
+  skyTop: ["--sky-top", "#c9d1c4"],
+  skyMid: ["--sky-mid", "#d6d9cb"],
+  skyNightTop: ["--sky-night-top", "#d8c9a8"],
+  skyNightMid: ["--sky-night-mid", "#e0d2b3"],
+  skySun: ["--sky-sun", "255 244 214"],
 };
 
 function read(): ScenePalette {
