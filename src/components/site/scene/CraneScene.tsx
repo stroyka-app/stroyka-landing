@@ -46,11 +46,14 @@ export default function CraneScene(props: Props) {
       shadows
       dpr={props.compact ? [1, 1.5] : [1, 2]}
       frameloop={props.active ? "always" : "never"}
-      gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-      // near 4 (nothing in the scene comes closer than ~40 units): at 0.5 the
-      // depth buffer had too little precision out at the skyline (~200u) and
-      // the overlapping towers z-fought — a shimmer on scroll on phones.
-      camera={{ position: [-40, 21, 62], fov: 36, near: 4, far: 400 }}
+      // logarithmicDepthBuffer: iPhone WebGL can hand us a coarse depth buffer,
+      // and at ~200 units nearly-touching surfaces (the skyline) resolved to
+      // the same depth and flickered on scroll. Log depth keeps precision at
+      // distance on every device; the scene is small enough not to notice.
+      gl={{ antialias: true, alpha: true, powerPreference: "high-performance", logarithmicDepthBuffer: true }}
+      // near 10: nothing in the scene comes within ~50 units of the camera;
+      // a far-out near plane is the other half of depth precision.
+      camera={{ position: [-40, 21, 62], fov: 36, near: 10, far: 400 }}
     >
       <Contents {...props} />
     </Canvas>

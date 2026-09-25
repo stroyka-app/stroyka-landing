@@ -51,7 +51,7 @@ export function Ground({ pal }: { pal: ScenePalette }) {
 /** A far-off skyline, lost in the haze. Gives the site a horizon. */
 export function Skyline({ color }: { color: string }) {
   const ref = useRef<THREE.InstancedMesh>(null);
-  const COUNT = 64;
+  const COUNT = 44;
   useLayoutEffect(() => {
     const mesh = ref.current;
     if (!mesh) return;
@@ -60,9 +60,11 @@ export function Skyline({ color }: { color: string }) {
     for (let i = 0; i < COUNT; i++) {
       // Only the half of the horizon the camera faces (it sits at −x, +z),
       // and far enough out that nothing looms in front of the lens.
-      const a = -Math.PI * 0.15 + r() * Math.PI * 1.25;
+      // Evenly spaced bearings (with a little jitter) so no two towers
+      // intersect: intersecting faces at this distance flicker on phones.
+      const a = -Math.PI * 0.15 + ((i + 0.2 + r() * 0.6) / COUNT) * Math.PI * 1.25;
       const d = 150 + r() * 90;
-      const w = 5 + r() * 9;
+      const w = 4 + r() * 6;
       const h = 6 + Math.pow(r(), 2.4) * 34;
       m.compose(
         // Sunk 1.5 units: a base face exactly on the ground plane is
