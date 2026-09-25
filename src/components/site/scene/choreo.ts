@@ -75,7 +75,7 @@ const polar = (x: number, z: number) => ({ theta: Math.atan2(-z, x), r: Math.hyp
 export const HERO_END = 0.1;
 /** Progress after the last lift: the finale, pull-back, lights on. */
 export const LIFTS_END = 0.86;
-const LIFT_SPAN = (LIFTS_END - HERO_END) / LOADS.length;
+export const LIFT_SPAN = (LIFTS_END - HERO_END) / LOADS.length;
 
 /** Within one lift (t ∈ 0‥1): hook grabs the load here… */
 const ATTACH_T = 0.36;
