@@ -981,6 +981,9 @@
         "Pro": "Unlimited workers"
       },
       "compareLink": "See every vendor, every source"
+    },
+    "how": {
+      "days": ["Mon · 9:00 AM", "Mon · 9:10 AM", "Tue · 7:00 AM", "Fri · 4:30 PM"]
     }
   }
 }

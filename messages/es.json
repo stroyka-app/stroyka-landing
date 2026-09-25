@@ -984,6 +984,9 @@
         "Pro": "Trabajadores ilimitados"
       },
       "compareLink": "Ver cada proveedor y cada fuente"
+    },
+    "how": {
+      "days": ["Lun · 9:00", "Lun · 9:10", "Mar · 7:00", "Vie · 16:30"]
     }
   }
 }
