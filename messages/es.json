@@ -822,7 +822,8 @@
       "tags": {
         "budget": "Presupuesto",
         "spent": "Gastado"
-      }
+      },
+      "replay": "Repetir"
     },
     "ticker": {
       "events": [

@@ -28,24 +28,25 @@ export default function ScrollToTop() {
   // Lift) on phones — its ledger strip sits at the bottom where the button
   // floats, and the section has its own progress (step counter, ledger).
   useEffect(() => {
-    const target = document.getElementById("how-it-works");
-    if (!target) return;
+    // Looked up on every check, not once: on phones the section is swapped
+    // for PhoneLift after mount, and an observer on the first node would be
+    // watching a detached element.
     const mql = window.matchMedia("(max-width: 767px)");
-    let intersecting = false;
-    const update = () => setSuppressed(intersecting && mql.matches);
-    const obs = new IntersectionObserver(
-      (entries) => {
-        intersecting = entries[0]?.isIntersecting ?? false;
-        update();
-      },
-      { threshold: 0 }
-    );
-    obs.observe(target);
-    const mqlListener = () => update();
-    mql.addEventListener("change", mqlListener);
+    let raf = 0;
+    const check = () => {
+      raf = 0;
+      const el = document.getElementById("how-it-works");
+      const r = el?.getBoundingClientRect();
+      setSuppressed(!!r && mql.matches && r.top < window.innerHeight && r.bottom > 0);
+    };
+    const schedule = () => { if (!raf) raf = requestAnimationFrame(check); };
+    check();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
     return () => {
-      obs.disconnect();
-      mql.removeEventListener("change", mqlListener);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, []);
 

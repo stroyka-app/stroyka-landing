@@ -819,7 +819,8 @@
       "tags": {
         "budget": "Budget",
         "spent": "Spent"
-      }
+      },
+      "replay": "Replay"
     },
     "ticker": {
       "events": [
