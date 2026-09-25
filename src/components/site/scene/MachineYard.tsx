@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import type { MotionValue } from "motion/react";
 import * as THREE from "three";
@@ -23,17 +23,40 @@ type Mats = {
 };
 
 function useMats(pal: ScenePalette): Mats {
-  return useMemo(
+  // Built once, like Crane.tsx's `steel`/`dark`: a palette switch re-skins
+  // these in place below rather than rebuilding (and leaking) new materials.
+  const m = useMemo(
     () => ({
-      body: new THREE.MeshStandardMaterial({ color: pal.machine, roughness: 0.7, metalness: 0.1 }),
-      dark: new THREE.MeshStandardMaterial({ color: pal.steelDark, roughness: 0.9 }),
-      glass: new THREE.MeshStandardMaterial({ color: pal.steelDark, roughness: 0.2, metalness: 0.5 }),
-      lamp: new THREE.MeshStandardMaterial({ color: pal.window, emissive: pal.window, emissiveIntensity: 0 }),
+      body: new THREE.MeshStandardMaterial({ roughness: 0.7, metalness: 0.1 }),
+      dark: new THREE.MeshStandardMaterial({ roughness: 0.9 }),
+      glass: new THREE.MeshStandardMaterial({ roughness: 0.2, metalness: 0.5 }),
+      lamp: new THREE.MeshStandardMaterial({ emissiveIntensity: 0 }),
       contact: new THREE.MeshBasicMaterial({ color: "#000000", transparent: true, opacity: 0.16, depthWrite: false }),
-      cargo: LOADS.map((l) => new THREE.MeshStandardMaterial({ color: l.id === "labor" ? pal.labor : l.color, roughness: 0.8 })),
+      cargo: LOADS.map(() => new THREE.MeshStandardMaterial({ roughness: 0.8 })),
     }),
-    [pal.machine, pal.steelDark, pal.window, pal.labor],
+    [],
   );
+  // Re-skin in place when the palette changes (no remount, no rebuild).
+  m.body.color.set(pal.machine);
+  m.dark.color.set(pal.steelDark);
+  m.glass.color.set(pal.steelDark);
+  m.lamp.color.set(pal.window);
+  m.lamp.emissive.set(pal.window);
+  LOADS.forEach((l, i) => m.cargo[i].color.set(l.id === "labor" ? pal.labor : l.color));
+
+  useEffect(
+    () => () => {
+      m.body.dispose();
+      m.dark.dispose();
+      m.glass.dispose();
+      m.lamp.dispose();
+      m.contact.dispose();
+      m.cargo.forEach((c) => c.dispose());
+    },
+    [m],
+  );
+
+  return m;
 }
 
 function place(g: THREE.Object3D | null, pose: MachinePose) {
