@@ -44,7 +44,9 @@ export default function CraneScene(props: Props) {
   return (
     <Canvas
       shadows
-      dpr={props.compact ? [1, 1.5] : [1, 2]}
+      // Phones up to 2x (was 1.5): the crane's lattice needs the pixels, or its
+      // thinnest members fall between them and shimmer on scroll.
+      dpr={[1, 2]}
       frameloop={props.active ? "always" : "never"}
       // logarithmicDepthBuffer: iPhone WebGL can hand us a coarse depth buffer,
       // and at ~200 units nearly-touching surfaces (the skyline) resolved to
@@ -324,7 +326,7 @@ function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
       <Dust count={compact ? 140 : 260} animate={!reduced} color={pal.line} />
       <BudgetEnvelope color={pal.line} />
 
-      <Crane slewRef={slewRef} trolleyRef={trolleyRef} beaconRef={beaconRef} pal={pal} />
+      <Crane slewRef={slewRef} trolleyRef={trolleyRef} beaconRef={beaconRef} pal={pal} compact={compact} />
 
       {/* Hook block */}
       <group ref={hookRef}>
@@ -338,12 +340,12 @@ function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
         </mesh>
       </group>
       <mesh ref={cableRef}>
-        <cylinderGeometry args={[0.045, 0.045, 1, 6]} />
+        <cylinderGeometry args={compact ? [0.09, 0.09, 1, 6] : [0.045, 0.045, 1, 6]} />
         <meshStandardMaterial color="#20261F" />
       </mesh>
       {[0, 1, 2, 3].map((k) => (
         <mesh key={k} ref={(m) => void (slingRefs.current[k] = m)} visible={false}>
-          <cylinderGeometry args={[0.03, 0.03, 1, 5]} />
+          <cylinderGeometry args={compact ? [0.06, 0.06, 1, 5] : [0.03, 0.03, 1, 5]} />
           <meshStandardMaterial color="#20261F" />
         </mesh>
       ))}

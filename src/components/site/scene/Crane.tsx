@@ -20,12 +20,17 @@ export default function Crane({
   trolleyRef,
   beaconRef,
   pal,
+  compact = false,
 }: {
   slewRef: RefObject<THREE.Group | null>;
   trolleyRef: RefObject<THREE.Group | null>;
   beaconRef: RefObject<THREE.MeshStandardMaterial | null>;
   pal: ScenePalette;
+  /** Phones: thicker members. At phone scale the jib chords and pendant
+   *  cables were thinner than a pixel and shimmered as the camera moved. */
+  compact?: boolean;
 }) {
+  const k = compact ? 1.8 : 1;
   const steel = useMemo(
     () => new THREE.MeshStandardMaterial({ roughness: 0.5, metalness: 0.25 }),
     [],
@@ -70,7 +75,7 @@ export default function Crane({
         <meshStandardMaterial color="#6D6C60" roughness={0.95} />
       </mesh>
       <group position={[0, 1, 0]}>
-        <Lattice struts={mast} material={steel} thickness={0.16} />
+        <Lattice struts={mast} material={steel} thickness={0.16 * k} />
       </group>
 
       {/* Everything above the slewing ring turns together. */}
@@ -81,10 +86,10 @@ export default function Crane({
           <primitive object={dark} attach="material" />
         </mesh>
         <group position={[0, 0.6, 0]}>
-          <Lattice struts={jib} material={steel} thickness={0.12} />
-          <Lattice struts={counterJib} material={steel} thickness={0.14} />
-          <Lattice struts={head.frame} material={steel} thickness={0.16} />
-          <Lattice struts={head.pendants} material={dark} thickness={0.05} />
+          <Lattice struts={jib} material={steel} thickness={0.12 * k} />
+          <Lattice struts={counterJib} material={steel} thickness={0.14 * k} />
+          <Lattice struts={head.frame} material={steel} thickness={0.16 * k} />
+          <Lattice struts={head.pendants} material={dark} thickness={0.05 * (compact ? 2.6 : 1)} />
 
           {/* Counter-jib walkway + counterweights */}
           <mesh position={[-5.7, 0.05, 0]} receiveShadow castShadow>
