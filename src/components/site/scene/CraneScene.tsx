@@ -121,6 +121,12 @@ function Contents({ progress, bridge, reduced, compact, heroShift, heroCamera = 
   const slingRefs = useRef<(THREE.Mesh | null)[]>([]);
   const blockRefs = useRef<(THREE.Group | null)[]>([]);
   const windowMats = useRef<(THREE.MeshStandardMaterial | null)[]>([]);
+  // Last-written `d`/cx/cy per leader index, so the (allocation-free apart
+  // from the string itself) per-frame write only touches the DOM when the
+  // projected anchor actually moved.
+  const lastLeaderD = useRef<(string | null)[]>(LOADS.map(() => null));
+  const lastLeaderCx = useRef<(string | null)[]>(LOADS.map(() => null));
+  const lastLeaderCy = useRef<(string | null)[]>(LOADS.map(() => null));
   const floodRef = useRef<THREE.PointLight>(null);
   const hemiRef = useRef<THREE.HemisphereLight>(null);
   const sunRef = useRef<THREE.DirectionalLight>(null);
@@ -326,23 +332,39 @@ function Contents({ progress, bridge, reduced, compact, heroShift, heroCamera = 
     stackTop.set(BUILDING.x + (BLOCK_W + 0.8) / 2, top, BUILDING.z + (BLOCK_W + 0.8) / 2);
     pin(b.stack, stackTop, camera, size, c.landed > 0);
 
-    /* leader lines: ledger row → the near-right corner of its storey */
-    for (let i = 0; i < c.landed; i++) {
-      const path = b.leaders[i];
-      const row = b.rows[i];
-      if (!path || !row) continue;
-      const h = heightOf(LOADS[i].cost);
-      leaderAnchor
-        .set(BUILDING.x + BLOCK_W / 2, landedBaseY(i) + h / 2, BUILDING.z + BLOCK_W / 2)
-        .project(camera);
-      const x = Math.round((leaderAnchor.x * 0.5 + 0.5) * size.width);
-      const y = Math.round((-leaderAnchor.y * 0.5 + 0.5) * size.height);
-      const mid = Math.round((x + row.x) / 2);
-      path.setAttribute("d", `M${row.x},${row.y} C${mid},${row.y} ${mid},${y} ${x},${y}`);
-      const dot = b.leaderDots[i];
-      if (dot) {
-        dot.setAttribute("cx", String(x));
-        dot.setAttribute("cy", String(y));
+    /* leader line: ledger row → the near-right corner of the storey that
+       JUST landed. Only one line is ever shown (LeaderLines fades the rest
+       out), so only the active index is worth projecting every frame. */
+    const activeI = c.landed - 1;
+    if (activeI >= 0) {
+      const path = b.leaders[activeI];
+      const row = b.rows[activeI];
+      if (path && row) {
+        const h = heightOf(LOADS[activeI].cost);
+        leaderAnchor
+          .set(BUILDING.x + BLOCK_W / 2, landedBaseY(activeI) + h / 2, BUILDING.z + BLOCK_W / 2)
+          .project(camera);
+        const x = Math.round((leaderAnchor.x * 0.5 + 0.5) * size.width);
+        const y = Math.round((-leaderAnchor.y * 0.5 + 0.5) * size.height);
+        const mid = Math.round((x + row.x) / 2);
+        const d = `M${row.x},${row.y} C${mid},${row.y} ${mid},${y} ${x},${y}`;
+        if (lastLeaderD.current[activeI] !== d) {
+          path.setAttribute("d", d);
+          lastLeaderD.current[activeI] = d;
+        }
+        const dot = b.leaderDots[activeI];
+        if (dot) {
+          const cx = String(x);
+          const cy = String(y);
+          if (lastLeaderCx.current[activeI] !== cx) {
+            dot.setAttribute("cx", cx);
+            lastLeaderCx.current[activeI] = cx;
+          }
+          if (lastLeaderCy.current[activeI] !== cy) {
+            dot.setAttribute("cy", cy);
+            lastLeaderCy.current[activeI] = cy;
+          }
+        }
       }
     }
   });

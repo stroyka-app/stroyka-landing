@@ -1,7 +1,7 @@
 "use client";
 
 import type { MutableRefObject } from "react";
-import { motion, type MotionValue } from "motion/react";
+import { motion } from "motion/react";
 import type { SceneBridge } from "../scene/CraneScene";
 import { LOADS } from "../scene/choreo";
 
@@ -17,15 +17,15 @@ import { LOADS } from "../scene/choreo";
 export default function LeaderLines({
   bridge,
   landed,
-  opacity,
 }: {
   bridge: MutableRefObject<SceneBridge>;
   landed: number;
-  opacity: MotionValue<number>;
 }) {
   const active = landed - 1;
   return (
-    <motion.svg aria-hidden style={{ opacity }} className="pointer-events-none absolute inset-0 hidden h-full w-full md:block">
+    // No opacity here — the wrapper in Lift.tsx already fades this whole HUD
+    // block with hudOpacity; adding it again here squared the fade.
+    <svg aria-hidden className="pointer-events-none absolute inset-0 hidden h-full w-full md:block">
       {LOADS.map((load, i) => {
         const on = i === active;
         return (
@@ -53,6 +53,6 @@ export default function LeaderLines({
           </g>
         );
       })}
-    </motion.svg>
+    </svg>
   );
 }
