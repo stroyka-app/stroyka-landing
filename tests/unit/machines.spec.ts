@@ -80,12 +80,17 @@ test("the truck stands at its slot while it unloads, cargo leaves as the block r
   }
 });
 
-test("no truck, mixer or pickup ever drives through a block, the pad or the crane base", () => {
+test("no truck, mixer, pickup or dozer ever drives through a block, the pad or the crane base", () => {
+  // Dozer footprint mirrors MachineYard.tsx's <Contact l={4.2} w={2.8}> for
+  // the dozer group — body (3 long) plus blade reach.
+  const DOZER_LENGTH = 4.2;
+  const DOZER_WIDTH = 2.8;
   for (const p of sweep()) {
     const poses = [
       ...LOADS.map((_, i) => ({ pose: deliveryAt(i, p).truck, w: TRUCK.length, d: TRUCK.width })),
       { pose: mixerAt(p, 0), w: TRUCK.length, d: TRUCK.width },
       { pose: pickupAt(p), w: PICKUP.length, d: PICKUP.width },
+      ...[0, 3.3, 17].map((t) => ({ pose: dozerAt(p, t), w: DOZER_LENGTH, d: DOZER_WIDTH })),
     ];
     for (const { pose, w, d } of poses) {
       if (!pose.visible) continue;
