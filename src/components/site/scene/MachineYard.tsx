@@ -59,6 +59,9 @@ function useMats(pal: ScenePalette): Mats {
   return m;
 }
 
+/** Truck and mixer meshes are modelled at full size, then scaled to `TRUCK`'s footprint. */
+const BODY = { length: 7.5, width: 2.0 } as const;
+
 function place(g: THREE.Object3D | null, pose: MachinePose) {
   if (!g) return;
   g.visible = pose.visible;
@@ -110,7 +113,7 @@ export default function Machines({ progress, pal, reduced }: { progress: MotionV
     for (let i = STAGED; i < LOADS.length; i++) {
       const d = deliveryAt(i, p);
       place(trucks.current[i], d.truck);
-      roll(truckWheels.current[i], d.truck.wheelTurn);
+      roll(truckWheels.current[i], d.truck.wheelTurn / TRUCK.scale); // scaled wheels spin faster
       const c = cargo.current[i];
       if (c) c.visible = d.cargo;
     }
@@ -121,7 +124,7 @@ export default function Machines({ progress, pal, reduced }: { progress: MotionV
 
     const mx = mixerAt(p, t);
     place(mixer.current, mx);
-    roll(mixerWheels.current, mx.wheelTurn);
+    roll(mixerWheels.current, mx.wheelTurn / TRUCK.scale);
     if (drum.current) drum.current.rotation.x = mx.drum;
 
     const pk = pickupAt(p);
@@ -135,19 +138,19 @@ export default function Machines({ progress, pal, reduced }: { progress: MotionV
       {/* Flatbeds, one per delivered load, each carrying a crate in the load's colour. */}
       {LOADS.map((load, i) =>
         i < STAGED ? null : (
-          <group key={load.id} ref={(g) => void (trucks.current[i] = g)} visible={false}>
-            <Contact l={TRUCK.length} w={TRUCK.width} mat={m.contact} />
+          <group key={load.id} ref={(g) => void (trucks.current[i] = g)} visible={false} scale={TRUCK.scale}>
+            <Contact l={BODY.length} w={BODY.width} mat={m.contact} />
             <mesh position={[0, 0.78, 0]} material={m.dark}>
-              <boxGeometry args={[TRUCK.length, 0.35, 1.8]} />
+              <boxGeometry args={[BODY.length, 0.35, 1.8]} />
             </mesh>
             <mesh position={[2.7, 1.75, 0]} material={m.body}>
-              <boxGeometry args={[2, 1.9, TRUCK.width]} />
+              <boxGeometry args={[2, 1.9, BODY.width]} />
             </mesh>
             <mesh position={[3.71, 2.05, 0]} material={m.glass}>
               <boxGeometry args={[0.05, 0.75, 1.7]} />
             </mesh>
             <mesh position={[-0.9, 1.08, 0]} material={m.body}>
-              <boxGeometry args={[5, 0.25, TRUCK.width]} />
+              <boxGeometry args={[5, 0.25, BODY.width]} />
             </mesh>
             <mesh ref={(c) => void (cargo.current[i] = c)} position={[-0.9, 1.78, 0]} material={m.cargo[i]}>
               <boxGeometry args={[3.2, 1.15, 1.7]} />
@@ -186,13 +189,13 @@ export default function Machines({ progress, pal, reduced }: { progress: MotionV
       </group>
 
       {/* Concrete mixer: cab, chassis, tilted spinning drum. */}
-      <group ref={mixer}>
-        <Contact l={TRUCK.length} w={TRUCK.width} mat={m.contact} />
+      <group ref={mixer} scale={TRUCK.scale}>
+        <Contact l={BODY.length} w={BODY.width} mat={m.contact} />
         <mesh position={[0, 0.78, 0]} material={m.dark}>
-          <boxGeometry args={[TRUCK.length, 0.35, 1.8]} />
+          <boxGeometry args={[BODY.length, 0.35, 1.8]} />
         </mesh>
         <mesh position={[2.7, 1.75, 0]} material={m.body}>
-          <boxGeometry args={[2, 1.9, TRUCK.width]} />
+          <boxGeometry args={[2, 1.9, BODY.width]} />
         </mesh>
         <mesh position={[3.71, 2.05, 0]} material={m.glass}>
           <boxGeometry args={[0.05, 0.75, 1.7]} />

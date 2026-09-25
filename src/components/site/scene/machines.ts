@@ -21,14 +21,16 @@ export const STAGED = 3;
 export const WHEEL_R = 0.5;
 
 /** Delivery road: in front of the yard's back row, driven toward −x. */
-export const ROAD = { z: 22.5, xIn: 52, xOut: -34 } as const;
-export const TRUCK = { length: 7.5, width: 2.0 } as const;
+export const ROAD = { z: 21, xIn: 52, xOut: -34 } as const;
+/** Footprint after the 0.85 scale: a flatbed stays smaller than a storey block. */
+export const TRUCK = { length: 6.4, width: 1.7, scale: 0.85 } as const;
 /** Grading a berm on the far side of the pad; parks at parkX. */
-export const DOZER = { parkX: 23, workX: 27, sweep: 3, z: -1.5 } as const;
-/** Stands between the mast and the pad for the pour, leaves toward −x. */
-export const MIXER = { x: 3.5, z: -4.5, exitX: -34 } as const;
+export const DOZER = { parkX: 26, workX: 27, sweep: 3, z: -1.5 } as const;
+/** Stands by the mast foot for the pour — screen-left of the mast, clear of the
+ *  pad and the building — then leaves toward −x. */
+export const MIXER = { x: -3.5, z: -5.5, exitX: -34 } as const;
 /** Rolls in on its own lane and stops facing the finished building. */
-export const PICKUP = { parkX: 21, z: 4.5, length: 4.2, width: 1.8 } as const;
+export const PICKUP = { parkX: 17.5, z: 4.5, length: 4.2, width: 1.8 } as const;
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const smooth = (t: number) => t * t * (3 - 2 * t);

@@ -81,6 +81,7 @@ export default function Lift() {
   return (
     <section
       id="how-it-works"
+      data-lift
       ref={sectionRef}
       aria-label="Stroyka"
       className={reduced ? "relative" : "lift-section relative"}
