@@ -1,7 +1,7 @@
 {
   "meta": {
     "homeTitle": "Stroyka — Construction Crew & Job Cost Management",
-    "homeDescription": "Stroyka runs the whole job from one offline-first app — GPS time clock, job costing, AI receipt scanning, and client invoicing with automatic payment reminders. For construction crews of 5–25.",
+    "homeDescription": "Stroyka runs the whole job from one offline-first app — GPS time clock, job costing, AI receipt scanning, and client invoicing with automatic payment reminders. For small construction crews.",
     "demoTitle": "Request a Demo — Stroyka",
     "demoDescription": "See Stroyka in action. Book a 20-minute demo with the founder.",
     "getStartedTitle": "Get Started — Stroyka",
@@ -153,7 +153,7 @@
   },
   "comparison": {
     "heading": "Where Stroyka lands.",
-    "subhead": "Honest comparison. If you’re a 50+ person GC with a dedicated back-office team, enterprise tools are still the right call. If you’re a 5–25 crew trying to stop texting timesheets, keep reading.",
+    "subhead": "Honest comparison. If you’re a 50+ person GC with a dedicated back-office team, enterprise tools are still the right call. If you’re a small crew trying to stop texting timesheets, keep reading.",
     "whatMatters": "What matters",
     "onJobsite": "on the jobsite",
     "cols": {
@@ -167,7 +167,7 @@
       },
       "2": {
         "name": "Stroyka",
-        "sub": "For crews of 5–25"
+        "sub": "For small crews"
       }
     },
     "rows": {
@@ -233,7 +233,7 @@
       },
       "1": {
         "q": "How do workers join?",
-        "a": "The boss sends email invites directly from the app. Workers click the link, create a password, and they’re in. No app store download required for web — it runs in the browser on any phone.",
+        "a": "The boss sends email invites directly from the app. Workers tap the link, set a password, and sign in on the Stroyka app for iPhone or Android.",
         "meta": "Setup"
       },
       "2": {
@@ -253,7 +253,7 @@
       },
       "5": {
         "q": "Why not just use enterprise construction software?",
-        "a": "Most construction platforms are designed for large general contractors with dedicated office staff and IT teams. They cost $500–$1,000+/month, take weeks to onboard, and charge per seat. Stroyka is purpose-built for small crews of 5–25 workers — the people who actually swing hammers. Flat pricing, no per-seat fees, no training required. Your crew can be up and running the same day.",
+        "a": "Most construction platforms are designed for large general contractors with dedicated office staff and IT teams. They cost $500–$1,000+/month, take weeks to onboard, and charge per seat. Stroyka is purpose-built for small crews — the people who actually swing hammers. Flat pricing, no per-seat fees, no training required. Your crew can be up and running the same day.",
         "meta": "Comparison"
       },
       "6": {
@@ -410,27 +410,6 @@
     "signature": "— Maks",
     "name": "Maks Dalen",
     "role": "Founder, Stroyka"
-  },
-  "testimonials": {
-    "heading": "What Crews Are Saying",
-    "subhead": "Trusted by real construction teams",
-    "items": {
-      "0": {
-        "name": "Mike R.",
-        "role": "General Contractor, Denver",
-        "quote": "Stroyka replaced three different apps we were using. The crew actually uses it because it works offline at every site."
-      },
-      "1": {
-        "name": "Sarah K.",
-        "role": "Project Manager, Austin",
-        "quote": "I finally know where every dollar goes before the project ends. No more spreadsheet nightmares."
-      },
-      "2": {
-        "name": "Carlos M.",
-        "role": "Crew Lead, Phoenix",
-        "quote": "My guys submit time and requests from their phones in 30 seconds. Even in the basement with zero signal."
-      }
-    }
   },
   "demo": {
     "eyebrow": "Get started",

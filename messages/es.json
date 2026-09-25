@@ -2,7 +2,7 @@
   "_note": "pending native pass",
   "meta": {
     "homeTitle": "Stroyka — Gestión de Cuadrilla y Costos de Obra",
-    "homeDescription": "Stroyka gestiona toda la obra en una app que funciona sin conexión — reloj GPS, costos de obra, escaneo AI de recibos y facturación con recordatorios de pago automáticos. Para cuadrillas de 5–25.",
+    "homeDescription": "Stroyka gestiona toda la obra en una app que funciona sin conexión — reloj GPS, costos de obra, escaneo AI de recibos y facturación con recordatorios de pago automáticos. Para cuadrillas pequeñas.",
     "demoTitle": "Solicitar una Demo — Stroyka",
     "demoDescription": "Mira Stroyka en acción. Agenda una demo de 20 minutos con el fundador.",
     "getStartedTitle": "Empezar — Stroyka",
@@ -154,7 +154,7 @@
   },
   "comparison": {
     "heading": "Dónde encaja Stroyka.",
-    "subhead": "Comparación honesta. Si eres un GC de 50+ personas con equipo administrativo dedicado, las herramientas enterprise siguen siendo la mejor opción. Si eres una cuadrilla de 5–25 que quiere dejar de mandar partes de horas por texto, sigue leyendo.",
+    "subhead": "Comparación honesta. Si eres un GC de 50+ personas con equipo administrativo dedicado, las herramientas enterprise siguen siendo la mejor opción. Si eres una cuadrilla pequeña que quiere dejar de mandar partes de horas por texto, sigue leyendo.",
     "whatMatters": "Lo que importa",
     "onJobsite": "en la obra",
     "cols": {
@@ -168,7 +168,7 @@
       },
       "2": {
         "name": "Stroyka",
-        "sub": "Para cuadrillas de 5–25"
+        "sub": "Para cuadrillas pequeñas"
       }
     },
     "rows": {
@@ -234,7 +234,7 @@
       },
       "1": {
         "q": "¿Cómo se suman los trabajadores?",
-        "a": "El jefe envía invitaciones por correo directamente desde la app. Los trabajadores hacen clic en el enlace, crean una contraseña y listo. No se necesita descargar ninguna app para la versión web — funciona en el navegador de cualquier teléfono.",
+        "a": "El jefe envía invitaciones por correo directamente desde la app. Los trabajadores abren el enlace, crean una contraseña e inician sesión en la app de Stroyka para iPhone o Android.",
         "meta": "Configuración"
       },
       "2": {
@@ -254,7 +254,7 @@
       },
       "5": {
         "q": "¿Por qué no usar software enterprise de construcción?",
-        "a": "La mayoría de las plataformas de construcción están diseñadas para grandes contratistas generales con personal de oficina y equipos de TI dedicados. Cuestan $500–$1,000+/mes, requieren semanas de incorporación y cobran por usuario. Stroyka está hecho para cuadrillas pequeñas de 5–25 trabajadores — los que de verdad ponen el hombro. Precio fijo, sin cobro por usuario, sin capacitación. Tu cuadrilla puede empezar el mismo día.",
+        "a": "La mayoría de las plataformas de construcción están diseñadas para grandes contratistas generales con personal de oficina y equipos de TI dedicados. Cuestan $500–$1,000+/mes, requieren semanas de incorporación y cobran por usuario. Stroyka está hecho para cuadrillas pequeñas — los que de verdad ponen el hombro. Precio fijo, sin cobro por usuario, sin capacitación. Tu cuadrilla puede empezar el mismo día.",
         "meta": "Comparación"
       },
       "6": {
@@ -411,27 +411,6 @@
     "signature": "— Maks",
     "name": "Maks Dalen",
     "role": "Fundador, Stroyka"
-  },
-  "testimonials": {
-    "heading": "Lo que dicen las cuadrillas",
-    "subhead": "La confianza de equipos reales de construcción",
-    "items": {
-      "0": {
-        "name": "Mike R.",
-        "role": "Contratista general, Denver",
-        "quote": "Stroyka reemplazó tres apps que usábamos. La cuadrilla lo usa de verdad porque funciona sin señal en cualquier obra."
-      },
-      "1": {
-        "name": "Sarah K.",
-        "role": "Gerente de proyecto, Austin",
-        "quote": "Por fin sé adónde va cada dólar antes de que termine el proyecto. Nada de pesadillas con hojas de cálculo."
-      },
-      "2": {
-        "name": "Carlos M.",
-        "role": "Líder de cuadrilla, Phoenix",
-        "quote": "Mis muchachos registran tiempo y solicitudes desde el teléfono en 30 segundos. Incluso en el sótano sin señal."
-      }
-    }
   },
   "demo": {
     "eyebrow": "Empezar",
