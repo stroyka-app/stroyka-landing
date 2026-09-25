@@ -53,6 +53,9 @@ test.describe("V2 phase 1 — ledger", () => {
     await toLift(page, 0.5);
     const card = page.locator("[data-ledger-card]");
     await expect(card).toBeVisible({ timeout: 8000 });
+    // The card only takes the pointer once the HUD has faded in; hovering
+    // earlier never fires pointerenter (the flake this guards against).
+    await expect.poll(() => card.evaluate((el) => getComputedStyle(el).pointerEvents), { timeout: 15000 }).toBe("auto");
     const box = (await card.boundingBox())!;
     await page.mouse.move(box.x + box.width * 0.85, box.y + box.height * 0.2);
     await expect.poll(() => card.evaluate((el) => getComputedStyle(el).transform)).not.toBe("none");

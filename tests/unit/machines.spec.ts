@@ -12,6 +12,7 @@ import {
 import {
   DOZER,
   MIXER,
+  PHONE_SCALE,
   PICKUP,
   STAGED,
   TRUCK,
@@ -80,22 +81,35 @@ test("the truck stands at its slot while it unloads, cargo leaves as the block r
   }
 });
 
-test("no truck, mixer, pickup or dozer ever drives through a block, the pad or the crane base", () => {
+test("no truck, mixer, pickup or dozer ever drives through a block, the pad or the crane base — desktop and phone scale", () => {
   // Dozer footprint mirrors MachineYard.tsx's <Contact l={4.2} w={2.8}> for
   // the dozer group — body (3 long) plus blade reach.
   const DOZER_LENGTH = 4.2;
   const DOZER_WIDTH = 2.8;
-  for (const p of sweep()) {
-    const poses = [
-      ...LOADS.map((_, i) => ({ pose: deliveryAt(i, p).truck, w: TRUCK.length, d: TRUCK.width })),
-      { pose: mixerAt(p, 0), w: TRUCK.length, d: TRUCK.width },
-      { pose: pickupAt(p), w: PICKUP.length, d: PICKUP.width },
-      ...[0, 3.3, 17].map((t) => ({ pose: dozerAt(p, t), w: DOZER_LENGTH, d: DOZER_WIDTH })),
-    ];
-    for (const { pose, w, d } of poses) {
-      if (!pose.visible) continue;
-      const r = rectAt(pose.x, pose.z, w, d); // all machines drive along x, so length is along x
-      for (const o of obstacles) expect(overlap(r, o)).toBe(false);
+  for (const [k, working] of [[1, false], [PHONE_SCALE, true]] as const) {
+    for (const p of sweep()) {
+      const poses = [
+        ...LOADS.map((_, i) => ({ pose: deliveryAt(i, p).truck, w: TRUCK.length, d: TRUCK.width })),
+        { pose: mixerAt(p, 0), w: TRUCK.length, d: TRUCK.width },
+        { pose: pickupAt(p), w: PICKUP.length, d: PICKUP.width },
+        ...[0, 3.3, 17].map((t) => ({ pose: dozerAt(p, t, working), w: DOZER_LENGTH, d: DOZER_WIDTH })),
+      ];
+      for (const { pose, w, d } of poses) {
+        if (!pose.visible) continue;
+        const r = rectAt(pose.x, pose.z, w * k, d * k); // all machines drive along x, so length is along x
+        for (const o of obstacles) expect(overlap(r, o)).toBe(false);
+      }
+    }
+  }
+});
+
+test("on phones the dozer keeps working through the whole loop", () => {
+  for (const p of [HERO_END, 0.5, 1]) {
+    const xs = [0, 1.3, 4.1, 7.7, 12].map((t) => dozerAt(p, t, true).x);
+    expect(Math.max(...xs) - Math.min(...xs)).toBeGreaterThan(1);
+    for (const x of xs) {
+      expect(x).toBeGreaterThanOrEqual(DOZER.workX - DOZER.sweep - 1e-9);
+      expect(x).toBeLessThanOrEqual(DOZER.workX + DOZER.sweep + 1e-9);
     }
   }
 });

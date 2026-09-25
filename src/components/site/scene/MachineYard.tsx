@@ -5,13 +5,18 @@ import { useFrame } from "@react-three/fiber";
 import type { MotionValue } from "motion/react";
 import * as THREE from "three";
 import { LOADS } from "./choreo";
-import { PICKUP, STAGED, TRUCK, WHEEL_R, deliveryAt, dozerAt, mixerAt, pickupAt, type MachinePose } from "./machines";
+import { PHONE_SCALE, PICKUP, STAGED, TRUCK, WHEEL_R, deliveryAt, dozerAt, mixerAt, pickupAt, type MachinePose } from "./machines";
 import type { ScenePalette } from "./palette";
 
 /**
  * The supporting cast, posed every frame from `machines.ts`. Boxes and
  * cylinders on shared materials, no shadow casting (a soft contact plane
- * grounds each one instead), desktop only. Local +x is every machine's nose.
+ * grounds each one instead). Local +x is every machine's nose.
+ *
+ * Phones (`compact`) get the same cast inside the looping hero, drawn
+ * PHONE_SCALE bigger (the camera stands much further back), with the dozer
+ * grading all loop, and WITHOUT the contact planes: a plane 0.04 above the
+ * ground is exactly the near-coplanar setup that flickered on iPhone GPUs.
  */
 type Mats = {
   body: THREE.MeshStandardMaterial;
@@ -97,7 +102,17 @@ function Contact({ l, w, mat }: { l: number; w: number; mat: THREE.Material }) {
   );
 }
 
-export default function Machines({ progress, pal, reduced }: { progress: MotionValue<number>; pal: ScenePalette; reduced: boolean }) {
+export default function Machines({
+  progress,
+  pal,
+  reduced,
+  compact = false,
+}: {
+  progress: MotionValue<number>;
+  pal: ScenePalette;
+  reduced: boolean;
+  compact?: boolean;
+}) {
   const m = useMats(pal);
   const trucks = useRef<(THREE.Group | null)[]>([]);
   const cargo = useRef<(THREE.Mesh | null)[]>([]);
@@ -109,6 +124,8 @@ export default function Machines({ progress, pal, reduced }: { progress: MotionV
   const mixerWheels = useRef<(THREE.Group | null)[]>([]);
   const pickup = useRef<THREE.Group>(null);
   const pickupWheels = useRef<(THREE.Group | null)[]>([]);
+  const k = compact ? PHONE_SCALE : 1;
+  const truckScale = TRUCK.scale * k;
 
   useFrame((state) => {
     const p = progress.get();
@@ -117,23 +134,23 @@ export default function Machines({ progress, pal, reduced }: { progress: MotionV
     for (let i = STAGED; i < LOADS.length; i++) {
       const d = deliveryAt(i, p);
       place(trucks.current[i], d.truck);
-      roll(truckWheels.current[i], d.truck.wheelTurn / TRUCK.scale); // scaled wheels spin faster
+      roll(truckWheels.current[i], d.truck.wheelTurn / truckScale); // scaled wheels spin at their own radius
       const c = cargo.current[i];
       if (c) c.visible = d.cargo;
     }
 
-    const dz = dozerAt(p, t);
+    const dz = dozerAt(p, t, compact);
     place(dozer.current, dz);
     if (blade.current) blade.current.position.y = 0.55 + dz.blade * 0.45;
 
     const mx = mixerAt(p, t);
     place(mixer.current, mx);
-    roll(mixerWheels.current, mx.wheelTurn / TRUCK.scale);
+    roll(mixerWheels.current, mx.wheelTurn / truckScale);
     if (drum.current) drum.current.rotation.x = mx.drum;
 
     const pk = pickupAt(p);
     place(pickup.current, pk);
-    roll(pickupWheels.current, pk.wheelTurn);
+    roll(pickupWheels.current, pk.wheelTurn / k);
     m.lamp.emissiveIntensity = pk.lights * 2.2;
   });
 
@@ -142,8 +159,8 @@ export default function Machines({ progress, pal, reduced }: { progress: MotionV
       {/* Flatbeds, one per delivered load, each carrying a crate in the load's colour. */}
       {LOADS.map((load, i) =>
         i < STAGED ? null : (
-          <group key={load.id} ref={(g) => void (trucks.current[i] = g)} visible={false} scale={TRUCK.scale}>
-            <Contact l={BODY.length} w={BODY.width} mat={m.contact} />
+          <group key={load.id} ref={(g) => void (trucks.current[i] = g)} visible={false} scale={truckScale}>
+            {!compact && <Contact l={BODY.length} w={BODY.width} mat={m.contact} />}
             <mesh position={[0, 0.78, 0]} material={m.dark}>
               <boxGeometry args={[BODY.length, 0.35, 1.8]} />
             </mesh>
@@ -169,8 +186,8 @@ export default function Machines({ progress, pal, reduced }: { progress: MotionV
       )}
 
       {/* Dozer: body, cab, tracks, blade on a lift arm. */}
-      <group ref={dozer}>
-        <Contact l={4.2} w={2.8} mat={m.contact} />
+      <group ref={dozer} scale={k}>
+        {!compact && <Contact l={4.2} w={2.8} mat={m.contact} />}
         <mesh position={[0, 1.05, 0]} material={m.body}>
           <boxGeometry args={[3, 1.1, 2.1]} />
         </mesh>
@@ -193,8 +210,8 @@ export default function Machines({ progress, pal, reduced }: { progress: MotionV
       </group>
 
       {/* Concrete mixer: cab, chassis, tilted spinning drum. */}
-      <group ref={mixer} scale={TRUCK.scale}>
-        <Contact l={BODY.length} w={BODY.width} mat={m.contact} />
+      <group ref={mixer} scale={truckScale}>
+        {!compact && <Contact l={BODY.length} w={BODY.width} mat={m.contact} />}
         <mesh position={[0, 0.78, 0]} material={m.dark}>
           <boxGeometry args={[BODY.length, 0.35, 1.8]} />
         </mesh>
@@ -223,8 +240,8 @@ export default function Machines({ progress, pal, reduced }: { progress: MotionV
       </group>
 
       {/* The boss's pickup, headlights on the finished job. */}
-      <group ref={pickup} visible={false}>
-        <Contact l={PICKUP.length} w={PICKUP.width} mat={m.contact} />
+      <group ref={pickup} visible={false} scale={k}>
+        {!compact && <Contact l={PICKUP.length} w={PICKUP.width} mat={m.contact} />}
         <mesh position={[0, 0.85, 0]} material={m.body}>
           <boxGeometry args={[PICKUP.length, 0.75, PICKUP.width]} />
         </mesh>

@@ -29,6 +29,9 @@ export const DOZER = { parkX: 26, workX: 27, sweep: 3, z: -1.5 } as const;
 /** Stands by the mast foot for the pour — screen-left of the mast, clear of the
  *  pad and the building — then leaves toward −x. */
 export const MIXER = { x: -3.5, z: -5.5, exitX: -34 } as const;
+/** Phones frame the site from much further back: the cast is drawn this much
+ *  bigger there so it still reads (collision tests cover both scales). */
+export const PHONE_SCALE = 1.25;
 /** Rolls in on its own lane and stops facing the finished building. */
 export const PICKUP = { parkX: 17.5, z: 4.5, length: 4.2, width: 1.8 } as const;
 
@@ -75,8 +78,12 @@ export const blockRise = (i: number, p: number) => deliveryAt(i, p).unload;
 
 const DOZE_W = 0.4; // rad/s of the push–reverse cycle
 
-export function dozerAt(p: number, t: number): MachinePose & { blade: number } {
-  const idle = craneAt(p).idle;
+/**
+ * `alwaysWorking`: keep grading whatever the progress. The phone hero loops the
+ * lifts from HERO_END on, so without it the dozer would never leave park.
+ */
+export function dozerAt(p: number, t: number, alwaysWorking = false): MachinePose & { blade: number } {
+  const idle = alwaysWorking ? 1 : craneAt(p).idle;
   if (idle <= 0) return { visible: true, x: DOZER.parkX, z: DOZER.z, heading: 0, wheelTurn: 0, blade: 1 };
   const phase = t * DOZE_W;
   const working = DOZER.workX + DOZER.sweep * Math.sin(phase);

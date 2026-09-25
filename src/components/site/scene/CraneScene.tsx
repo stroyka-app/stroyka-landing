@@ -233,9 +233,9 @@ function Contents({ progress, bridge, reduced, compact, heroShift, heroCamera = 
         g.position.set(hookWorld.x, c.hookY - h / 2, hookWorld.z);
         g.rotation.set(s.sway.z * 0.05, 0, -s.sway.x * 0.05);
       } else {
-        // Desktop: later loads arrive by flatbed and rise into their slot as
-        // they're unloaded. Phones have no trucks, so the yard starts full.
-        const rise = compact ? 1 : blockRise(i, p);
+        // Later loads arrive by flatbed and rise into their slot as they're
+        // unloaded (desktop scroll and the phone loop alike).
+        const rise = blockRise(i, p);
         const slot = yardSlot(i);
         g.visible = rise > 0.001;
         g.scale.set(1, Math.max(rise, 0.001), 1);
@@ -400,7 +400,7 @@ function Contents({ progress, bridge, reduced, compact, heroShift, heroCamera = 
       {!compact && <Skyline color={pal.skyline} />}
       <Dust count={compact ? 140 : 260} animate={!reduced} color={pal.line} />
       <BudgetEnvelope color={pal.line} />
-      {!compact && <Machines progress={progress} pal={pal} reduced={reduced} />}
+      <Machines progress={progress} pal={pal} reduced={reduced} compact={compact} />
 
       <Crane slewRef={slewRef} trolleyRef={trolleyRef} beaconRef={beaconRef} pal={pal} compact={compact} />
 
