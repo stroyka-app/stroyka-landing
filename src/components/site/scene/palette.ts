@@ -23,6 +23,7 @@ export type ScenePalette = {
   sun: string;
   window: string;
   labor: string;
+  machine: string;
   hazeDay: string;
   hazeNight: string;
   skyTop: string;
@@ -47,6 +48,7 @@ const VARS: Record<keyof ScenePalette, [string, string]> = {
   sun: ["--scene-sun", "#ffe6bf"],
   window: ["--scene-window", "#ffe9b0"],
   labor: ["--scene-labor", "#d4ee5e"],
+  machine: ["--scene-machine", "#7d8a74"],
   hazeDay: ["--sky-haze", "#8e927e"],
   hazeNight: ["--sky-night-haze", "#343c35"],
   skyTop: ["--sky-top", "#c9d1c4"],

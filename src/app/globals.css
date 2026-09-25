@@ -745,6 +745,7 @@
   --scene-sun: #fff4dc;
   --scene-window: #ffe9b0;
   --scene-labor: #5e8f73;
+  --scene-machine: #7d8a74; /* sage-grey plant: reads as kit, never competes with the forest crane */
   --scrap-receipt: #fbf8f0;
   --scrap-note: #e9e39a;
   --scrap-text: #2f5b45;

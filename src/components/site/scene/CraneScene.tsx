@@ -5,6 +5,8 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import type { MotionValue } from "motion/react";
 import * as THREE from "three";
 import Crane from "./Crane";
+import Machines from "./MachineYard";
+import { blockRise } from "./machines";
 import { BudgetEnvelope, Dust, Ground, Skyline } from "./Site";
 import { useScenePalette, type ScenePalette } from "./palette";
 import Sky, { type SkyUniforms } from "./Sky";
@@ -210,14 +212,23 @@ function Contents({ progress, bridge, reduced, compact, heroShift, heroCamera = 
       if (!g) return;
       const h = heightOf(load.cost);
       if (i < c.landed) {
+        g.visible = true;
+        g.scale.set(1, 1, 1);
         g.position.set(BUILDING.x, landedBaseY(i) + h / 2, BUILDING.z);
         g.rotation.set(0, 0, 0);
       } else if (i === c.carrying) {
+        g.visible = true;
+        g.scale.set(1, 1, 1);
         g.position.set(hookWorld.x, c.hookY - h / 2, hookWorld.z);
         g.rotation.set(s.sway.z * 0.05, 0, -s.sway.x * 0.05);
       } else {
+        // Desktop: later loads arrive by flatbed and rise into their slot as
+        // they're unloaded. Phones have no trucks, so the yard starts full.
+        const rise = compact ? 1 : blockRise(i, p);
         const slot = yardSlot(i);
-        g.position.set(slot.x, h / 2, slot.z);
+        g.visible = rise > 0.001;
+        g.scale.set(1, Math.max(rise, 0.001), 1);
+        g.position.set(slot.x, (h * rise) / 2, slot.z);
         g.rotation.set(0, 0, 0);
       }
       const wm = windowMats.current[i];
@@ -342,6 +353,7 @@ function Contents({ progress, bridge, reduced, compact, heroShift, heroCamera = 
       {!compact && <Skyline color={pal.skyline} />}
       <Dust count={compact ? 140 : 260} animate={!reduced} color={pal.line} />
       <BudgetEnvelope color={pal.line} />
+      {!compact && <Machines progress={progress} pal={pal} reduced={reduced} />}
 
       <Crane slewRef={slewRef} trolleyRef={trolleyRef} beaconRef={beaconRef} pal={pal} compact={compact} />
 
