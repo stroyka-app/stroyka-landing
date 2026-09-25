@@ -87,7 +87,11 @@ export default function Lift() {
           --toolbar-gap keeps bottom UI above the bar when it's expanded. */}
       <div
         className={`${reduced ? "relative" : "sticky"} top-0 h-[100lvh] min-h-[600px] overflow-hidden`}
-        style={{ ["--toolbar-gap" as string]: "calc(100lvh - 100svh)" }}
+        // iOS 26 goes to a SOLID toolbar tint over this pinned stage; the
+        // colour comes from SafariBottomTint (target #how-it-works =
+        // --lift-floor), and the scene fades into exactly that colour below,
+        // so the tint reads as the ground running on under the glass.
+        style={{ ["--toolbar-gap" as string]: "calc(100lvh - 100svh)", backgroundColor: "var(--lift-floor)" }}
       >
         {/* Sky. Starts at #485348 — the body colour iOS paints behind the
             status bar — so the top of the phone and the sky are one. */}
@@ -122,7 +126,7 @@ export default function Lift() {
         {/* Bottom fade into the night page below. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-site-night/70"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-gradient-to-b from-transparent to-[var(--lift-floor)]"
         />
 
         {!reduced && <SceneTags bridge={bridge} spent={spent} landed={landed} opacity={hudOpacity} />}

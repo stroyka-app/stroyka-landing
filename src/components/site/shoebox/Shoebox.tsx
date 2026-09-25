@@ -228,7 +228,7 @@ export default function Shoebox() {
 
         <div
           ref={arenaRef}
-          className="relative h-[440px] touch-none select-none overflow-hidden rounded-[28px] bg-site-slab ring-1 ring-site-paper/[0.08] md:h-[560px]"
+          className="relative h-[440px] touch-pan-y select-none overflow-hidden rounded-[28px] bg-site-slab ring-1 ring-site-paper/[0.08] md:h-[560px]"
           style={{
             backgroundImage:
               "linear-gradient(rgb(var(--site-paper) / 0.035) 1px, transparent 1px), linear-gradient(90deg, rgb(var(--site-paper) / 0.035) 1px, transparent 1px)",
@@ -260,7 +260,9 @@ export default function Shoebox() {
               key={i}
               ref={(el) => void (cardRefs.current[i] = el)}
               onPointerDown={onPointerDown(i)}
-              className="absolute left-0 top-0 cursor-grab active:cursor-grabbing"
+              // Cards capture touch only while they're a pile you can throw;
+              // once sorted, a finger on them scrolls the page like anywhere.
+              className={`absolute left-0 top-0 ${sorted ? "touch-pan-y" : "cursor-grab touch-none active:cursor-grabbing"}`}
               style={{ width: size.current.card.w, height: size.current.card.h, willChange: "transform" }}
             >
               <Scrap kind={s.kind} label={t(`items.${i}`)} amount={money(s.amount)} tag={t(`cats.${s.cat}`)} sorted={sorted} small={small} />

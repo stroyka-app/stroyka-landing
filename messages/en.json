@@ -978,7 +978,8 @@
         "ledger": "Job 204 · Materials",
         "row": "Plywood ¾\" × 40",
         "prev0": "Home Depot #4471",
-        "prev1": "Rebar #4 × 60"
+        "prev1": "Rebar #4 × 60",
+        "rejected": "Rejected"
       }
     },
     "seats": {

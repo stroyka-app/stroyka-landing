@@ -56,8 +56,7 @@ async function googleFont(
   }
 }
 
-export async function GET(request: Request) {
-  const url = new URL(request.url);
+export async function GET() {
 
   const [flex, mono] = await Promise.all([
     // Inter Tight 600 stands in for the site's Roboto Flex semibold: Google

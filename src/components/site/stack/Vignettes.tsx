@@ -70,12 +70,17 @@ export function OfflineVignette() {
               initial={reduced ? false : { opacity: 0, y: 14, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ type: "spring", stiffness: 420, damping: 30, delay: synced ? i * 0.08 : 0 }}
-              className="flex items-center justify-between rounded-xl bg-site-slab px-3.5 py-3 text-[13.5px] ring-1 ring-site-paper/[0.06]"
+              className="flex items-center justify-between gap-3 rounded-xl bg-site-slab px-3.5 py-3 text-[13.5px] ring-1 ring-site-paper/[0.06]"
             >
-              <span className="truncate">{e}</span>
-              <span className={`ml-3 flex flex-shrink-0 items-center gap-1.5 font-mono text-[10.5px] uppercase tracking-[0.14em] ${synced ? "text-site-vis" : "text-site-paper/50"}`}>
-                {synced ? <Check size={13} /> : <CloudOff size={13} />}
-                {synced ? t("syncedOne") : t("savedOne")}
+              <span className="min-w-0 leading-snug">{e}</span>
+              <span
+                className={`flex flex-shrink-0 items-center gap-1.5 font-mono text-[10.5px] uppercase tracking-[0.14em] ${synced ? "text-site-vis" : "text-site-paper/50"}`}
+                title={synced ? t("syncedOne") : t("savedOne")}
+              >
+                {synced ? <Check size={14} /> : <CloudOff size={14} />}
+                {/* Label from sm up; on phones the icon carries it and the
+                    row's text gets the width. */}
+                <span className="hidden sm:inline">{synced ? t("syncedOne") : t("savedOne")}</span>
               </span>
             </motion.li>
           ))}
@@ -101,7 +106,7 @@ export function RolesVignette() {
   return (
     <div className={panel}>
       <LayoutGroup id="roles">
-        <div className="inline-flex rounded-full bg-site-slab p-1 ring-1 ring-site-paper/[0.08]">
+        <div className="inline-flex self-start rounded-full bg-site-slab p-1 ring-1 ring-site-paper/[0.08]">
           {(["boss", "crew"] as const).map((r) => (
             <button
               key={r}
@@ -219,7 +224,9 @@ export function PnlVignette() {
 export function ApproveVignette() {
   const t = useTranslations("site.stack.approve");
   const reduced = useReduced();
-  const [approved, setApproved] = useState(false);
+  // null = pending; the request is decided one way or the other.
+  const [decision, setDecision] = useState<null | "approved" | "rejected">(null);
+  const approved = decision === "approved";
 
   return (
     <div className={panel}>
@@ -235,36 +242,43 @@ export function ApproveVignette() {
         <div className="mt-4 flex gap-2">
           <button
             type="button"
-            onClick={() => setApproved((a) => !a)}
-            className={`h-10 flex-1 rounded-full text-[13.5px] font-medium transition-[background-color,color,transform] duration-200 active:scale-[0.97] ${approved ? "bg-site-paper/10 text-site-paper/70" : "bg-site-vis text-site-on-vis hover:bg-site-vis-hover"}`}
+            onClick={() => setDecision((d) => (d ? null : "approved"))}
+            className={`h-10 flex-1 rounded-full text-[13.5px] font-medium transition-[background-color,color,transform] duration-200 active:scale-[0.97] ${decision ? "bg-site-paper/10 text-site-paper/70" : "bg-site-vis text-site-on-vis hover:bg-site-vis-hover"}`}
           >
-            {approved ? t("undo") : t("approve")}
+            {decision ? t("undo") : t("approve")}
           </button>
-          <button type="button" disabled={approved} className="h-10 rounded-full px-4 text-[13.5px] text-site-paper/60 ring-1 ring-inset ring-site-paper/15 disabled:opacity-40">
+          <button
+            type="button"
+            disabled={decision !== null}
+            onClick={() => setDecision("rejected")}
+            className="h-10 rounded-full px-4 text-[13.5px] text-site-paper/70 ring-1 ring-inset ring-site-paper/20 transition-[background-color,transform] duration-200 hover:bg-site-alert/10 hover:text-site-alert hover:ring-site-alert/40 active:scale-[0.97] disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-site-paper/70"
+          >
             {t("reject")}
           </button>
         </div>
 
         <AnimatePresence>
-          {approved && (
+          {decision && (
             <motion.div
-              key="stamp"
+              key={decision}
               initial={reduced ? false : { scale: 0, rotate: -24, opacity: 0 }}
               animate={{ scale: 1, rotate: -11, opacity: 1 }}
               exit={{ scale: 0.6, opacity: 0, transition: { duration: 0.15 } }}
               transition={{ type: "spring", stiffness: 380, damping: 14 }}
               className="pointer-events-none absolute right-6 top-10"
             >
-              <span className="relative block rounded-md border-[2.5px] border-site-vis px-3 py-1 font-flex text-[18px] font-extrabold uppercase tracking-[0.06em] text-site-vis [font-variation-settings:'wdth'_125]">
+              <span
+                className={`relative block rounded-md border-[2.5px] px-3 py-1 font-flex text-[18px] font-extrabold uppercase tracking-[0.06em] [font-variation-settings:'wdth'_125] ${approved ? "border-site-vis text-site-vis" : "border-site-alert text-site-alert"}`}
+              >
                 {!reduced && (
                   <motion.span
-                    className="absolute inset-0 rounded-md ring-2 ring-site-vis"
+                    className={`absolute inset-0 rounded-md ring-2 ${approved ? "ring-site-vis" : "ring-site-alert"}`}
                     initial={{ scale: 1, opacity: 0.7 }}
                     animate={{ scale: 1.85, opacity: 0 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
                   />
                 )}
-                {t("approved")}
+                {approved ? t("approved") : t("rejected")}
               </span>
             </motion.div>
           )}

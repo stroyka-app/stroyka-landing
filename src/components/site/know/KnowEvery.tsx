@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import {motion, useMotionValueEvent, useScroll, useSpring, useTransform} from "motion/react";
 import { useReduced } from "../ui/useReduced";
@@ -14,6 +14,7 @@ export default function KnowEvery() {
   const t = useTranslations("site.know");
   const words = t.raw("words") as string[];
   const reduced = useReduced();
+  const compact = useCompact();
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const smooth = useSpring(scrollYProgress, { stiffness: 120, damping: 26 });
@@ -22,6 +23,34 @@ export default function KnowEvery() {
   const y = useTransform(pos, (v) => `${-v * 1.08}em`);
   const [active, setActive] = useState(0);
   useMotionValueEvent(pos, "change", (v) => setActive(Math.round(v)));
+
+  // Phones: no pin. A 400vh sticky stage parked the closing line a
+  // screen away from the words, and a full-height sticky at the bottom
+  // edge is exactly what iOS 26 samples into its toolbar tint. Instead
+  // the words flow as a list and each lights as it crosses mid-screen.
+  if (compact && !reduced) {
+    return (
+      <section id="know" className="bg-site-night px-5 py-24 text-site-paper">
+        <div className="font-flex text-[clamp(2.3rem,10vw,3.4rem)] font-semibold leading-[1.06] tracking-[-0.035em] [font-variation-settings:'wdth'_108]">
+          <p>{t("prefix")}</p>
+          <ul className="mt-1">
+            {words.map((w) => (
+              <motion.li
+                key={w}
+                initial={{ color: "rgb(var(--site-paper) / 0.15)" }}
+                whileInView={{ color: "rgb(var(--site-vis))" }}
+                viewport={{ margin: "-42% 0px -42% 0px" }}
+                transition={{ duration: 0.25 }}
+              >
+                {w}
+              </motion.li>
+            ))}
+          </ul>
+        </div>
+        <p className="mt-8 max-w-sm text-[15px] leading-relaxed text-site-paper/60">{t("foot")}</p>
+      </section>
+    );
+  }
 
   if (reduced) {
     return (
@@ -65,4 +94,17 @@ export default function KnowEvery() {
       </div>
     </section>
   );
+}
+
+/** ≤767px, after mount (SSR renders the pinned desktop version). */
+function useCompact(): boolean {
+  const [c, setC] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const sync = () => setC(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+  return c;
 }

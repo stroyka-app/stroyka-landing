@@ -34,7 +34,15 @@ import { useEffect } from "react";
 // is bone too, so the only flat-DARK band left is the forest Finale CTA.
 // (The old targets — the 3D-house canvas and the dark footer — are gone;
 // tinting #footer dark now would paint a dark plate over a light footer.)
+//
+// #how-it-works (the pinned crane scene): any pinned full-screen stage puts
+// Safari in solid-tint mode (re-proven in the simulator 2026-09-24: it
+// painted frosted BONE, a "bar", even with the stage 6px short of the edge
+// and with nothing inside it at the bottom). Handing Safari the scene's own
+// floor colour here makes that tint the ground running on under the glass;
+// Lift.tsx fades the scene into exactly this colour (--lift-floor).
 const TARGETS: ReadonlyArray<{ id: string; color: string }> = [
+  { id: "how-it-works", color: "#BDB6A2" }, // crane scene floor (--lift-floor)
   { id: "finale", color: "#2F5B45" }, // flat forest CTA band (--site-vis)
 ];
 

@@ -30,7 +30,7 @@ export default function Finale() {
           aria-hidden
           style={{ x }}
           viewBox="0 0 600 300"
-          className="pointer-events-none absolute -bottom-2 right-0 h-[82%] w-auto opacity-[0.09]"
+          className="pointer-events-none absolute -bottom-1 right-0 h-auto w-[150%] opacity-[0.09] md:-bottom-2 md:h-[82%] md:w-auto"
         >
           {/* mast */}
           <path d="M300 300 V40" stroke="currentColor" strokeWidth="10" />

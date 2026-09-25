@@ -676,7 +676,7 @@ export default function GetStartedFlow() {
                     <ArrowLeft size={16} />
                     {t("back")}
                   </button>
-                  <KnobButton type="submit" tone="solid" disabled={submitting} busy={submitting} className="flex-1">
+                  <KnobButton type="submit" tone="solid" disabled={submitting} busy={submitting} className="sm:flex-1">
                     {submitting ? t("processing") : t("continueToPayment")}
                   </KnobButton>
                 </div>
