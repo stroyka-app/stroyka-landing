@@ -23,11 +23,12 @@ test.describe("V2 phase 1 — ledger", () => {
     expect(await card.evaluate((el) => getComputedStyle(el).transform)).toBe("none");
   });
 
-  test("each landed load draws a leader line from its ledger row to the building", async ({ page }) => {
+  test("the load that just landed draws a leader line to its storey", async ({ page }) => {
     await page.goto("/");
     await toLift(page, 0.5); // loads 0–2 have landed (landingProgress(2) ≈ 0.467 < 0.5 < 0.594)
     const on = page.locator('path[data-leader][data-on="1"]');
-    await expect(on).toHaveCount(3, { timeout: 8000 });
+    await expect(on).toHaveCount(1, { timeout: 8000 });
+    await expect(on).toHaveAttribute("data-index", "2");
     await expect.poll(() => on.first().getAttribute("d")).toMatch(/^M\d/);
   });
 
