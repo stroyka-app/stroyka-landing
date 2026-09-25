@@ -36,7 +36,7 @@ export default function PhoneLift() {
   const progress = useMotionValue(HERO_END);
   const veil = useMotionValue(0);
   const ctl = useRef<AnimationPlaybackControls | null>(null);
-  const bridge = useRef<SceneBridge>({ hook: null, budget: null, stack: null });
+  const bridge = useRef<SceneBridge>({ hook: null, budget: null, stack: null, rows: [], leaders: [], leaderDots: [] });
 
   useEffect(() => {
     if (!onScreen) {

@@ -31,6 +31,10 @@ export type SceneBridge = {
   hook: HTMLDivElement | null;
   budget: HTMLDivElement | null;
   stack: HTMLDivElement | null;
+  /** Ledger row anchors in stage pixels (left edge, vertical centre), written by Ledger. */
+  rows: ({ x: number; y: number } | null)[];
+  leaders: (SVGPathElement | null)[];
+  leaderDots: (SVGCircleElement | null)[];
 };
 
 type Props = {
@@ -87,6 +91,7 @@ function span(mesh: THREE.Mesh, a: THREE.Vector3, b: THREE.Vector3) {
 }
 
 const proj = new THREE.Vector3();
+const leaderAnchor = new THREE.Vector3();
 function pin(
   el: HTMLDivElement | null,
   world: THREE.Vector3,
@@ -320,6 +325,26 @@ function Contents({ progress, bridge, reduced, compact, heroShift, heroCamera = 
     // dashed budget outline, so the mast never passes in front of the tag.
     stackTop.set(BUILDING.x + (BLOCK_W + 0.8) / 2, top, BUILDING.z + (BLOCK_W + 0.8) / 2);
     pin(b.stack, stackTop, camera, size, c.landed > 0);
+
+    /* leader lines: ledger row → the near-right corner of its storey */
+    for (let i = 0; i < c.landed; i++) {
+      const path = b.leaders[i];
+      const row = b.rows[i];
+      if (!path || !row) continue;
+      const h = heightOf(LOADS[i].cost);
+      leaderAnchor
+        .set(BUILDING.x + BLOCK_W / 2, landedBaseY(i) + h / 2, BUILDING.z + BLOCK_W / 2)
+        .project(camera);
+      const x = Math.round((leaderAnchor.x * 0.5 + 0.5) * size.width);
+      const y = Math.round((-leaderAnchor.y * 0.5 + 0.5) * size.height);
+      const mid = Math.round((x + row.x) / 2);
+      path.setAttribute("d", `M${row.x},${row.y} C${mid},${row.y} ${mid},${y} ${x},${y}`);
+      const dot = b.leaderDots[i];
+      if (dot) {
+        dot.setAttribute("cx", String(x));
+        dot.setAttribute("cy", String(y));
+      }
+    }
   });
 
   return (

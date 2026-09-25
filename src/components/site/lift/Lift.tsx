@@ -7,6 +7,7 @@ import type { SceneBridge } from "../scene/CraneScene";
 import { BUDGET, beatAt, craneAt, spentAfter } from "../scene/choreo";
 import LiftHero from "./LiftHero";
 import Ledger from "./Ledger";
+import LeaderLines from "./LeaderLines";
 import Beats from "./Beats";
 import SceneTags from "./SceneTags";
 import CursorReadout from "./CursorReadout";
@@ -67,7 +68,7 @@ export default function Lift() {
     return () => ctl.stop();
   }, [landed, reduced, spent]);
 
-  const bridge = useRef<SceneBridge>({ hook: null, budget: null, stack: null });
+  const bridge = useRef<SceneBridge>({ hook: null, budget: null, stack: null, rows: [], leaders: [], leaderDots: [] });
 
   const heroOpacity = useTransform(progress, [0, 0.055], [1, 0]);
   const heroY = useTransform(progress, [0, 0.07], [0, -60]);
@@ -101,6 +102,7 @@ export default function Lift() {
         // scene also fills the strip under Safari's toolbar buttons (which
         // otherwise showed the page colour as a light edge over the dark
         // ground). Bottom UI subtracts it via --toolbar-gap.
+        data-lift-stage
         className={`${reduced ? "relative" : "lift-stage sticky"} top-0 h-[calc(100lvh+var(--stage-extra))] min-h-[600px] overflow-hidden [--stage-extra:140px] md:[--stage-extra:0px]`}
         style={{ ["--toolbar-gap" as string]: "calc(100lvh - 100svh + var(--stage-extra))" }}
       >
@@ -145,7 +147,8 @@ export default function Lift() {
         {!reduced && (
           <motion.div style={{ opacity: hudOpacity }} className="pointer-events-none absolute inset-0">
             <Beats beat={beat} compact={compact} />
-            <Ledger landed={landed} spent={spent} budget={BUDGET} compact={compact} />
+            <LeaderLines bridge={bridge} landed={landed} opacity={hudOpacity} />
+            <Ledger landed={landed} spent={spent} budget={BUDGET} compact={compact} bridge={bridge} />
           </motion.div>
         )}
 

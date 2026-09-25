@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type MutableRefObject } from "react";
 import { useTranslations } from "next-intl";
 import { AnimatePresence, animate, motion, useMotionValue, useSpring, useTransform, type MotionValue } from "motion/react";
 import Odometer from "../ui/Odometer";
 import { LOADS, TOTAL_SPEND } from "../scene/choreo";
 import { useReduced } from "../ui/useReduced";
+import type { SceneBridge } from "../scene/CraneScene";
 
 const usd = (n: number) => `$${n.toLocaleString("en-US")}`;
 
@@ -20,11 +21,13 @@ export default function Ledger({
   spent,
   budget,
   compact,
+  bridge,
 }: {
   landed: number;
   spent: MotionValue<number>;
   budget: number;
   compact: boolean;
+  bridge?: MutableRefObject<SceneBridge>;
 }) {
   const t = useTranslations("site.lift.ledger");
   const tl = useTranslations("site.lift.loads");
@@ -40,6 +43,26 @@ export default function Ledger({
   );
 
   const rowRefs = useRef<(HTMLLIElement | null)[]>([]);
+
+  // Where each row's leader line starts, in stage pixels. Measured at rest
+  // (transforms from the jolt/tilt are ignored on purpose) and re-measured on
+  // resize; the stage's own scroll transform cancels out (both rects move).
+  useLayoutEffect(() => {
+    if (compact || !bridge) return;
+    const measure = () => {
+      const stage = document.querySelector("[data-lift-stage]");
+      if (!stage) return;
+      const s = stage.getBoundingClientRect();
+      bridge.current.rows = rowRefs.current.map((li) => {
+        if (!li) return null;
+        const r = li.getBoundingClientRect();
+        return { x: Math.round(r.left - s.left - 8), y: Math.round(r.top - s.top + r.height / 2) };
+      });
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [landed, compact, bridge]);
 
   // Landing jolt: the card dips a few whole pixels each time a load lands.
   const jolt = useMotionValue(0);

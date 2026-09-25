@@ -22,4 +22,23 @@ test.describe("V2 phase 1 — ledger", () => {
     await page.waitForTimeout(800);
     expect(await card.evaluate((el) => getComputedStyle(el).transform)).toBe("none");
   });
+
+  test("each landed load draws a leader line from its ledger row to the building", async ({ page }) => {
+    await page.goto("/");
+    await toLift(page, 0.5); // loads 0–2 have landed (landingProgress(2) ≈ 0.467 < 0.5 < 0.594)
+    const on = page.locator('path[data-leader][data-on="1"]');
+    await expect(on).toHaveCount(3, { timeout: 8000 });
+    await expect.poll(() => on.first().getAttribute("d")).toMatch(/^M\d/);
+  });
+
+  test("leader lines re-anchor when the window is resized", async ({ page }) => {
+    await page.goto("/");
+    await toLift(page, 0.5);
+    const first = page.locator('path[data-leader][data-on="1"]').first();
+    await expect.poll(() => first.getAttribute("d"), { timeout: 8000 }).toMatch(/^M\d/);
+    const before = await first.getAttribute("d");
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await toLift(page, 0.5);
+    await expect.poll(() => first.getAttribute("d"), { timeout: 8000 }).not.toBe(before);
+  });
 });
