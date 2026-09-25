@@ -316,7 +316,11 @@ function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
       <pointLight ref={floodRef} position={[BUILDING.x - 8, 6, BUILDING.z + 10]} color="#F4F7D9" intensity={0} distance={60} />
 
       <Ground pal={pal} />
-      <Skyline color={pal.skyline} />
+      {/* Phones: no 3D skyline. On a phone GPU the distant towers flickered
+          on scroll however their depth was set up (sunk bases, log depth,
+          spacing — none fully cured it on device), and at phone size they
+          were faint shapes in the haze anyway. Desktop keeps them. */}
+      {!compact && <Skyline color={pal.skyline} />}
       <Dust count={compact ? 140 : 260} animate={!reduced} color={pal.line} />
       <BudgetEnvelope color={pal.line} />
 
