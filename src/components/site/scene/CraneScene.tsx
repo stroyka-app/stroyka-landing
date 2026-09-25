@@ -227,7 +227,10 @@ function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
 
     /* beacon + flood */
     if (beaconRef.current) {
-      beaconRef.current.emissiveIntensity = reduced ? 2 : Math.sin(t * 3.2) > 0.55 ? 4 : 0.25;
+      // A slow breathing glow (2.8s), not a strobe: the hard on/off blink
+      // (sin > 0.55 → 4 else 0.25, ~2 flashes a second) read on phones as the
+      // top of the crane flickering.
+      beaconRef.current.emissiveIntensity = reduced ? 1.6 : 1 + 0.9 * (0.5 + 0.5 * Math.sin((t * Math.PI * 2) / 2.8));
     }
     if (floodRef.current) floodRef.current.intensity = c.finale * 220;
 
