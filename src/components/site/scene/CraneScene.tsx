@@ -39,6 +39,9 @@ type Props = {
   /** Push the site to the right while the hero headline owns the left. */
   heroShift: boolean;
   active: boolean;
+  /** Keep the hero camera framing whatever the progress (the phone hero
+   *  runs the lifts behind its headline). */
+  heroCamera?: boolean;
 };
 
 export default function CraneScene(props: Props) {
@@ -102,7 +105,7 @@ const lerp = THREE.MathUtils.lerp;
 
 /* ── scene ────────────────────────────────────────────────────────────── */
 
-function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
+function Contents({ progress, bridge, reduced, compact, heroShift, heroCamera = false }: Props) {
   const slewRef = useRef<THREE.Group>(null);
   const trolleyRef = useRef<THREE.Group>(null);
   const beaconRef = useRef<THREE.MeshStandardMaterial>(null);
@@ -249,10 +252,12 @@ function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
     if (sunRef.current) sunRef.current.intensity = lerp(2.6, 0.7, night);
 
     /* camera: hero → lifts → pull-back, with a slow orbit and pointer parallax */
-    const lift = 1 - c.idle;
-    const fin = c.finale;
-    const orbit = (p - 0.1) * 0.32;
-    const reach = compact ? 1.25 : 1;
+    const lift = heroCamera ? 0 : 1 - c.idle;
+    const fin = heroCamera ? 0 : c.finale;
+    const orbit = heroCamera ? 0 : (p - 0.1) * 0.32;
+    // Phone hero loop: the whole site (crane top to yard) has to fit the band
+    // under the CTAs, so the camera stands further back.
+    const reach = compact ? (heroCamera ? 1.7 : 1.25) : 1;
     const base = new THREE.Vector3(
       lerp(lerp(-40, -44, lift), -58, fin),
       lerp(lerp(21, 27, lift), 36, fin),
@@ -279,11 +284,11 @@ function Contents({ progress, bridge, reduced, compact, heroShift }: Props) {
     // ledger card. Phones keep it centred.
     // Reduced motion shows the finished job BEHIND the hero, so it keeps
     // the hero framing even though progress is pinned to the end.
-    const heroW = reduced ? 1 : c.idle;
+    const heroW = reduced || heroCamera ? 1 : c.idle;
     const shift = heroShift ? -0.24 * heroW + 0.1 * (1 - heroW) : 0;
     // Phones: the hero copy owns the top, so drop the site into the lower
     // half while it's up; the lifts centre it between caption and ledger.
-    const lower = compact ? -0.24 * heroW + 0.04 * (1 - heroW) : 0;
+    const lower = compact ? (heroCamera ? -0.08 : -0.24 * heroW + 0.04 * (1 - heroW)) : 0;
     if (shift !== 0 || lower !== 0) {
       cam.setViewOffset(size.width, size.height, size.width * shift, size.height * lower, size.width, size.height);
     } else if (cam.view) {

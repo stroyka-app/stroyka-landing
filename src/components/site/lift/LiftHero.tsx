@@ -10,7 +10,7 @@ import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
 import { useReduced } from "../ui/useReduced";
 
 /** The hero's copy, laid over the idling crane. */
-export default function LiftHero() {
+export default function LiftHero({ showCue = true }: { showCue?: boolean }) {
   const t = useTranslations("site.lift");
   const signupHref = useSignupHref();
   const track = useCtaTracker("hero");
@@ -101,7 +101,7 @@ export default function LiftHero() {
         </motion.ul>
       </div>
 
-      {!reduced && (
+      {!reduced && showCue && (
         <div className="pointer-events-none absolute inset-x-0 bottom-[calc(var(--toolbar-gap,0px)+28px)] flex flex-col items-center gap-3 text-site-paper/70">
           <span className="font-mono text-[10.5px] uppercase tracking-[0.24em]">{t("scrollCue")}</span>
           <span className="relative h-10 w-px overflow-hidden bg-site-paper/20">

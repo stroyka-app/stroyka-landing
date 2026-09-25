@@ -822,8 +822,7 @@
       "tags": {
         "budget": "Бюджет",
         "spent": "Потрачено"
-      },
-      "replay": "Ещё раз"
+      }
     },
     "ticker": {
       "events": [
