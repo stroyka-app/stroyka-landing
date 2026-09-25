@@ -22,12 +22,16 @@ export default function Ledger({
   budget,
   compact,
   bridge,
+  cardPointerEvents,
 }: {
   landed: number;
   spent: MotionValue<number>;
   budget: number;
   compact: boolean;
   bridge?: MutableRefObject<SceneBridge>;
+  /** "auto" once the HUD is actually visible, "none" while it's faded under
+   *  the hero — otherwise the invisible card still catches clicks/taps. */
+  cardPointerEvents?: MotionValue<"auto" | "none">;
 }) {
   const t = useTranslations("site.lift.ledger");
   const tl = useTranslations("site.lift.loads");
@@ -44,19 +48,34 @@ export default function Ledger({
 
   const rowRefs = useRef<(HTMLLIElement | null)[]>([]);
 
-  // Where each row's leader line starts, in stage pixels. Measured at rest
-  // (transforms from the jolt/tilt are ignored on purpose) and re-measured on
-  // resize; the stage's own scroll transform cancels out (both rects move).
+  // Where each row's leader line starts, in stage pixels. getBoundingClientRect
+  // is NOT safe here: it includes transforms, and the card gets a landing
+  // jolt (translateY) plus a hover tilt (rotateX/rotateY) on ancestors of
+  // each row, both of which would skew the anchor mid-animation. Instead we
+  // sum the offsetTop/offsetLeft chain from the row up to [data-ledger] —
+  // those are pure layout numbers, untouched by any transform on the row or
+  // an ancestor below [data-ledger] — then add [data-ledger]'s own (static,
+  // never-tilted) position relative to the stage. Re-measured on resize; the
+  // stage's own scroll transform cancels out (both rects move together).
   useLayoutEffect(() => {
     if (compact || !bridge) return;
     const measure = () => {
-      const stage = document.querySelector("[data-lift-stage]");
-      if (!stage) return;
+      const stage = document.querySelector<HTMLElement>("[data-lift-stage]");
+      const ledgerEl = document.querySelector<HTMLElement>("[data-ledger]");
+      if (!stage || !ledgerEl) return;
       const s = stage.getBoundingClientRect();
+      const l = ledgerEl.getBoundingClientRect();
       bridge.current.rows = rowRefs.current.map((li) => {
         if (!li) return null;
-        const r = li.getBoundingClientRect();
-        return { x: Math.round(r.left - s.left - 8), y: Math.round(r.top - s.top + r.height / 2) };
+        let top = 0;
+        let left = 0;
+        let el: HTMLElement | null = li;
+        while (el && el !== ledgerEl) {
+          top += el.offsetTop;
+          left += el.offsetLeft;
+          el = el.offsetParent as HTMLElement | null;
+        }
+        return { x: Math.round(l.left - s.left + left - 8), y: Math.round(l.top - s.top + top + li.offsetHeight / 2) };
       });
     };
     measure();
@@ -91,8 +110,10 @@ export default function Ledger({
     mx.set((e.clientX - r.left) / r.width);
     my.set((e.clientY - r.top) / r.height);
   };
-  const onEnter = () => {
-    if (reduced) return;
+  const onEnter = (e: React.PointerEvent<HTMLDivElement>) => {
+    // Touch/pen "enter" fires on tap with no hover — the tilt and specular
+    // are a mouse-hover affordance only.
+    if (reduced || e.pointerType !== "mouse") return;
     window.clearTimeout(leaveTimer.current);
     setTilting(true);
     spotOn.set(1);
@@ -147,8 +168,11 @@ export default function Ledger({
         onPointerEnter={onEnter}
         onPointerMove={onMove}
         onPointerLeave={onLeave}
-        style={tilting ? { rotateX: rotX, rotateY: rotY, transformPerspective: 900, transformStyle: "preserve-3d" } : undefined}
-        className="pointer-events-auto relative overflow-hidden rounded-[22px] bg-site-night/55 p-6 text-site-paper shadow-[0_30px_80px_-30px_rgb(var(--site-paper)/0.45)] ring-1 ring-site-paper/10 backdrop-blur-xl backdrop-saturate-150"
+        style={{
+          pointerEvents: cardPointerEvents,
+          ...(tilting ? { rotateX: rotX, rotateY: rotY, transformPerspective: 900, transformStyle: "preserve-3d" } : {}),
+        }}
+        className="relative overflow-hidden rounded-[22px] bg-site-night/55 p-6 text-site-paper shadow-[0_30px_80px_-30px_rgb(var(--site-paper)/0.45)] ring-1 ring-site-paper/10 backdrop-blur-xl backdrop-saturate-150"
       >
         {/* Specular: a soft light spot that follows the pointer (transform + opacity only). */}
         <motion.span

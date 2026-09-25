@@ -56,6 +56,11 @@ export default function Lift() {
   };
   useMotionValueEvent(progress, "change", sync);
   useEffect(() => sync(progress.get()), [progress]);
+  // Hardening: a fast programmatic scroll (or a spring that settles exactly
+  // on a value without an intermediate "change") should still leave landed/
+  // beat caught up once the spring reports it's done. Called unconditionally
+  // — hooks can't be conditional — sync() is a no-op if nothing moved.
+  useMotionValueEvent(smooth, "animationComplete", () => sync(smooth.get()));
 
   const spent = useMotionValue(0);
   useEffect(() => {
@@ -73,6 +78,11 @@ export default function Lift() {
   const heroOpacity = useTransform(progress, [0, 0.055], [1, 0]);
   const heroY = useTransform(progress, [0, 0.07], [0, -60]);
   const hudOpacity = useTransform(progress, [0.06, 0.1], [0, 1]);
+  // The ledger card is pointer-events-auto (hover tilt + specular need real
+  // pointer events), so while it's invisible under the hero (hudOpacity ~0)
+  // it would otherwise still catch clicks/taps that land on the hero CTAs
+  // underneath. Only let it capture the pointer once it's actually shown.
+  const cardPointerEvents = useTransform(hudOpacity, (o) => (o > 0.5 ? "auto" : "none"));
   const night = useTransform(progress, [0.86, 1], [0, 0.85]);
 
   // Phones: nothing pinned — see PhoneLift for why. (compact is read after
@@ -147,8 +157,15 @@ export default function Lift() {
         {!reduced && (
           <motion.div style={{ opacity: hudOpacity }} className="pointer-events-none absolute inset-0">
             <Beats beat={beat} compact={compact} />
-            <LeaderLines bridge={bridge} landed={landed} opacity={hudOpacity} />
-            <Ledger landed={landed} spent={spent} budget={BUDGET} compact={compact} bridge={bridge} />
+            <LeaderLines bridge={bridge} landed={landed} />
+            <Ledger
+              landed={landed}
+              spent={spent}
+              budget={BUDGET}
+              compact={compact}
+              bridge={bridge}
+              cardPointerEvents={cardPointerEvents}
+            />
           </motion.div>
         )}
 

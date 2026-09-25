@@ -8,10 +8,32 @@ async function toLift(page: Page, p: number) {
   // the rest of the test (flaky). Waiting for the canvas first makes the
   // scroll land on a scene that's actually listening.
   await page.waitForSelector("[data-lift-stage] canvas", { timeout: 15000 });
-  await page.evaluate((v) => {
+  const top = await page.evaluate((v) => {
     const s = document.querySelector("[data-lift]") as HTMLElement;
-    window.scrollTo(0, s.offsetTop + v * (s.offsetHeight - window.innerHeight));
+    return s.offsetTop + v * (s.offsetHeight - window.innerHeight);
   }, p);
+  // `scroll-behavior: smooth` (globals.css) applies globally until lenis
+  // mounts and sets `html.has-lenis` (scroll-behavior: auto) — a plain
+  // scrollTo(0, top) before that would animate instead of jumping, and the
+  // test could sample mid-scroll. behavior: "instant" bypasses CSS smooth.
+  await page.evaluate((t) => window.scrollTo({ top: t, behavior: "instant" as ScrollBehavior }), top);
+  await page.waitForFunction((t) => Math.abs(window.scrollY - t) < 2, top);
+}
+
+/** Does the point at the ledger card's own centre actually hit-test inside it? */
+async function cardHitsCenter(page: Page): Promise<boolean> {
+  const box = await page.locator("[data-ledger-card]").boundingBox();
+  if (!box) return false;
+  const cx = Math.round(box.x + box.width / 2);
+  const cy = Math.round(box.y + box.height / 2);
+  return page.evaluate(
+    ({ cx, cy }) => {
+      const el = document.elementFromPoint(cx, cy);
+      const card = document.querySelector("[data-ledger-card]");
+      return !!(el && card && card.contains(el));
+    },
+    { cx, cy },
+  );
 }
 
 test.describe("V2 phase 1 — ledger", () => {
@@ -57,6 +79,31 @@ test.describe("V2 phase 1 — ledger", () => {
     await page.setViewportSize({ width: 1280, height: 800 });
     await toLift(page, 0.5);
     await expect.poll(() => first.getAttribute("d"), { timeout: 15000 }).not.toBe(before);
+  });
+
+  // The ledger card is pointer-events-auto for its hover tilt, so while the
+  // HUD is invisible under the hero (p < 0.06) an invisible ~340×520px box
+  // could otherwise still catch clicks/taps meant for the hero CTAs.
+  test("the ledger card only catches pointer events once the HUD has faded in", async ({ page }) => {
+    await page.goto("/");
+    await toLift(page, 0);
+    await expect.poll(() => cardHitsCenter(page), { timeout: 8000 }).toBe(false);
+    await toLift(page, 0.5);
+    await expect(page.locator("[data-ledger-card]")).toBeVisible({ timeout: 8000 });
+    // hudOpacity rides a damped spring, so the pointer-events flip lags a
+    // few frames behind the scroll jump landing — poll rather than sample
+    // once.
+    await expect.poll(() => cardHitsCenter(page), { timeout: 8000 }).toBe(true);
+  });
+
+  test("768×1024: the ledger card only catches pointer events once the HUD has faded in", async ({ page }) => {
+    await page.setViewportSize({ width: 768, height: 1024 });
+    await page.goto("/");
+    await toLift(page, 0);
+    await expect.poll(() => cardHitsCenter(page), { timeout: 8000 }).toBe(false);
+    await toLift(page, 0.5);
+    await expect(page.locator("[data-ledger-card]")).toBeVisible({ timeout: 8000 });
+    await expect.poll(() => cardHitsCenter(page), { timeout: 8000 }).toBe(true);
   });
 });
 
