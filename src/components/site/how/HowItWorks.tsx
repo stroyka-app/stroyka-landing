@@ -78,7 +78,7 @@ export default function HowItWorks() {
   const stacked = reduced || phone;
 
   return (
-    <section id="how-it-works" className="relative bg-site-night pb-24 pt-24 text-site-paper md:pb-36">
+    <section id="how-it-works" className="relative bg-site-night pb-24 pt-24 text-site-paper md:pb-4 md:pt-16">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
         <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.22em] text-site-vis">{tn("howItWorks")}</p>
         <FlapText

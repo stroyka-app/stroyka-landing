@@ -46,7 +46,7 @@ export default function SeatMath() {
   const yearly = (theirs - ours) * 12;
 
   return (
-    <section id="math" className="relative bg-site-night py-24 text-site-paper md:py-36">
+    <section id="math" className="relative bg-site-night py-24 text-site-paper md:pb-36 md:pt-24">
       <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-12 px-5 md:px-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
         <div>
           <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.22em] text-site-vis">{t("kicker")}</p>

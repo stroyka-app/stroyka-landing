@@ -56,7 +56,7 @@ export default function FeatureStack() {
       // overflow-x-clip, not hidden: a card tilting in (rotateX in perspective)
       // renders its near edge wider than the card and pushed the page into a
       // sideways scroll; `clip` trims it without breaking the sticky stack.
-      className="relative overflow-x-clip bg-site-night pb-24 pt-24 text-site-paper md:pt-36"
+      className="relative overflow-x-clip bg-site-night pb-24 pt-24 text-site-paper md:pb-16 md:pt-36"
     >
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
         <FlapText
@@ -117,7 +117,7 @@ function Card({
 
   return (
     <div
-      className="relative mb-6 md:sticky md:top-[var(--stack-top)] md:mb-0 md:h-[82vh]"
+      className={`relative mb-6 md:sticky md:top-[var(--stack-top)] md:mb-0 ${index === TOTAL - 1 ? "" : "md:h-[82vh]"}`}
       style={{ zIndex: index + 1, ["--stack-top" as string]: `${BASE_TOP + index * STEP_PX}px` }}
     >
       <motion.div

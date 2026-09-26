@@ -72,7 +72,7 @@ export default function Showcase() {
   };
 
   return (
-    <section id="app" className="relative bg-site-night pb-24 pt-24 text-site-paper md:pb-28 md:pt-36">
+    <section id="app" className="relative bg-site-night pb-24 pt-24 text-site-paper md:pb-0 md:pt-20">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
         <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.22em] text-site-vis">{t("kicker")}</p>
         <FlapText
