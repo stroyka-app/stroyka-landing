@@ -41,8 +41,12 @@ function navOffsetPx(): number {
   return 80;
 }
 
-/** Real user scroll intent — any of these cancels a pending native landing fix. */
-const USER_SCROLL_EVENTS = ["wheel", "touchstart", "keydown"] as const;
+/**
+ * Real user intent — any of these cancels a pending native landing fix.
+ * pointerdown covers a scrollbar drag and any click that scrolls somewhere
+ * else (a CTA, the logo); keydown covers find-in-page and arrow/space keys.
+ */
+const USER_SCROLL_EVENTS = ["wheel", "touchstart", "keydown", "pointerdown"] as const;
 /** How long a native /#hash landing keeps re-settling on layout changes. */
 const NATIVE_SETTLE_MS = 4000;
 
