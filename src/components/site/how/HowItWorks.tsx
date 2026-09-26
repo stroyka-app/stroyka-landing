@@ -1,11 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, useSpring } from "motion/react";
 import FlapText from "../ui/FlapText";
 import { useReduced } from "../ui/useReduced";
 import { LINE_H, NODE_X, contourPath, reachedCount } from "./contour";
+
+// SSR-safe layout effect: measures before paint on the client (no flash of
+// the unmeasured width={1200} default), but doesn't warn on the server.
+const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 const STEPS = [0, 1, 2, 3] as const;
 /** Phone rail insets inside the list (px): top-3 / bottom-12. */
@@ -40,7 +44,7 @@ export default function HowItWorks() {
   // Desktop line width (px) and the stamp thresholds for the current layout.
   const [width, setWidth] = useState(1200);
   const [marks, setMarks] = useState<readonly number[]>(NODE_X);
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     const track = trackRef.current;
     const list = listRef.current;
     if (!track || !list) return;
@@ -81,7 +85,7 @@ export default function HowItWorks() {
         />
         <p className="mt-6 max-w-xl text-[16px] leading-relaxed text-site-paper/70">{t("subhead")}</p>
 
-        <div ref={trackRef} className="relative mt-16 md:mt-24">
+        <div ref={trackRef} className="relative mt-16 overflow-x-clip md:mt-24">
           {/* Desktop contour: two faint echoes (a site plan's neighbouring
               contours), a dotted guide, and the forest line that draws. */}
           <svg

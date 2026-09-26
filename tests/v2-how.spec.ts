@@ -79,3 +79,30 @@ test("reduced motion: every step is stamped at once, no hydration errors", async
   expect(errors).toEqual([]);
   await ctx.close();
 });
+
+const noSidewaysScroll = (page: Page) =>
+  page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth);
+
+for (const viewport of [
+  { width: 1024, height: 768 },
+  { width: 820, height: 1180 },
+]) {
+  test(`${viewport.width}×${viewport.height}: the contour never widens the page, before or after it measures`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    await page.goto("/");
+    // No waits: the un-measured server/first-paint width={1200} default must
+    // never overflow — an isomorphic layout effect measures before paint,
+    // and overflow-x-clip on the track is the backstop either way.
+    expect(await noSidewaysScroll(page)).toBe(true);
+    await page.locator("#how-it-works").scrollIntoViewIfNeeded();
+    expect(await noSidewaysScroll(page)).toBe(true);
+  });
+
+  test(`${viewport.width}×${viewport.height}, JS disabled: the server-rendered contour alone doesn't overflow`, async ({ browser }) => {
+    const ctx = await browser.newContext({ javaScriptEnabled: false, viewport });
+    const page = await ctx.newPage();
+    await page.goto("/");
+    expect(await noSidewaysScroll(page)).toBe(true);
+    await ctx.close();
+  });
+}
