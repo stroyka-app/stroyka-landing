@@ -76,7 +76,9 @@ export default function HowItWorks() {
   const d = contourPath(width, LINE_H);
 
   return (
-    <section id="how-it-works" className="relative bg-site-night py-24 text-site-paper md:py-36">
+    // md:pt-24, not the usual 36: FeatureStack above ends on a sticky
+    // 88vh card slot (~20vh of empty tail), so a full 36 read as a void.
+    <section id="how-it-works" className="relative bg-site-night pb-24 pt-24 text-site-paper md:pb-36">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
         <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.22em] text-site-vis">{tn("howItWorks")}</p>
         <FlapText
@@ -110,8 +112,8 @@ export default function HowItWorks() {
           </svg>
 
           <ol ref={listRef} className="relative grid md:grid-cols-4 md:pt-[88px]">
-            {/* Phone rail: hairline + forest fill, behind the nodes. */}
-            <span aria-hidden className="absolute bottom-12 left-[11px] top-3 w-px bg-site-paper/15 md:hidden">
+            {/* Phone rail: 2px track + forest fill, behind the nodes (centred on the 24px node). */}
+            <span aria-hidden className="absolute bottom-12 left-[11px] top-3 w-0.5 bg-site-paper/15 md:hidden">
               <motion.span className="block h-full w-full origin-top bg-site-vis" style={{ scaleY: reduced ? 1 : drawn }} />
             </span>
             {STEPS.map((i) => (
