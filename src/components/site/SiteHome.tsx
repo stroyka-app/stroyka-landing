@@ -14,6 +14,7 @@ import Plans from "./plans/Plans";
 import Answers from "./answers/Answers";
 import Finale from "./finale/Finale";
 import SiteFooter from "./finale/SiteFooter";
+import { CrewProvider } from "./plans/CrewContext";
 
 /**
  * The dusk-site home (experiment/opus55-wow).
@@ -32,6 +33,7 @@ import SiteFooter from "./finale/SiteFooter";
 export default function SiteHome() {
   return (
     <MotionConfig reducedMotion="user">
+    <CrewProvider>
     <main className="site-home relative bg-site-night">
       <HashScroll />
       <Navbar />
@@ -49,6 +51,7 @@ export default function SiteHome() {
       <Finale />
       <SiteFooter />
     </main>
+    </CrewProvider>
     </MotionConfig>
   );
 }

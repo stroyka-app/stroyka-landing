@@ -989,6 +989,7 @@
       },
       "compareLink": "Ver cada proveedor y cada fuente"
     },
+    "plansCrew": {"line": "Para tu cuadrilla de {crew}: {plan} a ${ours}/mes, fijo.", "them": "Con la tarifa por usuario de {name} serían ≈ ${theirs}/mes.", "fits": "Para tu cuadrilla"},
     "how": {
       "days": ["Lun · 9:00", "Lun · 9:10", "Mar · 7:00", "Vie · 16:30"],
       "board": {"invite": "Únete a la obra", "task": "Armar muros", "report": "Reporte", "onBudget": "En presupuesto", "geofence": "Geocerca", "spent": "Gastado", "week": "Semana 1"}

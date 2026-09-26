@@ -9,6 +9,7 @@ import { PRICES } from "@/data/pricing";
 import FlapText from "@/components/site/ui/FlapText";
 import { useReduced } from "@/components/site/ui/useReduced";
 import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
+import Hanging from "@/components/site/plans/Hanging";
 
 /* ─── Types ────────────────────────────────────────────────────── */
 
@@ -476,16 +477,37 @@ export default function GetStartedFlow() {
               animate="center"
               exit="exit"
               transition={stepTransition}
-              className="mt-12 grid items-stretch gap-4 md:mt-16 md:grid-cols-2"
+              className="relative mt-12 grid items-stretch gap-10 md:mt-16 md:grid-cols-2 md:gap-4"
             >
-              {cards.map(({ id, hot, features }) => (
+              {/* The plans hang from the crane's beam, like the home's pricing;
+                  the one you pick is hoisted and stamped. */}
+              <span aria-hidden className="pointer-events-none absolute inset-x-0 top-[-3px] hidden h-[6px] rounded-full bg-site-paper/75 md:block" />
+              {cards.map(({ id, hot, features }, i) => (
+                <Hanging key={id} index={i} swingKey={billing} selected={plan === id}>
                 <div
-                  key={id}
+                  data-plan={id}
+                  data-selected={plan === id ? "1" : "0"}
                   onClick={() => setPlan(id)}
-                  className={`relative flex cursor-pointer flex-col rounded-[28px] p-7 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] md:p-9 motion-safe:hover:-translate-y-1 ${
+                  className={`relative flex h-full cursor-pointer flex-col rounded-[28px] p-7 md:p-9 ${
                     hot ? "bg-site-vis text-site-on-vis" : "bg-site-slab ring-1 ring-site-paper/[0.08]"
-                  }`}
+                  } ${plan === id ? "outline outline-[3px] outline-offset-4 outline-site-vis" : ""}`}
                 >
+                  <AnimatePresence initial={false}>
+                    {plan === id && (
+                      <motion.span
+                        key="picked"
+                        initial={reduced ? false : { scale: 0, rotate: -16, opacity: 0 }}
+                        animate={{ scale: 1, rotate: -8, opacity: 1 }}
+                        exit={{ scale: 0.6, opacity: 0 }}
+                        transition={{ type: "spring", stiffness: 380, damping: 14 }}
+                        className={`absolute -top-4 right-6 rounded-lg border-[2.5px] px-3 py-1 font-flex text-[13px] font-extrabold uppercase tracking-[0.08em] ${
+                          hot ? "border-site-vis bg-site-on-vis text-site-vis" : "border-site-vis bg-site-night text-site-vis"
+                        }`}
+                      >
+                        {t("selectedPlan")}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
                   <div className="flex items-center justify-between gap-3">
                     <h2 className="font-flex text-[22px] font-semibold [font-variation-settings:'wdth'_115]">
                       {t(`${id}.name`)}
@@ -541,6 +563,7 @@ export default function GetStartedFlow() {
                     </KnobButton>
                   </div>
                 </div>
+                </Hanging>
               ))}
             </motion.div>
           )}

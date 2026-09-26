@@ -8,6 +8,7 @@ import { Link } from "@/i18n/navigation";
 import FlapText from "../ui/FlapText";
 import { WORKYARD, stroykaPlanFor } from "@/data/competitors";
 import { useReduced } from "../ui/useReduced";
+import { useCrew } from "../plans/CrewContext";
 
 const MAX = 40;
 const AXIS = 300; // $/mo, fixed so the bars visibly grow as you drag
@@ -37,6 +38,8 @@ export default function SeatMath() {
   const t = useTranslations("site.seats");
   const reduced = useReduced();
   const [crew, setCrew] = useState(12);
+  // Pricing personalises for the crew size the visitor actually chose.
+  const { setCrew: shareCrew } = useCrew();
   const theirs = WORKYARD.costFor(crew);
   const plan = stroykaPlanFor(crew);
   const ours = plan.monthly;
@@ -70,7 +73,11 @@ export default function SeatMath() {
             min={1}
             max={MAX}
             value={crew}
-            onChange={(e) => setCrew(Number(e.target.value))}
+            onChange={(e) => {
+              const n = Number(e.target.value);
+              setCrew(n);
+              shareCrew(n);
+            }}
             className="vis-range mt-6 w-full"
             style={{ ["--fill" as string]: `${((crew - 1) / (MAX - 1)) * 100}%` }}
           />
