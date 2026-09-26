@@ -207,7 +207,17 @@ test("a click right after a /#hash landing stops the re-landing (never yanks the
   const ctx = await browser.newContext({ reducedMotion: "reduce", viewport: { width: 1440, height: 900 } });
   const page = await ctx.newPage();
   await page.goto("/#pricing");
-  await page.waitForTimeout(350);
+  // Click only once the landing has settled on pricing (hydrated, Lift swapped):
+  // the visitor is looking at it. Earlier than that it's the page, not them.
+  await page.waitForFunction(
+    () => {
+      const top = document.getElementById("pricing")!.getBoundingClientRect().top;
+      return top > -60 && top < 200;
+    },
+    undefined,
+    { timeout: 10000 },
+  );
+  await page.waitForTimeout(150);
   // A visitor clicks something that scrolls elsewhere (a CTA, the logo…).
   await page.mouse.click(700, 450);
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior }));
