@@ -91,7 +91,7 @@ export default function Lift() {
 
   return (
     <section
-      id="how-it-works"
+      id="lift"
       data-lift
       ref={sectionRef}
       aria-label="Stroyka"

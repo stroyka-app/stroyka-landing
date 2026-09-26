@@ -84,7 +84,7 @@ export default function PhoneLift() {
 
   return (
     <section
-      id="how-it-works"
+      id="lift"
       ref={ref}
       aria-label="Stroyka"
       className="relative min-h-[640px] overflow-hidden"

@@ -24,7 +24,7 @@ export default function ScrollToTop() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Hide while inside the home's pinned crane story (#how-it-works, the
+  // Hide while inside the home's pinned crane story (#lift, the
   // Lift) on phones — its ledger strip sits at the bottom where the button
   // floats, and the section has its own progress (step counter, ledger).
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function ScrollToTop() {
     let raf = 0;
     const check = () => {
       raf = 0;
-      const el = document.getElementById("how-it-works");
+      const el = document.getElementById("lift");
       const r = el?.getBoundingClientRect();
       setSuppressed(!!r && mql.matches && r.top < window.innerHeight && r.bottom > 0);
     };

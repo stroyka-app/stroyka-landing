@@ -8,6 +8,7 @@ import Ticker from "./ticker/Ticker";
 import Shoebox from "./shoebox/Shoebox";
 import KnowEvery from "./know/KnowEvery";
 import FeatureStack from "./stack/FeatureStack";
+import HowItWorks from "./how/HowItWorks";
 import SeatMath from "./seats/SeatMath";
 import Plans from "./plans/Plans";
 import Answers from "./answers/Answers";
@@ -22,6 +23,7 @@ import SiteFooter from "./finale/SiteFooter";
  *   Shoebox ─ the mess today (throwable) → sorted in one click
  *   KnowEvery ─ scroll-synced word spotlight
  *   FeatureStack ─ four stacking cards, each a working vignette
+ *   HowItWorks ─ the first week, four stamps on a contour line
  *   SeatMath ─ drag your crew size: per-seat vs flat
  *   Plans ─ pricing
  *   Answers ─ FAQ
@@ -40,6 +42,7 @@ export default function SiteHome() {
       <Shoebox />
       <KnowEvery />
       <FeatureStack />
+      <HowItWorks />
       <SeatMath />
       <Plans />
       <Answers />
