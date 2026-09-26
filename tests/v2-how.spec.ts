@@ -99,6 +99,33 @@ for (const viewport of [
   });
 }
 
+test("phones: step 1 isn't stamped before the list scrolls into view; all four after", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  // List top just below the fold: useScroll progress clamps to 0 here, so a
+  // step-1 mark of exactly 0 would stamp it early.
+  // Re-aim until it holds: the Lift swaps to PhoneLift after mount, which
+  // moves the list by thousands of px under a one-shot scroll.
+  await expect
+    .poll(
+      () =>
+        page.evaluate(() => {
+          const ol = document.querySelector("#how-it-works ol") as HTMLElement;
+          const top = ol.getBoundingClientRect().top + window.scrollY;
+          window.scrollTo({ top: top - window.innerHeight - 20, behavior: "instant" as ScrollBehavior });
+          return new Promise<number>((r) =>
+            setTimeout(() => r(Math.round(ol.getBoundingClientRect().top - window.innerHeight)), 300),
+          );
+        }),
+      { timeout: 10000 },
+    )
+    .toBe(20);
+  await page.waitForTimeout(600);
+  await expect(page.locator('#how-it-works li[data-step="0"]')).toHaveAttribute("data-reached", "0");
+  await scrollToFraction(page, "#how-it-works ol", 1.3);
+  await expect(reached(page)).toHaveCount(4, { timeout: 10000 });
+});
+
 // Hash landing on the NATIVE path (Lenis off: touch or reduced motion). The
 // Lift swaps its 760vh desktop markup after mount, so the browser's own
 // fragment jump lands high above the target unless HashScroll re-settles.

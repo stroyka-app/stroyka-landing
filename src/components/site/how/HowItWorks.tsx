@@ -18,6 +18,8 @@ const RAIL_BOTTOM = 48;
 /** Node centre from the top of its step on phones (h-6 node). */
 const NODE_Y = 12;
 const STAMP = { type: "spring", stiffness: 380, damping: 14 } as const;
+/** Lowest phone stamp threshold: step 1 waits until the rail has begun to fill. */
+const MIN_MARK = 0.05;
 /**
  * Unreached step opacity (was 0.4). With the paper/70 body on bone this is
  * ~2.3:1 (0.4 was ~1.8:1) — a transient pre-scroll state, not AA; AA for
@@ -63,7 +65,10 @@ export default function HowItWorks() {
       }
       const rail = list.offsetHeight - RAIL_TOP - RAIL_BOTTOM;
       const items = Array.from(list.querySelectorAll<HTMLLIElement>("li[data-step]"));
-      setMarks(items.map((li) => Math.min(1, Math.max(0, (li.offsetTop + NODE_Y - RAIL_TOP) / rail))));
+      // Floor at MIN_MARK: step 1's node sits at the rail top (mark 0), and
+      // useScroll clamps to 0 while the list is still below the fold, so an
+      // unfloored mark would stamp step 1 before it's ever on screen.
+      setMarks(items.map((li) => Math.min(1, Math.max(MIN_MARK, (li.offsetTop + NODE_Y - RAIL_TOP) / rail))));
     };
     measure();
     const ro = new ResizeObserver(measure);
