@@ -1,4 +1,4 @@
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, webkit, type Page } from "@playwright/test";
 
 async function scrollToFraction(page: Page, selector: string, f: number) {
   await page.evaluate(
@@ -96,5 +96,46 @@ for (const viewport of [
     expect(await noSidewaysScroll(page)).toBe(true);
     await page.locator("#how-it-works").scrollIntoViewIfNeeded();
     expect(await noSidewaysScroll(page)).toBe(true);
+  });
+}
+
+// Hash landing on the NATIVE path (Lenis off: touch or reduced motion). The
+// Lift swaps its 760vh desktop markup after mount, so the browser's own
+// fragment jump lands high above the target unless HashScroll re-settles.
+const topOf = (page: Page, id: string) =>
+  page.evaluate((i) => document.getElementById(i)!.getBoundingClientRect().top, id);
+
+for (const hash of ["how-it-works", "pricing"]) {
+  test.describe(`native hash landing on #${hash}`, () => {
+    // Playwright forbids use({ browserName }) inside a describe (it forces a
+    // new worker), so this one launches WebKit itself.
+    test("iOS-like phone (WebKit, touch): cross-route /demo → /#hash lands on the section", async ({ baseURL }) => {
+      const browser = await webkit.launch();
+      try {
+        const ctx = await browser.newContext({ baseURL, viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+        const page = await ctx.newPage();
+        await page.goto("/demo");
+        await page.goto(`/#${hash}`);
+        // |top| < 200: a target scrolled far PAST would also satisfy "top < 200".
+        await expect.poll(async () => Math.abs(await topOf(page, hash)), { timeout: 5000 }).toBeLessThan(200);
+        // ...and it stays there once the late corrections have run.
+        await page.waitForTimeout(1200);
+        expect(Math.abs(await topOf(page, hash))).toBeLessThan(200);
+      } finally {
+        await browser.close();
+      }
+    });
+
+    test.describe("reduced-motion desktop (Chromium)", () => {
+      test.use({ viewport: { width: 1440, height: 900 }, contextOptions: { reducedMotion: "reduce" } });
+
+      test("direct /#hash lands on the section", async ({ page }) => {
+        await page.goto(`/#${hash}`);
+        // |top| < 200: a target scrolled far PAST would also satisfy "top < 200".
+        await expect.poll(async () => Math.abs(await topOf(page, hash)), { timeout: 5000 }).toBeLessThan(200);
+        await page.waitForTimeout(1200);
+        expect(Math.abs(await topOf(page, hash))).toBeLessThan(200);
+      });
+    });
   });
 }

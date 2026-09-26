@@ -6,9 +6,11 @@ import { getLenis } from "@/lib/lenis";
 /**
  * HashScroll — a thin adapter that routes hash-anchor scrolling through Lenis
  * WHEN LENIS IS ACTIVE (desktop, motion on). When Lenis is off (reduced-motion
- * or touch — see SmoothScroll), this does nothing: the deterministic native
+ * or touch — see SmoothScroll), clicks are left alone: the deterministic native
  * base handles anchors via CSS scroll-behavior:smooth + scroll-margin-top, so
- * there is no JS single-point-of-failure and no Lenis-vs-native fight.
+ * there is no JS single-point-of-failure and no Lenis-vs-native fight. The one
+ * native-path job is re-settling a /#hash LANDING after the post-mount layout
+ * swap (see settleNativeLanding).
  *
  * Lenis-active responsibilities:
  *  1. In-page anchor clicks → drive Lenis directly (no native jump to fight).
@@ -39,6 +41,9 @@ function navOffsetPx(): number {
   return 80;
 }
 
+/** Real user scroll intent — any of these cancels a pending native landing fix. */
+const USER_SCROLL_EVENTS = ["wheel", "touchstart", "keydown"] as const;
+
 export default function HashScroll() {
   useEffect(() => {
     const prevRestoration = history.scrollRestoration;
@@ -59,6 +64,46 @@ export default function HashScroll() {
       scrollToId(id);
       window.setTimeout(() => scrollToId(id), 250);
     };
+
+    // Native path, LANDING only (Lenis off: touch or reduced motion). The
+    // browser/Next fragment jump fires against the SERVER layout, but the
+    // Lift swaps its 760vh desktop markup after mount (PhoneLift on phones,
+    // height:auto under reduced motion) and fonts reflow, so the target ends
+    // up thousands of px away. Re-settle after layout (double rAF), then
+    // after the Lift swap (~300ms) and fonts (~900ms). scrollIntoView honours
+    // scroll-margin-top (= --nav-offset); "instant" because a correction
+    // should snap like the fragment jump it repairs, not glide 5000px. The
+    // moment the user scrolls we stop — never fight a real gesture.
+    const nativeTimers: number[] = [];
+    let nativeRaf = 0;
+    const cancelNative = () => {
+      cancelAnimationFrame(nativeRaf);
+      nativeTimers.forEach((t) => window.clearTimeout(t));
+      nativeTimers.length = 0;
+      USER_SCROLL_EVENTS.forEach((ev) => window.removeEventListener(ev, cancelNative));
+    };
+    const settleNativeLanding = () => {
+      const id = idFromHref(window.location.hash);
+      if (!id) return;
+      const land = () => {
+        // SmoothScroll's effect runs after ours (parent after child); if
+        // Lenis came up after all, the Lenis branch owns the landing.
+        if (getLenis()) return;
+        document.getElementById(id)?.scrollIntoView({ block: "start", behavior: "instant" });
+      };
+      USER_SCROLL_EVENTS.forEach((ev) => window.addEventListener(ev, cancelNative, { passive: true }));
+      nativeRaf = requestAnimationFrame(() => {
+        nativeRaf = requestAnimationFrame(land);
+      });
+      nativeTimers.push(
+        window.setTimeout(land, 300),
+        window.setTimeout(() => {
+          land();
+          cancelNative();
+        }, 900),
+      );
+    };
+    settleNativeLanding();
 
     // Intercept in-page anchor clicks ONLY when Lenis is active; otherwise let
     // the click proceed natively (scroll-margin + CSS smooth do the work).
@@ -90,6 +135,7 @@ export default function HashScroll() {
     window.addEventListener("hashchange", settleToHash);
     document.addEventListener("click", onClick);
     return () => {
+      cancelNative();
       window.clearTimeout(initial);
       window.removeEventListener("hashchange", settleToHash);
       document.removeEventListener("click", onClick);
