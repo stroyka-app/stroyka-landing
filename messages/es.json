@@ -116,7 +116,7 @@
       },
       "1": {
         "title": "Invita a tu cuadrilla",
-        "body": "Mándales el enlace por texto. Se instala en 30 segundos y tocan su nombre. Los trabajadores solo ven lo que les importa — sus tareas, sus horas, su comprobante de pago.",
+        "body": "Mándales el enlace por texto. Se instala en 30 segundos y tocan su nombre. Los trabajadores solo ven lo que les importa — sus tareas, sus horas, la obra en la que están.",
         "alt": "Pantalla de tareas: el trabajo de la cuadrilla por obra, con responsable, avance y mensajes"
       },
       "2": {
@@ -986,7 +986,8 @@
       "compareLink": "Ver cada proveedor y cada fuente"
     },
     "how": {
-      "days": ["Lun · 9:00", "Lun · 9:10", "Mar · 7:00", "Vie · 16:30"]
+      "days": ["Lun · 9:00", "Lun · 9:10", "Mar · 7:00", "Vie · 16:30"],
+      "board": {"invite": "Únete a la obra", "task": "Armar muros", "report": "Reporte", "onBudget": "En presupuesto", "geofence": "Geocerca", "spent": "Gastado", "week": "Semana 1"}
     }
   }
 }

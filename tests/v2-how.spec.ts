@@ -43,25 +43,41 @@ test.describe("desktop", () => {
       .toBeLessThan(200);
   });
 
-  test("scrolling draws the line and stamps the steps in order, and back", async ({ page }) => {
+  test("scrolling runs the board through the four steps in order, and back", async ({ page }) => {
     await page.goto("/");
-    // -0.6 isn't far enough above the section to clamp useScroll's progress
-    // to 0 for the real (translated) copy's measured `ol` height (~310px
-    // at this viewport: needs roughly <= -0.87 given offset ["start 0.8",
-    // "end 0.6"] against a 900px-tall viewport) — verified this settles,
-    // not slow-animates, at a non-zero "reached" count, so it's a scroll-
-    // target calibration issue, not flakiness. -1.2 gives comfortable
-    // margin above that threshold without touching what's asserted below.
-    await scrollToFraction(page, "#how-it-works ol", -1.2);
+    await scrollToFraction(page, "[data-how-track]", -0.3);
     await expect(reached(page)).toHaveCount(0, { timeout: 10000 });
-    await scrollToFraction(page, "#how-it-works ol", 1.4);
+    await scrollToFraction(page, "[data-how-track]", 0.5);
+    await expect(reached(page)).toHaveCount(2, { timeout: 10000 });
+    await scrollToFraction(page, "[data-how-track]", 1.1);
     await expect(reached(page)).toHaveCount(4, { timeout: 10000 });
-    await scrollToFraction(page, "#how-it-works ol", -1.2);
+    await scrollToFraction(page, "[data-how-track]", -0.3);
     await expect(reached(page)).toHaveCount(0, { timeout: 10000 });
+  });
+
+  test("the day tag starts on the drawing and jumps into the text", async ({ page }) => {
+    await page.goto("/");
+    // Early in beat 3 the tag is on the board; late in it, it's in the text column.
+    const at = async (p: number) => {
+      await page.evaluate((f) => {
+        const el = document.querySelector("[data-how-track]") as HTMLElement;
+        const top = el.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: top + f * (el.offsetHeight - window.innerHeight), behavior: "instant" as ScrollBehavior });
+      }, p);
+      await page.waitForTimeout(1200);
+      return page.evaluate(() => {
+        const tag = document.querySelector("#how-it-works [data-day-tag]") as HTMLElement | null;
+        const board = document.querySelector("#how-it-works svg") as SVGElement;
+        if (!tag) return null;
+        return tag.getBoundingClientRect().left > board.getBoundingClientRect().left;
+      });
+    };
+    expect(await at(0.52)).toBe(true); // on the board
+    expect(await at(0.7)).toBe(false); // jumped to the text column
   });
 });
 
-test("phones: the rail fills and all four steps stamp; no sideways scroll", async ({ page }) => {
+test("phones: every card runs its step as it scrolls through; no sideways scroll", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
   await scrollToFraction(page, "#how-it-works ol", 1.3);
@@ -185,3 +201,17 @@ for (const hash of ["how-it-works", "pricing"]) {
     });
   });
 }
+
+test("a click right after a /#hash landing stops the re-landing (never yanks the visitor back)", async ({ browser }) => {
+  // Reduced motion = the native (no-Lenis) landing path.
+  const ctx = await browser.newContext({ reducedMotion: "reduce", viewport: { width: 1440, height: 900 } });
+  const page = await ctx.newPage();
+  await page.goto("/#pricing");
+  await page.waitForTimeout(350);
+  // A visitor clicks something that scrolls elsewhere (a CTA, the logo…).
+  await page.mouse.click(700, 450);
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior }));
+  await page.waitForTimeout(1500); // past the 900ms re-land beat
+  expect(await page.evaluate(() => window.scrollY)).toBeLessThan(100);
+  await ctx.close();
+});

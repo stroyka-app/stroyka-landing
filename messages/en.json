@@ -115,7 +115,7 @@
       },
       "1": {
         "title": "Invite your crew",
-        "body": "Text them a link. They install in 30 seconds and tap their name. Workers only see what matters to them — their tasks, their hours, their paystub.",
+        "body": "Text them a link. They install in 30 seconds and tap their name. Workers only see what matters to them — their tasks, their hours, the job they're on.",
         "alt": "Tasks screen: crew work grouped by project, with who is on it, progress, and messages"
       },
       "2": {
@@ -983,7 +983,8 @@
       "compareLink": "See every vendor, every source"
     },
     "how": {
-      "days": ["Mon · 9:00 AM", "Mon · 9:10 AM", "Tue · 7:00 AM", "Fri · 4:30 PM"]
+      "days": ["Mon · 9:00 AM", "Mon · 9:10 AM", "Tue · 7:00 AM", "Fri · 4:30 PM"],
+      "board": {"invite": "Join the job", "task": "Frame walls", "report": "Report", "onBudget": "On budget", "geofence": "Geofence", "spent": "Spent", "week": "Week 1"}
     }
   }
 }
