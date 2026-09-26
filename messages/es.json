@@ -865,22 +865,26 @@
         "0": {
           "kicker": "Sin conexión primero",
           "title": "Funciona donde no hay señal.",
-          "body": "Cada teléfono guarda su propia copia. La cuadrilla registra horas, pedidos y tareas en el sótano o en el terreno, y todo se sincroniza solo cuando vuelve la señal. Nada se pierde, nada se cuenta dos veces."
+          "body": "Cada teléfono guarda su propia copia. La cuadrilla registra horas, pedidos y tareas en el sótano o en el terreno, y todo se sincroniza solo cuando vuelve la señal. Nada se pierde, nada se cuenta dos veces.",
+        "proof": ["Funciona sin señal", "Se sincroniza solo", "Nada se cuenta dos veces"]
         },
         "1": {
           "kicker": "Jefe y cuadrilla",
           "title": "Dos apps en una.",
-          "body": "El jefe ve presupuestos, aprobaciones y reportes de costos. Los trabajadores ven sus tareas, sus horas y un botón para pedir materiales. La misma app, y cada quien ve solo su parte."
+          "body": "El jefe ve presupuestos, aprobaciones y reportes de costos. Los trabajadores ven sus tareas, sus horas y un botón para pedir materiales. La misma app, y cada quien ve solo su parte.",
+        "proof": ["Presupuestos y aprobaciones", "Tareas y horas", "Pedidos de material"]
         },
         "2": {
           "kicker": "Costeo de obra",
           "title": "El estado de resultados se hace solo.",
-          "body": "Cada compra, cada hoja de horas y cada viaje de combustible entran al estado de resultados de la obra en el momento. Mano de obra, materiales y presupuesto restante en un solo lugar."
+          "body": "Cada compra, cada hoja de horas y cada viaje de combustible entran al estado de resultados de la obra en el momento. Mano de obra, materiales y presupuesto restante en un solo lugar.",
+        "proof": ["Mano de obra, material, combustible", "Se actualiza al momento", "Presupuesto restante, en vivo"]
         },
         "3": {
           "kicker": "Aprobaciones",
           "title": "Se acabó el «¿ya aprobaste eso?»",
-          "body": "Los pedidos llegan desde la obra. Los apruebas con un toque y lo aprobado se registra en los costos de la obra, con historial completo. Sin cadenas de mensajes."
+          "body": "Los pedidos llegan desde la obra. Los apruebas con un toque y lo aprobado se registra en los costos de la obra, con historial completo. Sin cadenas de mensajes.",
+        "proof": ["Aprobar con un toque", "Se registra en los costos", "Historial completo"]
         }
       },
       "offline": {

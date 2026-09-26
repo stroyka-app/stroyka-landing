@@ -7,7 +7,7 @@ import { Check, CloudOff, CloudUpload, HardHat, Signal, SignalZero, UserRound } 
 import { useRef } from "react";
 import { useReduced } from "../ui/useReduced";
 
-const panel = "relative flex h-full min-h-[280px] flex-col md:min-h-[320px] overflow-hidden rounded-[22px] bg-site-night p-5 ring-1 ring-site-paper/[0.08] md:p-6";
+const panel = "relative flex h-full min-h-[260px] flex-col overflow-hidden rounded-[22px] bg-site-night p-5 ring-1 ring-site-paper/[0.08] md:p-6";
 
 /* ── 01 · Offline ──────────────────────────────────────────────────────── */
 

@@ -862,22 +862,26 @@
         "0": {
           "kicker": "Offline-first",
           "title": "Works where the signal doesn’t.",
-          "body": "Every phone keeps its own copy. The crew logs time, requests and tasks in the basement or out on the lot, and it syncs on its own when the bars come back. Nothing lost, nothing counted twice."
+          "body": "Every phone keeps its own copy. The crew logs time, requests and tasks in the basement or out on the lot, and it syncs on its own when the bars come back. Nothing lost, nothing counted twice.",
+        "proof": ["Works with no signal", "Syncs by itself", "Nothing counted twice"]
         },
         "1": {
           "kicker": "Boss & crew",
           "title": "Two apps in one.",
-          "body": "Bosses get budgets, approvals and cost reports. Workers get their tasks, their hours and a button to ask for materials. Same app, and each person sees only their side."
+          "body": "Bosses get budgets, approvals and cost reports. Workers get their tasks, their hours and a button to ask for materials. Same app, and each person sees only their side.",
+        "proof": ["Budgets & approvals", "Tasks & hours", "Material requests"]
         },
         "2": {
           "kicker": "Job costing",
           "title": "The P&L writes itself.",
-          "body": "Every purchase, timesheet and fuel trip rolls into the job’s P&L as it happens. Labor, materials, budget left, all in one place, updated the moment a worker submits."
+          "body": "Every purchase, timesheet and fuel trip rolls into the job’s P&L as it happens. Labor, materials, budget left, all in one place, updated the moment a worker submits.",
+        "proof": ["Labor, materials, fuel", "Updates as it happens", "Budget left, live"]
         },
         "3": {
           "kicker": "Approvals",
           "title": "No more “did you approve that?”",
-          "body": "Requests come in from the field. You approve them with one tap, and approved items log to the job’s costs with a full audit trail. No text threads."
+          "body": "Requests come in from the field. You approve them with one tap, and approved items log to the job’s costs with a full audit trail. No text threads.",
+        "proof": ["One-tap approve", "Logs to job costs", "Full audit trail"]
         }
       },
       "offline": {
