@@ -11,6 +11,17 @@ async function scrollToFraction(page: Page, selector: string, f: number) {
   );
 }
 
+/** The Lift swaps its server 760vh markup for PhoneLift / height:auto after hydration. */
+const waitForLiftSwap = (page: Page) =>
+  page.waitForFunction(
+    () => {
+      const lift = document.getElementById("lift");
+      return !!lift && lift.offsetHeight < window.innerHeight * 3;
+    },
+    undefined,
+    { timeout: 15000 },
+  );
+
 const reached = (page: Page) => page.locator('#how-it-works li[data-step][data-reached="1"]');
 
 test("how-it-works is its own section, not the hero", async ({ page }) => {
@@ -104,8 +115,9 @@ test("phones: step 1 isn't stamped before the list scrolls into view; all four a
   await page.goto("/");
   // List top just below the fold: useScroll progress clamps to 0 here, so a
   // step-1 mark of exactly 0 would stamp it early.
-  // Re-aim until it holds: the Lift swaps to PhoneLift after mount, which
-  // moves the list by thousands of px under a one-shot scroll.
+  // Aim only after the Lift has swapped to PhoneLift (it moves the list by
+  // thousands of px), then re-aim until the position holds.
+  await waitForLiftSwap(page);
   await expect
     .poll(
       () =>
@@ -132,6 +144,20 @@ test("phones: step 1 isn't stamped before the list scrolls into view; all four a
 const topOf = (page: Page, id: string) =>
   page.evaluate((i) => document.getElementById(i)!.getBoundingClientRect().top, id);
 
+/**
+ * Lands on #id and STAYS there. Waits for the Lift's post-hydration swap
+ * (760vh → PhoneLift / height:auto) first: before it, the browser's own
+ * fragment jump against the server layout can look right by accident.
+ */
+async function expectLanded(page: Page, id: string) {
+  await waitForLiftSwap(page);
+  // |top| < 200: a target scrolled far PAST would also satisfy "top < 200".
+  await expect.poll(async () => Math.abs(await topOf(page, id)), { timeout: 5000 }).toBeLessThan(200);
+  // ...and it stays there once the late corrections have run.
+  await page.waitForTimeout(1200);
+  expect(Math.abs(await topOf(page, id))).toBeLessThan(200);
+}
+
 for (const hash of ["how-it-works", "pricing"]) {
   test.describe(`native hash landing on #${hash}`, () => {
     // Playwright forbids use({ browserName }) inside a describe (it forces a
@@ -143,11 +169,7 @@ for (const hash of ["how-it-works", "pricing"]) {
         const page = await ctx.newPage();
         await page.goto("/demo");
         await page.goto(`/#${hash}`);
-        // |top| < 200: a target scrolled far PAST would also satisfy "top < 200".
-        await expect.poll(async () => Math.abs(await topOf(page, hash)), { timeout: 5000 }).toBeLessThan(200);
-        // ...and it stays there once the late corrections have run.
-        await page.waitForTimeout(1200);
-        expect(Math.abs(await topOf(page, hash))).toBeLessThan(200);
+        await expectLanded(page, hash);
       } finally {
         await browser.close();
       }
@@ -158,10 +180,7 @@ for (const hash of ["how-it-works", "pricing"]) {
 
       test("direct /#hash lands on the section", async ({ page }) => {
         await page.goto(`/#${hash}`);
-        // |top| < 200: a target scrolled far PAST would also satisfy "top < 200".
-        await expect.poll(async () => Math.abs(await topOf(page, hash)), { timeout: 5000 }).toBeLessThan(200);
-        await page.waitForTimeout(1200);
-        expect(Math.abs(await topOf(page, hash))).toBeLessThan(200);
+        await expectLanded(page, hash);
       });
     });
   });

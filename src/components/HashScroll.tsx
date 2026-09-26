@@ -43,6 +43,8 @@ function navOffsetPx(): number {
 
 /** Real user scroll intent — any of these cancels a pending native landing fix. */
 const USER_SCROLL_EVENTS = ["wheel", "touchstart", "keydown"] as const;
+/** How long a native /#hash landing keeps re-settling on layout changes. */
+const NATIVE_SETTLE_MS = 4000;
 
 export default function HashScroll() {
   useEffect(() => {
@@ -70,16 +72,22 @@ export default function HashScroll() {
     // Lift swaps its 760vh desktop markup after mount (PhoneLift on phones,
     // height:auto under reduced motion) and fonts reflow, so the target ends
     // up thousands of px away. Re-settle after layout (double rAF), then
-    // after the Lift swap (~300ms) and fonts (~900ms). scrollIntoView honours
+    // after the Lift swap (~300ms) and fonts (~900ms). Those are the usual
+    // beats, not guarantees: on a slow device the Lift can hydrate seconds
+    // after us, so for NATIVE_SETTLE_MS a ResizeObserver on <body> also
+    // re-lands on every page-height change. scrollIntoView honours
     // scroll-margin-top (= --nav-offset); "instant" because a correction
     // should snap like the fragment jump it repairs, not glide 5000px. The
     // moment the user scrolls we stop — never fight a real gesture.
     const nativeTimers: number[] = [];
     let nativeRaf = 0;
+    let nativeRo: ResizeObserver | null = null;
     const cancelNative = () => {
       cancelAnimationFrame(nativeRaf);
       nativeTimers.forEach((t) => window.clearTimeout(t));
       nativeTimers.length = 0;
+      nativeRo?.disconnect();
+      nativeRo = null;
       USER_SCROLL_EVENTS.forEach((ev) => window.removeEventListener(ev, cancelNative));
     };
     const settleNativeLanding = () => {
@@ -95,12 +103,12 @@ export default function HashScroll() {
       nativeRaf = requestAnimationFrame(() => {
         nativeRaf = requestAnimationFrame(land);
       });
+      nativeRo = new ResizeObserver(land);
+      nativeRo.observe(document.body);
       nativeTimers.push(
         window.setTimeout(land, 300),
-        window.setTimeout(() => {
-          land();
-          cancelNative();
-        }, 900),
+        window.setTimeout(land, 900),
+        window.setTimeout(cancelNative, NATIVE_SETTLE_MS),
       );
     };
     settleNativeLanding();
