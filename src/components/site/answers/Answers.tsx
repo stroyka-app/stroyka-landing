@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { Plus } from "lucide-react";
 import FlapText from "../ui/FlapText";
 
-const COUNT = 8;
+const COUNT = 9;
 
 /**
  * FAQ as a numbered list. One answer open at a time; the row's plus turns

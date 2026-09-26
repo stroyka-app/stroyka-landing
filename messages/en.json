@@ -265,6 +265,11 @@
         "q": "How do I bill my clients?",
         "a": "Generate an invoice from any project’s unbilled hours, materials, and fuel — add markup or custom line items, then email the PDF to your client right from the app. If an invoice goes overdue, send a one-tap payment reminder, or turn on automatic reminders and Stroyka politely follows up for you (up to 3 times).",
         "meta": "Invoicing"
+      },
+      "8": {
+        "q": "Can my crew use it in Spanish?",
+        "a": "Yes. Every screen is in English, Spanish and Russian, and each person picks their own language. You can run the job in English while your crew clocks in and logs materials in Spanish.",
+        "meta": "Language"
       }
     }
   },
@@ -703,7 +708,7 @@
     "line": "Hours, receipts and fuel go on the job as the work happens. You see the margin while you can still do something about it.",
     "imageAlt": "Stroyka job report for a kitchen remodel: 54% of the budget used, $8,340 left, labor and requests broken out, largest costs listed",
     "cta": "Get Stroyka free",
-    "bullet1": "Works offline on site",
+    "bullet1": "Your crew can use it in Spanish",
     "bullet2": "Flat monthly price, no per-worker fees",
     "bullet3": "Free to start, no card",
     "privacy": "Privacy",

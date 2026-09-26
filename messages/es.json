@@ -266,6 +266,11 @@
         "q": "¿Cómo facturo a mis clientes?",
         "a": "Genera una factura con las horas, materiales y combustible sin facturar de cualquier obra — añade margen o líneas personalizadas y envía el PDF al cliente por email desde la app. Si una factura se vence, envía un recordatorio con un toque o activa los recordatorios automáticos y Stroyka hace el seguimiento por ti (hasta 3 veces).",
         "meta": "Facturación"
+      },
+      "8": {
+        "q": "¿Mi cuadrilla la puede usar en español?",
+        "a": "Sí. Cada pantalla está en español, inglés y ruso, y cada persona elige su idioma. Tú puedes llevar la obra en inglés mientras tu cuadrilla marca entrada y registra materiales en español.",
+        "meta": "Idioma"
       }
     }
   },
