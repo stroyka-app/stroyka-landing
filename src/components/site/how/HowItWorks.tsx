@@ -18,6 +18,12 @@ const RAIL_BOTTOM = 48;
 /** Node centre from the top of its step on phones (h-6 node). */
 const NODE_Y = 12;
 const STAMP = { type: "spring", stiffness: 380, damping: 14 } as const;
+/**
+ * Unreached step opacity (was 0.4). With the paper/70 body on bone this is
+ * ~2.3:1 (0.4 was ~1.8:1) — a transient pre-scroll state, not AA; AA for
+ * the body needs ~0.9 here.
+ */
+const DIM = 0.55;
 
 /**
  * HOW IT WORKS — the first week with Stroyka, as four stamps on a contour.
@@ -151,7 +157,7 @@ function Step({ i, on, reduced, day, title, body }: { i: number; on: boolean; re
       <Node on={on} reduced={reduced} />
       <motion.div
         initial={false}
-        animate={{ opacity: on ? 1 : 0.4, y: on ? 0 : 8 }}
+        animate={{ opacity: on ? 1 : DIM, y: on ? 0 : 8 }}
         transition={{ duration: reduced ? 0 : 0.45, ease: [0.22, 1, 0.36, 1] }}
       >
         <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-site-vis">{day}</p>
