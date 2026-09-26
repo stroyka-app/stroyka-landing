@@ -1,12 +1,14 @@
 import { test, expect, type Page } from "@playwright/test";
+import { homeReady } from "./ready";
 
 const N = 6;
 const toTrack = (page: Page, p: number) =>
+  homeReady(page).then(() =>
   page.evaluate((frac) => {
     const el = document.querySelector("[data-strip-track]") as HTMLElement;
     const top = el.getBoundingClientRect().top + window.scrollY;
     window.scrollTo({ top: top + frac * (el.offsetHeight - window.innerHeight), behavior: "instant" as ScrollBehavior });
-  }, p);
+  }, p));
 const caption = (page: Page, scope: string) => page.locator(`${scope} [data-strip-caption]`).last();
 
 test.describe("desktop reel", () => {

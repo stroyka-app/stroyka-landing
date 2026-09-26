@@ -1,6 +1,8 @@
 import { test, expect, type Page } from "@playwright/test";
+import { homeReady } from "./ready";
 
 async function toLift(page: Page, p: number) {
+  await homeReady(page);
   // The crane scene (R3F Canvas, dynamic-imported) and Framer's useScroll
   // must both be mounted before a programmatic scrollTo can be picked up as
   // a "change" on the scroll-linked progress value — scrolling before the

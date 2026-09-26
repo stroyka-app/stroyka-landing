@@ -64,7 +64,10 @@ for (const path of ["/", "/es", "/ru"]) {
   test(`navbar transparent over hero at ${path}`, async ({ page }) => {
     await page.goto(path);
     await page.evaluate(() => window.scrollTo(0, 0));
-    const nav = page.locator("nav").first();
-    await expect(nav).toHaveClass(/bg-transparent/);
+    // The glass lives on the nav's absolute backdrop layer, not the fixed
+    // <nav> itself (iOS 26 samples fixed elements' background into the
+    // toolbar tint — see Navbar.tsx), so that layer is what must be clear.
+    const glass = page.locator("nav").first().locator(":scope > div.absolute.inset-0");
+    await expect(glass).toHaveClass(/bg-transparent/);
   });
 }

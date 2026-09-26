@@ -1,11 +1,13 @@
 import { test, expect, type Page } from "@playwright/test";
+import { homeReady } from "./ready";
 
 const toFeatures = (page: Page, f: number) =>
+  homeReady(page).then(() =>
   page.evaluate((frac) => {
     const el = document.querySelector("#features") as HTMLElement;
     const top = el.getBoundingClientRect().top + window.scrollY;
     window.scrollTo({ top: top + frac * (el.offsetHeight - window.innerHeight), behavior: "instant" as ScrollBehavior });
-  }, f);
+  }, f));
 
 test.describe("desktop binder", () => {
   test.use({ viewport: { width: 1440, height: 900 } });

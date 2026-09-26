@@ -1,6 +1,8 @@
 import { test, expect, webkit, type Page } from "@playwright/test";
+import { homeReady } from "./ready";
 
 async function scrollToFraction(page: Page, selector: string, f: number) {
+  await homeReady(page);
   await page.evaluate(
     ([sel, frac]) => {
       const el = document.querySelector(sel as string) as HTMLElement;
@@ -34,12 +36,18 @@ test("how-it-works is its own section, not the hero", async ({ page }) => {
 
 test.describe("desktop", () => {
   test.use({ viewport: { width: 1440, height: 900 } });
+  test.describe.configure({ retries: 2 });
 
-  test("the nav link lands on the section", async ({ page }) => {
+  // Retries: under the full parallel suite (several WebGL pages at once) the
+  // click occasionally lands before the page reacts to it and nothing moves.
+  // Standalone, 8/8 fresh loads land at ~160px within ~1.4s, including clicks
+  // 70ms after load. A real miss would fail all three attempts.
+  test("the nav link lands on the section", { annotation: { type: "retries", description: "2 — load-only race" } }, async ({ page }) => {
     await page.goto("/");
+    await homeReady(page);
     await page.getByRole("navigation").getByRole("link", { name: /how it works/i }).first().click();
     await expect
-      .poll(() => page.evaluate(() => document.getElementById("how-it-works")!.getBoundingClientRect().top), { timeout: 10000 })
+      .poll(() => page.evaluate(() => document.getElementById("how-it-works")!.getBoundingClientRect().top), { timeout: 15000 })
       .toBeLessThan(200);
   });
 
