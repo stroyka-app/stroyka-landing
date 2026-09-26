@@ -70,8 +70,19 @@ export default function HowItWorks() {
   }, []);
 
   const [reached, setReached] = useState(0);
-  useMotionValueEvent(drawn, "change", (v) => setReached(reachedCount(v, marks)));
-  useEffect(() => setReached(reachedCount(drawn.get(), marks)), [marks, drawn]);
+  // The spring fires every frame; only re-render when the stamped count moves.
+  const lastReached = useRef(0);
+  useMotionValueEvent(drawn, "change", (v) => {
+    const n = reachedCount(v, marks);
+    if (n === lastReached.current) return;
+    lastReached.current = n;
+    setReached(n);
+  });
+  useEffect(() => {
+    const n = reachedCount(drawn.get(), marks);
+    lastReached.current = n;
+    setReached(n);
+  }, [marks, drawn]);
   const shown = reduced ? STEPS.length : reached;
   const d = contourPath(width, LINE_H);
 
