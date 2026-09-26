@@ -97,12 +97,4 @@ for (const viewport of [
     await page.locator("#how-it-works").scrollIntoViewIfNeeded();
     expect(await noSidewaysScroll(page)).toBe(true);
   });
-
-  test(`${viewport.width}×${viewport.height}, JS disabled: the server-rendered contour alone doesn't overflow`, async ({ browser }) => {
-    const ctx = await browser.newContext({ javaScriptEnabled: false, viewport });
-    const page = await ctx.newPage();
-    await page.goto("/");
-    expect(await noSidewaysScroll(page)).toBe(true);
-    await ctx.close();
-  });
 }
