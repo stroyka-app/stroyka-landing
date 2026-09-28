@@ -54,7 +54,7 @@ export default function Pricing() {
   const freeGlow = useCursorGlow();
   const starterGlow = useCursorGlow();
   const proGlow = useCursorGlow();
-  // 0-6 are what Free actually gets; 7-9 are the Starter+/Pro teasers and
+  // 0-7 are what Free actually gets; 8-10 are the Starter+/Pro teasers and
   // must stay last. Re-verified against the app's plan gates on 2026-08-30,
   // when job costing and invoicing moved INTO free behind volume caps —
   // these lists and lib/features/auth/auth_providers.dart must agree.
@@ -66,9 +66,10 @@ export default function Pricing() {
     { label: t("free.features.4"), included: true },
     { label: t("free.features.5"), included: true },
     { label: t("free.features.6"), included: true },
-    { label: t("free.features.7"), included: false },
+    { label: t("free.features.7"), included: true },
     { label: t("free.features.8"), included: false },
     { label: t("free.features.9"), included: false },
+    { label: t("free.features.10"), included: false },
   ];
 
   const STARTER_FEATURES: Feature[] = [
@@ -80,8 +81,9 @@ export default function Pricing() {
     { label: t("starter.features.5"), included: true },
     { label: t("starter.features.6"), included: true },
     { label: t("starter.features.7"), included: true },
-    { label: t("starter.features.8"), included: false },
+    { label: t("starter.features.8"), included: true },
     { label: t("starter.features.9"), included: false },
+    { label: t("starter.features.10"), included: false },
   ];
 
   const PRO_FEATURES: Feature[] = [
@@ -92,7 +94,6 @@ export default function Pricing() {
     { label: t("pro.features.4"), included: true },
     { label: t("pro.features.5"), included: true },
     { label: t("pro.features.6"), included: true },
-    { label: t("pro.features.7"), included: true },
   ];
 
   return (

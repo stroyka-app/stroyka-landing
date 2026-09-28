@@ -27,16 +27,16 @@ export const PRICING_TIERS: readonly PricingTier[] = [
   {
     name: "Free",
     monthlyPrice: 0,
-    description: "Job costing, P&L and invoicing included, forever. Capped at 3 active jobs and 3 invoices a month. Time tracking, daily logs, tasks, supply requests, contracts, receipt scanning, offline-first sync.",
+    description: "Job costing, P&L and invoicing included, forever. Capped at 3 active jobs and 3 invoices a month. Client book for up to 3 clients. Time tracking, daily logs, tasks, supply requests, contracts, receipt scanning, offline-first sync.",
   },
   {
     name: "Starter",
     monthlyPrice: PRICES.starter.monthly,
-    description: "Unlimited active jobs and invoices, up to 15 workers. Adds per-worker rates, overtime alerts, PDF reports and CSV export.",
+    description: "Unlimited active jobs, invoices and clients, up to 15 workers. Adds per-worker rates, overtime alerts, PDF reports and CSV export.",
   },
   {
     name: "Pro",
     monthlyPrice: PRICES.pro.monthly,
-    description: "Unlimited workers. Adds the client book with CSV import, file & photo attachments, Excel export, automatic overdue reminders and priority support.",
+    description: "Unlimited workers. Adds CSV client import, file & photo attachments, Excel export, automatic overdue reminders and priority support.",
   },
 ] as const;

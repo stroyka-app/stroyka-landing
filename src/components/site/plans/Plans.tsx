@@ -18,7 +18,7 @@ import { useReduced } from "../ui/useReduced";
 type Billing = "monthly" | "annual";
 type PlanId = "free" | "starter" | "pro";
 
-const FEATURE_COUNT = { free: 7, starter: 8, pro: 8 } as const;
+const FEATURE_COUNT = { free: 8, starter: 9, pro: 7 } as const;
 
 /**
  * Pricing on the crane site. Same plans, same strings as before (the

@@ -243,6 +243,7 @@ export default function GetStartedFlow() {
     t("starter.features.3"),
     t("starter.features.4"),
     t("starter.features.5"),
+    t("starter.features.6"),
   ];
 
   const proFeatures = [
@@ -252,7 +253,6 @@ export default function GetStartedFlow() {
     t("pro.features.3"),
     t("pro.features.4"),
     t("pro.features.5"),
-    t("pro.features.6"),
   ];
 
   /* ─── Handlers ──────────────────────────────────────────────── */

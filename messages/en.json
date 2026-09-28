@@ -298,9 +298,10 @@
         "4": "Materials — scan a receipt once, every line grouped",
         "5": "Contracts, tasks, messaging & supply requests",
         "6": "Offline-first sync — up to 5 workers",
-        "7": "Unlimited jobs & invoices (Starter+)",
-        "8": "PDF & CSV reports (Starter+)",
-        "9": "Excel export & file attachments (Pro)"
+        "7": "Client book — save up to 3 clients",
+        "8": "Unlimited jobs & invoices (Starter+)",
+        "9": "PDF & CSV reports (Starter+)",
+        "10": "Excel export & file attachments (Pro)"
       }
     },
     "starter": {
@@ -317,8 +318,9 @@
         "5": "Overtime alerts (32h & 40h warnings)",
         "6": "PDF reports — Timesheet, P&L, Materials, Daily logs",
         "7": "CSV export & email support",
-        "8": "File & photo attachments (Pro)",
-        "9": "Client book & CSV import (Pro)"
+        "8": "Unlimited client book — save a client once, reuse them on every invoice",
+        "9": "File & photo attachments (Pro)",
+        "10": "Import clients from CSV (Pro)"
       }
     },
     "pro": {
@@ -329,12 +331,11 @@
       "features": {
         "0": "Everything in Starter",
         "1": "Unlimited workers",
-        "2": "Client book — save a client once, reuse them on every invoice",
-        "3": "Import your clients from a CSV",
-        "4": "File & photo attachments in tasks",
-        "5": "Excel export",
-        "6": "Automatic overdue payment reminders",
-        "7": "Priority support & dedicated onboarding call"
+        "2": "Import your clients from a CSV",
+        "3": "File & photo attachments in tasks",
+        "4": "Excel export",
+        "5": "Automatic overdue payment reminders",
+        "6": "Priority support & dedicated onboarding call"
       }
     }
   },
@@ -607,7 +608,8 @@
         "2": "Unlimited invoices",
         "3": "Up to 15 workers",
         "4": "Per-worker rates & overtime alerts",
-        "5": "PDF reports, CSV export & email support"
+        "5": "PDF reports, CSV export & email support",
+        "6": "Unlimited client book — save a client once, reuse them on every invoice"
       }
     },
     "pro": {
@@ -617,11 +619,10 @@
       "features": {
         "0": "Everything in Starter",
         "1": "Unlimited workers",
-        "2": "Client book — save a client once, reuse them on every invoice",
-        "3": "Import your clients from a CSV",
-        "4": "Automatic overdue payment reminders",
-        "5": "Excel export & file attachments",
-        "6": "Priority support & dedicated onboarding call"
+        "2": "Import your clients from a CSV",
+        "3": "Automatic overdue payment reminders",
+        "4": "Excel export & file attachments",
+        "5": "Priority support & dedicated onboarding call"
       }
     },
     "form": {

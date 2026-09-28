@@ -299,9 +299,10 @@
         "4": "Materiales — escanea un recibo y se agrupa cada línea",
         "5": "Contratos, tareas, mensajes y pedidos de material",
         "6": "Sincroniza sin internet — hasta 5 trabajadores",
-        "7": "Obras y facturas ilimitadas (Starter+)",
-        "8": "Reportes PDF y CSV (Starter+)",
-        "9": "Exportar a Excel y archivos adjuntos (Pro)"
+        "7": "Directorio de clientes — guarda hasta 3 clientes",
+        "8": "Obras y facturas ilimitadas (Starter+)",
+        "9": "Reportes PDF y CSV (Starter+)",
+        "10": "Exportar a Excel y archivos adjuntos (Pro)"
       }
     },
     "starter": {
@@ -318,8 +319,9 @@
         "5": "Alertas de horas extra (32 h y 40 h)",
         "6": "Reportes PDF — horas, ganancia, materiales y bitácoras",
         "7": "Exportar a CSV y soporte por correo",
-        "8": "Fotos y archivos adjuntos (Pro)",
-        "9": "Directorio de clientes e importación CSV (Pro)"
+        "8": "Directorio de clientes ilimitado — guarda un cliente y úsalo en cada factura",
+        "9": "Fotos y archivos adjuntos (Pro)",
+        "10": "Importa tus clientes desde un CSV (Pro)"
       }
     },
     "pro": {
@@ -330,12 +332,11 @@
       "features": {
         "0": "Todo lo de Starter",
         "1": "Trabajadores ilimitados",
-        "2": "Directorio de clientes — guarda un cliente y úsalo en cada factura",
-        "3": "Importa tus clientes desde un CSV",
-        "4": "Fotos y archivos adjuntos en tareas",
-        "5": "Exportar a Excel",
-        "6": "Recordatorios automáticos de pagos vencidos",
-        "7": "Soporte prioritario y llamada de configuración"
+        "2": "Importa tus clientes desde un CSV",
+        "3": "Fotos y archivos adjuntos en tareas",
+        "4": "Exportar a Excel",
+        "5": "Recordatorios automáticos de pagos vencidos",
+        "6": "Soporte prioritario y llamada de configuración"
       }
     }
   },
@@ -609,7 +610,8 @@
         "2": "Facturas ilimitadas",
         "3": "Hasta 15 trabajadores",
         "4": "Tarifa por trabajador y alertas de horas extra",
-        "5": "Reportes PDF, exportar a CSV y soporte por correo"
+        "5": "Reportes PDF, exportar a CSV y soporte por correo",
+        "6": "Directorio de clientes ilimitado — guarda un cliente y úsalo en cada factura"
       }
     },
     "pro": {
@@ -619,11 +621,10 @@
       "features": {
         "0": "Todo lo de Starter",
         "1": "Trabajadores ilimitados",
-        "2": "Directorio de clientes — guarda un cliente y úsalo en cada factura",
-        "3": "Importa tus clientes desde un CSV",
-        "4": "Recordatorios automáticos de pagos vencidos",
-        "5": "Exportar a Excel y archivos adjuntos",
-        "6": "Soporte prioritario y llamada de configuración"
+        "2": "Importa tus clientes desde un CSV",
+        "3": "Recordatorios automáticos de pagos vencidos",
+        "4": "Exportar a Excel y archivos adjuntos",
+        "5": "Soporte prioritario y llamada de configuración"
       }
     },
     "form": {
