@@ -8,4 +8,7 @@ export const demoFormSchema = z.object({
   phone: z.string().max(20).optional(),
   challenge: z.string().max(1000).optional(),
   honeypot: z.string().max(0, "Bot detected"),
+  // The site language the visitor filled the form in; picks the
+  // confirmation email's language.
+  locale: z.enum(["en", "es", "ru"]).optional(),
 });

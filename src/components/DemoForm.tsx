@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { motion } from "motion/react";
 import { ArrowRight, Check, ChevronDown, Loader2, Mail } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
 import { useReduced } from "@/components/site/ui/useReduced";
 
@@ -40,6 +40,7 @@ const bare = (s: string) => s.replace(/\s*[→←]\s*/g, " ").trim();
 
 export default function DemoForm() {
   const t = useTranslations("demo");
+  const locale = useLocale();
   const reduced = useReduced();
   const [form, setForm] = useState<FormData>(INITIAL);
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
@@ -91,7 +92,7 @@ export default function DemoForm() {
       const res = await fetch("/api/demo", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, locale }),
       });
 
       if (!res.ok) {
