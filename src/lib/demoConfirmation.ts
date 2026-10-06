@@ -40,7 +40,7 @@ function partsFor(lang: DemoLang, name: string): LetterParts {
       greeting: name ? `Здравствуйте, ${name}!` : "Здравствуйте!",
       paragraphs: [
         "Это Макс, основатель Stroyka. Спасибо за заявку на демо. Я её получил и сам напишу вам, чтобы договориться об удобном времени.",
-        "Чтобы сэкономить время нам обоим, расскажите немного о вашей компании и о том, как вы ведёте объекты. Просто ответьте на это письмо, оно придёт прямо мне.",
+        "Чтобы сэкономить время нам обоим, было бы полезно узнать немного о вашей компании и о том, как вы ведёте объекты. Просто ответьте на это письмо, оно придёт прямо мне.",
       ],
       signName: "Макс",
       signTitle: "Основатель Stroyka",
@@ -54,7 +54,7 @@ function partsFor(lang: DemoLang, name: string): LetterParts {
       greeting: name ? `Hola, ${name}:` : "Hola:",
       paragraphs: [
         "Soy Maks, fundador de Stroyka. Gracias por solicitar una demo. Recibí su solicitud y le escribiré yo mismo para acordar un horario que le convenga.",
-        "Para ahorrarnos tiempo a los dos, cuénteme un poco sobre su empresa y cómo lleva sus obras. Solo responda a este correo. Me llega directamente a mí.",
+        "Para aprovechar mejor el tiempo, me ayudaría saber un poco sobre su empresa y cómo lleva sus obras. Solo responda a este correo. Me llega directamente a mí.",
       ],
       signName: "Maks",
       signTitle: "Fundador de Stroyka",
@@ -67,7 +67,7 @@ function partsFor(lang: DemoLang, name: string): LetterParts {
     greeting: name ? `Hi ${name},` : "Hi there,",
     paragraphs: [
       "Maks here, founder of Stroyka. Thanks for asking for a demo. I got your request and I'll write to you myself to find a time that works.",
-      "To save us both time, tell me a little about your company and how you run your jobs. Just reply to this email. It comes straight to me.",
+      "To make the most of our time, it would help to know a bit about your company and how you run your jobs. Just reply to this email. It comes straight to me.",
     ],
     signName: "Maks",
     signTitle: "Founder, Stroyka",
