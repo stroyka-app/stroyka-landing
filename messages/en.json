@@ -125,7 +125,7 @@
       },
       "3": {
         "title": "Run the numbers",
-        "body": "End of week, open the Report tab. Labor, materials, fuel, plan vs. actual — ready to export as PDF or CSV for your bookkeeper.",
+        "body": "End of week, open the Report tab. Labor, materials, contracts, fuel, plan vs. actual — ready to export as CSV for your bookkeeper, or as a statement for your client.",
         "alt": "Project report screen with budget burn and plan vs. actual breakdown"
       }
     }
@@ -248,7 +248,7 @@
       },
       "4": {
         "q": "Can I export my data?",
-        "a": "Yes. Every project, timesheet, and cost record can be exported as CSV or PDF at any time. If you ever cancel, you have 30 days to export everything.",
+        "a": "Yes. Every project, timesheet, and cost record can be exported as CSV at any time (Excel on Pro). If you ever cancel, you have 30 days to export everything.",
         "meta": "Data"
       },
       "5": {
@@ -316,7 +316,7 @@
         "3": "Up to 15 workers",
         "4": "Per-worker hourly rates",
         "5": "Overtime alerts (32h & 40h warnings)",
-        "6": "PDF reports — Timesheet, P&L, Materials, Daily logs",
+        "6": "PDF statements for your clients & daily logs",
         "7": "CSV export & email support",
         "8": "Unlimited client book — save a client once, reuse them on every invoice",
         "9": "File & photo attachments (Pro)",
@@ -333,7 +333,7 @@
         "1": "Unlimited workers",
         "2": "Import your clients from a CSV",
         "3": "File & photo attachments in tasks",
-        "4": "Excel export",
+        "4": "Excel profit & loss for every job",
         "5": "Automatic overdue payment reminders",
         "6": "Priority support & dedicated onboarding call"
       }
@@ -362,7 +362,7 @@
       },
       "4": {
         "name": "PDF reports",
-        "caption": "Timesheets, P&L, invoices, daily logs — one click"
+        "caption": "Client statements, invoices, daily logs — one click"
       },
       "5": {
         "name": "Cloud backup",
@@ -621,7 +621,7 @@
         "1": "Unlimited workers",
         "2": "Import your clients from a CSV",
         "3": "Automatic overdue payment reminders",
-        "4": "Excel export & file attachments",
+        "4": "Excel profit & loss & file attachments",
         "5": "Priority support & dedicated onboarding call"
       }
     },
