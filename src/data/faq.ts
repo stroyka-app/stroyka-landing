@@ -28,7 +28,7 @@ export const QUESTIONS: readonly FaqItem[] = [
   },
   {
     q: "Can I export my data?",
-    a: "Yes. Every project, timesheet, and cost record can be exported as CSV or PDF at any time. If you ever cancel, you have 30 days to export everything.",
+    a: "Yes. Every project, timesheet, and cost record can be exported as CSV at any time (Excel on Pro). If you ever cancel, you have 30 days to export everything.",
     meta: "Data",
   },
   {

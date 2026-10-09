@@ -126,7 +126,7 @@
       },
       "3": {
         "title": "Revisa los números",
-        "body": "Al final de la semana, abre la pestaña Reporte. Mano de obra, materiales, combustible, plan vs. real — listo para exportar como PDF o CSV para tu contador.",
+        "body": "Al final de la semana, abre la pestaña Reporte. Mano de obra, materiales, contratos, combustible, plan vs. real — listo para exportar como CSV para tu contador, o como estado para tu cliente.",
         "alt": "Reporte de proyecto con quema de presupuesto y desglose plan vs. real"
       }
     }
@@ -249,7 +249,7 @@
       },
       "4": {
         "q": "¿Puedo exportar mis datos?",
-        "a": "Sí. Cada proyecto, parte de horas y registro de costos se puede exportar como CSV o PDF en cualquier momento. Si cancelas, tienes 30 días para exportar todo.",
+        "a": "Sí. Cada proyecto, parte de horas y registro de costos se puede exportar como CSV en cualquier momento (Excel en Pro). Si cancelas, tienes 30 días para exportar todo.",
         "meta": "Datos"
       },
       "5": {
@@ -317,7 +317,7 @@
         "3": "Hasta 15 trabajadores",
         "4": "Tarifa por hora por trabajador",
         "5": "Alertas de horas extra (32 h y 40 h)",
-        "6": "Reportes PDF — horas, ganancia, materiales y bitácoras",
+        "6": "Estados en PDF para tus clientes y bitácoras",
         "7": "Exportar a CSV y soporte por correo",
         "8": "Directorio de clientes ilimitado — guarda un cliente y úsalo en cada factura",
         "9": "Fotos y archivos adjuntos (Pro)",
@@ -334,7 +334,7 @@
         "1": "Trabajadores ilimitados",
         "2": "Importa tus clientes desde un CSV",
         "3": "Fotos y archivos adjuntos en tareas",
-        "4": "Exportar a Excel",
+        "4": "Excel de ganancias y pérdidas por obra",
         "5": "Recordatorios automáticos de pagos vencidos",
         "6": "Soporte prioritario y llamada de configuración"
       }
@@ -363,7 +363,7 @@
       },
       "4": {
         "name": "Informes PDF",
-        "caption": "Parte de horas, P&L, facturas, partes diarios — un clic"
+        "caption": "Estados para clientes, facturas, partes diarios — un clic"
       },
       "5": {
         "name": "Respaldo en la nube",
@@ -623,7 +623,7 @@
         "1": "Trabajadores ilimitados",
         "2": "Importa tus clientes desde un CSV",
         "3": "Recordatorios automáticos de pagos vencidos",
-        "4": "Exportar a Excel y archivos adjuntos",
+        "4": "Excel de ganancias y pérdidas y archivos adjuntos",
         "5": "Soporte prioritario y llamada de configuración"
       }
     },
