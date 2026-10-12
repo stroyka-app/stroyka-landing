@@ -37,7 +37,7 @@ const sections: LegalSection[] = [
         <ul>
           <li>Location is captured <strong>only at clock-in and clock-out</strong> &mdash; never continuously, and never in the background.</li>
           <li>Each captured location (latitude, longitude, and accuracy) is stored with the corresponding time entry and is visible to your company&apos;s administrators (the &ldquo;Boss&rdquo; role) for job-site verification.</li>
-          <li>Location capture needs both your consent in Stroyka and your device permission. You can decline when you first clock in, and you can turn it off at any time in the app (Profile &rarr; Privacy &amp; data) or in your device settings. Either way you can still clock in and out &mdash; the entry is simply recorded as location-unverified.</li>
+          <li>Location capture needs both your consent in Stroyka and your device permission. You can decline when you first clock in, and you can turn it off at any time in the app (Profile &rarr; Privacy and data) or in your device settings. Either way you can still clock in and out &mdash; the entry is simply recorded as location-unverified.</li>
           <li>We keep a record of when you gave and when you withdrew consent, so your choice can be shown if it is ever questioned.</li>
           <li>We never use your location for advertising or for tracking you across other apps or websites.</li>
         </ul>
