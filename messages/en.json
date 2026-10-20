@@ -228,7 +228,7 @@
     "items": {
       "0": {
         "q": "Does it work without internet?",
-        "a": "Yes. Stroyka is offline-first — all data is stored locally on each device and syncs automatically when a connection is restored. Workers in basements, rural areas, or anywhere with poor signal can still log time, submit requests, and view tasks.",
+        "a": "Yes. Stroyka is offline-first — all data is stored locally on each device and syncs automatically when a connection is restored. Workers in basements, rural areas, or anywhere with poor signal can still log time, add to the shopping list, and view tasks.",
         "meta": "Offline"
       },
       "1": {
@@ -296,7 +296,7 @@
         "2": "Up to 3 active jobs at a time",
         "3": "GPS time clock, geofences & daily logs",
         "4": "Materials — scan a receipt once, every line grouped",
-        "5": "Contracts, tasks, messaging & supply requests",
+        "5": "Contracts, tasks, messaging & shopping lists",
         "6": "Offline-first sync — up to 5 workers",
         "7": "Client book — save up to 3 clients",
         "8": "Unlimited jobs & invoices (Starter+)",
@@ -565,20 +565,20 @@
         "note": "Every job at a glance: what’s left, what’s at risk, who needs you.",
         "alt": "Boss home screen: three projects with budgets, one over, one at risk"
       },
-      "tasks": {
-        "label": "Tasks",
-        "note": "Who is on what, with the thread right on the card.",
-        "alt": "Tasks screen: crew work by project with assignee, progress and messages"
+      "costs": {
+        "label": "Job costs",
+        "note": "An overrun shows up while it’s $964, not at tax time.",
+        "alt": "Job costs for Riverside Deck Rebuild: $12,964 spent, $964 over budget"
       },
-      "requests": {
-        "label": "Requests",
-        "note": "The crew asks from the site. You approve from the truck.",
-        "alt": "Supply requests screen: pending, purchased and rejected requests from the crew"
+      "timesheet": {
+        "label": "Timesheet",
+        "note": "Every worker’s week. The days nobody logged stand out.",
+        "alt": "Worker timesheet: 20 hours this week, two days not logged"
       },
-      "report": {
-        "label": "Report",
-        "note": "Labor, materials, fuel: the margin while you can still act on it.",
-        "alt": "Project report: budget bar, burn rate, cost breakdown and hours"
+      "tobuy": {
+        "label": "To buy",
+        "note": "The crew’s shopping list. One receipt photo ticks it off.",
+        "alt": "To buy list for Oak St. Kitchen Remodel: 4 items to buy, 1 urgent"
       }
     },
     "desktopProof1Title": "Clock in on site",
@@ -777,8 +777,8 @@
           "body": "Snap it at the plant. Every line lands on the job, grouped. No shoebox, no retyping on Sunday night."
         },
         "1": {
-          "title": "Approve it from the truck.",
-          "body": "The crew asks for materials in the app. One tap and it’s approved, bought and on the job’s cost."
+          "title": "The list closes itself.",
+          "body": "The crew adds what the job needs. One receipt photo ticks it off and puts it on the job’s cost."
         },
         "2": {
           "title": "No signal? Still logged.",
@@ -810,7 +810,7 @@
       "events": [
         "06:15 — crew clocked in · 12 / 12",
         "07:02 — receipt scanned · $412.88 · 9 lines",
-        "09:40 — request approved · 40 sh plywood",
+        "09:40 — receipt in · 6 of 8 off the list",
         "11:15 — no signal · 3 entries saved on the phone",
         "11:52 — back online · synced",
         "14:30 — plan vs. actual · 4% under",
@@ -868,26 +868,42 @@
         "0": {
           "kicker": "Offline-first",
           "title": "Works where the signal doesn’t.",
-          "body": "Every phone keeps its own copy. The crew logs time, requests and tasks in the basement or out on the lot, and it syncs on its own when the bars come back. Nothing lost, nothing counted twice.",
-        "proof": ["Works with no signal", "Syncs by itself", "Nothing counted twice"]
+          "body": "Every phone keeps its own copy. The crew logs time, receipts and tasks in the basement or out on the lot, and it syncs on its own when the bars come back. Nothing lost, nothing counted twice.",
+          "proof": [
+            "Works with no signal",
+            "Syncs by itself",
+            "Nothing counted twice"
+          ]
         },
         "1": {
           "kicker": "Boss & crew",
           "title": "Two apps in one.",
-          "body": "Bosses get budgets, approvals and cost reports. Workers get their tasks, their hours and a button to ask for materials. Same app, and each person sees only their side.",
-        "proof": ["Budgets & approvals", "Tasks & hours", "Material requests"]
+          "body": "Bosses get budgets, invoices and cost reports. Workers get their tasks, their hours and the job’s shopping list. Same app, and each person sees only their side.",
+          "proof": [
+            "Budgets & invoices",
+            "Tasks & hours",
+            "Shopping lists"
+          ]
         },
         "2": {
           "kicker": "Job costing",
           "title": "The P&L writes itself.",
           "body": "Every purchase, timesheet and fuel trip rolls into the job’s P&L as it happens. Labor, materials, budget left, all in one place, updated the moment a worker submits.",
-        "proof": ["Labor, materials, fuel", "Updates as it happens", "Budget left, live"]
+          "proof": [
+            "Labor, materials, fuel",
+            "Updates as it happens",
+            "Budget left, live"
+          ]
         },
         "3": {
-          "kicker": "Approvals",
-          "title": "No more “did you approve that?”",
-          "body": "Requests come in from the field. You approve them with one tap, and approved items log to the job’s costs with a full audit trail. No text threads.",
-        "proof": ["One-tap approve", "Logs to job costs", "Full audit trail"]
+          "kicker": "To buy",
+          "title": "The crew’s list closes itself.",
+          "body": "The crew adds what the job needs, typed or as a photo of the paper list. One receipt photo ticks off what was bought and puts the cost on the job. Paid out of their own pocket? It shows who to reimburse.",
+          "proof": [
+            "Typed or a photo of the list",
+            "One receipt ticks it off",
+            "Shows who to reimburse"
+          ]
         }
       },
       "offline": {
@@ -898,7 +914,7 @@
         "entries": [
           "Clock-in · Mike R. · 06:58",
           "Photo · east wall framing",
-          "Request · 2 boxes 3\" screws"
+          "To buy · 2 boxes 3\" screws"
         ],
         "savedOne": "On phone",
         "syncedOne": "Synced",
@@ -916,8 +932,8 @@
             "v": "62% used · on plan"
           },
           {
-            "k": "Requests waiting",
-            "v": "3"
+            "k": "To buy",
+            "v": "4 items · 1 urgent"
           },
           {
             "k": "On site now",
@@ -943,7 +959,7 @@
           },
           {
             "k": "Need something?",
-            "v": "Request materials"
+            "v": "Add it to the list"
           }
         ],
         "foot": "Same app · each person sees their side"
@@ -956,19 +972,23 @@
         "fuel": "Fuel",
         "margin": "Margin on Job 204"
       },
-      "approve": {
-        "kicker": "Supply request",
-        "item": "40 sheets plywood, ¾\"",
-        "from": "From Mike R. · 2 min ago",
-        "approve": "Approve",
+      "tobuy": {
+        "kicker": "To buy · Job 204",
+        "items": [
+          "40 sheets plywood, ¾\"",
+          "2 boxes 3\" screws",
+          "6 tarps"
+        ],
+        "urgent": "Urgent",
+        "from": "Added by Mike R. from the site",
+        "snap": "Snap the receipt",
         "undo": "Undo",
-        "reject": "Reject",
-        "approved": "Approved",
+        "stamp": "Bought",
         "ledger": "Job 204 · Materials",
-        "row": "Plywood ¾\" × 40",
+        "row": "Cedar Supply Co. · 3 items",
+        "owed": "Paid by Mike R. · reimburse {total}",
         "prev0": "Home Depot #4471",
-        "prev1": "Rebar #4 × 60",
-        "rejected": "Rejected"
+        "prev1": "Rebar #4 × 60"
       }
     },
     "seats": {
@@ -992,11 +1012,76 @@
       },
       "compareLink": "See every vendor, every source"
     },
-    "plansCrew": {"line": "For your {crew}-person crew: {plan} at ${ours}/mo, flat.", "them": "{name}'s per-seat rate would be ≈ ${theirs}/mo.", "fits": "Fits your crew"},
-    "strip": {"kicker": "The app", "head": "This is the real app.", "sub": "Straight off the phone. No mockups, no renders.", "pause": "Pause", "play": "Play", "items": [{"title": "Every job, one glance.", "line": "Money left on each job, what's at risk, who's waiting on you.", "alt": "Boss dashboard: jobs with budget left and items that need attention"}, {"title": "What this job actually cost.", "line": "Labor, materials, fuel and requests against the budget, all time.", "alt": "Oak St. Kitchen Remodel: project costs against a $23,000 budget"}, {"title": "The crew's side: one button.", "line": "Log time, see today's tasks. That's the whole screen.", "alt": "Worker's My Day screen with a Log Time button and today's tasks"}, {"title": "Receipts land on the job.", "line": "Snap it at the store; it's filed under the right job, with who bought it.", "alt": "Materials: receipts grouped by day, each on its job"}, {"title": "Requests, approved from the truck.", "line": "Pending, purchased, rejected, and a flag when one runs over.", "alt": "Supply requests: pending review, purchased, rejected"}, {"title": "Friday's report, already done.", "line": "Budget burn, plan vs. actual, labor hours. Export it and go home.", "alt": "Job report: budget burn, plan vs actual, costs by category"}]},
+    "plansCrew": {
+      "line": "For your {crew}-person crew: {plan} at ${ours}/mo, flat.",
+      "them": "{name}'s per-seat rate would be ≈ ${theirs}/mo.",
+      "fits": "Fits your crew"
+    },
+    "strip": {
+      "kicker": "The app",
+      "head": "This is the real app.",
+      "sub": "Straight off the phone. No mockups, no renders.",
+      "pause": "Pause",
+      "play": "Play",
+      "items": [
+        {
+          "title": "Every job, one glance.",
+          "line": "Money left on each job, what’s over, who’s waiting on you.",
+          "alt": "Boss home: three jobs, one $964 over budget, one invoice overdue"
+        },
+        {
+          "title": "Catch it at $964, not at tax time.",
+          "line": "Tap the red job: what it cost, what’s over, what’s still unpaid.",
+          "alt": "Riverside Deck Rebuild: $12,964 spent against a $12,000 budget, $964 over"
+        },
+        {
+          "title": "Who owes you. Who you owe.",
+          "line": "Every invoice and contract on the job: collected, and still to pay.",
+          "alt": "Money in and out on a job: $322 to collect, $250 to pay"
+        },
+        {
+          "title": "Bill straight from the job.",
+          "line": "The hours and materials you tracked become the invoice. Send it from the site.",
+          "alt": "Invoice INV-2026-007: labor and subcontractors, $5,800 due"
+        },
+        {
+          "title": "The crew’s side: one button.",
+          "line": "Log time, see today’s tasks. That’s the whole screen.",
+          "alt": "Worker’s My Day screen with a Log Time button and today’s tasks"
+        },
+        {
+          "title": "See the day nobody logged.",
+          "line": "Every worker’s week, with the missing days flagged before payday.",
+          "alt": "Mark Ellison’s timesheet: 20 hours this week, two days not logged"
+        },
+        {
+          "title": "The crew’s shopping list.",
+          "line": "Everyone adds what the job needs. Tap the circle when it’s bought.",
+          "alt": "To buy list for Oak St. Kitchen Remodel: 4 items, 1 urgent"
+        },
+        {
+          "title": "Every receipt lands on the job.",
+          "line": "One photo ticks off the list and puts the cost on the job.",
+          "alt": "Bought on Oak St.: receipts from Cedar Supply and Northside Hardware"
+        }
+      ]
+    },
     "how": {
-      "days": ["Mon · 9:00 AM", "Mon · 9:10 AM", "Tue · 7:00 AM", "Fri · 4:30 PM"],
-      "board": {"invite": "Join the job", "task": "Frame walls", "report": "Report", "onBudget": "On budget", "geofence": "Geofence", "spent": "Spent", "week": "Week 1"}
+      "days": [
+        "Mon · 9:00 AM",
+        "Mon · 9:10 AM",
+        "Tue · 7:00 AM",
+        "Fri · 4:30 PM"
+      ],
+      "board": {
+        "invite": "Join the job",
+        "task": "Frame walls",
+        "report": "Report",
+        "onBudget": "On budget",
+        "geofence": "Geofence",
+        "spent": "Spent",
+        "week": "Week 1"
+      }
     }
   }
 }

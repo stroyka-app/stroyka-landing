@@ -229,7 +229,7 @@
     "items": {
       "0": {
         "q": "¿Funciona sin internet?",
-        "a": "Sí. Stroyka funciona sin conexión — todos los datos se guardan localmente en cada dispositivo y se sincronizan automáticamente cuando vuelve la conexión. Los trabajadores en sótanos, zonas rurales o donde la señal es mala pueden seguir registrando horas, enviando solicitudes y viendo tareas.",
+        "a": "Sí. Stroyka funciona sin conexión — todos los datos se guardan localmente en cada dispositivo y se sincronizan automáticamente cuando vuelve la conexión. Los trabajadores en sótanos, zonas rurales o donde la señal es mala pueden seguir registrando horas, anotando en la lista de compras y viendo tareas.",
         "meta": "Sin conexión"
       },
       "1": {
@@ -297,7 +297,7 @@
         "2": "Hasta 3 obras activas a la vez",
         "3": "Reloj checador con GPS, geocercas y bitácoras",
         "4": "Materiales — escanea un recibo y se agrupa cada línea",
-        "5": "Contratos, tareas, mensajes y pedidos de material",
+        "5": "Contratos, tareas, mensajes y listas de compras",
         "6": "Sincroniza sin internet — hasta 5 trabajadores",
         "7": "Directorio de clientes — guarda hasta 3 clientes",
         "8": "Obras y facturas ilimitadas (Starter+)",
@@ -567,20 +567,20 @@
         "note": "Todas las obras de un vistazo: cuánto queda, cuál está en riesgo, quién te necesita.",
         "alt": "Pantalla principal del jefe: tres obras con presupuesto, una pasada, una en riesgo"
       },
-      "tasks": {
-        "label": "Tareas",
-        "note": "Quién hace qué, con la conversación en la misma tarjeta.",
-        "alt": "Pantalla de tareas: el trabajo de la cuadrilla por obra, responsable, avance y mensajes"
+      "costs": {
+        "label": "Costos",
+        "note": "Ves que se pasa cuando son $964, no a fin de año.",
+        "alt": "Costos de Riverside Deck Rebuild: $12,964 gastados, $964 sobre el presupuesto"
       },
-      "requests": {
-        "label": "Pedidos",
-        "note": "La cuadrilla pide desde la obra. Tú apruebas desde la camioneta.",
-        "alt": "Pantalla de pedidos: pedidos de material de la cuadrilla, pendientes, comprados y rechazados"
+      "timesheet": {
+        "label": "Horas",
+        "note": "La semana de cada trabajador. Los días sin registrar saltan a la vista.",
+        "alt": "Horas de un trabajador: 20 horas esta semana, dos días sin registrar"
       },
-      "report": {
-        "label": "Reporte",
-        "note": "Mano de obra, materiales, combustible: el margen mientras aún puedes actuar.",
-        "alt": "Reporte de obra: barra de presupuesto, ritmo de gasto, desglose de costos y horas"
+      "tobuy": {
+        "label": "Por comprar",
+        "note": "La lista de compras de la cuadrilla. Una foto del recibo la tacha.",
+        "alt": "Lista Por comprar de Oak St. Kitchen Remodel: 4 cosas, 1 urgente"
       }
     },
     "desktopProof1Title": "Marca entrada en la obra",
@@ -780,8 +780,8 @@
           "body": "Tómale foto en la planta. Cada línea entra a la obra, agrupada. Sin caja de zapatos, sin volver a teclear el domingo en la noche."
         },
         "1": {
-          "title": "Apruébalo desde la camioneta.",
-          "body": "La cuadrilla pide materiales en la app. Un toque y queda aprobado, comprado y cargado al costo de la obra."
+          "title": "La lista se cierra sola.",
+          "body": "La cuadrilla anota lo que necesita la obra. Una foto del recibo lo tacha y lo carga al costo de la obra."
         },
         "2": {
           "title": "¿Sin señal? Igual queda registrado.",
@@ -813,7 +813,7 @@
       "events": [
         "06:15 — cuadrilla registrada · 12 / 12",
         "07:02 — recibo escaneado · $412.88 · 9 líneas",
-        "09:40 — pedido aprobado · 40 hojas de triplay",
+        "09:40 — recibo · 6 de 8 tachados de la lista",
         "11:15 — sin señal · 3 registros guardados en el teléfono",
         "11:52 — de vuelta en línea · sincronizado",
         "14:30 — plan contra real · 4% por debajo",
@@ -871,26 +871,42 @@
         "0": {
           "kicker": "Sin conexión primero",
           "title": "Funciona donde no hay señal.",
-          "body": "Cada teléfono guarda su propia copia. La cuadrilla registra horas, pedidos y tareas en el sótano o en el terreno, y todo se sincroniza solo cuando vuelve la señal. Nada se pierde, nada se cuenta dos veces.",
-        "proof": ["Funciona sin señal", "Se sincroniza solo", "Nada se cuenta dos veces"]
+          "body": "Cada teléfono guarda su propia copia. La cuadrilla registra horas, recibos y tareas en el sótano o en el terreno, y todo se sincroniza solo cuando vuelve la señal. Nada se pierde, nada se cuenta dos veces.",
+          "proof": [
+            "Funciona sin señal",
+            "Se sincroniza solo",
+            "Nada se cuenta dos veces"
+          ]
         },
         "1": {
           "kicker": "Jefe y cuadrilla",
           "title": "Dos apps en una.",
-          "body": "El jefe ve presupuestos, aprobaciones y reportes de costos. Los trabajadores ven sus tareas, sus horas y un botón para pedir materiales. La misma app, y cada quien ve solo su parte.",
-        "proof": ["Presupuestos y aprobaciones", "Tareas y horas", "Pedidos de material"]
+          "body": "El jefe ve presupuestos, facturas y reportes de costos. Los trabajadores ven sus tareas, sus horas y la lista de compras de la obra. La misma app, y cada quien ve solo su parte.",
+          "proof": [
+            "Presupuestos y facturas",
+            "Tareas y horas",
+            "Listas de compras"
+          ]
         },
         "2": {
           "kicker": "Costeo de obra",
           "title": "El estado de resultados se hace solo.",
           "body": "Cada compra, cada hoja de horas y cada viaje de combustible entran al estado de resultados de la obra en el momento. Mano de obra, materiales y presupuesto restante en un solo lugar.",
-        "proof": ["Mano de obra, material, combustible", "Se actualiza al momento", "Presupuesto restante, en vivo"]
+          "proof": [
+            "Mano de obra, material, combustible",
+            "Se actualiza al momento",
+            "Presupuesto restante, en vivo"
+          ]
         },
         "3": {
-          "kicker": "Aprobaciones",
-          "title": "Se acabó el «¿ya aprobaste eso?»",
-          "body": "Los pedidos llegan desde la obra. Los apruebas con un toque y lo aprobado se registra en los costos de la obra, con historial completo. Sin cadenas de mensajes.",
-        "proof": ["Aprobar con un toque", "Se registra en los costos", "Historial completo"]
+          "kicker": "Por comprar",
+          "title": "La lista de la cuadrilla se cierra sola.",
+          "body": "La cuadrilla anota lo que necesita la obra, escrito o con una foto de la lista en papel. Una foto del recibo tacha lo comprado y carga el costo a la obra. ¿Lo pagó de su bolsillo? Te dice a quién reembolsar.",
+          "proof": [
+            "Escrita o en foto",
+            "Un recibo la tacha",
+            "Dice a quién reembolsar"
+          ]
         }
       },
       "offline": {
@@ -901,7 +917,7 @@
         "entries": [
           "Entrada · Mike R. · 06:58",
           "Foto · muro este",
-          "Pedido · 2 cajas de tornillos 3\""
+          "Por comprar · 2 cajas de tornillos 3\""
         ],
         "savedOne": "En teléfono",
         "syncedOne": "Sincronizado",
@@ -919,8 +935,8 @@
             "v": "62% usado · en plan"
           },
           {
-            "k": "Pedidos por aprobar",
-            "v": "3"
+            "k": "Por comprar",
+            "v": "4 cosas · 1 urgente"
           },
           {
             "k": "En la obra ahora",
@@ -946,7 +962,7 @@
           },
           {
             "k": "¿Te falta algo?",
-            "v": "Pedir materiales"
+            "v": "Anótalo en la lista"
           }
         ],
         "foot": "La misma app · cada quien ve su parte"
@@ -959,19 +975,23 @@
         "fuel": "Combustible",
         "margin": "Margen de la obra 204"
       },
-      "approve": {
-        "kicker": "Pedido de material",
-        "item": "40 hojas de triplay de ¾\"",
-        "from": "De Mike R. · hace 2 min",
-        "approve": "Aprobar",
+      "tobuy": {
+        "kicker": "Por comprar · Obra 204",
+        "items": [
+          "40 hojas de triplay de ¾\"",
+          "2 cajas de tornillos 3\"",
+          "6 lonas"
+        ],
+        "urgent": "Urgente",
+        "from": "Lo anotó Mike R. desde la obra",
+        "snap": "Foto del recibo",
         "undo": "Deshacer",
-        "reject": "Rechazar",
-        "approved": "Aprobado",
+        "stamp": "Comprado",
         "ledger": "Obra 204 · Materiales",
-        "row": "Triplay ¾\" × 40",
+        "row": "Cedar Supply Co. · 3 cosas",
+        "owed": "Lo pagó Mike R. · reembolsar {total}",
         "prev0": "Home Depot #4471",
-        "prev1": "Varilla #4 × 60",
-        "rejected": "Rechazado"
+        "prev1": "Varilla #4 × 60"
       }
     },
     "seats": {
@@ -995,11 +1015,76 @@
       },
       "compareLink": "Ver cada proveedor y cada fuente"
     },
-    "plansCrew": {"line": "Para tu cuadrilla de {crew}: {plan} a ${ours}/mes, fijo.", "them": "Con la tarifa por usuario de {name} serían ≈ ${theirs}/mes.", "fits": "Para tu cuadrilla"},
-    "strip": {"kicker": "La app", "head": "Esta es la app real.", "sub": "Directo del teléfono. Sin maquetas ni renders.", "pause": "Pausa", "play": "Reproducir", "items": [{"title": "Todas las obras, de un vistazo.", "line": "Dinero restante por obra, lo que está en riesgo y quién te espera.", "alt": "Panel del jefe: obras con presupuesto restante y pendientes"}, {"title": "Lo que costó de verdad esta obra.", "line": "Mano de obra, materiales, combustible y pedidos contra el presupuesto.", "alt": "Remodelación de cocina Oak St.: costos contra un presupuesto de $23,000"}, {"title": "Lo del equipo: un botón.", "line": "Registrar horas y ver las tareas de hoy. Esa es toda la pantalla.", "alt": "Pantalla Mi día del trabajador con botón para registrar horas y tareas"}, {"title": "Los recibos llegan a la obra.", "line": "Foto en la tienda y queda en la obra correcta, con quién compró.", "alt": "Materiales: recibos agrupados por día, cada uno en su obra"}, {"title": "Pedidos aprobados desde la camioneta.", "line": "Pendientes, comprados, rechazados, y un aviso si uno se pasa.", "alt": "Pedidos de material: pendientes, comprados, rechazados"}, {"title": "El reporte del viernes, ya hecho.", "line": "Consumo del presupuesto, plan vs. real, horas. Exportas y a casa.", "alt": "Reporte de obra: consumo del presupuesto, plan vs real, costos por categoría"}]},
+    "plansCrew": {
+      "line": "Para tu cuadrilla de {crew}: {plan} a ${ours}/mes, fijo.",
+      "them": "Con la tarifa por usuario de {name} serían ≈ ${theirs}/mes.",
+      "fits": "Para tu cuadrilla"
+    },
+    "strip": {
+      "kicker": "La app",
+      "head": "Esta es la app real.",
+      "sub": "Directo del teléfono. Sin maquetas ni renders.",
+      "pause": "Pausa",
+      "play": "Reproducir",
+      "items": [
+        {
+          "title": "Todas las obras, de un vistazo.",
+          "line": "Dinero restante por obra, cuál se pasó y quién te espera.",
+          "alt": "Panel del jefe: tres obras, una $964 sobre el presupuesto, una factura vencida"
+        },
+        {
+          "title": "Agárralo en $964, no a fin de año.",
+          "line": "Toca la obra en rojo: cuánto costó, cuánto se pasó, qué falta cobrar.",
+          "alt": "Riverside Deck Rebuild: $12,964 gastados contra $12,000 de presupuesto, $964 de más"
+        },
+        {
+          "title": "Quién te debe. A quién le debes.",
+          "line": "Cada factura y contrato de la obra: lo cobrado y lo que falta pagar.",
+          "alt": "Dinero que entra y sale en una obra: $322 por cobrar, $250 por pagar"
+        },
+        {
+          "title": "Factura directo desde la obra.",
+          "line": "Las horas y materiales que registraste se vuelven la factura. Envíala desde la obra.",
+          "alt": "Factura INV-2026-007: mano de obra y subcontratistas, $5,800 por cobrar"
+        },
+        {
+          "title": "Lo del equipo: un botón.",
+          "line": "Registrar horas y ver las tareas de hoy. Esa es toda la pantalla.",
+          "alt": "Pantalla Mi día del trabajador con botón para registrar horas y tareas"
+        },
+        {
+          "title": "Ve el día que nadie registró.",
+          "line": "La semana de cada trabajador, con los días faltantes marcados antes del pago.",
+          "alt": "Horas de Mark Ellison: 20 horas esta semana, dos días sin registrar"
+        },
+        {
+          "title": "La lista de compras del equipo.",
+          "line": "Todos anotan lo que necesita la obra. Toca el círculo cuando se compra.",
+          "alt": "Lista Por comprar de Oak St. Kitchen Remodel: 4 cosas, 1 urgente"
+        },
+        {
+          "title": "Cada recibo llega a la obra.",
+          "line": "Una foto tacha la lista y carga el costo a la obra.",
+          "alt": "Comprado en Oak St.: recibos de Cedar Supply y Northside Hardware"
+        }
+      ]
+    },
     "how": {
-      "days": ["Lun · 9:00", "Lun · 9:10", "Mar · 7:00", "Vie · 16:30"],
-      "board": {"invite": "Únete a la obra", "task": "Armar muros", "report": "Reporte", "onBudget": "En presupuesto", "geofence": "Geocerca", "spent": "Gastado", "week": "Semana 1"}
+      "days": [
+        "Lun · 9:00",
+        "Lun · 9:10",
+        "Mar · 7:00",
+        "Vie · 16:30"
+      ],
+      "board": {
+        "invite": "Únete a la obra",
+        "task": "Armar muros",
+        "report": "Reporte",
+        "onBudget": "En presupuesto",
+        "geofence": "Geocerca",
+        "spent": "Gastado",
+        "week": "Semana 1"
+      }
     }
   }
 }

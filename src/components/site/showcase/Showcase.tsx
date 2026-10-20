@@ -24,7 +24,16 @@ import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
 import { getLenis } from "@/lib/lenis";
 import { activeAt, progressFor, stripPos } from "./strip";
 
-const SCREENS = ["01-jobs", "02-job-costs", "03-my-day", "04-materials", "05-requests", "06-report"] as const;
+const SCREENS = [
+  "01-home",
+  "02-overrun",
+  "03-money",
+  "04-invoice",
+  "05-my-day",
+  "06-timesheet",
+  "07-to-buy",
+  "08-receipts",
+] as const;
 const N = SCREENS.length;
 const SRC = (s: string) => `/screenshots/strip/${s}.webp`;
 /** Phone auto-advance on phones (ms). */
@@ -84,7 +93,7 @@ export default function Showcase() {
 
       {/* Desktop: pinned reel. */}
       {!reduced && (
-        <div ref={trackRef} data-strip-track className="relative hidden md:block md:h-[560vh]">
+        <div ref={trackRef} data-strip-track className="relative hidden md:block md:h-[740vh]">
           <div className="sticky top-0 h-screen overflow-hidden">
             <div className="mx-auto grid h-full max-w-[1400px] grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-12 px-10 pt-14">
               <Caption active={deskActive} items={items} onJump={jumpDesk} />
@@ -279,7 +288,7 @@ function PhoneReel({ items, reduced }: { items: { title: string; line: string; a
         <Phone width="min(250px, 64vw)" pos={pos} alts={items.map((i) => i.alt)} active={active} onTap={reduced ? undefined : () => setPaused((p) => !p)} paused={paused} />
         </div>
       </div>
-      <div className="mt-2 flex items-center gap-3">
+      <div className="mt-2 flex items-center gap-1">
         {!reduced && (
           <button
             type="button"

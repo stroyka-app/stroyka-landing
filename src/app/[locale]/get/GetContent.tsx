@@ -97,13 +97,13 @@ export default function GetContent() {
   }
 
   const screens: Screen[] = (
-    ["projects", "tasks", "requests", "report"] as const
+    ["projects", "costs", "timesheet", "tobuy"] as const
   ).map((key, i) => ({
     key,
     label: t(`desktopScreens.${key}.label`),
     note: t(`desktopScreens.${key}.note`),
-    noteTop: [16, 30, 22, 38][i],
-    src: `/get/screen-${key}.jpg`,
+    noteTop: [16, 30, 38, 22][i],
+    src: `/get/screens/${key}.jpg`,
     alt: t(`desktopScreens.${key}.alt`),
   }));
 

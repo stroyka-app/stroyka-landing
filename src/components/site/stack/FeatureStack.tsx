@@ -4,11 +4,11 @@ import { Fragment, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { motion, useMotionValueEvent, useScroll, useTransform, type MotionValue } from "motion/react";
 import FlapText from "../ui/FlapText";
-import { ApproveVignette, OfflineVignette, PnlVignette, RolesVignette } from "./Vignettes";
+import { OfflineVignette, PnlVignette, RolesVignette, ToBuyVignette } from "./Vignettes";
 import { useReduced } from "../ui/useReduced";
 import { getLenis } from "@/lib/lenis";
 
-const VIGNETTES = [OfflineVignette, RolesVignette, PnlVignette, ApproveVignette] as const;
+const VIGNETTES = [OfflineVignette, RolesVignette, PnlVignette, ToBuyVignette] as const;
 const TOTAL = VIGNETTES.length;
 /** Each card pins this much lower than the one before, so the pile shows its edges (and tabs). */
 const STEP_PX = 30;

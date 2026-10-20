@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { readFileSync, existsSync } from "node:fs";
 import { activeAt, progressFor, stripPos } from "../../src/components/site/showcase/strip";
 
-const N = 6;
+const N = 8;
 
 test("the strip starts on the first screen and ends on the last", () => {
   expect(stripPos(0, N)).toBe(0);
@@ -37,8 +37,17 @@ test("the caption follows the screen that fills the gate", () => {
   expect(activeAt(2.6)).toBe(3);
 });
 
-test("six screens on disk and six captions in every locale", () => {
-  for (const f of ["01-jobs", "02-job-costs", "03-my-day", "04-materials", "05-requests", "06-report"]) {
+test("eight screens on disk and eight captions in every locale", () => {
+  for (const f of [
+    "01-home",
+    "02-overrun",
+    "03-money",
+    "04-invoice",
+    "05-my-day",
+    "06-timesheet",
+    "07-to-buy",
+    "08-receipts",
+  ]) {
     expect(existsSync(`public/screenshots/strip/${f}.webp`)).toBe(true);
   }
   for (const loc of ["en", "es", "ru"]) {

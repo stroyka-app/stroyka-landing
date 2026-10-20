@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import {AnimatePresence, LayoutGroup, motion, useInView} from "motion/react";
-import { Check, CloudOff, CloudUpload, HardHat, Signal, SignalZero, UserRound } from "lucide-react";
+import { Camera, Check, CloudOff, CloudUpload, HardHat, Signal, SignalZero, UserRound } from "lucide-react";
 import { useRef } from "react";
 import { useReduced } from "../ui/useReduced";
 
@@ -219,66 +219,99 @@ export function PnlVignette() {
   );
 }
 
-/* ── 04 · Approvals ────────────────────────────────────────────────────── */
+/* ── 04 · To buy ───────────────────────────────────────────────────────── */
 
-export function ApproveVignette() {
-  const t = useTranslations("site.stack.approve");
+const TO_BUY = [0, 1, 2] as const;
+const RECEIPT_TOTAL = "$1,312";
+
+/**
+ * The job's shopping list, the way 1.0.51 runs it: tap a circle when an item
+ * is bought, or snap the receipt and it ticks the list off by itself. Only
+ * the receipt puts money on the job (a tick alone carries no cost), and the
+ * worker who paid out of pocket shows up as owed.
+ */
+export function ToBuyVignette() {
+  const t = useTranslations("site.stack.tobuy");
+  const items = t.raw("items") as string[];
   const reduced = useReduced();
-  // null = pending; the request is decided one way or the other.
-  const [decision, setDecision] = useState<null | "approved" | "rejected">(null);
-  const approved = decision === "approved";
+  const [ticked, setTicked] = useState<readonly number[]>([]);
+  const [receipt, setReceipt] = useState(false);
+
+  const tick = (i: number) => {
+    if (receipt) return;
+    setTicked((cur) => (cur.includes(i) ? cur.filter((k) => k !== i) : [...cur, i]));
+  };
+  const snap = () => {
+    if (receipt) {
+      setReceipt(false);
+      setTicked([]);
+    } else {
+      setReceipt(true);
+      setTicked(TO_BUY);
+    }
+  };
 
   return (
     <div className={panel}>
       <div className="relative rounded-2xl bg-site-slab p-4 ring-1 ring-site-paper/[0.08]">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/50">{t("kicker")}</p>
-            <p className="mt-1.5 text-[15px] font-medium">{t("item")}</p>
-            <p className="mt-0.5 text-[12.5px] text-site-paper/55">{t("from")}</p>
-          </div>
-          <span className="font-flex text-[20px] font-semibold tabular-nums">$1,240</span>
-        </div>
-        <div className="mt-4 flex gap-2">
-          <button
-            type="button"
-            onClick={() => setDecision((d) => (d ? null : "approved"))}
-            className={`h-10 flex-1 rounded-full text-[13.5px] font-medium transition-[background-color,color,transform] duration-200 active:scale-[0.97] ${decision ? "bg-site-paper/10 text-site-paper/70" : "bg-site-vis text-site-on-vis hover:bg-site-vis-hover"}`}
-          >
-            {decision ? t("undo") : t("approve")}
-          </button>
-          <button
-            type="button"
-            disabled={decision !== null}
-            onClick={() => setDecision("rejected")}
-            className="h-10 rounded-full px-4 text-[13.5px] text-site-paper/70 ring-1 ring-inset ring-site-paper/20 transition-[background-color,transform] duration-200 hover:bg-site-alert/10 hover:text-site-alert hover:ring-site-alert/40 active:scale-[0.97] disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-site-paper/70"
-          >
-            {t("reject")}
-          </button>
-        </div>
+        <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/50">{t("kicker")}</p>
+        <ul className="mt-3 space-y-1">
+          {TO_BUY.map((i) => {
+            const done = ticked.includes(i);
+            return (
+              <li key={i}>
+                <button
+                  type="button"
+                  onClick={() => tick(i)}
+                  aria-pressed={done}
+                  className="flex w-full items-center gap-3 rounded-lg py-1.5 text-left transition-transform duration-200 active:scale-[0.98]"
+                >
+                  <span
+                    className={`grid h-[22px] w-[22px] flex-shrink-0 place-items-center rounded-full ring-[1.5px] ring-inset transition-colors duration-200 ${done ? "bg-site-vis text-site-on-vis ring-site-vis" : "text-transparent ring-site-paper/35"}`}
+                  >
+                    <Check size={13} strokeWidth={3} />
+                  </span>
+                  <span className={`min-w-0 flex-1 text-[14px] leading-snug transition-colors duration-200 ${done ? "text-site-paper/45 line-through decoration-site-paper/30" : ""}`}>
+                    {items[i]}
+                  </span>
+                  {i === 0 && !done && (
+                    <span className="flex-shrink-0 rounded-full bg-site-alert/15 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-site-alert">{t("urgent")}</span>
+                  )}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+        <p className="mt-1 text-[12.5px] text-site-paper/55">{t("from")}</p>
+        <button
+          type="button"
+          onClick={snap}
+          className={`mt-4 flex h-10 w-full items-center justify-center gap-2 rounded-full text-[13.5px] font-medium transition-[background-color,color,transform] duration-200 active:scale-[0.97] ${receipt ? "bg-site-paper/10 text-site-paper/70" : "bg-site-vis text-site-on-vis hover:bg-site-vis-hover"}`}
+        >
+          {!receipt && <Camera size={15} />}
+          {receipt ? t("undo") : t("snap")}
+        </button>
 
         <AnimatePresence>
-          {decision && (
+          {receipt && (
             <motion.div
-              key={decision}
+              key="stamp"
               initial={reduced ? false : { scale: 0, rotate: -24, opacity: 0 }}
               animate={{ scale: 1, rotate: -11, opacity: 1 }}
               exit={{ scale: 0.6, opacity: 0, transition: { duration: 0.15 } }}
               transition={{ type: "spring", stiffness: 380, damping: 14 }}
-              className="pointer-events-none absolute right-6 top-10"
+              className="pointer-events-none absolute right-5 top-[72px]"
             >
-              <span
-                className={`relative block rounded-md border-[2.5px] px-3 py-1 font-flex text-[18px] font-extrabold uppercase tracking-[0.06em] [font-variation-settings:'wdth'_125] ${approved ? "border-site-vis text-site-vis" : "border-site-alert text-site-alert"}`}
-              >
+              <span className="relative block rounded-md border-[2.5px] border-site-vis px-3 py-1 font-flex text-[18px] font-extrabold uppercase tracking-[0.06em] text-site-vis [font-variation-settings:'wdth'_125]">
                 {!reduced && (
                   <motion.span
-                    className={`absolute inset-0 rounded-md ring-2 ${approved ? "ring-site-vis" : "ring-site-alert"}`}
+                    className="absolute inset-0 rounded-md ring-2 ring-site-vis"
                     initial={{ scale: 1, opacity: 0.7 }}
                     animate={{ scale: 1.85, opacity: 0 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
                   />
                 )}
-                {approved ? t("approved") : t("rejected")}
+                {t("stamp")}
               </span>
             </motion.div>
           )}
@@ -288,7 +321,7 @@ export function ApproveVignette() {
       <div className="mt-5 font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/50">{t("ledger")}</div>
       <ul className="mt-2 divide-y divide-site-paper/[0.07] text-[13px]">
         <AnimatePresence initial={false}>
-          {approved && (
+          {receipt && (
             <motion.li
               key="new"
               initial={reduced ? false : { opacity: 0, height: 0 }}
@@ -297,9 +330,12 @@ export function ApproveVignette() {
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1], delay: reduced ? 0 : 0.25 }}
               className="overflow-hidden"
             >
-              <div className="flex justify-between py-2.5 text-site-vis">
+              <div className="flex justify-between gap-3 py-2.5 text-site-vis">
                 <span>{t("row")}</span>
-                <span className="font-mono tabular-nums">+$1,240</span>
+                <span className="font-mono tabular-nums">+{RECEIPT_TOTAL}</span>
+              </div>
+              <div className="-mt-1 pb-2.5 font-mono text-[10.5px] uppercase tracking-[0.14em] text-site-paper/55">
+                {t("owed", { total: RECEIPT_TOTAL })}
               </div>
             </motion.li>
           )}

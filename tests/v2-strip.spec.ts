@@ -1,7 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import { homeReady } from "./ready";
 
-const N = 6;
+const N = 8;
 const toTrack = (page: Page, p: number) =>
   homeReady(page).then(() =>
   page.evaluate((frac) => {
@@ -16,7 +16,7 @@ test.describe("desktop reel", () => {
 
   test("scrolling pulls the film through the gate, one screen at a time", async ({ page }) => {
     await page.goto("/");
-    for (const k of [0, 3, 5]) {
+    for (const k of [0, 3, 7]) {
       await toTrack(page, k / (N - 1));
       await expect(caption(page, "[data-strip-track]")).toHaveAttribute("data-strip-caption", String(k), { timeout: 8000 });
     }

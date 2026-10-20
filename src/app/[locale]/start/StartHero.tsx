@@ -62,16 +62,16 @@ export default function StartHero({ locale }: { locale: string }) {
   const legalPrefix = locale === "en" ? "" : `/${locale}`;
 
   const screens: Screen[] = (
-    ["report", "projects", "tasks", "requests"] as const
+    ["costs", "projects", "timesheet", "tobuy"] as const
   ).map((key, i) => ({
     key,
     label: g(`desktopScreens.${key}.label`),
     note: g(`desktopScreens.${key}.note`),
-    // Report leads here, not Projects: the ad's promise is "know what each
-    // job actually made", and the Report screen is that sentence as a
+    // Job costs lead here, not Projects: the ad's promise is "know what each
+    // job actually made", and the overrun screen is that sentence as a
     // picture. The page and the creative have to say the same thing.
-    noteTop: [38, 16, 30, 22][i],
-    src: `/get/screen-${key}.jpg`,
+    noteTop: [30, 16, 38, 22][i],
+    src: `/get/screens/${key}.jpg`,
     alt: g(`desktopScreens.${key}.alt`),
   }));
 
