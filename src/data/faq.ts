@@ -8,7 +8,7 @@ export type FaqItem = {
 export const QUESTIONS: readonly FaqItem[] = [
   {
     q: "Does it work without internet?",
-    a: "Yes. Stroyka is offline-first — all data is stored locally on each device and syncs automatically when a connection is restored. Workers in basements, rural areas, or anywhere with poor signal can still log time, submit requests, and view tasks.",
+    a: "Yes. Stroyka is offline-first — all data is stored locally on each device and syncs automatically when a connection is restored. Workers in basements, rural areas, or anywhere with poor signal can still log time, add to the shopping list, and view tasks.",
     meta: "Offline",
   },
   {
