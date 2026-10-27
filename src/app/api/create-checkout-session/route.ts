@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { z } from "zod";
+import { checkBotId } from "botid/server";
 import { checkoutRatelimit } from "@/lib/checkout-ratelimit";
+import { redisConfigured } from "@/lib/redis";
+import { reportRedisDown } from "@/lib/ops-alert";
 import { routing } from "@/i18n/routing";
 
 function getStripe() {
@@ -92,9 +95,47 @@ const requestSchema = z.object({
   locale: z.enum(routing.locales).optional(),
 });
 
+// The same answer whether the email already pays us or Stripe failed, so the
+// form cannot be used to look up who our customers are. It still tells a
+// returning subscriber what to do.
+const NOT_STARTED = () =>
+  NextResponse.json(
+    {
+      error: "checkout_not_started",
+      message:
+        "We couldn't start checkout for this email. If you already have a " +
+        "Stroyka subscription, sign in to the app to manage it. Otherwise, " +
+        "email support@getstroyka.com and we'll sort it out.",
+    },
+    { status: 400 }
+  );
+
+async function isBot(): Promise<boolean> {
+  try {
+    return (await checkBotId()).isBot;
+  } catch (err) {
+    console.error("[create-checkout-session] BotID check failed, letting the request through:", err);
+    return false;
+  }
+}
+
 export async function POST(req: NextRequest) {
-  // Rate limit (fail-open: if Redis is down, skip rate limiting)
-  if (process.env.UPSTASH_REDIS_REST_URL) {
+  if (await isBot()) {
+    return NextResponse.json(
+      {
+        error: "bot_check_failed",
+        message:
+          "We couldn't verify this request. Please reload the page and try " +
+          "again, or email support@getstroyka.com.",
+      },
+      { status: 403 }
+    );
+  }
+
+  // Rate limit. Fails OPEN on purpose: a dead limiter that blocked checkout
+  // would stop every sale, while the abuse it guards against (Stripe calls,
+  // stray customers) is bounded by Stripe's own limits and can be cleaned up.
+  if (redisConfigured()) {
     try {
       const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
       const { success } = await checkoutRatelimit.limit(ip);
@@ -105,7 +146,7 @@ export async function POST(req: NextRequest) {
         );
       }
     } catch (err) {
-      console.error("[create-checkout-session] rate limit check failed:", err);
+      await reportRedisDown("api/create-checkout-session", err);
     }
   }
 
@@ -197,16 +238,10 @@ export async function POST(req: NextRequest) {
               limit: 1,
             });
         if (trialing.data.length > 0) {
-          return NextResponse.json(
-            {
-              error: "already_subscribed",
-              message:
-                "This email already has an active Stroyka subscription. " +
-                "Sign in to the app, or email support@getstroyka.com and " +
-                "we'll sort it out.",
-            },
-            { status: 409 }
+          console.warn(
+            `[create-checkout-session] refused: ${c.id} already has an active or trialing subscription`
           );
+          return NOT_STARTED();
         }
       }
     } else {
@@ -291,9 +326,6 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    return NextResponse.json(
-      { error: "Failed to create checkout session" },
-      { status: 500 }
-    );
+    return NOT_STARTED();
   }
 }

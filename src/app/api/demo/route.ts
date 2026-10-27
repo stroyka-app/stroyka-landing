@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
-import { ratelimit } from "@/lib/ratelimit";
+import { checkBotId } from "botid/server";
+import {
+  confirmationKey,
+  confirmationRatelimit,
+  ratelimit,
+} from "@/lib/ratelimit";
+import { redisConfigured } from "@/lib/redis";
+import { reportRedisDown } from "@/lib/ops-alert";
 import { demoFormSchema } from "@/lib/schemas";
 import { buildDemoConfirmation, demoLang } from "@/lib/demoConfirmation";
 
@@ -214,38 +221,95 @@ async function sendTelegram(data: {
   }
 }
 
+const ROUTE = "api/demo";
+
+/**
+ * False only when the limiter positively says "too many". A dead limiter must
+ * never cost a lead: it fails open, loudly.
+ */
+async function withinIpLimit(ip: string): Promise<boolean> {
+  if (!redisConfigured()) return true;
+  try {
+    const { success, reason } = await ratelimit.limit(ip);
+    if (reason === "timeout") await reportRedisDown(ROUTE, new Error("ratelimit timeout"));
+    return success;
+  } catch (err) {
+    await reportRedisDown(ROUTE, err);
+    return true;
+  }
+}
+
+/**
+ * One confirmation per address per day. Fails CLOSED: the confirmation is a
+ * courtesy, and without the limiter it is a free mail relay to any address.
+ * The lead itself still reaches us by email and Telegram.
+ */
+async function mayConfirm(email: string): Promise<boolean> {
+  if (!redisConfigured()) return process.env.NODE_ENV !== "production";
+  try {
+    const { success, reason } = await confirmationRatelimit.limit(confirmationKey(email));
+    if (reason === "timeout") {
+      await reportRedisDown(ROUTE, new Error("confirmation limiter timeout"));
+      return false;
+    }
+    return success;
+  } catch (err) {
+    await reportRedisDown(ROUTE, err);
+    return false;
+  }
+}
+
+async function isBot(): Promise<boolean> {
+  try {
+    return (await checkBotId()).isBot;
+  } catch (err) {
+    console.error("[api/demo] BotID check failed, letting the request through:", err);
+    return false;
+  }
+}
+
 export async function POST(request: Request) {
   try {
-    // Rate limiting (skip if Upstash not configured)
-    if (process.env.UPSTASH_REDIS_REST_URL) {
-      const headersList = await headers();
-      const ip = headersList.get("x-forwarded-for") ?? "127.0.0.1";
-      const { success } = await ratelimit.limit(ip);
-      if (!success) {
-        return NextResponse.json(
-          { error: "Too many requests. Please try again later." },
-          { status: 429 }
-        );
-      }
+    if (await isBot()) {
+      return NextResponse.json(
+        { error: "We couldn't verify this request. Please email hello@getstroyka.com." },
+        { status: 403 }
+      );
     }
 
-    // Validate with Zod
-    const body = await request.json();
+    const headersList = await headers();
+    const ip = headersList.get("x-forwarded-for") ?? "127.0.0.1";
+    if (!(await withinIpLimit(ip))) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429 }
+      );
+    }
+
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid form data" }, { status: 400 });
+    }
+
+    // No field details: they used to name the honeypot field to whoever tripped it.
     const result = demoFormSchema.safeParse(body);
     if (!result.success) {
-      return NextResponse.json(
-        { error: "Invalid form data", details: result.error.flatten() },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid form data" }, { status: 400 });
     }
 
     const { name, company, crewSize, email, phone, challenge, locale } = result.data;
     const data = { name, company, crewSize, email, phone, challenge };
 
+    const confirm = await mayConfirm(email);
+
     const [emailResult, telegramResult, confirmationResult] = await Promise.allSettled([
       sendEmail(data),
       sendTelegram(data),
-      sendConfirmationEmail({ name: data.name, email: data.email, locale }),
+      confirm
+        ? sendConfirmationEmail({ name: data.name, email: data.email, locale })
+        : Promise.resolve(),
     ]);
 
     if (emailResult.status === "rejected") {

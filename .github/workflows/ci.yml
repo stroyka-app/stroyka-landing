@@ -20,6 +20,10 @@ jobs:
 
       - run: npm ci
 
+      # Production dependencies only, high and critical only: dev-tool
+      # advisories (eslint, browserslist) never reach the site.
+      - run: npm audit --omit=dev --audit-level=high
+
       # Next's build cache holds the Google Fonts files next/font downloads.
       # Without it every run fetches them fresh, and Google occasionally
       # answers with CSS next/font cannot parse ("Cannot read properties of

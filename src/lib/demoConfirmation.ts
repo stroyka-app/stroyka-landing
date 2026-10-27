@@ -27,9 +27,15 @@ export function demoLang(locale: string | undefined): DemoLang {
   return locale === "ru" || locale === "es" ? locale : "en";
 }
 
+// The name is the only typed text that reaches a stranger's inbox (the form
+// mails any address), so it must read as a name: letters, apostrophes and
+// hyphens only. Anything else, like "evil.com" or a URL, which mail clients
+// would auto-link, falls back to the plain greeting.
+const NAME_LIKE = /^[\p{L}\p{M}][\p{L}\p{M}'’-]{1,29}$/u;
+
 function firstName(name: string): string {
   const first = name.trim().split(/\s+/)[0] ?? "";
-  return first.length < 2 ? "" : first;
+  return NAME_LIKE.test(first) ? first : "";
 }
 
 function partsFor(lang: DemoLang, name: string): LetterParts {

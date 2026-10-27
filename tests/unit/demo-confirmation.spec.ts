@@ -48,3 +48,12 @@ test("a missing or one-letter name falls back to a plain greeting", () => {
   expect(buildDemoConfirmation({ lang: "en", name: "  " }).text.startsWith("Hi there,")).toBe(true);
   expect(buildDemoConfirmation({ lang: "ru", name: "a" }).text.startsWith("Здравствуйте!")).toBe(true);
 });
+
+test("only a name-like first word reaches the letter; links and junk fall back", () => {
+  for (const name of ["evil.com", "http://x.co/phish", "www.bad.ru now", "a@b.c", "1234", "x".repeat(40)]) {
+    const m = buildDemoConfirmation({ lang: "en", name });
+    expect(m.text.startsWith("Hi there,")).toBe(true);
+  }
+  expect(buildDemoConfirmation({ lang: "en", name: "O'Brien Sean" }).text.startsWith("Hi O'Brien,")).toBe(true);
+  expect(buildDemoConfirmation({ lang: "es", name: "José-María" }).text.startsWith("Hola, José-María:")).toBe(true);
+});
