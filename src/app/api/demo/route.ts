@@ -1,13 +1,7 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { checkBotId } from "botid/server";
-import {
-  confirmationKey,
-  confirmationRatelimit,
-  ratelimit,
-} from "@/lib/ratelimit";
-import { redisConfigured } from "@/lib/redis";
-import { reportRedisDown } from "@/lib/ops-alert";
+import { guardTake } from "@/lib/guard";
 import { demoFormSchema } from "@/lib/schemas";
 import { buildDemoConfirmation, demoLang } from "@/lib/demoConfirmation";
 
@@ -228,15 +222,7 @@ const ROUTE = "api/demo";
  * never cost a lead: it fails open, loudly.
  */
 async function withinIpLimit(ip: string): Promise<boolean> {
-  if (!redisConfigured()) return true;
-  try {
-    const { success, reason } = await ratelimit.limit(ip);
-    if (reason === "timeout") await reportRedisDown(ROUTE, new Error("ratelimit timeout"));
-    return success;
-  } catch (err) {
-    await reportRedisDown(ROUTE, err);
-    return true;
-  }
+  return (await guardTake(ROUTE, "demo_ip", ip)) !== "denied";
 }
 
 /**
@@ -245,18 +231,7 @@ async function withinIpLimit(ip: string): Promise<boolean> {
  * The lead itself still reaches us by email and Telegram.
  */
 async function mayConfirm(email: string): Promise<boolean> {
-  if (!redisConfigured()) return process.env.NODE_ENV !== "production";
-  try {
-    const { success, reason } = await confirmationRatelimit.limit(confirmationKey(email));
-    if (reason === "timeout") {
-      await reportRedisDown(ROUTE, new Error("confirmation limiter timeout"));
-      return false;
-    }
-    return success;
-  } catch (err) {
-    await reportRedisDown(ROUTE, err);
-    return false;
-  }
+  return (await guardTake(ROUTE, "demo_confirm", email)) === "allowed";
 }
 
 async function isBot(): Promise<boolean> {

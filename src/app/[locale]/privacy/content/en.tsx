@@ -106,7 +106,7 @@ export const privacyEn: LegalDoc = {
             <li><strong>Stripe</strong> &mdash; checkout and billing for subscriptions bought on our website. Stripe receives your payment details directly.</li>
             <li><strong>Cloudflare</strong> &mdash; our domain and DNS, forwarding of email sent to our addresses, and storage for our encrypted backups.</li>
             <li><strong>Vercel</strong> &mdash; hosts our website and processes standard web logs, including IP addresses.</li>
-            <li><strong>Upstash</strong> &mdash; rate limiting on our website forms and checkout. It uses your IP address and, for the demo form, a one-way hash of the email address entered.</li>
+            <li><strong>Rate limiting</strong> &mdash; our website forms and checkout are rate-limited in our own database (Supabase, above). It keeps only one-way hashes of your IP address and, for the demo form, of the email address entered, and deletes them after 24 hours.</li>
             <li><strong>Telegram</strong> &mdash; notifies our team when someone submits the demo form, including the details in the form.</li>
             <li><strong>Meta</strong> &mdash; the Meta pixel on our website only (see section 10). It is not in the app. <a href="https://www.facebook.com/privacy/policy" target="_blank" rel="noopener noreferrer">Meta Privacy Policy</a></li>
           </ul>

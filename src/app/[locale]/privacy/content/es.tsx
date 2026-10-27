@@ -106,7 +106,7 @@ export const privacyEs: LegalDoc = {
             <li><strong>Stripe</strong> &mdash; pago y facturación de las suscripciones compradas en nuestro sitio web. Stripe recibe tus datos de pago directamente.</li>
             <li><strong>Cloudflare</strong> &mdash; nuestro dominio y DNS, el reenvío de correos a nuestras direcciones y el almacenamiento de nuestras copias de seguridad cifradas.</li>
             <li><strong>Vercel</strong> &mdash; aloja nuestro sitio web y procesa registros web estándar, incluidas direcciones IP.</li>
-            <li><strong>Upstash</strong> &mdash; limita la frecuencia de solicitudes en los formularios y el pago del sitio web. Usa tu dirección IP y, en el formulario de demostración, un hash irreversible del correo ingresado.</li>
+            <li><strong>Límite de solicitudes</strong> &mdash; los formularios y el pago del sitio web se limitan en nuestra propia base de datos (Supabase, arriba). Solo guarda hashes irreversibles de tu dirección IP y, en el formulario de demostración, del correo introducido, y los borra a las 24 horas.</li>
             <li><strong>Telegram</strong> &mdash; avisa a nuestro equipo cuando alguien envía el formulario de demostración, con los datos del formulario.</li>
             <li><strong>Meta</strong> &mdash; el píxel de Meta, solo en nuestro sitio web (ver sección 10). No está en la app. <a href="https://www.facebook.com/privacy/policy" target="_blank" rel="noopener noreferrer">Política de privacidad de Meta</a></li>
           </ul>

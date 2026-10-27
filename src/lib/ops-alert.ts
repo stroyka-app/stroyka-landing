@@ -1,12 +1,13 @@
-// Tells Maks on Telegram when a limiter or the single-use store is down.
-// The Upstash database disappeared in October 2026 and every demo request
-// 500'd for an unknown time: Hobby keeps logs for an hour, so nothing showed.
+// Tells Maks on Telegram when the rate-limit guard (landing-guard) cannot
+// answer. In October 2026 the old Upstash store vanished and every demo
+// request 500'd for an unknown time: Hobby keeps logs for an hour, so
+// nothing showed.
 
 const alerted = new Set<string>();
 
 /** console.error every time; Telegram at most once per route per cold start. */
-export async function reportRedisDown(route: string, err: unknown): Promise<void> {
-  console.error(`[${route}] Redis unavailable:`, err);
+export async function reportGuardDown(route: string, err: unknown): Promise<void> {
+  console.error(`[${route}] rate-limit guard unavailable:`, err);
   if (alerted.has(route)) return;
   alerted.add(route);
 
@@ -21,7 +22,7 @@ export async function reportRedisDown(route: string, err: unknown): Promise<void
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         chat_id: chatId,
-        text: `⚠️ Upstash Redis is unreachable from ${route}: ${reason.slice(0, 300)}`,
+        text: `⚠️ Rate-limit guard (landing-guard) unavailable from ${route}: ${reason.slice(0, 300)}`,
       }),
     });
     if (!res.ok) console.error(`[${route}] ops alert failed: ${res.status}`);

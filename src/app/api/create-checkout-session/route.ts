@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { z } from "zod";
 import { checkBotId } from "botid/server";
-import { checkoutRatelimit } from "@/lib/checkout-ratelimit";
-import { redisConfigured } from "@/lib/redis";
-import { reportRedisDown } from "@/lib/ops-alert";
+import { guardTake } from "@/lib/guard";
 import { routing } from "@/i18n/routing";
 
 function getStripe() {
@@ -135,19 +133,12 @@ export async function POST(req: NextRequest) {
   // Rate limit. Fails OPEN on purpose: a dead limiter that blocked checkout
   // would stop every sale, while the abuse it guards against (Stripe calls,
   // stray customers) is bounded by Stripe's own limits and can be cleaned up.
-  if (redisConfigured()) {
-    try {
-      const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
-      const { success } = await checkoutRatelimit.limit(ip);
-      if (!success) {
-        return NextResponse.json(
-          { error: "Too many requests. Please try again later." },
-          { status: 429 }
-        );
-      }
-    } catch (err) {
-      await reportRedisDown("api/create-checkout-session", err);
-    }
+  const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
+  if ((await guardTake("api/create-checkout-session", "checkout_ip", ip)) === "denied") {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again later." },
+      { status: 429 }
+    );
   }
 
   let body: unknown;

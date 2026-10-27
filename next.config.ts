@@ -76,7 +76,7 @@ const nextConfig: NextConfig = {
               "font-src 'self' data: https://fonts.gstatic.com",
               "img-src 'self' data: blob: https://www.facebook.com",
               "worker-src 'self' blob:",
-              // Telegram, Resend and Upstash are called from the server only;
+              // Telegram, Resend and landing-guard are called from the server only;
               // the browser never needs them.
               "connect-src 'self' data: blob: https://vitals.vercel-insights.com https://va.vercel-scripts.com https://connect.facebook.net https://www.facebook.com https://us.i.posthog.com https://us-assets.i.posthog.com",
               "frame-ancestors 'none'",

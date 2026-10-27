@@ -3,9 +3,7 @@ import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import Stripe from "stripe";
 import { z } from "zod";
-import { billingRatelimit } from "@/lib/billing-ratelimit";
-import { redis, redisConfigured } from "@/lib/redis";
-import { reportRedisDown } from "@/lib/ops-alert";
+import { guardTake } from "@/lib/guard";
 import { verifyToken, hashToken } from "@/lib/token";
 
 function getStripe() {
@@ -50,21 +48,11 @@ const UNAVAILABLE = () =>
  * use, a leaked link could be replayed for its whole lifetime, and opening a
  * customer's billing portal cannot be undone. The portal can wait.
  */
-async function claimToken(token: string, exp: number): Promise<"ok" | "used" | "unavailable"> {
-  if (!redisConfigured()) {
-    return process.env.NODE_ENV === "production" ? "unavailable" : "ok";
-  }
-  try {
-    const ttl = Math.max(60, Math.ceil((exp - Date.now()) / 1000) + 60);
-    const claimed = await redis.set(`billing:token:${hashToken(token)}`, "1", {
-      nx: true,
-      ex: ttl,
-    });
-    return claimed === "OK" ? "ok" : "used";
-  } catch (err) {
-    await reportRedisDown(ROUTE, err);
-    return "unavailable";
-  }
+async function claimToken(token: string): Promise<"ok" | "used" | "unavailable"> {
+  // Links live 5 minutes; landing-guard remembers a claim for 24 hours.
+  const result = await guardTake(ROUTE, "billing_token", hashToken(token));
+  if (result === "allowed") return "ok";
+  return result === "denied" ? "used" : "unavailable";
 }
 
 export async function POST(request: Request) {
@@ -76,19 +64,12 @@ export async function POST(request: Request) {
   }
 
   // 2. Rate limit (fail-open: the single-use claim below fails closed anyway)
-  if (redisConfigured()) {
-    try {
-      const ip = headersList.get("x-forwarded-for") ?? "127.0.0.1";
-      const { success } = await billingRatelimit.limit(ip);
-      if (!success) {
-        return NextResponse.json(
-          { error: "Too many requests. Please try again later." },
-          { status: 429 }
-        );
-      }
-    } catch (err) {
-      await reportRedisDown(ROUTE, err);
-    }
+  const ip = headersList.get("x-forwarded-for") ?? "127.0.0.1";
+  if ((await guardTake(ROUTE, "billing_ip", ip)) === "denied") {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again later." },
+      { status: 429 }
+    );
   }
 
   // 3. Parse and validate body
@@ -113,7 +94,7 @@ export async function POST(request: Request) {
   }
 
   // 5. Single-use check
-  const claim = await claimToken(token, payload.exp);
+  const claim = await claimToken(token);
   if (claim === "used") return DENIED();
   if (claim === "unavailable") return UNAVAILABLE();
 
