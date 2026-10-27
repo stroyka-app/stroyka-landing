@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Roboto_Flex } from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import SiteChrome from "@/components/SiteChrome";
@@ -10,6 +10,7 @@ import StructuredData from "@/components/seo/StructuredData";
 import MetaPixel from "@/components/MetaPixel";
 import PostHogAnalytics from "@/components/PostHogAnalytics";
 import SafariBottomTint from "@/components/SafariBottomTint";
+import SkipLink from "@/components/SkipLink";
 import { routing } from "@/i18n/routing";
 import { ANDROID_APP_URL, IOS_APP_URL } from "@/lib/appLinks";
 
@@ -69,6 +70,7 @@ export default async function LocaleLayout({
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
+  const tA11y = await getTranslations({ locale, namespace: "a11y" });
 
   return (
     <html
@@ -78,6 +80,9 @@ export default async function LocaleLayout({
       {/* body colour = --page-top (globals.css): the tone directly under the
           iOS status zone — the morning sky on the home, bone elsewhere. */}
       <body className="text-ink antialiased font-body">
+        {/* First focusable element on every route: jumps past the nav to
+            <main id="main"> (WCAG 2.4.1). */}
+        <SkipLink label={tA11y("skipToContent")} />
         {/* iOS status-zone cap. Static + server-rendered on purpose: Safari 26
             hit-tests fixed elements at the screen edges once at initial
             render. Exactly env(safe-area-inset-top) tall (+4px on iPhones) →

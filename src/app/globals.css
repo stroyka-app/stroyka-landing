@@ -720,7 +720,7 @@
   --site-vis: 47 91 69;
   --site-vis-hover: 38 76 57;
   --site-on-vis: 241 236 223;
-  --site-alert: 180 83 58;
+  --site-alert: 146 58 38; /* 2026-10-26: was 180 83 58 (3.98:1 on bone); darkened so error text passes WCAG AA 4.5:1 */
   --site-haze: 150 145 125;
   --site-shadow: 255 255 255;
   --hero-scrim: 0;

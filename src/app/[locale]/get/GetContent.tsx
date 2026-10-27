@@ -7,6 +7,7 @@ import { track } from "@vercel/analytics";
 import { ANDROID_APP_URL, IOS_APP_URL } from "@/lib/appLinks";
 import { isMobileVisitor } from "@/lib/isMobileVisitor";
 import Navbar from "@/components/Navbar";
+import LegalLinks from "@/components/LegalLinks";
 import AmbientBackdrop from "@/components/ui/AmbientBackdrop";
 import FadeIn from "@/components/ui/FadeIn";
 import FlapText from "@/components/site/ui/FlapText";
@@ -63,10 +64,10 @@ export default function GetContent() {
 
   if (!desktop) {
     return (
-      <main className="relative flex min-h-screen flex-col items-center justify-center gap-8 overflow-hidden bg-site-night px-5 pt-24 text-center text-site-paper">
+      <main id="main" tabIndex={-1} className="focus:outline-none relative flex min-h-screen flex-col items-center justify-center gap-8 overflow-hidden bg-site-night px-5 pt-24 text-center text-site-paper">
         <AmbientBackdrop />
         <div className="relative z-10 flex flex-col items-center gap-7">
-          <p className="flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/55">
+          <p className="flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/70">
             <span className="relative flex h-2 w-2" aria-hidden>
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-site-vis opacity-60 motion-reduce:hidden" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-site-vis" />
@@ -91,6 +92,7 @@ export default function GetContent() {
               }
             />
           </div>
+          <LegalLinks className="mt-4" />
         </div>
       </main>
     );
@@ -119,7 +121,7 @@ export default function GetContent() {
   return (
     <MotionConfig reducedMotion="user">
       <Navbar />
-      <main className="relative overflow-hidden bg-site-night pb-10 pt-24 text-site-paper lg:pt-24">
+      <main id="main" tabIndex={-1} className="focus:outline-none relative overflow-hidden bg-site-night pb-10 pt-24 text-site-paper lg:pt-24">
         <AmbientBackdrop />
         {/* The hero is the page: one block, vertically centred in the
             viewport, so a tall window gets even air above and below instead
@@ -176,6 +178,9 @@ export default function GetContent() {
           </FadeIn>
         </div>
       </main>
+      <footer className="bg-site-night px-5 pb-10 pt-2">
+        <LegalLinks />
+      </footer>
     </MotionConfig>
   );
 }

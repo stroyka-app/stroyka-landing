@@ -100,7 +100,7 @@ export default function Plans() {
                   <span className="relative flex items-center gap-2">
                     {mode === "monthly" ? t("monthly") : t("annual")}
                     {mode === "annual" && (
-                      <span className={`rounded-full px-1.5 py-0.5 font-mono text-[10px] ${billing === "annual" ? "bg-site-on-vis/15" : "bg-site-vis/15 text-site-vis"}`}>
+                      <span className={`rounded-full px-1.5 py-0.5 font-mono text-[10px] ${billing === "annual" ? "bg-site-on-vis/15" : "bg-site-vis/10 text-site-vis"}`}>
                         {t("annualSave")}
                       </span>
                     )}
@@ -175,13 +175,13 @@ export default function Plans() {
                         )}
                       </div>
                     </div>
-                    <p className={`mt-2 text-[14px] ${hot ? "text-site-on-vis/70" : "text-site-paper/60"}`}>{t(`${p.id}.description`)}</p>
+                    <p className={`mt-2 text-[14px] ${hot ? "text-site-on-vis/85" : "text-site-paper/70"}`}>{t(`${p.id}.description`)}</p>
 
                     <div className="mt-8 flex items-end gap-2">
                       <RollingPrice value={p.price} digits={p.id === "free" ? 1 : String(PRICES[p.id].monthly).length} reduced={reduced} />
-                      <span className={`mb-1 text-[13px] ${hot ? "text-site-on-vis/65" : "text-site-paper/55"}`}>{p.note}</span>
+                      <span className={`mb-1 text-[13px] ${hot ? "text-site-on-vis/80" : "text-site-paper/70"}`}>{p.note}</span>
                     </div>
-                    <p className={`mt-3 font-mono text-[10.5px] uppercase tracking-[0.14em] ${hot ? "text-site-on-vis/70" : "text-site-vis/90"}`}>
+                    <p className={`mt-3 font-mono text-[10.5px] uppercase tracking-[0.14em] ${hot ? "text-site-on-vis/85" : "text-site-vis"}`}>
                       {t(`${p.id}.limit`)}
                     </p>
 
@@ -211,7 +211,7 @@ export default function Plans() {
           {[0, 1, 2].map((k) => (
             <div key={k}>
               <p className="font-flex text-[18px] font-semibold">{tg(`promises.${k}.title`)}</p>
-              <p className="mt-2 text-[14px] leading-relaxed text-site-paper/60">{tg(`promises.${k}.body`)}</p>
+              <p className="mt-2 text-[14px] leading-relaxed text-site-paper/70">{tg(`promises.${k}.body`)}</p>
             </div>
           ))}
         </div>

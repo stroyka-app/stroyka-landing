@@ -28,7 +28,7 @@ export default function Error({
   const kicker = t("eyebrow").replace(/^•\s*/, "");
 
   return (
-    <main className="relative flex min-h-screen items-center overflow-x-clip bg-site-night py-24 text-site-paper">
+    <main id="main" tabIndex={-1} className="focus:outline-none relative flex min-h-screen items-center overflow-x-clip bg-site-night py-24 text-site-paper">
       <div className="mx-auto w-full max-w-[1400px] px-5 md:px-10">
         <div className="max-w-2xl">
           <motion.div
@@ -80,7 +80,7 @@ export default function Error({
             </button>
             <Link
               href="/"
-              className="font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/55 transition-colors hover:text-site-vis focus-visible:text-site-vis focus-visible:outline-none"
+              className="font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/70 transition-colors hover:text-site-vis focus-visible:rounded-sm focus-visible:text-site-vis focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-site-vis focus-visible:ring-offset-4 focus-visible:ring-offset-site-night"
             >
               {t("backHome")}
             </Link>

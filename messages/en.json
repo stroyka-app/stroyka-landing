@@ -10,7 +10,11 @@
     "privacyDescription": "Privacy Policy for the Stroyka construction management platform.",
     "termsTitle": "Terms of Service — Stroyka",
     "termsDescription": "Terms of Service for the Stroyka construction management platform.",
-    "appDescription": "Construction crew and job cost management app for small US contractors. Track time, assign tasks, and monitor job costs offline."
+    "appDescription": "Construction crew and job cost management app for small US contractors. Track time, assign tasks, and monitor job costs offline.",
+    "accessibilityTitle": "Accessibility Statement — Stroyka",
+    "accessibilityDescription": "Our WCAG 2.1 AA commitment for getstroyka.com, what we fixed, known limitations, and how to report an accessibility problem.",
+    "deleteAccountTitle": "Delete Your Account — Stroyka",
+    "deleteAccountDescription": "How to delete your Stroyka account or company, what is deleted, and when."
   },
   "hero": {
     "startFree": "Start free",
@@ -219,7 +223,10 @@
     "soon": "soon",
     "rights": "All rights reserved",
     "madeFor": "Made for crews who build things",
-    "languagesNavLabel": "Languages"
+    "languagesNavLabel": "Languages",
+    "accessibility": "Accessibility",
+    "deleteAccount": "Delete account",
+    "legalNavLabel": "Legal"
   },
   "faq": {
     "eyebrow": "FAQ",
@@ -816,7 +823,9 @@
         "14:30 — plan vs. actual · 4% under",
         "16:05 — invoice sent · Johnson house",
         "17:20 — paid"
-      ]
+      ],
+      "pause": "Pause the ticker",
+      "play": "Play the ticker"
     },
     "shoebox": {
       "kicker": "How it goes today",
@@ -1083,5 +1092,33 @@
         "week": "Week 1"
       }
     }
+  },
+  "a11y": {
+    "skipToContent": "Skip to content"
+  },
+  "accessibilityPage": {
+    "eyebrow": "Accessibility",
+    "title": "Accessibility statement",
+    "updated": "Last reviewed: October 26, 2026",
+    "intro": "We want everyone to be able to use getstroyka.com, including people who use a screen reader, a keyboard instead of a mouse, zoom, or reduced motion.",
+    "goalTitle": "Our goal",
+    "goalBody": "We aim for this website to meet the Web Content Accessibility Guidelines (WCAG) 2.1 at Level AA. When something falls short, we treat it as a bug and fix it.",
+    "doneTitle": "What we did on October 26, 2026",
+    "done": [
+      "Raised text contrast across the site, so body text, form labels and the footer meet the 4.5:1 minimum.",
+      "Added a “Skip to content” link as the first stop for keyboard users, and gave every page a single main content area.",
+      "Added a pause button to the moving ticker on the home page. If your device asks for reduced motion, it doesn’t move at all.",
+      "Made keyboard focus visible everywhere, not just a change of color.",
+      "Labelled the FAQ answers for screen readers and hid the decorative 3D scene from them."
+    ],
+    "limitsTitle": "Known limitations",
+    "limits": [
+      "The 3D crane scene on the home page is decorative. Screen readers skip it; everything it shows is also written on the page.",
+      "The receipts in the “shoebox” on the home page can be dragged with a mouse or a finger. The “Sort it out” button does the same from the keyboard.",
+      "We have tested with automated tools and with the keyboard. We have not yet done a full review with screen readers such as VoiceOver and NVDA."
+    ],
+    "contactTitle": "Report a problem",
+    "contactBody": "If anything on this site is hard or impossible for you to use, email <email>support@getstroyka.com</email>. Tell us the page and what went wrong. We reply within 5 business days, and if we can’t fix it quickly, we’ll help you get the information or service you need another way.",
+    "scope": "This statement covers the website getstroyka.com. For accessibility in the Stroyka mobile app, write to the same address."
   }
 }

@@ -37,7 +37,7 @@ export default function KnowEvery() {
             {words.map((w) => (
               <motion.li
                 key={w}
-                initial={{ color: "rgb(var(--site-paper) / 0.15)" }}
+                initial={{ color: "rgb(var(--site-paper) / 0.5)" }}
                 whileInView={{ color: "rgb(var(--site-vis))" }}
                 viewport={{ margin: "-42% 0px -42% 0px" }}
                 transition={{ duration: 0.25 }}
@@ -47,7 +47,7 @@ export default function KnowEvery() {
             ))}
           </ul>
         </div>
-        <p className="mt-8 max-w-sm text-[15px] leading-relaxed text-site-paper/60">{t("foot")}</p>
+        <p className="mt-8 max-w-sm text-[15px] leading-relaxed text-site-paper/70">{t("foot")}</p>
       </section>
     );
   }
@@ -81,7 +81,7 @@ export default function KnowEvery() {
                 {words.map((w, i) => (
                   <span
                     key={w}
-                    className={`block h-[1.08em] whitespace-nowrap transition-colors duration-300 ${i === active ? "text-site-vis" : "text-site-paper/15"}`}
+                    className={`block h-[1.08em] whitespace-nowrap transition-colors duration-300 ${i === active ? "text-site-vis" : "text-site-paper/50"}`}
                   >
                     {w}
                   </span>
@@ -90,7 +90,7 @@ export default function KnowEvery() {
             </span>
           </span>
         </div>
-        <p className="absolute bottom-10 left-5 max-w-sm text-[14px] leading-relaxed text-site-paper/55 md:left-10">{t("foot")}</p>
+        <p className="absolute bottom-10 left-5 max-w-sm text-[14px] leading-relaxed text-site-paper/70 md:left-10">{t("foot")}</p>
       </div>
     </section>
   );

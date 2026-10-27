@@ -27,9 +27,11 @@ const COMPANY = [
   { key: "requestDemo", href: "/demo" },
   { key: "privacy", href: "/privacy" },
   { key: "terms", href: "/terms" },
+  { key: "accessibility", href: "/accessibility" },
+  { key: "deleteAccount", href: "/delete-account" },
 ] as const;
 
-const head = "mb-5 font-mono text-[11px] uppercase tracking-[0.22em] text-site-paper/45";
+const head = "mb-5 font-mono text-[11px] uppercase tracking-[0.22em] text-site-paper/65";
 const link = "text-[15px] text-site-paper/75 transition-colors duration-200 hover:text-site-vis";
 
 /**
@@ -51,10 +53,10 @@ export default function SiteFooter() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:gap-16">
           <div>
             <Logo variant="light" size={30} />
-            <p className="mt-5 max-w-xs text-[15px] leading-relaxed text-site-paper/60">{t("tagline")}</p>
+            <p className="mt-5 max-w-xs text-[15px] leading-relaxed text-site-paper/70">{t("tagline")}</p>
           </div>
           <div>
-            <h3 className={head}>{t("product")}</h3>
+            <p className={head}>{t("product")}</p>
             <ul className="space-y-3">
               {PRODUCT.map((l) => (
                 <li key={l.hash}>
@@ -66,7 +68,7 @@ export default function SiteFooter() {
             </ul>
           </div>
           <div>
-            <h3 className={head}>{t("company")}</h3>
+            <p className={head}>{t("company")}</p>
             <ul className="space-y-3">
               {COMPANY.map((l) => (
                 <li key={l.href}>
@@ -78,11 +80,11 @@ export default function SiteFooter() {
             </ul>
           </div>
           <div>
-            <h3 className={head}>{t("contact")}</h3>
+            <p className={head}>{t("contact")}</p>
             <a href="mailto:hello@getstroyka.com" className={link}>
               hello@getstroyka.com
             </a>
-            <h3 className={`${head} mt-8`}>{t("getTheApp")}</h3>
+            <p className={`${head} mt-8`}>{t("getTheApp")}</p>
             <ul className="space-y-3">
               <li>
                 <a
@@ -110,7 +112,7 @@ export default function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col gap-4 border-t border-site-paper/10 pt-8 font-mono text-[11px] uppercase tracking-[0.18em] text-site-paper/45 md:flex-row md:items-center md:justify-between">
+        <div className="mt-16 flex flex-col gap-4 border-t border-site-paper/10 pt-8 font-mono text-[11px] uppercase tracking-[0.18em] text-site-paper/65 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} Stroyka — {t("rights")}</p>
           <div className="flex items-center gap-5">
             <LanguageSwitcher placement="top" align="left" />

@@ -81,13 +81,13 @@ function Bar({
           <div className={`text-[15px] font-medium ${ours ? "text-site-vis" : "text-site-paper"}`}>
             {label}
           </div>
-          <div className="mt-1 font-mono text-[10.5px] uppercase leading-snug tracking-[0.12em] text-site-paper/50">
+          <div className="mt-1 font-mono text-[10.5px] uppercase leading-snug tracking-[0.12em] text-site-paper/70">
             {sublabel}
           </div>
         </div>
         <div className="shrink-0 whitespace-nowrap text-right leading-none">
           {amount === null ? (
-            <span className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-site-paper/45">
+            <span className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-site-paper/65">
               not published
             </span>
           ) : (
@@ -100,7 +100,7 @@ function Bar({
                   thing that would make this page actionable against us. */}
               {estimated && (
                 <span
-                  className="mr-0.5 font-flex text-[24px] text-site-paper/45 md:text-[26px]"
+                  className="mr-0.5 font-flex text-[24px] text-site-paper/55 md:text-[26px]"
                   title="Interpolated between two published price points"
                 >
                   ~
@@ -113,7 +113,7 @@ function Bar({
               >
                 <Count value={amount} />
               </span>
-              <span className="ml-1 text-[12px] text-site-paper/50">/mo</span>
+              <span className="ml-1 text-[12px] text-site-paper/70">/mo</span>
             </>
           )}
         </div>
@@ -200,7 +200,7 @@ export default function CrewCostCalculator() {
       <div className="flex items-end justify-between gap-3">
         <label
           htmlFor={SLIDER_ID}
-          className="pb-1 font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/60"
+          className="pb-1 font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/70"
         >
           Your crew
         </label>
@@ -208,7 +208,7 @@ export default function CrewCostCalculator() {
           <span className="font-flex text-[44px] font-semibold tabular-nums tracking-[-0.02em] md:text-[56px]">
             {crew}
           </span>
-          <span className="ml-2 text-[15px] text-site-paper/55">
+          <span className="ml-2 text-[15px] text-site-paper/70">
             {crew === 1 ? "person" : "people"}
           </span>
         </p>
@@ -228,7 +228,7 @@ export default function CrewCostCalculator() {
         style={{ ["--fill" as string]: `${progress * 100}%` }}
       />
       {/* Ticks at their true positions: where Stroyka's plan steps happen. */}
-      <div aria-hidden className="relative mt-2 h-4 font-mono text-[10px] text-site-paper/40">
+      <div aria-hidden className="relative mt-2 h-4 font-mono text-[10px] text-site-paper/65">
         {TICKS.map((n) => (
           <span
             key={n}
@@ -277,7 +277,7 @@ export default function CrewCostCalculator() {
             </span>{" "}
             a year.
           </p>
-          <p className="mt-3 text-[13.5px] leading-relaxed text-site-paper/55">
+          <p className="mt-3 text-[13.5px] leading-relaxed text-site-paper/70">
             {plan.maxWorkers === Infinity ? (
               <>Hire another ten and that gap grows. Ours stops moving here — Pro is unlimited.</>
             ) : (

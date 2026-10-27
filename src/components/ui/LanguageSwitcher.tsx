@@ -149,7 +149,7 @@ export default function LanguageSwitcher({
               }`}
             >
               <span className="flex items-baseline gap-2.5">
-                <span className="w-5 font-mono text-[11px] tracking-[0.12em] uppercase text-site-paper/45">
+                <span className="w-5 font-mono text-[11px] tracking-[0.12em] uppercase text-site-paper/65">
                   {LABELS[loc].code}
                 </span>
                 <span className="font-body text-[13.5px]">{LABELS[loc].name}</span>

@@ -89,7 +89,7 @@ export default function StartHero({ locale }: { locale: string }) {
     // show through below the footer as a lighter band. Dropping it in the
     // rebuild is exactly what produced that seam.
     <MotionConfig reducedMotion="user">
-    <main className="relative flex min-h-svh flex-col overflow-hidden bg-site-night px-5 pb-[calc(env(safe-area-inset-bottom,0px)+3rem)] pt-[calc(env(safe-area-inset-top,0px)+2rem)] text-site-paper md:px-10 lg:pt-16">
+    <main id="main" tabIndex={-1} className="focus:outline-none relative flex min-h-svh flex-col overflow-hidden bg-site-night px-5 pb-[calc(env(safe-area-inset-bottom,0px)+3rem)] pt-[calc(env(safe-area-inset-top,0px)+2rem)] text-site-paper md:px-10 lg:pt-16">
       <AmbientBackdrop />
 
       <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center">
@@ -118,7 +118,7 @@ export default function StartHero({ locale }: { locale: string }) {
 
             <div className="mt-8">
               <StartCta locale={locale} label={t("cta")} className={cta} />
-              <p className="mt-3.5 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-site-paper/55">
+              <p className="mt-3.5 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-site-paper/70">
                 <span aria-hidden className="h-px w-4 bg-site-vis" />
                 {t("bullet3")}
               </p>
@@ -147,7 +147,7 @@ export default function StartHero({ locale }: { locale: string }) {
           <StartCta locale={locale} label={t("cta")} className={cta} />
         </div>
 
-        <footer className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-site-paper/10 pt-5 font-mono text-[10px] uppercase tracking-[0.2em] text-site-paper/45">
+        <footer className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-site-paper/10 pt-5 font-mono text-[10px] uppercase tracking-[0.2em] text-site-paper/65">
           <span>© {new Date().getFullYear()} Stroyka</span>
           <a className="transition-colors hover:text-site-paper" href={`${legalPrefix}/privacy`}>
             {t("privacy")}

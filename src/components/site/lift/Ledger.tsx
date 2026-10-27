@@ -131,8 +131,8 @@ export default function Ledger({
     return (
       <div className="absolute inset-x-3 bottom-[calc(var(--toolbar-gap,0px)+12px)] rounded-2xl bg-site-night/85 p-4 text-site-paper ring-1 ring-site-paper/10 backdrop-blur-xl">
         <div className="flex items-baseline justify-between">
-          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-site-paper/55">{t("job")}</span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-site-paper/55">
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-site-paper/70">{t("job")}</span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-site-paper/70">
             {t("budget")} {usd(budget)}
           </span>
         </div>
@@ -188,19 +188,19 @@ export default function Ledger({
         {/* A hairline highlight along the top edge: the glass catches the sky. */}
         <span aria-hidden className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-[rgb(var(--site-on-vis)/0.9)] to-transparent" />
         <div className="flex items-center justify-between">
-          <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-site-paper/60">{t("job")}</span>
+          <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-site-paper/70">{t("job")}</span>
           <span className="flex items-center gap-1.5 font-mono text-[10.5px] uppercase tracking-[0.2em] text-site-vis">
             <span className="h-1.5 w-1.5 rounded-full bg-site-vis" />
             {t("live")}
           </span>
         </div>
 
-        <div className="mt-4 font-mono text-[10.5px] uppercase tracking-[0.2em] text-site-paper/50">{t("spent")}</div>
+        <div className="mt-4 font-mono text-[10.5px] uppercase tracking-[0.2em] text-site-paper/70">{t("spent")}</div>
         <Odometer value={spent} className="mt-1 font-flex text-[46px] font-semibold leading-none tracking-tight" />
         {spoken}
 
         <Bar fill={fill} />
-        <div className="mt-2 flex justify-between font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/55">
+        <div className="mt-2 flex justify-between font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/70">
           <span>{t("budget")} {usd(budget)}</span>
           <LeftCounter spent={spent} budget={budget} label={t("left")} />
         </div>
@@ -230,7 +230,7 @@ export default function Ledger({
                         <span className="h-2.5 w-2.5 flex-shrink-0 rounded-[3px]" style={{ background: load.color }} />
                         <span className="truncate">
                           {tl(`${load.id}.name`)}
-                          <span className="ml-2 text-site-paper/45">{tl(`${load.id}.note`)}</span>
+                          <span className="ml-2 text-site-paper/65">{tl(`${load.id}.note`)}</span>
                         </span>
                       </span>
                       <span className="ml-3 font-mono tabular-nums text-site-paper/90">{usd(load.cost)}</span>
@@ -238,7 +238,7 @@ export default function Ledger({
                   ) : (
                     <motion.div
                       key="off"
-                      className="flex w-full items-center gap-2.5 text-site-paper/25"
+                      className="flex w-full items-center gap-2.5 text-site-paper/65"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}

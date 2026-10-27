@@ -18,7 +18,7 @@ export default async function CancelPage({ params }: { params: Promise<{ locale:
   return (
     <>
       <Navbar />
-      <main className="relative flex min-h-[86svh] flex-col justify-center overflow-hidden bg-site-night pb-16 pt-32 text-site-paper md:pb-24 md:pt-40">
+      <main id="main" tabIndex={-1} className="focus:outline-none relative flex min-h-[86svh] flex-col justify-center overflow-hidden bg-site-night pb-16 pt-32 text-site-paper md:pb-24 md:pt-40">
         {/* Low morning bloom — the home's sky, kept off the top edge. */}
         <div
           aria-hidden

@@ -53,6 +53,9 @@ type Props = {
 export default function CraneScene(props: Props) {
   return (
     <Canvas
+      // Decorative: the story it tells is in the DOM (headline, beats, scene
+      // tags, ledger). Hidden from assistive tech; the canvas takes no focus.
+      aria-hidden
       shadows
       // Phones up to 2x (was 1.5): the crane's lattice needs the pixels, or its
       // thinnest members fall between them and shimmer on scroll.

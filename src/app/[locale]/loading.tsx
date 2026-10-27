@@ -23,7 +23,9 @@ export default function Loading() {
 
   return (
     <main
-      className="flex min-h-screen items-center justify-center bg-site-night text-site-paper"
+      id="main"
+      tabIndex={-1}
+      className="focus:outline-none flex min-h-screen items-center justify-center bg-site-night text-site-paper"
       role="status"
       aria-live="polite"
     >
@@ -41,7 +43,7 @@ export default function Loading() {
         >
           <span className="stroyka-load absolute inset-y-0 left-0 w-1/3 rounded-full bg-site-vis" />
         </div>
-        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-site-paper/50">
+        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-site-paper/70">
           {t("loading")}
         </p>
       </div>

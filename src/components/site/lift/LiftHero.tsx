@@ -90,7 +90,7 @@ export default function LiftHero({ showCue = true }: { showCue?: boolean }) {
           initial={reduced ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.9 }}
-          className="mt-8 hidden flex-wrap gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.16em] text-site-paper/60 md:flex"
+          className="mt-8 hidden flex-wrap gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.16em] text-site-paper/70 md:flex"
         >
           {[t("spec0"), t("spec1"), t("spec2")].map((s) => (
             <li key={s} className="flex items-center gap-2">

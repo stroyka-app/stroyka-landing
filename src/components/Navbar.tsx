@@ -189,7 +189,7 @@ export default function Navbar() {
                       className="flex items-center justify-between py-5 font-flex text-[30px] font-semibold tracking-[-0.02em] text-site-paper [font-variation-settings:'wdth'_110]"
                     >
                       {t(link.key)}
-                      <span className="font-mono text-[11px] font-normal tracking-[0.1em] text-site-paper/40">
+                      <span className="font-mono text-[11px] font-normal tracking-[0.1em] text-site-paper/65">
                         {String(i + 1).padStart(2, "0")}
                       </span>
                     </a>

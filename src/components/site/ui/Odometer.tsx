@@ -71,7 +71,7 @@ export default function Odometer({
                 ))}
               </span>
             </span>
-            {comma && <span className="block h-[1em] leading-none opacity-60">,</span>}
+            {comma && <span className="block h-[1em] leading-none opacity-70">,</span>}
           </span>
         );
       })}

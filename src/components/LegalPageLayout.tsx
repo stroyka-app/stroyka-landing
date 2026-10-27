@@ -211,7 +211,7 @@ export default function LegalPageLayout({
           section nav — measured 2026-09-22, the nav scrolled away at
           navTop=-1445. `clip` keeps sticky working (and print resets it in
           globals.css, where it used to truncate the document). */}
-      <main className="relative min-h-screen overflow-clip bg-site-night pb-24 pt-32 text-site-paper md:pb-36 md:pt-40">
+      <main id="main" tabIndex={-1} className="focus:outline-none relative min-h-screen overflow-clip bg-site-night pb-24 pt-32 text-site-paper md:pb-36 md:pt-40">
         <div className="relative mx-auto max-w-[1400px] px-5 md:px-10">
           {/* Header — the title opens like the home's site board. */}
           <header className="mb-10 border-b border-site-paper/10 pb-10 md:mb-16 md:pb-14">
@@ -237,7 +237,7 @@ export default function LegalPageLayout({
                 initial={reduced ? false : { opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4, delay: 0.4, ease: EASE }}
-                className="font-mono text-[11px] uppercase leading-relaxed tracking-[0.2em] text-site-paper/50 md:text-right"
+                className="font-mono text-[11px] uppercase leading-relaxed tracking-[0.2em] text-site-paper/70 md:text-right"
               >
                 {effectiveDate}
               </motion.p>
@@ -282,7 +282,7 @@ export default function LegalPageLayout({
                 <span className="text-site-vis">
                   § {String(activeIndex + 1).padStart(2, "0")}
                 </span>
-                <span className="text-site-paper/40">/ {total}</span>
+                <span className="text-site-paper/65">/ {total}</span>
               </div>
               <div aria-hidden className="relative mb-6 h-[2px] overflow-hidden rounded-full bg-site-paper/10">
                 <motion.span
@@ -303,7 +303,7 @@ export default function LegalPageLayout({
                         className={`group relative flex w-full items-baseline gap-4 py-2.5 pl-4 pr-2 text-left transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-site-vis ${
                           isActive
                             ? "text-site-paper"
-                            : "text-site-paper/55 hover:text-site-paper"
+                            : "text-site-paper/70 hover:text-site-paper"
                         }`}
                       >
                         {/* One accent bar, moved between items by layout
@@ -322,7 +322,7 @@ export default function LegalPageLayout({
                         )}
                         <span
                           className={`w-5 shrink-0 font-mono text-[11px] tabular-nums tracking-[0.08em] transition-colors duration-200 ${
-                            isActive ? "text-site-vis" : "text-site-paper/35"
+                            isActive ? "text-site-vis" : "text-site-paper/65"
                           }`}
                         >
                           {num}
@@ -374,7 +374,7 @@ export default function LegalPageLayout({
                       onClick={() => copyAnchor(section.id)}
                       aria-label={t("copyLink")}
                       title={t("copyLink")}
-                      className="absolute right-0 top-[81px] z-10 hidden h-9 w-9 place-items-center rounded-full text-site-paper/45 opacity-0 ring-1 ring-inset ring-site-paper/15 transition-[opacity,color,background-color] duration-200 hover:bg-site-paper/[0.05] hover:text-site-vis focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-site-vis group-hover:opacity-100 lg:grid print:!hidden [.legal-section:first-child>&]:top-[33px]"
+                      className="absolute right-0 top-[81px] z-10 hidden h-9 w-9 place-items-center rounded-full text-site-paper/65 opacity-0 ring-1 ring-inset ring-site-paper/15 transition-[opacity,color,background-color] duration-200 hover:bg-site-paper/[0.05] hover:text-site-vis focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-site-vis group-hover:opacity-100 lg:grid print:!hidden [.legal-section:first-child>&]:top-[33px]"
                     >
                       {copiedId === section.id ? (
                         <Check className="h-4 w-4 text-site-vis" />
@@ -393,7 +393,7 @@ export default function LegalPageLayout({
                       </h2>
                       <span
                         aria-hidden
-                        className="legal-details-marker grid h-8 w-8 shrink-0 place-items-center rounded-full text-site-paper/60 ring-1 ring-inset ring-site-paper/20 lg:hidden"
+                        className="legal-details-marker grid h-8 w-8 shrink-0 place-items-center rounded-full text-site-paper/70 ring-1 ring-inset ring-site-paper/20 lg:hidden"
                       >
                         <ChevronRight className="h-4 w-4" />
                       </span>

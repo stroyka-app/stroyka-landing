@@ -36,9 +36,12 @@ export default function SiteHome() {
   return (
     <MotionConfig reducedMotion="user">
     <CrewProvider>
-    <main className="site-home relative bg-site-night">
+    {/* Nav and footer sit OUTSIDE <main> so the "Skip to content" link
+        (locale layout) lands past the nav, and landmarks don't nest. */}
+    <div className="site-home relative bg-site-night">
       <HashScroll />
       <Navbar />
+      <main id="main" tabIndex={-1} className="relative focus:outline-none">
       <Lift />
       {/* Ground of the scene → night page. */}
       <div aria-hidden className="h-24 bg-gradient-to-b from-[var(--scene-ground)] to-site-night md:h-32" />
@@ -52,8 +55,9 @@ export default function SiteHome() {
       <Plans />
       <Answers />
       <Finale />
+      </main>
       <SiteFooter />
-    </main>
+    </div>
     </CrewProvider>
     </MotionConfig>
   );

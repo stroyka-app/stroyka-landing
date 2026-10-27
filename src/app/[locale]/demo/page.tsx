@@ -44,7 +44,7 @@ export default async function DemoPage({ params }: { params: Promise<{ locale: s
   return (
     <>
       <Navbar />
-      <main className="relative overflow-hidden bg-site-night pb-16 pt-32 text-site-paper md:pb-24 md:pt-40">
+      <main id="main" tabIndex={-1} className="focus:outline-none relative overflow-hidden bg-site-night pb-16 pt-32 text-site-paper md:pb-24 md:pt-40">
         {/* A low morning bloom behind the form — the home's sky, kept off the
             top edge so the status zone stays bone (iOS chrome invariant). */}
         <div
@@ -90,7 +90,7 @@ export default async function DemoPage({ params }: { params: Promise<{ locale: s
 function NextSteps({ t }: { t: Awaited<ReturnType<typeof getTranslations<"demo">>> }) {
   return (
     <>
-      <h2 className="mb-6 font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/55">{t("nextTitle")}</h2>
+      <h2 className="mb-6 font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/70">{t("nextTitle")}</h2>
       <ol className="space-y-5">
         {(["next1", "next2", "next3"] as const).map((key, i) => (
           <li key={key} className="flex items-baseline gap-5">
@@ -103,7 +103,7 @@ function NextSteps({ t }: { t: Awaited<ReturnType<typeof getTranslations<"demo">
           </li>
         ))}
       </ol>
-      <p className="mt-8 font-mono text-[11px] uppercase leading-relaxed tracking-[0.14em] text-site-paper/45">
+      <p className="mt-8 font-mono text-[11px] uppercase leading-relaxed tracking-[0.14em] text-site-paper/65">
         {t("nextNote")}
       </p>
     </>

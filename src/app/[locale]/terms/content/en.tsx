@@ -1,0 +1,248 @@
+import Link from "next/link";
+import type { LegalDoc } from "../../privacy/content/types";
+
+const SUPPORT = <a href="mailto:support@getstroyka.com">support@getstroyka.com</a>;
+
+export const termsEn: LegalDoc = {
+  title: "Terms of Service",
+  subtitle: "Please read these Terms of Service carefully before using the Stroyka platform.",
+  effectiveDate: "Effective Date: April 2026 · Last Updated: 26 October 2026",
+  sections: [
+    {
+      id: "definitions",
+      title: "1. Definitions",
+      content: (
+        <ul>
+          <li><strong>&ldquo;Stroyka,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;</strong> refers to Dalen Meridian LLC, a Texas limited liability company doing business as Stroyka, and the Stroyka software application and related services.</li>
+          <li><strong>&ldquo;Service&rdquo;</strong> refers to the Stroyka construction job costing and crew management software, provided through our mobile apps for iPhone and Android and the related cloud services and website.</li>
+          <li><strong>&ldquo;Customer,&rdquo; &ldquo;you,&rdquo; or &ldquo;your&rdquo;</strong> refers to the individual or business entity that creates an account and uses the Service.</li>
+          <li><strong>&ldquo;Company Account&rdquo;</strong> refers to the organizational account created within the Service, under which all projects, users, and data are grouped.</li>
+          <li><strong>&ldquo;Boss&rdquo;</strong> refers to a user with administrative privileges within a Company Account, including the ability to manage projects, invite workers, approve requests, and access billing.</li>
+          <li><strong>&ldquo;Worker&rdquo;</strong> refers to a user invited to a Company Account by a Boss, with limited permissions to log time, record purchases, and complete assigned tasks.</li>
+          <li><strong>&ldquo;Content&rdquo;</strong> refers to all data, text, images, photos, files, and other information uploaded, submitted, or generated through the Service.</li>
+        </ul>
+      ),
+    },
+    {
+      id: "account",
+      title: "2. Account Registration",
+      content: (
+        <>
+          <p>2.1. You must be at least 18 years old and have the legal authority to enter into these Terms on behalf of yourself or the business entity you represent.</p>
+          <p>2.2. When creating an account, you must provide accurate and complete information, including a valid email address, your name, and your company name.</p>
+          <p>2.3. You are responsible for maintaining the confidentiality of your account credentials. You are responsible for all activity that occurs under your account.</p>
+          <p>2.4. Each Company Account is intended for a single business entity. You may not share a Company Account across multiple unrelated businesses.</p>
+          <p>2.5. The Boss who creates the Company Account is the account owner and is responsible for all users they invite and all activity within the Company Account.</p>
+        </>
+      ),
+    },
+    {
+      id: "service",
+      title: "3. Service Description",
+      content: (
+        <>
+          <p>3.1. Stroyka provides a platform for small construction crews to track job costs, manage crew timesheets, log material purchases, keep shopping lists, assign tasks, send invoices, and generate financial reports across active construction projects.</p>
+          <p>3.2. The Service includes offline functionality. Data entered while offline is stored locally on the device and synchronized with our servers when an internet connection is restored.</p>
+          <p>3.3. Some features use third-party services, for example reading receipt photos with an AI provider. What we share with them is described in our <Link href="/privacy">Privacy Policy</Link>.</p>
+          <p>3.4. We may update, modify, or enhance the Service from time to time. We will make reasonable efforts to maintain backward compatibility, but we reserve the right to change features, APIs, or interfaces with reasonable notice.</p>
+        </>
+      ),
+    },
+    {
+      id: "data-ownership",
+      title: "4. Data Ownership & Portability",
+      content: (
+        <>
+          <p>4.1. <strong>You own your data.</strong> All Content that you or your workers upload, enter, or generate through the Service remains your property. Stroyka does not claim any ownership rights over your Content.</p>
+          <p>4.2. You grant Stroyka a limited, non-exclusive license to store, process, transmit, and display your Content solely for the purpose of providing the Service to you.</p>
+          <p>4.3. You can download a copy of your data at any time (Profile &rarr; Privacy and data &rarr; Download my data), and Bosses can export reports, for example to PDF, CSV or Excel.</p>
+          <p>4.4. <strong>Personal information about other people.</strong> When you enter personal information about your workers or your clients (for example names, contact details, pay rates, hours, or locations), you are responsible for having the right to collect and use it and for telling those people where required. We process that information on your behalf to provide the Service, as described in our <Link href="/privacy">Privacy Policy</Link>.</p>
+          <p>4.5. Cancelling a paid plan does not delete your data (see Section 7). Deleting an account or a Company Account is covered in Sections 7.6 to 7.11.</p>
+        </>
+      ),
+    },
+    {
+      id: "security",
+      title: "5. Data Isolation & Security",
+      content: (
+        <>
+          <p>5.1. Each Company Account&apos;s data is logically isolated from all other Company Accounts. No user from one company can access, view, or modify another company&apos;s data.</p>
+          <p>5.2. Data isolation is enforced at the database level through Row Level Security (RLS) policies. This is not a feature that can be toggled off — it is a fundamental architectural constraint.</p>
+          <p>5.3. We use industry-standard encryption for data in transit (TLS) and at rest. Local offline data is encrypted on device.</p>
+          <p>5.4. While we take security seriously and implement best practices, no system is perfectly secure. We cannot guarantee absolute security and are not liable for unauthorized access resulting from factors beyond our reasonable control.</p>
+        </>
+      ),
+    },
+    {
+      id: "billing",
+      title: "6. Subscription & Billing",
+      content: (
+        <>
+          <p>6.1. Stroyka offers a free plan that is available indefinitely for crews of up to 5 workers. No credit card is required to use the free plan. Paid plans (Starter and Pro) unlock additional features and higher worker limits.</p>
+          <p>6.2. Paid subscriptions are optional. If you do not subscribe to a paid plan, you may continue using the free plan for as long as you like.</p>
+          <p>6.3. Subscription fees are billed monthly or annually in advance, depending on the billing cycle you select. The price and currency are shown to you before you buy.</p>
+          <p>6.4. <strong>Purchases in the iPhone app</strong> are sold and billed by Apple through the App Store, and renew automatically until cancelled. Apple&rsquo;s terms govern payment, renewal, cancellation, and refunds for those purchases.</p>
+          <p>6.5. <strong>Purchases on our website</strong> (including subscriptions for teams using the Android app) are billed through Stripe, our payment processor. Your payment details go directly to Stripe and are never stored on our servers.</p>
+          <p>6.6. We reserve the right to change our pricing with 30 days&apos; written notice. Price changes will not apply to your current billing cycle. Grandfathered pricing (e.g., early adopter rates) will be honored for as long as your subscription remains active and in good standing.</p>
+        </>
+      ),
+    },
+    {
+      id: "cancellation",
+      title: "7. Cancellation, Refunds & Deletion",
+      content: (
+        <>
+          <p>7.1. You may cancel at any time. For an App Store subscription, cancel in your Apple ID subscription settings. For a website subscription, cancel from the billing screen in the app or by contacting us at {SUPPORT}.</p>
+          <p>7.2. Upon cancellation, your subscription remains active until the end of your current billing period. You will not be charged again after cancellation.</p>
+          <p>7.3. For website subscriptions, we do not offer prorated refunds for partial billing periods; you keep access until the end of the period. Refunds for App Store purchases are handled by Apple under its policies.</p>
+          <p>7.4. When a paid plan ends, your Company Account moves to the free plan. Features exclusive to paid plans become unavailable, but <strong>your data is not deleted</strong> and remains accessible and exportable.</p>
+          <h3>Deleting your account or company</h3>
+          <p>7.5. Cancelling is not deleting. To delete data:</p>
+          <p>7.6. <strong>A Worker</strong> can delete their account in the app (Profile &rarr; Privacy and data &rarr; Delete my account) or by emailing {SUPPORT} from the account&rsquo;s email address. This removes the account and the records that Worker created; they disappear from the app immediately and are permanently deleted from our servers within 30 days.</p>
+          <p>7.7. <strong>A Boss</strong> cannot delete only their own account. The Boss can delete the whole Company Account in the app (Profile &rarr; Privacy and data &rarr; Delete my company). Its data is hidden immediately and permanently deleted from our servers within 30 days.</p>
+          <p>7.8. If a Company Account removes a Worker, the records that Worker created remain with the company as its business records until the company deletes them or the Company Account.</p>
+          <p>7.9. Deleted data leaves our encrypted backups as those copies expire (database copies up to 6 months, file copies up to 1 year). Deleted data cannot be recovered through the app.</p>
+          <p>7.10. Deleting an account or a Company Account does not cancel a subscription. Cancel it as described in Section 7.1.</p>
+          <p>7.11. Full details are in our <Link href="/privacy">Privacy Policy</Link> (section 8) and at <Link href="/delete-account">getstroyka.com/delete-account</Link>.</p>
+        </>
+      ),
+    },
+    {
+      id: "acceptable-use",
+      title: "8. Acceptable Use",
+      content: (
+        <>
+          <p>You agree not to:</p>
+          <ul>
+            <li>Use the Service for any unlawful purpose or in violation of any applicable local, state, national, or international law</li>
+            <li>Attempt to access another Company Account&apos;s data or circumvent data isolation controls</li>
+            <li>Reverse engineer, decompile, or disassemble any part of the Service</li>
+            <li>Use the Service to store or transmit malicious code, viruses, or harmful content</li>
+            <li>Resell, sublicense, or redistribute access to the Service without our written consent</li>
+            <li>Use automated means (bots, scrapers, etc.) to access the Service beyond its intended use</li>
+            <li>Upload content that infringes on the intellectual property rights of others</li>
+          </ul>
+        </>
+      ),
+    },
+    {
+      id: "availability",
+      title: "9. Service Availability",
+      content: (
+        <>
+          <p>9.1. We strive to maintain high availability of the Service but do not guarantee any specific uptime percentage. We do not offer a formal Service Level Agreement (SLA) at this time.</p>
+          <p>9.2. The Service may be temporarily unavailable due to scheduled maintenance, updates, or unforeseen technical issues. We will make reasonable efforts to notify users of planned downtime in advance.</p>
+          <p>9.3. The offline functionality of the Service is designed to allow continued use during internet outages. Data entered offline will sync when connectivity is restored.</p>
+        </>
+      ),
+    },
+    {
+      id: "ip",
+      title: "10. Intellectual Property",
+      content: (
+        <>
+          <p>10.1. The Stroyka platform, including its software, design, logos, documentation, and all related intellectual property, is owned by Dalen Meridian LLC and is protected by applicable copyright, trademark, and other intellectual property laws.</p>
+          <p>10.2. These Terms grant you a limited, non-exclusive, non-transferable, revocable license to use the Service for your internal business purposes during the term of your use of the Service.</p>
+          <p>10.3. You may not copy, modify, distribute, sell, or create derivative works based on the Service or any part thereof.</p>
+          <p>10.4. <strong>Feedback and suggestions.</strong> If you send us feedback, feature requests, ideas, or suggestions about the Service (&ldquo;Feedback&rdquo;), you grant us a perpetual, irrevocable, worldwide, royalty-free license to use, modify, and incorporate that Feedback into the Service or any other product, without restriction, attribution, or compensation to you. Feedback is provided voluntarily and is not confidential.</p>
+          <p>10.5. <strong>No obligation to implement.</strong> We welcome Feedback, but we are under no obligation to respond to, implement, or retain any Feedback, feature request, or suggestion. Nothing in these Terms — and no discussion, email, or message about a potential feature — creates a commitment to build, deliver, or maintain any particular functionality, or a timeline for doing so. Product decisions rest solely with us.</p>
+        </>
+      ),
+    },
+    {
+      id: "warranties",
+      title: "11. Disclaimer of Warranties",
+      content: (
+        <>
+          <p><strong>11.1. THE SERVICE IS PROVIDED &ldquo;AS IS&rdquo; AND &ldquo;AS AVAILABLE,&rdquo; WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED.</strong></p>
+          <p><strong>11.2. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, DALEN MERIDIAN LLC EXPRESSLY DISCLAIMS ALL WARRANTIES, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, NON-INFRINGEMENT, AND ANY WARRANTIES ARISING FROM COURSE OF DEALING OR USAGE OF TRADE.</strong></p>
+          <p>11.3. We do not warrant that the Service will be uninterrupted, timely, secure, or error-free, that any defect will be corrected, or that the Service is free of viruses or other harmful components.</p>
+          <p><strong>11.4. THE SERVICE PERFORMS CALCULATIONS &mdash; INCLUDING JOB COSTS, LABOR COSTS, MARGINS, AND INVOICE TOTALS &mdash; FROM DATA THAT YOU AND YOUR USERS ENTER, AND CAN READ RECEIPTS AND LISTS AUTOMATICALLY. WE DO NOT WARRANT THE ACCURACY, COMPLETENESS, OR SUITABILITY OF ANY CALCULATION, AUTOMATIC READING, REPORT, ESTIMATE, OR INVOICE PRODUCED BY THE SERVICE.</strong> You are solely responsible for reviewing and verifying all figures before relying on them for bidding, billing, payroll, tax, or any other business or financial decision.</p>
+          <p>11.5. You are responsible for maintaining your own records and backups of your Content. While we take reasonable measures to protect and retain data, we do not warrant that Content will not be lost, corrupted, or temporarily unavailable, and we are not liable for any such loss.</p>
+          <p>11.6. No advice or information, whether oral or written, obtained from us or through the Service creates any warranty not expressly stated in these Terms.</p>
+          <p>11.7. Some jurisdictions do not allow the exclusion of certain implied warranties. In those jurisdictions, the exclusions above apply to the fullest extent permitted by applicable law, and the remainder of this section continues in effect.</p>
+        </>
+      ),
+    },
+    {
+      id: "liability",
+      title: "12. Limitation of Liability",
+      content: (
+        <>
+          <p>12.1. To the maximum extent permitted by applicable law, Dalen Meridian LLC shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, business opportunities, or goodwill, arising out of or related to your use of the Service.</p>
+          <p>12.2. Our total aggregate liability for any claims arising out of or related to these Terms or the Service shall not exceed the amount you paid to Stroyka in the twelve (12) months preceding the claim.</p>
+          <p>12.3. The Service is provided for business cost-tracking and crew management purposes. It is not a substitute for professional accounting, legal, or financial advice. You are responsible for verifying the accuracy of all data and reports generated by the Service.</p>
+        </>
+      ),
+    },
+    {
+      id: "indemnification",
+      title: "13. Indemnification",
+      content: (
+        <p>You agree to indemnify, defend, and hold harmless Dalen Meridian LLC, its officers, directors, employees, and agents from and against any claims, liabilities, damages, losses, and expenses (including reasonable attorneys&apos; fees) arising out of or related to your use of the Service, your violation of these Terms, or your violation of any rights of a third party.</p>
+      ),
+    },
+    {
+      id: "modifications",
+      title: "14. Modifications to Terms",
+      content: (
+        <>
+          <p>14.1. We may update these Terms from time to time. When we make material changes, we will notify you by email or through the Service at least 30 days before the changes take effect.</p>
+          <p>14.2. Your continued use of the Service after the effective date of revised Terms constitutes your acceptance of the changes. If you do not agree with the revised Terms, you may cancel your subscription and stop using the Service before the changes take effect.</p>
+        </>
+      ),
+    },
+    {
+      id: "governing-law",
+      title: "15. Governing Law",
+      content: (
+        <>
+          <p>15.1. These Terms are governed by and construed in accordance with the laws of the State of Texas, United States of America, without regard to its conflict of law provisions.</p>
+          <p>15.2. Any dispute arising out of or relating to these Terms or the Service shall first be attempted to be resolved through good-faith negotiation. If negotiation fails, the dispute shall be resolved through binding arbitration in accordance with the rules of the American Arbitration Association, conducted in the State of Texas.</p>
+          <p>15.3. Nothing in this section prevents either party from seeking injunctive or other equitable relief in a court of competent jurisdiction.</p>
+          <p><strong>15.4. CLASS ACTION WAIVER. YOU AND DALEN MERIDIAN LLC AGREE THAT EACH MAY BRING CLAIMS AGAINST THE OTHER ONLY IN AN INDIVIDUAL CAPACITY, AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS, COLLECTIVE, CONSOLIDATED, OR REPRESENTATIVE PROCEEDING.</strong> The arbitrator may not consolidate more than one party&rsquo;s claims and may not preside over any form of class or representative proceeding.</p>
+          <p><strong>15.5. JURY TRIAL WAIVER. TO THE EXTENT ANY CLAIM PROCEEDS IN COURT RATHER THAN ARBITRATION, YOU AND DALEN MERIDIAN LLC EACH KNOWINGLY AND VOLUNTARILY WAIVE ANY RIGHT TO TRIAL BY JURY.</strong></p>
+          <p><strong>15.6. TIME LIMIT ON CLAIMS. ANY CLAIM ARISING OUT OF OR RELATING TO THESE TERMS OR THE SERVICE MUST BE BROUGHT WITHIN ONE (1) YEAR AFTER THE CLAIM ARISES.</strong> Claims not brought within that period are permanently barred, except where applicable law does not permit such a limitation.</p>
+          <p>15.7. If the class action waiver in Section 15.4 is found unenforceable as to a particular claim, the agreement to arbitrate in Section 15.2 shall not apply to that claim, and that claim shall instead proceed in a court of competent jurisdiction in the State of Texas. The remainder of this section survives.</p>
+        </>
+      ),
+    },
+    {
+      id: "termination",
+      title: "16. Termination",
+      content: (
+        <>
+          <p>16.1. We may suspend or terminate your access to the Service if you violate these Terms, fail to pay subscription fees, or engage in activity that we reasonably believe is harmful to the Service, other users, or our business.</p>
+          <p>16.2. Upon termination for cause, you will have 30 days to export your data unless the termination is due to illegal activity or a violation of Section 8 (Acceptable Use), in which case access may be terminated immediately.</p>
+        </>
+      ),
+    },
+    {
+      id: "miscellaneous",
+      title: "17. Miscellaneous",
+      content: (
+        <>
+          <p>17.1. <strong>Entire Agreement.</strong> These Terms, together with the Privacy Policy, constitute the entire agreement between you and Dalen Meridian LLC regarding the Service.</p>
+          <p>17.2. <strong>Severability.</strong> If any provision of these Terms is found to be unenforceable, the remaining provisions shall remain in full force and effect.</p>
+          <p>17.3. <strong>Waiver.</strong> The failure of Stroyka to enforce any right or provision of these Terms shall not constitute a waiver of such right or provision.</p>
+          <p>17.4. <strong>Assignment.</strong> You may not assign or transfer your rights under these Terms without our prior written consent. We may assign our rights and obligations without restriction.</p>
+          <p>17.5. <strong>Translations.</strong> These Terms are also provided in Spanish and Russian for convenience. If a translation differs from the English version, the English version applies.</p>
+        </>
+      ),
+    },
+    {
+      id: "contact",
+      title: "18. Contact Information",
+      content: (
+        <>
+          <p>If you have questions about these Terms, please contact us:</p>
+          <p>
+            Dalen Meridian LLC<br />
+            Email: {SUPPORT}<br />
+            Website: <a href="https://getstroyka.com">getstroyka.com</a>
+          </p>
+        </>
+      ),
+    },
+  ],
+};

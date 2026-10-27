@@ -52,8 +52,8 @@ const stepTransition = {
 /* ─── Morning Bone styles (docs/design/morning-bone-system.md) ─── */
 
 const FIELD =
-  "h-12 w-full rounded-xl bg-site-night px-4 text-[15px] text-site-paper ring-1 ring-inset placeholder:text-site-paper/35 transition-shadow duration-200 focus:outline-none focus:ring-2 focus:ring-site-vis";
-const LABEL = "mb-2 block font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/55";
+  "h-12 w-full rounded-xl bg-site-night px-4 text-[15px] text-site-paper ring-1 ring-inset placeholder:text-site-paper/65 transition-shadow duration-200 focus:outline-none focus:ring-2 focus:ring-site-vis";
+const LABEL = "mb-2 block font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/70";
 const DISPLAY = "font-flex font-semibold tracking-[-0.03em] [font-variation-settings:'wdth'_110]";
 
 /* ─── Helpers ──────────────────────────────────────────────────── */
@@ -99,7 +99,7 @@ function PlanPrice({
   const fullAnnual = monthly * 12;
   const saved = fullAnnual - annual;
   const perMonth = billing === "annual" ? Math.round(annual / 12) : monthly;
-  const muted = hot ? "text-site-on-vis/65" : "text-site-paper/55";
+  const muted = hot ? "text-site-on-vis/80" : "text-site-paper/70";
 
   return (
     <div>
@@ -125,7 +125,7 @@ function PlanPrice({
               ${annual.toLocaleString("en-US")} <span className={muted}>{t("billedAnnually")}</span>
             </p>
             <p className="flex flex-wrap items-center gap-x-2">
-              <span className={`line-through ${hot ? "text-site-on-vis/45" : "text-site-paper/40"}`}>
+              <span className={`line-through ${hot ? "text-site-on-vis/80" : "text-site-paper/65"}`}>
                 ${fullAnnual.toLocaleString("en-US")}
               </span>
               <span
@@ -403,7 +403,7 @@ export default function GetStartedFlow() {
                     </span>
                   ))}
                 </span>
-                <span className={`tabular-nums transition-colors duration-300 ${step >= 2 ? "text-site-vis" : "text-site-paper/45"}`}>02</span>
+                <span className={`tabular-nums transition-colors duration-300 ${step >= 2 ? "text-site-vis" : "text-site-paper/65"}`}>02</span>
               </div>
             )}
             <FlapText
@@ -450,7 +450,7 @@ export default function GetStartedFlow() {
                         {mode === "annual" && (
                           <span
                             className={`rounded-full px-1.5 py-0.5 font-mono text-[10px] ${
-                              active ? "bg-site-on-vis/15" : "bg-site-vis/15 text-site-vis"
+                              active ? "bg-site-on-vis/15" : "bg-site-vis/10 text-site-vis"
                             }`}
                           >
                             −17%
@@ -518,7 +518,7 @@ export default function GetStartedFlow() {
                       </span>
                     )}
                   </div>
-                  <p className={`mt-2 text-[14px] ${hot ? "text-site-on-vis/70" : "text-site-paper/60"}`}>
+                  <p className={`mt-2 text-[14px] ${hot ? "text-site-on-vis/85" : "text-site-paper/70"}`}>
                     {t(`${id}.description`)}
                   </p>
 
@@ -527,7 +527,7 @@ export default function GetStartedFlow() {
                   </div>
                   <p
                     className={`mt-2 font-mono text-[10.5px] uppercase tracking-[0.14em] ${
-                      hot ? "text-site-on-vis/70" : "text-site-vis/90"
+                      hot ? "text-site-on-vis/85" : "text-site-vis"
                     }`}
                   >
                     {t(`${id}.workerLimit`)}
@@ -582,7 +582,7 @@ export default function GetStartedFlow() {
             >
               {/* Selected plan — a forest ticket; above the form on phones. */}
               <aside className="relative overflow-hidden rounded-[26px] bg-site-vis p-7 text-site-on-vis md:rounded-[28px] md:p-9 lg:order-2 lg:sticky lg:top-32">
-                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-site-on-vis/65">{t("selectedPlan")}</p>
+                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-site-on-vis/80">{t("selectedPlan")}</p>
                 <div className="mt-3 flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
                   <p className="font-flex text-[30px] font-semibold leading-none tracking-[-0.02em] [font-variation-settings:'wdth'_115]">
                     {plan === "starter" ? t("starter.name") : plan === "pro" ? t("pro.name") : plan}
@@ -591,18 +591,18 @@ export default function GetStartedFlow() {
                     <span className={`${DISPLAY} text-[40px] leading-none tabular-nums`}>
                       ${billing === "annual" ? Math.round(PRICES[plan!].annual / 12) : PRICES[plan!].monthly}
                     </span>
-                    <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-site-on-vis/65">
+                    <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-site-on-vis/80">
                       {t("perMonthShort")}
                     </span>
                   </p>
                 </div>
                 {billing === "annual" && (
-                  <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.12em] tabular-nums text-site-on-vis/75">
+                  <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.12em] tabular-nums text-site-on-vis/80">
                     ${PRICES[plan!].annual.toLocaleString()}
                     {t("perYrBilledAnnually")}
                   </p>
                 )}
-                <p className="mt-7 flex gap-2.5 border-t border-site-on-vis/15 pt-5 text-[13px] leading-relaxed text-site-on-vis/70">
+                <p className="mt-7 flex gap-2.5 border-t border-site-on-vis/15 pt-5 text-[13px] leading-relaxed text-site-on-vis/85">
                   <Lock size={14} strokeWidth={2} className="mt-[3px] shrink-0" aria-hidden />
                   {t("poweredByStripe")}
                 </p>
@@ -704,7 +704,7 @@ export default function GetStartedFlow() {
                   </KnobButton>
                 </div>
 
-                <p className="text-[13px] text-site-paper/55">
+                <p className="text-[13px] text-site-paper/70">
                   {/* Points at the stores, not at a login page: there is
                       no longer anywhere to sign in on the web. The browser
                       app was retired on 2026-09-21 and app.getstroyka.com
@@ -740,7 +740,7 @@ export default function GetStartedFlow() {
                   <p className="font-flex text-[19px] font-medium leading-snug tracking-[-0.01em]">
                     {t("takingYouToCheckout")}
                   </p>
-                  <p className="mt-1.5 text-[13.5px] leading-relaxed text-site-paper/55">{t("poweredByStripe")}</p>
+                  <p className="mt-1.5 text-[13.5px] leading-relaxed text-site-paper/70">{t("poweredByStripe")}</p>
                 </div>
               </div>
             </motion.div>

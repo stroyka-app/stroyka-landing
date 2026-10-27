@@ -8,7 +8,6 @@ import { ArrowUpRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import FlapText from "@/components/site/ui/FlapText";
 import { useReduced } from "@/components/site/ui/useReduced";
 
@@ -52,7 +51,7 @@ function AppButton({ children }: { children: React.ReactNode }) {
 }
 
 const quietLink =
-  "font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/50 transition-colors hover:text-site-vis focus-visible:outline-none focus-visible:text-site-vis";
+  "font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/70 transition-colors hover:text-site-vis focus-visible:rounded-sm focus-visible:text-site-vis focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-site-vis focus-visible:ring-offset-4 focus-visible:ring-offset-site-night";
 
 /** An indeterminate hairline — a load moving along the rail. */
 function WorkingRail({ label }: { label: string }) {
@@ -74,7 +73,7 @@ function WorkingRail({ label }: { label: string }) {
           />
         )}
       </div>
-      <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/50">
+      <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/70">
         {label}
       </span>
     </div>
@@ -127,7 +126,7 @@ function PageShell({
   return (
     <>
       <Navbar />
-      <main className="relative flex min-h-screen items-center overflow-x-clip bg-site-night pb-24 pt-32 text-site-paper md:pb-36 md:pt-40">
+      <main id="main" tabIndex={-1} className="focus:outline-none relative flex min-h-screen items-center overflow-x-clip bg-site-night pb-24 pt-32 text-site-paper md:pb-36 md:pt-40">
         <div className="mx-auto w-full max-w-[1400px] px-5 md:px-10">
           <div className="relative mx-auto max-w-[560px] rounded-[28px] bg-site-slab p-7 ring-1 ring-inset ring-site-paper/[0.08] md:p-10">
             {stamp}
@@ -150,7 +149,6 @@ function PageShell({
           </div>
         </div>
       </main>
-      <Footer />
     </>
   );
 }
@@ -186,7 +184,7 @@ function LoadingView() {
     <PageShell heading={t("redirectingBilling")}>
       <div className="mt-8" role="status" aria-live="polite">
         <WorkingRail label={t("loading")} />
-        <p className="mt-4 text-[15px] leading-relaxed text-site-paper/60">
+        <p className="mt-4 text-[15px] leading-relaxed text-site-paper/70">
           {t("verifying")}
         </p>
       </div>

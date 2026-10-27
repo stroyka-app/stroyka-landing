@@ -137,7 +137,7 @@ function Card({
           data-tab={index}
           data-top={isTop ? "1" : "0"}
           className={`group absolute bottom-full hidden h-[34px] items-center gap-2 rounded-t-[14px] px-4 font-mono text-[10.5px] uppercase tracking-[0.18em] ring-1 ring-site-paper/[0.08] transition-colors duration-200 md:flex ${
-            isTop ? "bg-site-vis text-site-on-vis" : "bg-site-slab text-site-paper/60 hover:text-site-paper"
+            isTop ? "bg-site-vis text-site-on-vis" : "bg-site-slab text-site-paper/70 hover:text-site-paper"
           }`}
           style={{ left: `calc(2.5rem + ${index} * 13.5rem)` }}
         >
@@ -161,7 +161,7 @@ function Card({
             <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] md:hidden">
               <span className="text-site-vis">{pad(index + 1)}</span>
               <span className="h-px w-8 bg-site-paper/25" />
-              <span className="text-site-paper/60">{t("kicker")}</span>
+              <span className="text-site-paper/70">{t("kicker")}</span>
             </div>
             <h3 className="mt-5 max-w-[15ch] font-flex text-[clamp(1.9rem,3.4vw,3.2rem)] font-semibold leading-[0.98] tracking-[-0.025em] [font-variation-settings:'wdth'_108] md:mt-0">
               {t("title")}

@@ -23,6 +23,8 @@ import { hop, seg, type Pt } from "./beats";
 
 const INK = "rgb(var(--site-paper) / 0.85)";
 const SOFT = "rgb(var(--site-paper) / 0.45)";
+// Labels drawn in SOFT ink still have to read at WCAG AA (4.5:1 on bone).
+const SOFT_TEXT = "rgb(var(--site-paper) / 0.65)";
 const FAINT = "rgb(var(--site-paper) / 0.12)";
 const VIS = "rgb(var(--site-vis))";
 const NIGHT = "rgb(var(--site-night))";
@@ -135,7 +137,7 @@ export default function Board({
       <rect x="0" y="396" width="640" height="36" fill="rgb(var(--site-paper) / 0.06)" />
       <path d="M0 414 H640" stroke="rgb(var(--site-paper) / 0.18)" strokeWidth="1.5" strokeDasharray="10 12" />
       {/* Title block */}
-      <text x="24" y="448" className="font-mono" fontSize="10" letterSpacing="2" fill={SOFT}>
+      <text x="24" y="448" className="font-mono" fontSize="10" letterSpacing="2" fill={SOFT_TEXT}>
         SITE PLAN · A-101
       </text>
 
@@ -157,7 +159,7 @@ export default function Board({
         <text x="14" y="45" className="font-flex" fontSize="16" fontWeight="600" fill={INK}>
           Johnson House
         </text>
-        <text x="14" y="62" className="font-mono" fontSize="11" fill={SOFT}>
+        <text x="14" y="62" className="font-mono" fontSize="11" fill={SOFT_TEXT}>
           {tj("budget")} $34,000
         </text>
       </motion.g>
@@ -220,7 +222,7 @@ export default function Board({
         ))}
         <motion.g style={{ opacity: total }}>
           <path d="M412 312 H600" stroke={FAINT} />
-          <text x="412" y="336" className="font-mono" fontSize="10" letterSpacing="1.5" fill={SOFT}>
+          <text x="412" y="336" className="font-mono" fontSize="10" letterSpacing="1.5" fill={SOFT_TEXT}>
             {t("spent").toUpperCase()}
           </text>
           <text x="600" y="337" textAnchor="end" className="font-flex" fontSize="18" fontWeight="600" fill={INK}>

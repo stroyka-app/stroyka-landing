@@ -107,7 +107,7 @@ function Reveal({
 function Kicker({ n, children }: { n: string; children: React.ReactNode }) {
   return (
     <p className="mb-6 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-site-vis">
-      <span className="text-site-paper/40">{n}</span>
+      <span className="text-site-paper/65">{n}</span>
       <span aria-hidden className="h-px w-6 bg-site-vis/40" />
       {children}
     </p>
@@ -151,7 +151,7 @@ export default function CostContent() {
   return (
     <>
       <Navbar />
-      <main className="bg-site-night text-site-paper">
+      <main id="main" tabIndex={-1} className="focus:outline-none bg-site-night text-site-paper">
         {/* ══ HERO + THE CALCULATOR ═══════════════════════════════════════ */}
         <section className="relative mx-auto max-w-[1400px] px-5 pb-8 pt-32 md:px-10 md:pb-12 md:pt-40">
           <motion.p
@@ -207,7 +207,7 @@ export default function CostContent() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={reduced ? { duration: 0 } : { duration: 0.5, delay: 0.6, ease: EASE }}
-              className="-mt-4 max-w-md font-mono text-[11.5px] leading-relaxed text-site-paper/50 lg:col-start-1 lg:row-start-2 lg:mt-0 lg:self-start lg:border-t lg:border-site-paper/10 lg:pt-5"
+              className="-mt-4 max-w-md font-mono text-[11.5px] leading-relaxed text-site-paper/70 lg:col-start-1 lg:row-start-2 lg:mt-0 lg:self-start lg:border-t lg:border-site-paper/10 lg:pt-5"
             >
               Drag to your crew size. Prices verified{" "}
               <time dateTime="2026-09-23">23 September 2026</time> from each
@@ -256,14 +256,14 @@ export default function CostContent() {
                 }
                 className="flex flex-col rounded-[22px] bg-site-slab p-6 ring-1 ring-site-paper/[0.08]"
               >
-                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/55">
+                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/70">
                   {p.name}
                 </p>
                 <p className="mt-4 leading-none">
                   <span className="font-flex text-[44px] font-semibold tracking-[-0.02em] tabular-nums">
                     ${p.monthly}
                   </span>
-                  <span className="ml-1 text-[13px] text-site-paper/50">/mo</span>
+                  <span className="ml-1 text-[13px] text-site-paper/70">/mo</span>
                 </p>
                 <div className="mt-5 border-t border-site-paper/10 pt-4">
                   <p className="text-[14px] font-medium leading-snug text-site-vis">
@@ -271,7 +271,7 @@ export default function CostContent() {
                       ? "Unlimited workers"
                       : `Up to ${p.maxWorkers} workers`}
                   </p>
-                  <p className="mt-1 text-[13px] leading-snug text-site-paper/55">{p.caps}</p>
+                  <p className="mt-1 text-[13px] leading-snug text-site-paper/70">{p.caps}</p>
                 </div>
               </motion.div>
             ))}
@@ -305,11 +305,11 @@ export default function CostContent() {
                 <Lock
                   size={13}
                   strokeWidth={2}
-                  className="translate-y-[1px] self-center text-site-paper/40"
+                  className="translate-y-[1px] self-center text-site-paper/65"
                   aria-hidden
                 />
                 <span className="text-[16px] font-medium">{h.name}</span>
-                <span className="col-start-2 text-[13.5px] leading-snug text-site-paper/55 sm:col-start-3 sm:max-w-[22rem] sm:text-right">
+                <span className="col-start-2 text-[13.5px] leading-snug text-site-paper/70 sm:col-start-3 sm:max-w-[22rem] sm:text-right">
                   {h.detail}
                 </span>
               </motion.li>
@@ -317,7 +317,7 @@ export default function CostContent() {
           </ul>
 
           <Reveal>
-            <p className="mt-5 font-mono text-[11.5px] leading-relaxed text-site-paper/50">
+            <p className="mt-5 font-mono text-[11.5px] leading-relaxed text-site-paper/70">
               Compiled from{" "}
               <a
                 href={HIDDEN_PRICING_SOURCE}
@@ -366,7 +366,7 @@ export default function CostContent() {
                   className="grid gap-2 py-6 sm:grid-cols-[minmax(0,13rem)_minmax(0,1fr)] sm:gap-8"
                 >
                   <p className="flex items-baseline gap-3">
-                    <span className="font-mono text-[11px] text-site-paper/40">
+                    <span className="font-mono text-[11px] text-site-paper/65">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span className="font-flex text-[19px] font-semibold leading-tight tracking-[-0.01em]">
@@ -384,7 +384,7 @@ export default function CostContent() {
         <section className="mx-auto max-w-[1400px] px-5 md:px-10">
           <div className="grid gap-8 border-t border-site-paper/10 pb-24 pt-14 md:pb-32 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
             <h2 className="flex h-fit items-center gap-3 font-mono text-[11px] font-normal uppercase tracking-[0.22em] text-site-vis">
-              <span className="text-site-paper/40">04</span>
+              <span className="text-site-paper/65">04</span>
               <span aria-hidden className="h-px w-6 bg-site-vis/40" />
               Sources
             </h2>
@@ -393,9 +393,9 @@ export default function CostContent() {
                 {COMPETITORS.map((c, i) => (
                   <li
                     key={c.id}
-                    className="grid grid-cols-[2rem_minmax(0,1fr)] font-mono text-[12px] leading-relaxed text-site-paper/55"
+                    className="grid grid-cols-[2rem_minmax(0,1fr)] font-mono text-[12px] leading-relaxed text-site-paper/70"
                   >
-                    <span className="text-site-paper/35">[{i + 1}]</span>
+                    <span className="text-site-paper/65">[{i + 1}]</span>
                     <span>
                       <span className="font-medium text-site-paper/85">{c.name}</span> — {c.model}.{" "}
                       {c.note}{" "}
@@ -407,7 +407,7 @@ export default function CostContent() {
                   </li>
                 ))}
               </ol>
-              <p className="mt-8 max-w-[560px] border-t border-site-paper/10 pt-5 text-[13.5px] leading-relaxed text-site-paper/55">
+              <p className="mt-8 max-w-[560px] border-t border-site-paper/10 pt-5 text-[13.5px] leading-relaxed text-site-paper/70">
                 Prices change. If you find a figure here that is out of date or
                 wrong, tell us and we will correct it — a comparison nobody can
                 trust is worth nothing to anybody.

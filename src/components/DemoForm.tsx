@@ -32,8 +32,8 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 
 /* Morning Bone field styles — see docs/design/morning-bone-system.md. */
 const FIELD =
-  "w-full rounded-xl bg-site-night px-4 text-[15px] ring-1 ring-inset placeholder:text-site-paper/35 transition-shadow duration-200 focus:outline-none focus:ring-2 focus:ring-site-vis";
-const LABEL = "mb-2 block font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/55";
+  "w-full rounded-xl bg-site-night px-4 text-[15px] ring-1 ring-inset placeholder:text-site-paper/65 transition-shadow duration-200 focus:outline-none focus:ring-2 focus:ring-site-vis";
+const LABEL = "mb-2 block font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/70";
 
 /** The copy's own arrows ("→") would double up with the knob's arrow. */
 const bare = (s: string) => s.replace(/\s*[→←]\s*/g, " ").trim();
@@ -163,17 +163,17 @@ export default function DemoForm() {
           </span>
           <div className="min-w-0">
             <p className="text-[15px] font-medium text-site-paper">{t("confirmSent")}</p>
-            <p className="mt-1 break-words font-mono text-[11px] uppercase tracking-[0.14em] text-site-paper/50">
+            <p className="mt-1 break-words font-mono text-[11px] uppercase tracking-[0.14em] text-site-paper/70">
               {t("fromEmail")}
             </p>
-            <p className="mt-3 text-[13px] leading-relaxed text-site-paper/55">{t("checkSpam")}</p>
+            <p className="mt-3 text-[13px] leading-relaxed text-site-paper/70">{t("checkSpam")}</p>
           </div>
         </motion.div>
 
         <motion.div {...rise(3)} className="mt-9">
           <Link
             href="/"
-            className="group inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/60 transition-colors duration-200 hover:text-site-vis"
+            className="group inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/70 transition-colors duration-200 hover:text-site-vis"
           >
             {t("backHome")}
             <ArrowRight size={13} className="transition-transform duration-200 group-hover:translate-x-0.5" />
@@ -256,7 +256,7 @@ export default function DemoForm() {
               name="crewSize"
               value={form.crewSize}
               onChange={handleChange}
-              className={`${FIELD} h-12 cursor-pointer appearance-none pr-11 ${ring("crewSize", form.crewSize ? "text-site-paper" : "text-site-paper/40")}`}
+              className={`${FIELD} h-12 cursor-pointer appearance-none pr-11 ${ring("crewSize", form.crewSize ? "text-site-paper" : "text-site-paper/65")}`}
               {...errProps("crewSize")}
             >
               <option value="" disabled>
@@ -270,7 +270,7 @@ export default function DemoForm() {
             <ChevronDown
               aria-hidden
               size={17}
-              className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-site-paper/50"
+              className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-site-paper/70"
             />
           </div>
           <FieldError field="crewSize" />

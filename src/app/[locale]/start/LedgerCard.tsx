@@ -74,7 +74,7 @@ export default function LedgerCard() {
         ))}
       </div>
 
-      <p className="mt-2.5 font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/55">
+      <p className="mt-2.5 font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/70">
         {t("ledgerOf", { total: "$23,000", pct: "68%" })}
       </p>
 

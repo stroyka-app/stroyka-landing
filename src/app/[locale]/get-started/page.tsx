@@ -86,7 +86,7 @@ async function GetStartedFallback({ locale }: { locale: string }) {
                 <span className="font-flex text-[clamp(3.2rem,6vw,4.2rem)] font-semibold leading-[0.9] tracking-[-0.03em] tabular-nums [font-variation-settings:'wdth'_110]">
                   {tier.monthlyPrice === 0 ? "$0" : `$${tier.monthlyPrice}`}
                 </span>
-                <span className="mb-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-site-paper/55">
+                <span className="mb-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-site-paper/70">
                   {t("perMonthShort")}
                 </span>
               </p>
@@ -107,9 +107,12 @@ export default async function GetStartedPage({ params }: { params: Promise<{ loc
   return (
     <>
       <Navbar />
-      <Suspense fallback={<GetStartedFallback locale={locale} />}>
-        <GetStartedFlow />
-      </Suspense>
+      {/* One <main> for both the server fallback and the hydrated flow. */}
+      <main id="main" tabIndex={-1} className="focus:outline-none">
+        <Suspense fallback={<GetStartedFallback locale={locale} />}>
+          <GetStartedFlow />
+        </Suspense>
+      </main>
       <Footer />
     </>
   );

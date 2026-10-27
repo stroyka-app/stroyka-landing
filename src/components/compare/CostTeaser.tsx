@@ -73,7 +73,7 @@ function Figure({
         ${value.toLocaleString("en-US")}
       </motion.span>
       <span
-        className="ml-0.5 text-[12px] font-normal text-site-paper/50"
+        className="ml-0.5 text-[12px] font-normal text-site-paper/70"
       >
         /mo
       </span>
@@ -153,7 +153,7 @@ export default function CostTeaser() {
 
       {/* Crew size — the only thing the reader is told to watch. */}
       <span className="flex items-baseline gap-2">
-        <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-site-paper/55">
+        <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-site-paper/70">
           A crew of
         </span>
         <span className="relative inline-block w-[2.2ch] text-left">
@@ -180,7 +180,7 @@ export default function CostTeaser() {
           <Rule value={ours} tone="ours" />
         </span>
         <span className="min-w-[6rem]">
-          <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.18em] text-site-paper/50">
+          <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.18em] text-site-paper/70">
             Workyard
           </span>
           <Figure value={theirs} tone="theirs" />

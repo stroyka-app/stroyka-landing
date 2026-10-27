@@ -69,11 +69,11 @@ export default function Finale() {
             </VisButton>
           </div>
         </div>
-        <p className="mt-20 border-t border-site-on-vis/20 pt-8 font-mono text-[11px] uppercase tracking-[0.2em] text-site-on-vis/70">
+        <p className="mt-20 border-t border-site-on-vis/20 pt-8 font-mono text-[11px] uppercase tracking-[0.2em] text-site-on-vis/85">
           {t("freeUpTo5")}
-          <span className="mx-3 opacity-40">/</span>
+          <span aria-hidden className="mx-3 inline-block h-3 w-px rotate-[20deg] bg-site-on-vis/40 align-middle" />
           {t("jobCostingFree")}
-          <span className="mx-3 opacity-40">/</span>
+          <span aria-hidden className="mx-3 inline-block h-3 w-px rotate-[20deg] bg-site-on-vis/40 align-middle" />
           {t("cancelAnytime")}
         </p>
       </div>

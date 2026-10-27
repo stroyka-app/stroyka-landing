@@ -32,17 +32,19 @@ export default function Answers() {
           {Array.from({ length: COUNT }).map((_, i) => {
             const isOpen = open === i;
             const id = `faq-answer-${i}`;
+            const buttonId = `faq-question-${i}`;
             return (
               <li key={i} className="border-b border-site-paper/10">
                 <h3>
                   <button
+                    id={buttonId}
                     type="button"
                     aria-expanded={isOpen}
                     aria-controls={id}
                     onClick={() => setOpen(isOpen ? null : i)}
                     className="group flex w-full items-start gap-5 py-6 text-left md:gap-8 md:py-7"
                   >
-                    <span className={`mt-1 font-mono text-[11px] tabular-nums tracking-[0.1em] transition-colors ${isOpen ? "text-site-vis" : "text-site-paper/40"}`}>
+                    <span aria-hidden className={`mt-1 font-mono text-[11px] tabular-nums tracking-[0.1em] transition-colors ${isOpen ? "text-site-vis" : "text-site-paper/65"}`}>
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span className="flex-1 font-flex text-[19px] font-medium leading-snug tracking-[-0.01em] transition-colors group-hover:text-site-vis md:text-[23px]">
@@ -51,13 +53,17 @@ export default function Answers() {
                     <span
                       className={`mt-0.5 grid h-8 w-8 flex-shrink-0 place-items-center rounded-full ring-1 ring-inset transition-[transform,background-color,color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${isOpen ? "rotate-45 bg-site-vis text-site-on-vis ring-site-vis" : "text-site-paper/70 ring-site-paper/20"}`}
                     >
-                      <Plus size={16} />
+                      <Plus aria-hidden size={16} />
                     </span>
                   </button>
                 </h3>
                 <div
                   id={id}
                   role="region"
+                  aria-labelledby={buttonId}
+                  // Collapsed answers are clipped to 0 rows, not removed:
+                  // inert keeps them out of the tab order and the a11y tree.
+                  inert={!isOpen}
                   className={`grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
                 >
                   <div className="overflow-hidden">

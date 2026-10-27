@@ -143,7 +143,7 @@ function Stage({
     <LayoutGroup id="how-day">
       <div className="grid h-full grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] items-center gap-12 pt-16 lg:gap-16">
         <div className="relative">
-          <p className="font-mono text-[12px] uppercase tracking-[0.22em] text-site-paper/45">
+          <p className="font-mono text-[12px] uppercase tracking-[0.22em] text-site-paper/65">
             <span className="text-site-vis">{pad(beat + 1)}</span> / {pad(BEATS)}
           </p>
           <div className="mt-6 h-8">{beat >= 0 && !tagOnBoard && <DayTag text={days[beat]} />}</div>

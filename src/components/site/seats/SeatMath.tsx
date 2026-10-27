@@ -59,12 +59,12 @@ export default function SeatMath() {
 
         <div className="rounded-[28px] bg-site-slab p-6 ring-1 ring-site-paper/[0.08] md:p-10">
           <div className="flex items-end justify-between">
-            <label htmlFor="crew" className="font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/60">
+            <label htmlFor="crew" className="font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/70">
               {t("crew")}
             </label>
             <span className="font-flex text-[44px] font-semibold leading-none tabular-nums md:text-[56px]">
               {crew}
-              <span className="ml-2 text-[15px] font-normal text-site-paper/55">{t("workers")}</span>
+              <span className="ml-2 text-[15px] font-normal text-site-paper/70">{t("workers")}</span>
             </span>
           </div>
           <input
@@ -82,7 +82,7 @@ export default function SeatMath() {
             style={{ ["--fill" as string]: `${((crew - 1) / (MAX - 1)) * 100}%` }}
           />
           {/* Ticks at their true positions: where the plan steps happen. */}
-          <div className="relative mt-2 h-4 font-mono text-[10px] text-site-paper/40">
+          <div className="relative mt-2 h-4 font-mono text-[10px] text-site-paper/65">
             {[1, 5, 15, MAX].map((n) => (
               <span
                 key={n}
@@ -120,11 +120,11 @@ export default function SeatMath() {
             {yearly > 0 && (
               <span className="font-flex text-[34px] font-semibold text-site-vis md:text-[40px]">
                 <Count value={yearly} />
-                <span className="ml-1.5 text-[14px] font-normal text-site-paper/55">{t("perYear")}</span>
+                <span className="ml-1.5 text-[14px] font-normal text-site-paper/70">{t("perYear")}</span>
               </span>
             )}
           </div>
-          <p className="mt-4 font-mono text-[10px] leading-relaxed text-site-paper/35">
+          <p className="mt-4 font-mono text-[10px] leading-relaxed text-site-paper/65">
             {t("source", { date: WORKYARD.verifiedOn })}
           </p>
           {/* The long-form, sourced version of this argument (SEO page). */}
@@ -163,11 +163,11 @@ function Row({
       <div className="mb-2.5 flex items-baseline justify-between gap-4">
         <div className="min-w-0">
           <div className={`text-[15px] font-medium ${tone === "us" ? "text-site-vis" : ""}`}>{name}</div>
-          <div className="text-[12.5px] leading-snug text-site-paper/50">{sub}</div>
+          <div className="text-[12.5px] leading-snug text-site-paper/70">{sub}</div>
         </div>
         <div className="font-flex text-[24px] font-semibold">
           <Count value={amount} />
-          <span className="ml-1 text-[12px] font-normal text-site-paper/50">{perMonth}</span>
+          <span className="ml-1 text-[12px] font-normal text-site-paper/70">{perMonth}</span>
         </div>
       </div>
       <div className="relative h-3 overflow-hidden rounded-full bg-site-paper/[0.07]">

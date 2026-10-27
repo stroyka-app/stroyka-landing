@@ -114,10 +114,10 @@ function LedgerStrip({ spent, landed }: { spent: MotionValue<number>; landed: nu
       style={{ bottom: "calc(var(--toolbar-gap) + 14px)" }}
     >
       <div className="flex items-center justify-between gap-3">
-        <span className="truncate font-mono text-[9.5px] uppercase tracking-[0.16em] text-site-paper/55">{t("job")}</span>
+        <span className="truncate font-mono text-[9.5px] uppercase tracking-[0.16em] text-site-paper/70">{t("job")}</span>
         <span className="flex items-baseline gap-1.5">
           <Odometer value={spent} className="font-flex text-[17px] font-semibold tracking-tight" />
-          <span className="font-mono text-[9.5px] uppercase tracking-[0.12em] text-site-paper/45">/ ${BUDGET.toLocaleString("en-US")}</span>
+          <span className="font-mono text-[9.5px] uppercase tracking-[0.12em] text-site-paper/65">/ ${BUDGET.toLocaleString("en-US")}</span>
         </span>
       </div>
       <div className="relative mt-1.5 h-1 overflow-hidden rounded-full bg-site-paper/10">

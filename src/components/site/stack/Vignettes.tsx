@@ -55,7 +55,7 @@ export function OfflineVignette() {
 
       {queued === 0 && (
         <div className="pointer-events-none absolute inset-x-5 top-[88px] bottom-16 grid place-items-center rounded-2xl border border-dashed border-site-paper/10 md:inset-x-6">
-          <span className="flex flex-col items-center gap-3 text-center text-[13px] text-site-paper/40">
+          <span className="flex flex-col items-center gap-3 text-center text-[13px] text-site-paper/65">
             <CloudUpload size={22} strokeWidth={1.6} />
             {t("empty")}
           </span>
@@ -74,7 +74,7 @@ export function OfflineVignette() {
             >
               <span className="min-w-0 leading-snug">{e}</span>
               <span
-                className={`flex flex-shrink-0 items-center gap-1.5 font-mono text-[10.5px] uppercase tracking-[0.14em] ${synced ? "text-site-vis" : "text-site-paper/50"}`}
+                className={`flex flex-shrink-0 items-center gap-1.5 font-mono text-[10.5px] uppercase tracking-[0.14em] ${synced ? "text-site-vis" : "text-site-paper/70"}`}
                 title={synced ? t("syncedOne") : t("savedOne")}
               >
                 {synced ? <Check size={14} /> : <CloudOff size={14} />}
@@ -87,7 +87,7 @@ export function OfflineVignette() {
         </AnimatePresence>
       </ul>
 
-      <div className="mt-auto flex items-center gap-2 pt-6 font-mono text-[11px] uppercase tracking-[0.16em] text-site-paper/55">
+      <div className="mt-auto flex items-center gap-2 pt-6 font-mono text-[11px] uppercase tracking-[0.16em] text-site-paper/70">
         {synced ? <CloudUpload size={14} className="text-site-vis" /> : <CloudOff size={14} />}
         {queued === 0 ? t("idle") : synced ? t("synced") : t("queued", { count: queued })}
       </div>
@@ -148,7 +148,7 @@ export function RolesVignette() {
           ))}
         </motion.ul>
       </AnimatePresence>
-      <p className="mt-auto pt-6 font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/45">
+      <p className="mt-auto pt-6 font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/65">
         {t("foot")}
       </p>
     </div>
@@ -174,7 +174,7 @@ export function PnlVignette() {
 
   return (
     <div ref={ref} className={panel}>
-      <div className="flex items-center gap-5 font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/60">
+      <div className="flex items-center gap-5 font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/70">
         <span className="flex items-center gap-2"><span className="h-2 w-4 rounded-sm bg-site-paper/25" />{t("plan")}</span>
         <span className="flex items-center gap-2"><span className="h-2 w-4 rounded-sm bg-site-vis" />{t("actual")}</span>
       </div>
@@ -204,7 +204,7 @@ export function PnlVignette() {
                   transition={{ duration: reduced ? 0 : 1.1, delay: 0.3 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
                 />
               </div>
-              <div className={`mt-1 font-mono text-[10.5px] tabular-nums text-site-paper/50 transition-opacity duration-200 ${hover === row.key ? "opacity-100" : "opacity-0 md:opacity-0"}`}>
+              <div className={`mt-1 font-mono text-[10.5px] tabular-nums text-site-paper/70 transition-opacity duration-200 ${hover === row.key ? "opacity-100" : "opacity-0 md:opacity-0"}`}>
                 {t("plan")} ${row.plan.toLocaleString("en-US")} · {t("actual")} ${row.actual.toLocaleString("en-US")}
               </div>
             </div>
@@ -212,7 +212,7 @@ export function PnlVignette() {
         })}
       </div>
       <div className="mt-auto flex items-baseline justify-between border-t border-site-paper/10 pt-3">
-        <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/55">{t("margin")}</span>
+        <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/70">{t("margin")}</span>
         <span className="font-flex text-[26px] font-semibold tabular-nums text-site-vis">18.4%</span>
       </div>
     </div>
@@ -254,7 +254,7 @@ export function ToBuyVignette() {
   return (
     <div className={panel}>
       <div className="relative rounded-2xl bg-site-slab p-4 ring-1 ring-site-paper/[0.08]">
-        <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/50">{t("kicker")}</p>
+        <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/70">{t("kicker")}</p>
         <ul className="mt-3 space-y-1">
           {TO_BUY.map((i) => {
             const done = ticked.includes(i);
@@ -271,18 +271,18 @@ export function ToBuyVignette() {
                   >
                     <Check size={13} strokeWidth={3} />
                   </span>
-                  <span className={`min-w-0 flex-1 text-[14px] leading-snug transition-colors duration-200 ${done ? "text-site-paper/45 line-through decoration-site-paper/30" : ""}`}>
+                  <span className={`min-w-0 flex-1 text-[14px] leading-snug transition-colors duration-200 ${done ? "text-site-paper/65 line-through decoration-site-paper/30" : ""}`}>
                     {items[i]}
                   </span>
                   {i === 0 && !done && (
-                    <span className="flex-shrink-0 rounded-full bg-site-alert/15 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-site-alert">{t("urgent")}</span>
+                    <span className="flex-shrink-0 rounded-full bg-site-alert/[0.08] px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-site-alert">{t("urgent")}</span>
                   )}
                 </button>
               </li>
             );
           })}
         </ul>
-        <p className="mt-1 text-[12.5px] text-site-paper/55">{t("from")}</p>
+        <p className="mt-1 text-[12.5px] text-site-paper/70">{t("from")}</p>
         <button
           type="button"
           onClick={snap}
@@ -318,7 +318,7 @@ export function ToBuyVignette() {
         </AnimatePresence>
       </div>
 
-      <div className="mt-5 font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/50">{t("ledger")}</div>
+      <div className="mt-5 font-mono text-[10.5px] uppercase tracking-[0.16em] text-site-paper/70">{t("ledger")}</div>
       <ul className="mt-2 divide-y divide-site-paper/[0.07] text-[13px]">
         <AnimatePresence initial={false}>
           {receipt && (
@@ -334,17 +334,17 @@ export function ToBuyVignette() {
                 <span>{t("row")}</span>
                 <span className="font-mono tabular-nums">+{RECEIPT_TOTAL}</span>
               </div>
-              <div className="-mt-1 pb-2.5 font-mono text-[10.5px] uppercase tracking-[0.14em] text-site-paper/55">
+              <div className="-mt-1 pb-2.5 font-mono text-[10.5px] uppercase tracking-[0.14em] text-site-paper/70">
                 {t("owed", { total: RECEIPT_TOTAL })}
               </div>
             </motion.li>
           )}
         </AnimatePresence>
-        <li className="flex justify-between py-2.5 text-site-paper/60">
+        <li className="flex justify-between py-2.5 text-site-paper/70">
           <span>{t("prev0")}</span>
           <span className="font-mono tabular-nums">$412.88</span>
         </li>
-        <li className="flex justify-between py-2.5 text-site-paper/60">
+        <li className="flex justify-between py-2.5 text-site-paper/70">
           <span>{t("prev1")}</span>
           <span className="font-mono tabular-nums">$1,120</span>
         </li>

@@ -29,7 +29,7 @@ export default function NotFound() {
   return (
     <>
       <Navbar />
-      <main className="relative flex min-h-screen items-center overflow-x-clip bg-site-night pb-24 pt-32 text-site-paper md:pb-36 md:pt-40">
+      <main id="main" tabIndex={-1} className="focus:outline-none relative flex min-h-screen items-center overflow-x-clip bg-site-night pb-24 pt-32 text-site-paper md:pb-36 md:pt-40">
         <div className="mx-auto grid w-full max-w-[1400px] gap-14 px-5 md:px-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-end lg:gap-20">
           {/* The board: 404 opens like the home's headlines, then the job
               gets stamped and taped off. */}
@@ -100,7 +100,7 @@ export default function NotFound() {
               </VisButton>
               <Link
                 href="/demo"
-                className="font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/55 transition-colors hover:text-site-vis focus-visible:text-site-vis focus-visible:outline-none"
+                className="font-mono text-[11px] uppercase tracking-[0.2em] text-site-paper/70 transition-colors hover:text-site-vis focus-visible:rounded-sm focus-visible:text-site-vis focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-site-vis focus-visible:ring-offset-4 focus-visible:ring-offset-site-night"
               >
                 {t("nfBookDemo")}
               </Link>

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { setRequestLocale } from "next-intl/server";
 import AccountPage from "@/components/AccountPage";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "My Account",
@@ -17,8 +18,14 @@ export default async function AccountRoute({ params }: { params: Promise<{ local
   const { locale } = await params;
   setRequestLocale(locale);
   return (
-    <Suspense>
-      <AccountPage />
-    </Suspense>
+    <>
+      <Suspense>
+        <AccountPage />
+      </Suspense>
+      {/* Outside the Suspense boundary: AccountPage reads search params, so
+          it renders client-side only, and the footer (Privacy, Terms,
+          Accessibility) used to be missing from the served HTML with it. */}
+      <Footer />
+    </>
   );
 }

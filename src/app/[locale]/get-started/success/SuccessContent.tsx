@@ -80,7 +80,7 @@ export default function SuccessContent() {
   return (
     <>
       <Navbar />
-      <main className="relative overflow-hidden bg-site-night pb-16 pt-32 text-site-paper md:pb-24 md:pt-40">
+      <main id="main" tabIndex={-1} className="focus:outline-none relative overflow-hidden bg-site-night pb-16 pt-32 text-site-paper md:pb-24 md:pt-40">
         {/* Low morning bloom — the home's sky, kept off the top edge. */}
         <div
           aria-hidden
@@ -180,7 +180,7 @@ export default function SuccessContent() {
               {/* Questions */}
               <motion.p
                 {...rise(2)}
-                className="px-1 pt-2 font-mono text-[11px] uppercase leading-relaxed tracking-[0.2em] text-site-paper/50"
+                className="px-1 pt-2 font-mono text-[11px] uppercase leading-relaxed tracking-[0.2em] text-site-paper/70"
               >
                 {t("questions")}{" "}
                 <a

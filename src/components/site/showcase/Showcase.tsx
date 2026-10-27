@@ -129,7 +129,7 @@ function Caption({
   const track = useCtaTracker("app_strip");
   return (
     <div>
-      <p className="font-mono text-[12px] uppercase tracking-[0.22em] text-site-paper/45">
+      <p className="font-mono text-[12px] uppercase tracking-[0.22em] text-site-paper/65">
         <span className="text-site-vis">{pad(active + 1)}</span> / {pad(N)}
       </p>
       <div className="relative mt-5 min-h-[190px]">
@@ -158,7 +158,7 @@ function Caption({
               type="button"
               onClick={() => onJump(k)}
               className={`group flex items-center gap-3 text-left text-[14px] transition-colors duration-200 ${
-                k === active ? "text-site-paper" : "text-site-paper/40 hover:text-site-paper/75"
+                k === active ? "text-site-paper" : "text-site-paper/65 hover:text-site-paper/75"
               }`}
             >
               <span className={`h-px transition-[width,background-color] duration-300 ${k === active ? "w-10 bg-site-vis" : "w-4 bg-site-paper/25"}`} />

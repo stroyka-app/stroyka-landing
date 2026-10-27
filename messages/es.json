@@ -11,7 +11,11 @@
     "privacyDescription": "Política de Privacidad de la plataforma de gestión de construcción Stroyka.",
     "termsTitle": "Términos de Servicio — Stroyka",
     "termsDescription": "Términos de Servicio de la plataforma de gestión de construcción Stroyka.",
-    "appDescription": "App de gestión de cuadrilla y costos de obra para pequeños contratistas en EE.UU. Registra el tiempo, asigna tareas y controla los costos de obra sin conexión."
+    "appDescription": "App de gestión de cuadrilla y costos de obra para pequeños contratistas en EE.UU. Registra el tiempo, asigna tareas y controla los costos de obra sin conexión.",
+    "accessibilityTitle": "Declaración de accesibilidad — Stroyka",
+    "accessibilityDescription": "Nuestro compromiso con WCAG 2.1 AA en getstroyka.com: qué corregimos, qué limitaciones quedan y cómo avisarnos de un problema.",
+    "deleteAccountTitle": "Eliminar tu cuenta — Stroyka",
+    "deleteAccountDescription": "Cómo eliminar tu cuenta o tu empresa en Stroyka, qué se elimina y cuándo."
   },
   "hero": {
     "startFree": "Empieza gratis",
@@ -220,7 +224,10 @@
     "soon": "próximamente",
     "rights": "Todos los derechos reservados",
     "madeFor": "Hecho para cuadrillas que construyen",
-    "languagesNavLabel": "Idiomas"
+    "languagesNavLabel": "Idiomas",
+    "accessibility": "Accesibilidad",
+    "deleteAccount": "Eliminar cuenta",
+    "legalNavLabel": "Legal"
   },
   "faq": {
     "eyebrow": "FAQ",
@@ -700,8 +707,8 @@
   "legal": {
     "_note": "pending native pass",
     "eyebrow": "Legal",
-    "englishOnlyTitle": "Disponible en inglés",
-    "englishOnlyBody": "Este documento se proporciona en inglés. Como producto de EE. UU., la versión en inglés es la oficial.",
+    "englishOnlyTitle": "Traducción",
+    "englishOnlyBody": "Esta es una traducción para tu comodidad. Si difiere de la versión en inglés, prevalece la versión en inglés.",
     "copyLink": "Copiar enlace a esta sección"
   },
   "start": {
@@ -819,7 +826,9 @@
         "14:30 — plan contra real · 4% por debajo",
         "16:05 — factura enviada · Casa Johnson",
         "17:20 — pagada"
-      ]
+      ],
+      "pause": "Pausar la cinta",
+      "play": "Reanudar la cinta"
     },
     "shoebox": {
       "kicker": "Así se hace hoy",
@@ -1086,5 +1095,33 @@
         "week": "Semana 1"
       }
     }
+  },
+  "a11y": {
+    "skipToContent": "Saltar al contenido"
+  },
+  "accessibilityPage": {
+    "eyebrow": "Accesibilidad",
+    "title": "Declaración de accesibilidad",
+    "updated": "Última revisión: 26 de octubre de 2026",
+    "intro": "Queremos que cualquier persona pueda usar getstroyka.com, también quien navega con lector de pantalla, solo con el teclado, con zoom o con el movimiento reducido.",
+    "goalTitle": "Nuestro objetivo",
+    "goalBody": "Buscamos que este sitio cumpla las Pautas de Accesibilidad para el Contenido Web (WCAG) 2.1 en el nivel AA. Si algo no las cumple, lo tratamos como un error y lo corregimos.",
+    "doneTitle": "Lo que hicimos el 26 de octubre de 2026",
+    "done": [
+      "Subimos el contraste del texto en todo el sitio: el texto, las etiquetas de los formularios y el pie de página cumplen ya el mínimo de 4,5:1.",
+      "Añadimos un enlace «Saltar al contenido» como primera parada para quien usa el teclado, y cada página tiene ahora una sola área de contenido principal.",
+      "Añadimos un botón de pausa a la cinta que se mueve en la página de inicio. Si tu dispositivo pide reducir el movimiento, no se mueve en absoluto.",
+      "Hicimos visible el foco del teclado en todas partes, no solo con un cambio de color.",
+      "Etiquetamos las respuestas de las preguntas frecuentes para los lectores de pantalla y les ocultamos la escena 3D decorativa."
+    ],
+    "limitsTitle": "Limitaciones conocidas",
+    "limits": [
+      "La escena 3D de la grúa en la página de inicio es decorativa. Los lectores de pantalla la omiten; todo lo que muestra también está escrito en la página.",
+      "Los recibos de la «caja de zapatos» en la página de inicio se pueden arrastrar con el mouse o con el dedo. El botón «Ordénalo» hace lo mismo desde el teclado.",
+      "Hemos probado el sitio con herramientas automáticas y con el teclado. Todavía no hemos hecho una revisión completa con lectores de pantalla como VoiceOver y NVDA."
+    ],
+    "contactTitle": "Avísanos de un problema",
+    "contactBody": "Si algo de este sitio te resulta difícil o imposible de usar, escríbenos a <email>support@getstroyka.com</email>. Dinos en qué página y qué falló. Respondemos en un plazo de 5 días hábiles y, si no podemos arreglarlo pronto, te ayudamos a conseguir la información o el servicio que necesitas de otra forma.",
+    "scope": "Esta declaración cubre el sitio getstroyka.com. Para la accesibilidad de la app móvil de Stroyka, escribe a la misma dirección."
   }
 }

@@ -222,7 +222,7 @@ export default function Shoebox() {
                 ⇅
               </span>
             </button>
-            {!sorted && <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-site-paper/45">{t("hint")}</span>}
+            {!sorted && <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-site-paper/65">{t("hint")}</span>}
           </div>
         </div>
 
@@ -247,7 +247,7 @@ export default function Shoebox() {
               >
                 {CATS.map((c, i) => (
                   <div key={c} className="border-r border-site-paper/[0.06] px-2 pt-4 text-center last:border-r-0 md:px-3">
-                    <div className="font-mono text-[9.5px] uppercase tracking-[0.18em] text-site-paper/55 md:text-[10.5px]">{t(`cats.${c}`)}</div>
+                    <div className="font-mono text-[9.5px] uppercase tracking-[0.18em] text-site-paper/70 md:text-[10.5px]">{t(`cats.${c}`)}</div>
                     <div className="mt-0.5 font-flex text-[15px] font-semibold tabular-nums text-site-vis md:text-[19px]">{money(totals[i])}</div>
                   </div>
                 ))}
@@ -307,7 +307,7 @@ function Scrap({
     return (
       <div className="flex h-full w-full flex-col justify-between rounded-[16px] rounded-bl-[4px] bg-[var(--scrap-text)] p-2.5 text-[#F1ECDD] shadow-[0_10px_24px_-10px_rgba(0,0,0,0.6)] ring-1 ring-white/5 md:p-3">
         <span className="line-clamp-2 text-[11px] leading-snug md:text-[12.5px]">{label}</span>
-        <span className="flex items-center justify-between font-mono text-[10px] text-[#F1ECDD]/60 md:text-[11px]">
+        <span className="flex items-center justify-between font-mono text-[10px] text-[#F1ECDD]/80 md:text-[11px]">
           <span>{amount}</span>
           <span>{sorted ? tag : "✓✓"}</span>
         </span>
@@ -333,7 +333,7 @@ function Scrap({
     >
       <span className="line-clamp-2 font-mono text-[10px] uppercase leading-snug tracking-[0.04em] md:text-[11px]">{label}</span>
       <span className="flex items-baseline justify-between border-t border-dashed border-black/20 pb-1.5 pt-1 font-mono text-[11px] md:text-[13px]">
-        <span className="opacity-60">{sorted ? tag : "TOTAL"}</span>
+        <span className="opacity-70">{sorted ? tag : "TOTAL"}</span>
         <span className="font-bold">{amount}</span>
       </span>
     </div>

@@ -44,7 +44,7 @@ export default function ProofStrip({ items }: { items: Proof[] }) {
             </span>
             <span
               aria-hidden
-              className="absolute right-4 top-4 hidden font-mono lg:block text-[10px] tabular-nums tracking-[0.16em] text-site-paper/35"
+              className="absolute right-4 top-4 hidden font-mono lg:block text-[10px] tabular-nums tracking-[0.16em] text-site-paper/65"
             >
               {String(i + 1).padStart(2, "0")}
             </span>
