@@ -165,7 +165,7 @@ function Row({
           <div className={`text-[15px] font-medium ${tone === "us" ? "text-site-vis" : ""}`}>{name}</div>
           <div className="text-[12.5px] leading-snug text-site-paper/70">{sub}</div>
         </div>
-        <div className="font-flex text-[24px] font-semibold">
+        <div className="shrink-0 whitespace-nowrap font-flex text-[24px] font-semibold">
           <Count value={amount} />
           <span className="ml-1 text-[12px] font-normal text-site-paper/70">{perMonth}</span>
         </div>

@@ -41,7 +41,7 @@ export default function Shoebox() {
   const arenaRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const bodies = useRef<Body[]>([]);
-  const size = useRef({ width: 0, height: 0, card: { w: 150, h: 92 } });
+  const size = useRef({ width: 0, height: 0, card: { w: 150, h: 100 } });
   const [sorted, setSorted] = useState(false);
   const [small, setSmall] = useState(false);
   const sortedRef = useRef(false);
@@ -74,7 +74,9 @@ export default function Shoebox() {
       const r = el.getBoundingClientRect();
       const small = r.width < 560;
       // Phones: one card per sorted column, a touch narrower than it.
-      const card = small ? { w: Math.floor(r.width / 4) - 10, h: 66 } : { w: 150, h: 92 };
+      // Heights leave room for the longest scrap in any locale (RU/ES run
+      // a line longer than EN): 4 lines on phones, 3 on desktop.
+      const card = small ? { w: Math.floor(r.width / 4) - 10, h: 76 } : { w: 150, h: 100 };
       setSmall(small);
       size.current = { width: r.width, height: r.height, card };
       cardRefs.current.forEach((c) => {
@@ -298,7 +300,7 @@ function Scrap({
           : "bg-[var(--scrap-receipt)] text-[var(--scrap-ink)]";
     return (
       <div className={`flex h-full w-full flex-col justify-between p-1.5 shadow-[0_8px_18px_-8px_rgba(0,0,0,0.6)] ${tone}`}>
-        <span className="line-clamp-2 font-mono text-[8.5px] leading-[1.2]">{label}</span>
+        <span className="line-clamp-4 font-mono text-[8.5px] leading-[1.2]">{label}</span>
         <span className="font-mono text-[11px] font-bold tabular-nums">{amount}</span>
       </div>
     );
@@ -306,7 +308,7 @@ function Scrap({
   if (kind === "text") {
     return (
       <div className="flex h-full w-full flex-col justify-between rounded-[16px] rounded-bl-[4px] bg-[var(--scrap-text)] p-2.5 text-[#F1ECDD] shadow-[0_10px_24px_-10px_rgba(0,0,0,0.6)] ring-1 ring-white/5 md:p-3">
-        <span className="line-clamp-2 text-[11px] leading-snug md:text-[12.5px]">{label}</span>
+        <span className="line-clamp-3 text-[11px] leading-snug md:text-[12.5px]">{label}</span>
         <span className="flex items-center justify-between font-mono text-[10px] text-[#F1ECDD]/80 md:text-[11px]">
           <span>{amount}</span>
           <span>{sorted ? tag : "✓✓"}</span>
@@ -317,7 +319,7 @@ function Scrap({
   if (kind === "note") {
     return (
       <div className="flex h-full w-full flex-col justify-between bg-[var(--scrap-note)] p-2.5 text-[var(--scrap-ink)] shadow-[0_10px_24px_-10px_rgba(0,0,0,0.6)] md:p-3">
-        <span className="line-clamp-2 font-mono text-[10.5px] leading-snug md:text-[12px]">{label}</span>
+        <span className="line-clamp-3 font-mono text-[10.5px] leading-snug md:text-[12px]">{label}</span>
         <span className="font-mono text-[12px] font-bold md:text-[14px]">{amount}</span>
       </div>
     );
@@ -331,7 +333,7 @@ function Scrap({
           "polygon(0 0,100% 0,100% 92%,95% 100%,90% 92%,85% 100%,80% 92%,75% 100%,70% 92%,65% 100%,60% 92%,55% 100%,50% 92%,45% 100%,40% 92%,35% 100%,30% 92%,25% 100%,20% 92%,15% 100%,10% 92%,5% 100%,0 92%)",
       }}
     >
-      <span className="line-clamp-2 font-mono text-[10px] uppercase leading-snug tracking-[0.04em] md:text-[11px]">{label}</span>
+      <span className="line-clamp-3 font-mono text-[10px] uppercase leading-snug tracking-[0.04em] md:text-[11px]">{label}</span>
       <span className="flex items-baseline justify-between border-t border-dashed border-black/20 pb-1.5 pt-1 font-mono text-[11px] md:text-[13px]">
         <span className="opacity-70">{sorted ? tag : "TOTAL"}</span>
         <span className="font-bold">{amount}</span>

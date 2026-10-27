@@ -222,7 +222,7 @@ export default function LegalPageLayout({
               as="h1"
               immediate
               lines={[title]}
-              className="font-flex text-[clamp(2.4rem,5.6vw,5rem)] font-semibold leading-[0.95] tracking-[-0.03em] [font-variation-settings:'wdth'_110]"
+              className="font-flex text-[clamp(2.4rem,5.6vw,5rem)] font-semibold leading-[0.95] tracking-[-0.03em] hyphens-auto [overflow-wrap:break-word] [font-variation-settings:'wdth'_110]"
             />
             <div className="mt-8 grid gap-5 print:block md:mt-10 md:grid-cols-[minmax(0,1fr)_auto] md:items-end md:gap-10">
               <motion.p

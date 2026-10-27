@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import {motion, useMotionValueEvent, useScroll, useSpring, useTransform} from "motion/react";
 import { useReduced } from "../ui/useReduced";
@@ -9,6 +9,11 @@ import { useReduced } from "../ui/useReduced";
  * "Know every ___." A fixed prefix; the words scroll past a spotlight and
  * only the one on the line is lit. Pinned for a few screens so each word
  * gets its moment. Reduced motion: the full list, all lit, no pin.
+ *
+ * The prefix and the rolling word share one line, and the words differ by
+ * locale ("gallon of fuel." vs "галлон топлива."), so the line's type size
+ * is fitted to the widest word: never larger than the design clamp, scaled
+ * down only when prefix + gap + widest word would run past the container.
  */
 export default function KnowEvery() {
   const t = useTranslations("site.know");
@@ -23,6 +28,7 @@ export default function KnowEvery() {
   const y = useTransform(pos, (v) => `${-v * 1.08}em`);
   const [active, setActive] = useState(0);
   useMotionValueEvent(pos, "change", (v) => setActive(Math.round(v)));
+  const { rowRef, prefixRef, measureRef, fit } = useFitLine(words.join("\n"), !compact && !reduced);
 
   // Phones: no pin. A 400vh sticky stage parked the closing line a
   // screen away from the words, and a full-height sticky at the bottom
@@ -63,14 +69,28 @@ export default function KnowEvery() {
   }
 
   return (
-    <section id="know" ref={ref} className="relative bg-site-night text-site-paper" style={{ height: `${words.length * 70 + 60}vh` }}>
+    <section
+      id="know"
+      ref={ref}
+      className="relative bg-site-night text-site-paper"
+      style={{ height: `${words.length * 70 + 60}vh`, ["--know-fit" as string]: fit ? `${fit}px` : undefined }}
+    >
       <div className="sticky top-0 flex h-[100svh] items-center overflow-hidden">
         {/* Spotlight band */}
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 top-1/2 hidden h-[1.3em] -translate-y-1/2 font-flex text-[clamp(2.6rem,7.4vw,7.6rem)] md:block">
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 top-1/2 hidden h-[1.3em] -translate-y-1/2 font-flex text-[length:min(clamp(2.6rem,7.4vw,7.6rem),var(--know-fit,7.6rem))] md:block">
           <div className="h-full w-full bg-gradient-to-r from-transparent via-site-vis/[0.06] to-transparent" />
         </div>
-        <div className="mx-auto flex w-full max-w-[1400px] flex-col items-start gap-[0.12em] px-5 font-flex text-[clamp(2.3rem,8.4vw,7.6rem)] md:flex-row md:items-center md:gap-[0.28em] md:text-[clamp(2.6rem,7.4vw,7.6rem)] font-semibold leading-none tracking-[-0.035em] [font-variation-settings:'wdth'_108] md:px-10">
-          <span className="shrink-0">{t("prefix")}</span>
+        <div
+          ref={rowRef}
+          className="relative mx-auto flex w-full max-w-[1400px] flex-col items-start gap-[0.12em] px-5 font-flex text-[length:min(clamp(2.3rem,8.4vw,7.6rem),var(--know-fit,7.6rem))] md:flex-row md:items-center md:gap-[0.28em] md:text-[length:min(clamp(2.6rem,7.4vw,7.6rem),var(--know-fit,7.6rem))] font-semibold leading-none tracking-[-0.035em] [font-variation-settings:'wdth'_108] md:px-10"
+        >
+          <span ref={prefixRef} className="shrink-0">{t("prefix")}</span>
+          {/* Measuring copies of every word, same type, never painted. */}
+          <span ref={measureRef} aria-hidden className="invisible absolute left-0 top-0 flex flex-col">
+            {words.map((w) => (
+              <span key={w} className="whitespace-nowrap">{w}</span>
+            ))}
+          </span>
           <span className="relative h-[1.08em] w-full min-w-0 md:flex-1">
             {/* Fade the list out above and below the line. */}
             <span
@@ -94,6 +114,53 @@ export default function KnowEvery() {
       </div>
     </section>
   );
+}
+
+/**
+ * Fits the pinned line to its container. Widths are read in em (font-size
+ * independent, since tracking and the gap are em too), so the result is a
+ * single px cap: `available / (prefix + gap + widest word)`. The CSS keeps
+ * min(design clamp, cap), so wide screens and short words keep the design
+ * size and nothing animates. Re-measures on resize and once fonts load.
+ */
+function useFitLine(wordsKey: string, pinned: boolean) {
+  const rowRef = useRef<HTMLDivElement>(null);
+  const prefixRef = useRef<HTMLSpanElement>(null);
+  const measureRef = useRef<HTMLSpanElement>(null);
+  const [fit, setFit] = useState<number | null>(null);
+
+  useLayoutEffect(() => {
+    const row = rowRef.current;
+    const prefix = prefixRef.current;
+    const measure = measureRef.current;
+    if (!row || !prefix || !measure) return;
+    const run = () => {
+      const cs = getComputedStyle(row);
+      const fs = parseFloat(cs.fontSize);
+      if (!fs) return;
+      const stacked = cs.flexDirection === "column";
+      const widest = Math.max(...[...measure.children].map((c) => (c as HTMLElement).getBoundingClientRect().width));
+      const prefixW = prefix.getBoundingClientRect().width;
+      const gap = parseFloat(cs.columnGap) || 0;
+      const available = row.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      // Stacked (prefix above the word): each line fits on its own.
+      const needEm = stacked ? Math.max(prefixW, widest) / fs : (prefixW + gap + widest) / fs;
+      // A hair of slack so subpixel rounding never clips the final period.
+      const cap = Math.floor((available / (needEm + 0.04)) * 100) / 100;
+      setFit((prev) => (prev === cap ? prev : cap));
+    };
+    run();
+    const ro = new ResizeObserver(run);
+    ro.observe(row);
+    let alive = true;
+    document.fonts?.ready.then(() => alive && run());
+    return () => {
+      alive = false;
+      ro.disconnect();
+    };
+  }, [wordsKey, pinned]);
+
+  return { rowRef, prefixRef, measureRef, fit };
 }
 
 /** ≤767px, after mount (SSR renders the pinned desktop version). */
