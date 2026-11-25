@@ -51,7 +51,7 @@ export const deleteAccountEn: LegalDoc = {
           <p>Deleting your account deletes <strong>you</strong> from Stroyka. The work you did for your company stays with your company.</p>
           <ul>
             <li><strong>Deleted:</strong> your account and login, your contact details (phone), your push notification tokens, your notification settings, your location consent, and the GPS points recorded on your clock-ins and clock-outs. In the app this happens at once: you are signed out and can no longer sign in.</li>
-            <li><strong>Kept by your company:</strong> the work records you created for it &mdash; hours, costs and material purchases, receipts, trips, requests, daily logs, task messages, photos and videos. They are your company&rsquo;s business records and stay with it, shown under your name. Your company is responsible for them. To have them deleted, ask your company, and we&rsquo;ll help it do so.</li>
+            <li><strong>Kept by your company:</strong> the work records you created for it &mdash; hours, costs and material purchases, receipts, trips, requests, daily logs, task messages, photos and videos. They are your company&rsquo;s business records and stay with it, shown under your name. Your company is responsible for them. To have them deleted, ask your company: it can delete them in the app, and at its request we&rsquo;ll remove them from our servers permanently.</li>
             {/* remove when min app version ≥ 1.0.62 */}
             <li><strong>Older app versions:</strong> if you delete your account from an older version of the app, that version still also deletes the records you created. To keep them with your company, update the app first.</li>
           </ul>
