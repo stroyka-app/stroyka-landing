@@ -9,6 +9,7 @@ import SiteChrome from "@/components/SiteChrome";
 import StructuredData from "@/components/seo/StructuredData";
 import MetaPixel from "@/components/MetaPixel";
 import PostHogAnalytics from "@/components/PostHogAnalytics";
+import CookieBanner from "@/components/CookieBanner";
 import SafariBottomTint from "@/components/SafariBottomTint";
 import SkipLink from "@/components/SkipLink";
 import { routing } from "@/i18n/routing";
@@ -104,6 +105,7 @@ export default async function LocaleLayout({
           <SpeedInsights />
           <MetaPixel />
           <PostHogAnalytics />
+          <CookieBanner />
         </NextIntlClientProvider>
         </div>
       </body>

@@ -7,6 +7,7 @@ import PhoneShowcase, { type Screen } from "../get/PhoneShowcase";
 import ProofStrip, { type Proof } from "../get/ProofStrip";
 import LedgerCard from "./LedgerCard";
 import StartCta from "./StartCta";
+import { openCookieSettings } from "@/lib/consent";
 
 /**
  * /start, rebuilt 2026-09-16 in the register the /get desktop rebuild set,
@@ -59,6 +60,7 @@ import StartCta from "./StartCta";
 export default function StartHero({ locale }: { locale: string }) {
   const t = useTranslations("start");
   const g = useTranslations("getStarted");
+  const f = useTranslations("footer");
   const legalPrefix = locale === "en" ? "" : `/${locale}`;
 
   const screens: Screen[] = (
@@ -155,6 +157,15 @@ export default function StartHero({ locale }: { locale: string }) {
           <a className="transition-colors hover:text-site-paper" href={`${legalPrefix}/terms`}>
             {t("terms")}
           </a>
+          {/* Privacy 12.2 promises Cookie settings at the bottom of every
+              page; /start is where most paid traffic lands. */}
+          <button
+            type="button"
+            onClick={openCookieSettings}
+            className="uppercase tracking-[0.2em] transition-colors hover:text-site-paper"
+          >
+            {f("cookieSettings")}
+          </button>
         </footer>
       </div>
     </main>

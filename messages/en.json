@@ -14,7 +14,11 @@
     "accessibilityTitle": "Accessibility Statement — Stroyka",
     "accessibilityDescription": "Our WCAG 2.1 AA commitment for getstroyka.com, what we fixed, known limitations, and how to report an accessibility problem.",
     "deleteAccountTitle": "Delete Your Account — Stroyka",
-    "deleteAccountDescription": "How to delete your Stroyka account or company, what is deleted, and when."
+    "deleteAccountDescription": "How to delete your Stroyka account or company, what is deleted, and when.",
+    "dpaTitle": "Data Processing Addendum — Stroyka",
+    "dpaDescription": "How Stroyka processes personal data on behalf of the companies that use it: instructions, security, sub-processors, breaches, transfers and deletion.",
+    "subprocessorsTitle": "Sub-processors — Stroyka",
+    "subprocessorsDescription": "The service providers that process data for Stroyka, what each one does, and where."
   },
   "hero": {
     "startFree": "Start free",
@@ -226,7 +230,8 @@
     "languagesNavLabel": "Languages",
     "accessibility": "Accessibility",
     "deleteAccount": "Delete account",
-    "legalNavLabel": "Legal"
+    "legalNavLabel": "Legal",
+    "cookieSettings": "Cookie settings"
   },
   "faq": {
     "eyebrow": "FAQ",
@@ -675,8 +680,6 @@
   },
   "account": {
     "title": "Account",
-    "manageInApp": "Manage your subscription in the app",
-    "managedInside": "Your subscription is managed inside Stroyka. Open the app and go to <highlight>Settings → your plan</highlight> to update your card, view invoices, or change your plan.",
     "needHelp": "Need help? hello@getstroyka.com",
     "redirectingBilling": "Redirecting to billing",
     "verifying": "Verifying your session",
@@ -687,7 +690,11 @@
     "tryFromApp": "Please try again from the Stroyka app, or contact us at <email>hello@getstroyka.com</email>.",
     "loading": "loading",
     "backToSite": "← Back to getstroyka.com",
-    "getTheApp": "Get the app"
+    "getTheApp": "Get the app",
+    "portalHeading": "Manage or cancel your subscription",
+    "portalBody": "Subscribed on our website with a card? Sign in to the billing portal with your billing email to update your card, see invoices or cancel. A cancellation takes effect at the end of the period you've paid for.",
+    "storeNote": "Subscribed through the App Store or Google Play? Manage or cancel it in your phone's store settings.",
+    "portalButton": "Open the billing portal"
   },
   "errors": {
     "eyebrow": "• Something went off plan",
@@ -1120,5 +1127,14 @@
     "contactTitle": "Report a problem",
     "contactBody": "If anything on this site is hard or impossible for you to use, email <email>support@getstroyka.com</email>. Tell us the page and what went wrong. We reply within 5 business days, and if we can’t fix it quickly, we’ll help you get the information or service you need another way.",
     "scope": "This statement covers the website getstroyka.com. For accessibility in the Stroyka mobile app, write to the same address."
+  },
+  "cookies": {
+    "title": "Cookies",
+    "body": "With your OK, we use analytics cookies (PostHog) to see how people use this site and, outside the EU and UK, the Meta pixel to measure our ads. Neither loads unless you accept. You can change your mind any time under Cookie settings at the bottom of the page.",
+    "learnMore": "Privacy Policy",
+    "accept": "Accept",
+    "reject": "Reject",
+    "statusGranted": "Your current choice: accepted.",
+    "statusDenied": "Your current choice: rejected."
   }
 }

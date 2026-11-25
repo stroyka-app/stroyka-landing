@@ -8,6 +8,7 @@ import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 import { ANDROID_APP_URL, IOS_APP_URL } from "@/lib/appLinks";
 import { useCtaTracker } from "@/lib/hooks/useCtaTracker";
 import ProximityText from "../ui/ProximityText";
+import { openCookieSettings } from "@/lib/consent";
 
 /** Same crawlable locale roots as the shared Footer (see its note). */
 const LOCALE_ROOTS = [
@@ -77,6 +78,11 @@ export default function SiteFooter() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <button type="button" onClick={openCookieSettings} className={`${link} text-left`}>
+                  {t("cookieSettings")}
+                </button>
+              </li>
             </ul>
           </div>
           <div>

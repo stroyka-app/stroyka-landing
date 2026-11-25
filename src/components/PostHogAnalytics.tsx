@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import posthog from "posthog-js";
+import { CONSENT_EVENT, type ConsentChoice, useConsent } from "@/lib/consent";
 
 /**
  * PostHog on the marketing site.
@@ -21,10 +22,11 @@ import posthog from "posthog-js";
  * Inert unless NEXT_PUBLIC_POSTHOG_KEY is set — the same shape MetaPixel
  * uses, so local dev and preview builds don't pollute production data.
  *
- * PRIVACY: `person_profiles: 'identified_only'` (the SDK default, stated here
- * because it matters) means anonymous visitors do not get a person profile.
- * Session recording is NOT enabled. If we ever market into the EU/UK this
- * needs the same consent gate MetaPixel does.
+ * PRIVACY: nothing loads until the visitor accepts cookies in CookieBanner
+ * (lib/consent.ts), everywhere — not only in the EU/UK. Withdrawing consent
+ * reloads the page without this. `person_profiles: 'identified_only'` (the
+ * SDK default, stated here because it matters) means anonymous visitors do
+ * not get a person profile. Session recording is NOT enabled.
  *
  * CSP: `next.config.ts` must allow the PostHog hosts in BOTH `script-src` and
  * `connect-src`. Miss either and this fails silently — the script simply
@@ -35,9 +37,10 @@ export default function PostHogAnalytics() {
   const host = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com";
   const pathname = usePathname();
   const started = useRef(false);
+  const consent = useConsent();
 
   useEffect(() => {
-    if (!key || started.current) return;
+    if (!key || started.current || consent !== "granted") return;
     started.current = true;
     posthog.init(key, {
       api_host: host,
@@ -55,13 +58,39 @@ export default function PostHogAnalytics() {
       // went looking for a replay of a real user session there was none. All
       // exposure, no return.
       //
-      // Replay is not covered by our privacy policy, has no consent gate, and
+      // Replay is not covered by our privacy policy or the cookie banner, and
       // reaches EU visitors (IE/SE/SK/EE in the last fortnight). Screen
       // recording is also the most actively litigated item in US
       // session-tracking claims, and our ad spend is US-targeted.
       disable_session_recording: true,
     });
-  }, [key, host]);
+    // A visitor who withdrew earlier carries PostHog's opt-out marker; an
+    // Accept now is a fresh consent, so lift it (without an extra event).
+    if (posthog.has_opted_out_capturing()) {
+      posthog.opt_in_capturing({ captureEventName: false });
+    }
+    // The page the visitor accepted on: the pathname effect below has
+    // already run for it, before PostHog existed.
+    posthog.capture("$pageview", { $current_url: window.location.href });
+  }, [key, host, consent]);
+
+  // Withdrawal: stop capturing at once, before CookieBanner clears the
+  // cookies and reloads. CONSENT_EVENT is dispatched synchronously by
+  // saveConsent, so this runs before the reload — a React state update
+  // through useConsent would not.
+  useEffect(() => {
+    const onChoice = (e: Event) => {
+      if (!started.current) return;
+      if ((e as CustomEvent<ConsentChoice>).detail !== "denied") return;
+      try {
+        posthog.opt_out_capturing();
+      } catch {
+        // The reload that follows stops the SDK anyway.
+      }
+    };
+    window.addEventListener(CONSENT_EVENT, onChoice);
+    return () => window.removeEventListener(CONSENT_EVENT, onChoice);
+  }, []);
 
   useEffect(() => {
     if (!key || !started.current) return;

@@ -33,11 +33,13 @@ const ROUTES: RouteConfig[] = [
   // /es/ and /ru/ copies would contradict that canonical, which is exactly
   // what cost us indexing on the legal pages in August.
   { path: "/compare/construction-job-costing-cost", lastModified: "2026-09-23", changeFrequency: "monthly", priority: 0.8, legalOnly: true },
-  { path: "/privacy",     lastModified: "2026-10-26", changeFrequency: "yearly",  priority: 0.3, legalOnly: true },
-  { path: "/terms",       lastModified: "2026-10-26", changeFrequency: "yearly",  priority: 0.3, legalOnly: true },
+  { path: "/privacy",     lastModified: "2026-11-24", changeFrequency: "yearly",  priority: 0.3, legalOnly: true },
+  { path: "/terms",       lastModified: "2026-11-24", changeFrequency: "yearly",  priority: 0.3, legalOnly: true },
+  { path: "/dpa",         lastModified: "2026-11-24", changeFrequency: "yearly",  priority: 0.2, legalOnly: true },
+  { path: "/subprocessors", lastModified: "2026-11-24", changeFrequency: "monthly", priority: 0.2, legalOnly: true },
   // Translated (en/es/ru), so every locale is its own URL — not legalOnly.
   { path: "/accessibility", lastModified: "2026-10-26", changeFrequency: "yearly", priority: 0.3 },
-  { path: "/delete-account", lastModified: "2026-10-26", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/delete-account", lastModified: "2026-11-24", changeFrequency: "yearly", priority: 0.3 },
 ];
 
 /** Returns alternates where every locale maps to the EN URL (English-authoritative). */
