@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import posthog from "posthog-js";
-import { useConsent } from "@/lib/consent";
+import { CONSENT_EVENT, type ConsentChoice, useConsent } from "@/lib/consent";
 
 /**
  * PostHog on the marketing site.
@@ -64,10 +64,33 @@ export default function PostHogAnalytics() {
       // session-tracking claims, and our ad spend is US-targeted.
       disable_session_recording: true,
     });
+    // A visitor who withdrew earlier carries PostHog's opt-out marker; an
+    // Accept now is a fresh consent, so lift it (without an extra event).
+    if (posthog.has_opted_out_capturing()) {
+      posthog.opt_in_capturing({ captureEventName: false });
+    }
     // The page the visitor accepted on: the pathname effect below has
     // already run for it, before PostHog existed.
     posthog.capture("$pageview", { $current_url: window.location.href });
   }, [key, host, consent]);
+
+  // Withdrawal: stop capturing at once, before CookieBanner clears the
+  // cookies and reloads. CONSENT_EVENT is dispatched synchronously by
+  // saveConsent, so this runs before the reload — a React state update
+  // through useConsent would not.
+  useEffect(() => {
+    const onChoice = (e: Event) => {
+      if (!started.current) return;
+      if ((e as CustomEvent<ConsentChoice>).detail !== "denied") return;
+      try {
+        posthog.opt_out_capturing();
+      } catch {
+        // The reload that follows stops the SDK anyway.
+      }
+    };
+    window.addEventListener(CONSENT_EVENT, onChoice);
+    return () => window.removeEventListener(CONSENT_EVENT, onChoice);
+  }, []);
 
   useEffect(() => {
     if (!key || !started.current) return;

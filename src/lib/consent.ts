@@ -60,18 +60,33 @@ function expireCookie(name: string): void {
   }
 }
 
-/** Remove what PostHog and the Meta pixel set, after consent is withdrawn. */
+/**
+ * Remove what PostHog and the Meta pixel set: after consent is withdrawn, and
+ * again on every load where the choice is "denied" (CookieBanner), so an SDK
+ * that re-persisted during the unload leaves nothing behind.
+ *
+ * PostHog's own opt-out marker (`__ph_opt_in_out_<key>`, set by
+ * opt_out_capturing in PostHogAnalytics) is deliberately NOT removed: it
+ * records the refusal and holds no identifier.
+ */
 export function clearTrackingCookies(): void {
   try {
     for (const part of document.cookie.split("; ")) {
       const name = part.split("=")[0];
       if (name.startsWith("ph_") || name === "_fbp" || name === "_fbc") expireCookie(name);
     }
-    for (const key of Object.keys(window.localStorage)) {
-      if (key.startsWith("ph_")) window.localStorage.removeItem(key);
-    }
   } catch {
-    // Storage can be blocked; nothing was stored there in that case.
+    // Cookies can be blocked; nothing was stored there in that case.
+  }
+  for (const store of ["localStorage", "sessionStorage"] as const) {
+    try {
+      const s = window[store];
+      for (const key of Object.keys(s)) {
+        if (key.startsWith("ph_")) s.removeItem(key);
+      }
+    } catch {
+      // Storage can be blocked; nothing was stored there in that case.
+    }
   }
 }
 

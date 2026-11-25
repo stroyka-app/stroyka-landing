@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Script from "next/script";
 import { GEO_COOKIE, consentRequired } from "@/lib/geo";
-import { useConsent } from "@/lib/consent";
+import { CONSENT_EVENT, type ConsentChoice, useConsent } from "@/lib/consent";
 
 /**
  * Meta (Facebook) Pixel.
@@ -44,6 +44,22 @@ export default function MetaPixel() {
       new RegExp(`(?:^|; )${GEO_COOKIE}=([^;]*)`),
     );
     setAllowed(!consentRequired(match?.[1]));
+  }, []);
+
+  // Withdrawal: tell a loaded pixel to stop before CookieBanner clears
+  // _fbp/_fbc and reloads (CONSENT_EVENT fires synchronously).
+  useEffect(() => {
+    const onChoice = (e: Event) => {
+      if ((e as CustomEvent<ConsentChoice>).detail !== "denied") return;
+      const fbq = (window as Window & { fbq?: (...args: unknown[]) => void }).fbq;
+      try {
+        fbq?.("consent", "revoke");
+      } catch {
+        // The reload that follows removes the pixel anyway.
+      }
+    };
+    window.addEventListener(CONSENT_EVENT, onChoice);
+    return () => window.removeEventListener(CONSENT_EVENT, onChoice);
   }, []);
 
   if (!pixelId || !allowed || consent !== "granted") return null;

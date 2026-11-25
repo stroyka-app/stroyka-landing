@@ -33,6 +33,9 @@ export default function CookieBanner() {
     const choice = readConsent();
     setCurrent(choice);
     if (choice === null) setOpen(true);
+    // A refused visitor keeps nothing: clears any ph_* / _fbp left over from
+    // before the refusal, or re-written while the withdrawing page unloaded.
+    if (choice === "denied") clearTrackingCookies();
     const reopen = () => {
       reopened.current = true;
       setCurrent(readConsent());
@@ -54,8 +57,10 @@ export default function CookieBanner() {
     setCurrent(choice);
     setOpen(false);
     if (withdrawing) {
-      // The pixel and PostHog are already running in this page; the only
-      // way to stop them is a fresh load without them.
+      // saveConsent has just told PostHog (opt_out_capturing) and the pixel
+      // (consent revoke) to stop, synchronously. They are still loaded in
+      // this page, so clear what they stored and load the page fresh
+      // without them; the next load clears again (mount effect above).
       clearTrackingCookies();
       window.location.reload();
     }
