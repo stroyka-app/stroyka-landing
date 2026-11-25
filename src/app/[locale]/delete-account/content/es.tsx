@@ -84,7 +84,7 @@ export const deleteAccountEs: LegalDoc = {
       id: "subscriptions",
       title: "6. Suscripciones",
       content: (
-        <p>Eliminar tu cuenta o tu empresa <strong>no cancela una suscripción</strong>. Cancela una suscripción del App Store en los ajustes de tu Apple ID, y una de Google Play en Google Play &rsaquo; Pagos y suscripciones &rsaquo; Suscripciones. Si la compraste en nuestro sitio web, escribe a {SUPPORT} desde el correo de tu cuenta y la cancelaremos.</p>
+        <p>Eliminar tu cuenta o tu empresa <strong>no cancela una suscripción</strong>. Cancela una suscripción del App Store en los ajustes de tu Apple ID, y una de Google Play en Google Play &rsaquo; Pagos y suscripciones &rsaquo; Suscripciones. Si la compraste en nuestro sitio web, cancélala en línea en getstroyka.com/account, o escribe a {SUPPORT} desde el correo de tu cuenta y la cancelaremos.</p>
       ),
     },
     {

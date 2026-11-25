@@ -84,7 +84,7 @@ export const deleteAccountRu: LegalDoc = {
       id: "subscriptions",
       title: "6. Подписки",
       content: (
-        <p>Удаление аккаунта или компании <strong>не отменяет подписку</strong>. Подписку App Store отменяют в настройках Apple ID, а подписку Google Play &mdash; в Google Play &rsaquo; Платежи и подписки &rsaquo; Подписки. Подписку, оформленную на нашем сайте, отменим мы: напишите на {SUPPORT} с адреса почты вашего аккаунта.</p>
+        <p>Удаление аккаунта или компании <strong>не отменяет подписку</strong>. Подписку App Store отменяют в настройках Apple ID, а подписку Google Play &mdash; в Google Play &rsaquo; Платежи и подписки &rsaquo; Подписки. Подписку, оформленную на нашем сайте, можно отменить онлайн на getstroyka.com/account или написать на {SUPPORT} с адреса почты вашего аккаунта — отменим мы.</p>
       ),
     },
     {

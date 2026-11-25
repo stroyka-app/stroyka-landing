@@ -15,6 +15,10 @@ type PageState = "loading" | "success" | "error" | "direct";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const APP_URL = "https://www.getstroyka.com/get";
+/** Stripe-hosted customer portal sign-in (email + one-time code): website
+ * subscribers update their card, see invoices or cancel there. Public link. */
+const STRIPE_PORTAL_LOGIN_URL =
+  "https://billing.stripe.com/p/login/eVq4gA1pIaWJblKc5K1gs00";
 
 /* ────────────────────────────────────────────────────────────────────────────
  * Morning Bone pieces
@@ -25,10 +29,16 @@ const APP_URL = "https://www.getstroyka.com/get";
  * locale-aware Link and opens in place; this CTA has always opened the app
  * page in a new tab (ui/Button's external branch), so it keeps doing that.
  */
-function AppButton({ children }: { children: React.ReactNode }) {
+function AppButton({
+  children,
+  href = APP_URL,
+}: {
+  children: React.ReactNode;
+  href?: string;
+}) {
   return (
     <a
-      href={APP_URL}
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
       className="group inline-flex h-12 items-center gap-4 rounded-full bg-site-vis pl-6 pr-1.5 text-[15px] font-medium tracking-[-0.005em] text-site-on-vis transition-[background-color,transform] duration-200 ease-out hover:bg-site-vis-hover active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-site-vis focus-visible:ring-offset-2 focus-visible:ring-offset-site-slab"
@@ -160,16 +170,11 @@ const actions =
 function DirectVisitView() {
   const t = useTranslations("account");
   return (
-    <PageShell heading={t("manageInApp")}>
-      <p className={bodyText}>
-        {t.rich("managedInside", {
-          highlight: (chunks) => (
-            <span className="font-medium text-site-paper">{chunks}</span>
-          ),
-        })}
-      </p>
+    <PageShell heading={t("portalHeading")}>
+      <p className={bodyText}>{t("portalBody")}</p>
+      <p className={bodyText}>{t("storeNote")}</p>
       <div className={actions}>
-        <AppButton>{t("getTheApp")}</AppButton>
+        <AppButton href={STRIPE_PORTAL_LOGIN_URL}>{t("portalButton")}</AppButton>
         <a href="mailto:hello@getstroyka.com" className={quietLink}>
           {t("needHelp")}
         </a>

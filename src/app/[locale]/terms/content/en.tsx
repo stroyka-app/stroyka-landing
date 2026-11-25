@@ -103,7 +103,7 @@ export const termsEn: LegalDoc = {
       title: "7. Cancellation, Refunds & Deletion",
       content: (
         <>
-          <p>7.1. You may cancel at any time. For an App Store subscription, cancel in your Apple ID subscription settings. For a Google Play subscription, cancel in Google Play &rsaquo; Payments &amp; subscriptions &rsaquo; Subscriptions. For a website subscription, email us at {SUPPORT} from your account&rsquo;s email address and we will cancel it.</p>
+          <p>7.1. You may cancel at any time. For an App Store subscription, cancel in your Apple ID subscription settings. For a Google Play subscription, cancel in Google Play &rsaquo; Payments &amp; subscriptions &rsaquo; Subscriptions. For a website subscription, cancel online at getstroyka.com/account (sign in to the billing portal with your billing email), or email us at {SUPPORT} from your account&rsquo;s email address and we will cancel it.</p>
           <p>7.2. Upon cancellation, your subscription remains active until the end of your current billing period. You will not be charged again after cancellation.</p>
           <p>7.3. For website subscriptions, we do not offer prorated refunds for partial billing periods; you keep access until the end of the period. Refunds for App Store and Google Play purchases are handled by Apple or Google under their policies.</p>
           <p>7.4. When a paid plan ends, your Company Account moves to the free plan. Features exclusive to paid plans become unavailable, but <strong>your data is not deleted</strong> and remains accessible and exportable.</p>

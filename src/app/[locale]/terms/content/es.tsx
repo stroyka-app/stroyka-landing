@@ -103,7 +103,7 @@ export const termsEs: LegalDoc = {
       title: "7. Cancelación, reembolsos y eliminación",
       content: (
         <>
-          <p>7.1. Puedes cancelar en cualquier momento. Una suscripción del App Store se cancela en los ajustes de suscripciones de tu Apple ID. Una suscripción de Google Play, en Google Play &rsaquo; Pagos y suscripciones &rsaquo; Suscripciones. Para una suscripción del sitio web, escríbenos a {SUPPORT} desde el correo de tu cuenta y la cancelaremos.</p>
+          <p>7.1. Puedes cancelar en cualquier momento. Una suscripción del App Store se cancela en los ajustes de suscripciones de tu Apple ID. Una suscripción de Google Play, en Google Play &rsaquo; Pagos y suscripciones &rsaquo; Suscripciones. Para una suscripción del sitio web, cancélala en línea en getstroyka.com/account (entra al portal de facturación con tu correo de facturación), o escríbenos a {SUPPORT} desde el correo de tu cuenta y la cancelaremos.</p>
           <p>7.2. Al cancelar, tu suscripción sigue activa hasta el final del periodo de facturación actual. No se te volverá a cobrar.</p>
           <p>7.3. En las suscripciones del sitio web no hacemos reembolsos prorrateados por periodos parciales; conservas el acceso hasta el final del periodo. Los reembolsos de compras del App Store y de Google Play los gestionan Apple o Google según sus políticas.</p>
           <p>7.4. Cuando termina un plan de pago, tu Cuenta de Empresa pasa al plan gratis. Las funciones exclusivas de los planes de pago dejan de estar disponibles, pero <strong>tus datos no se eliminan</strong> y siguen accesibles y exportables.</p>

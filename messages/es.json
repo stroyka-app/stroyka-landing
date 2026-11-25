@@ -682,8 +682,6 @@
   },
   "account": {
     "title": "Cuenta",
-    "manageInApp": "Administra tu suscripción en la app",
-    "managedInside": "Tu suscripción se gestiona dentro de Stroyka. Abre la app y ve a <highlight>Configuración → tu plan</highlight> para actualizar tu tarjeta, ver facturas o cambiar tu plan.",
     "needHelp": "¿Necesitas ayuda? hello@getstroyka.com",
     "redirectingBilling": "Redirigiendo a facturación",
     "verifying": "Verificando tu sesión",
@@ -694,7 +692,11 @@
     "tryFromApp": "Vuelve a intentarlo desde la app Stroyka, o contáctanos en <email>hello@getstroyka.com</email>.",
     "loading": "cargando",
     "backToSite": "← Volver a getstroyka.com",
-    "getTheApp": "Descargar la app"
+    "getTheApp": "Descargar la app",
+    "portalHeading": "Administra o cancela tu suscripción",
+    "portalBody": "¿Te suscribiste en nuestro sitio con tarjeta? Entra al portal de facturación con tu correo de facturación para cambiar la tarjeta, ver facturas o cancelar. La cancelación se aplica al final del periodo ya pagado.",
+    "storeNote": "¿Te suscribiste por App Store o Google Play? Adminístrala o cancélala en los ajustes de la tienda de tu teléfono.",
+    "portalButton": "Abrir el portal de facturación"
   },
   "errors": {
     "eyebrow": "• Algo salió del plan",

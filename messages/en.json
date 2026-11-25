@@ -680,8 +680,6 @@
   },
   "account": {
     "title": "Account",
-    "manageInApp": "Manage your subscription in the app",
-    "managedInside": "Your subscription is managed inside Stroyka. Open the app and go to <highlight>Settings → your plan</highlight> to update your card, view invoices, or change your plan.",
     "needHelp": "Need help? hello@getstroyka.com",
     "redirectingBilling": "Redirecting to billing",
     "verifying": "Verifying your session",
@@ -692,7 +690,11 @@
     "tryFromApp": "Please try again from the Stroyka app, or contact us at <email>hello@getstroyka.com</email>.",
     "loading": "loading",
     "backToSite": "← Back to getstroyka.com",
-    "getTheApp": "Get the app"
+    "getTheApp": "Get the app",
+    "portalHeading": "Manage or cancel your subscription",
+    "portalBody": "Subscribed on our website with a card? Sign in to the billing portal with your billing email to update your card, see invoices or cancel. A cancellation takes effect at the end of the period you've paid for.",
+    "storeNote": "Subscribed through the App Store or Google Play? Manage or cancel it in your phone's store settings.",
+    "portalButton": "Open the billing portal"
   },
   "errors": {
     "eyebrow": "• Something went off plan",
