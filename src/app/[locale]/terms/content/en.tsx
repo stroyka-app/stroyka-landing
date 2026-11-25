@@ -6,7 +6,7 @@ const SUPPORT = <a href="mailto:support@getstroyka.com">support@getstroyka.com</
 export const termsEn: LegalDoc = {
   title: "Terms of Service",
   subtitle: "Please read these Terms of Service carefully before using the Stroyka platform.",
-  effectiveDate: "Effective Date: April 2026 · Last Updated: 26 October 2026",
+  effectiveDate: "Effective Date: April 2026 · Last Updated: 24 November 2026",
   sections: [
     {
       id: "definitions",
@@ -98,7 +98,9 @@ export const termsEn: LegalDoc = {
           <p>7.4. When a paid plan ends, your Company Account moves to the free plan. Features exclusive to paid plans become unavailable, but <strong>your data is not deleted</strong> and remains accessible and exportable.</p>
           <h3>Deleting your account or company</h3>
           <p>7.5. Cancelling is not deleting. To delete data:</p>
-          <p>7.6. <strong>A Worker</strong> can delete their account in the app (Profile &rarr; Privacy and data &rarr; Delete my account) or by emailing {SUPPORT} from the account&rsquo;s email address. This removes the account and the records that Worker created; they disappear from the app immediately and are permanently deleted from our servers within 30 days.</p>
+          <p>7.6. <strong>A Worker</strong> can delete their account in the app (Profile &rarr; Privacy and data &rarr; Delete my account) or by emailing {SUPPORT} from the account&rsquo;s email address. This deletes the account, its login and the Worker&rsquo;s personal data: contact details (phone), push tokens, notification settings, location consent and the GPS points recorded on clock-ins and clock-outs. The work records the Worker created for the company (hours, costs and material purchases, receipts, trips, requests, daily logs, task messages, photos and videos) are the company&rsquo;s business records: they stay with the Company Account, shown under the Worker&rsquo;s name, as in 7.8.
+            {/* remove when min app version ≥ 1.0.62 */}
+            {" "}If the account is deleted from an older version of the app, that version also deletes the records the Worker created.</p>
           <p>7.7. <strong>A Boss</strong> cannot delete only their own account. The Boss can delete the whole Company Account in the app (Profile &rarr; Privacy and data &rarr; Delete my company). Its data is hidden immediately and permanently deleted from our servers within 30 days.</p>
           <p>7.8. If a Company Account removes a Worker, the records that Worker created remain with the company as its business records until the company deletes them or the Company Account.</p>
           <p>7.9. Deleted data leaves our encrypted backups as those copies expire (database copies up to 6 months, file copies up to 1 year). Deleted data cannot be recovered through the app.</p>

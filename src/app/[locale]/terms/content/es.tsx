@@ -6,7 +6,7 @@ const SUPPORT = <a href="mailto:support@getstroyka.com">support@getstroyka.com</
 export const termsEs: LegalDoc = {
   title: "Términos de Servicio",
   subtitle: "Lee con atención estos Términos de Servicio antes de usar Stroyka.",
-  effectiveDate: "Vigentes desde abril de 2026 · Actualizados el 26 de octubre de 2026",
+  effectiveDate: "Vigentes desde abril de 2026 · Actualizados el 24 de noviembre de 2026",
   sections: [
     {
       id: "definitions",
@@ -98,7 +98,9 @@ export const termsEs: LegalDoc = {
           <p>7.4. Cuando termina un plan de pago, tu Cuenta de Empresa pasa al plan gratis. Las funciones exclusivas de los planes de pago dejan de estar disponibles, pero <strong>tus datos no se eliminan</strong> y siguen accesibles y exportables.</p>
           <h3>Eliminar tu cuenta o tu empresa</h3>
           <p>7.5. Cancelar no es eliminar. Para eliminar datos:</p>
-          <p>7.6. <strong>Un Trabajador</strong> puede eliminar su cuenta en la app (Perfil &rarr; Privacidad y datos &rarr; Eliminar mi cuenta) o escribiendo a {SUPPORT} desde el correo de la cuenta. Se eliminan la cuenta y los registros que creó ese Trabajador: desaparecen de la app de inmediato y se borran de forma permanente de nuestros servidores en un plazo de 30 días.</p>
+          <p>7.6. <strong>Un Trabajador</strong> puede eliminar su cuenta en la app (Perfil &rarr; Privacidad y datos &rarr; Eliminar mi cuenta) o escribiendo a {SUPPORT} desde el correo de la cuenta. Se eliminan la cuenta, su inicio de sesión y los datos personales del Trabajador: datos de contacto (teléfono), tokens de notificaciones, configuración de notificaciones, consentimiento de ubicación y los puntos GPS registrados al marcar entrada y salida. Los registros de trabajo que el Trabajador creó para la empresa (horas, gastos y compras de materiales, recibos, viajes, solicitudes, bitácoras diarias, mensajes de tareas, fotos y videos) son registros del negocio de la empresa: se quedan en la Cuenta de Empresa, con el nombre del Trabajador, como en 7.8.
+            {/* remove when min app version ≥ 1.0.62 */}
+            {" "}Si la cuenta se elimina desde una versión anterior de la app, esa versión también elimina los registros que creó el Trabajador.</p>
           <p>7.7. <strong>Un Jefe</strong> no puede eliminar solo su propia cuenta. El Jefe puede eliminar toda la Cuenta de Empresa en la app (Perfil &rarr; Privacidad y datos &rarr; Eliminar mi empresa). Sus datos se ocultan de inmediato y se borran de forma permanente de nuestros servidores en un plazo de 30 días.</p>
           <p>7.8. Si una Cuenta de Empresa da de baja a un Trabajador, los registros que creó se quedan con la empresa como registros de su negocio, hasta que la empresa los elimine o elimine la Cuenta de Empresa.</p>
           <p>7.9. Los datos eliminados salen de nuestras copias de seguridad cifradas a medida que esas copias caducan (copias de la base de datos hasta 6 meses, copias de archivos hasta 1 año). Los datos eliminados no se pueden recuperar desde la app.</p>
