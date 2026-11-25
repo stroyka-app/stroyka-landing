@@ -146,6 +146,7 @@ export const privacyEs: LegalDoc = {
             <li><strong>RevenueCat</strong> (EE. UU.) &mdash; lleva el estado de las suscripciones compradas en las apps de iPhone y Android. Recibe el ID de tu empresa y la información de compra de Apple o Google.</li>
             <li><strong>Stripe</strong> (EE. UU.) &mdash; pago y facturación de las suscripciones compradas en nuestro sitio web. Stripe recibe tus datos de pago directamente.</li>
             <li><strong>Cloudflare</strong> &mdash; nuestro dominio y DNS, el reenvío del correo enviado a nuestras direcciones y el almacenamiento de nuestras copias de seguridad cifradas.</li>
+            <li><strong>Google</strong> (Gmail) &mdash; la bandeja donde llega el correo enviado a nuestra dirección de soporte.</li>
             <li><strong>GitHub</strong> (Microsoft, EE. UU.) &mdash; ejecuta nuestras tareas de copia de seguridad. Cada noche para la base de datos y cada semana para los archivos subidos, la copia se hace en una máquina temporal de GitHub, se cifra allí y se guarda en Cloudflare; al terminar la tarea no queda ninguna copia de seguridad en GitHub.</li>
             <li><strong>Vercel</strong> (EE. UU.) &mdash; aloja nuestro sitio web, procesa registros web estándar con direcciones IP y cuenta visitas sin cookies.</li>
             <li><strong>Telegram</strong> &mdash; avisa a nuestro equipo de que alguien envió el formulario de demo de nuestro sitio web. No recibe datos personales: los datos de la solicitud nos llegan solo por correo.</li>

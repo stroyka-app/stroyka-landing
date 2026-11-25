@@ -42,6 +42,7 @@ export const subprocessorsEn: LegalDoc = {
             <li><strong>Apple</strong> &mdash; App Store subscriptions and Sign in with Apple. Location: United States.</li>
             <li><strong>Google</strong> &mdash; Google Play subscriptions and Sign in with Google. Location: United States.</li>
             <li><strong>Cloudflare</strong> &mdash; our domain, DNS and the forwarding of email sent to our addresses. Location: United States and global.</li>
+            <li><strong>Google</strong> (Gmail, US) &mdash; the inbox where email sent to our support address arrives. Receives: the messages you send us. Location: United States and global.</li>
             <li><strong>Vercel</strong> &mdash; hosts our website; web logs including IP addresses; page-view counts without cookies. Location: United States and global.</li>
             <li><strong>Meta</strong> &mdash; the Meta pixel on our website, only if a visitor accepts cookies and never in the EU, the EEA or the UK. Location: United States.</li>
             <li><strong>Telegram</strong> &mdash; tells our team that someone submitted the demo form on our website (a notification only). Receives: no personal data; the request itself reaches us by email. Location: United Arab Emirates and global.</li>
