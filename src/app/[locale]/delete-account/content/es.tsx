@@ -11,7 +11,7 @@ const REQUEST = (
 export const deleteAccountEs: LegalDoc = {
   title: "Eliminar tu cuenta",
   subtitle: "Cómo eliminar tu cuenta de Stroyka o tu empresa, qué se elimina y cuándo. No necesitas iniciar sesión para usar esta página.",
-  effectiveDate: "Actualizada el 26 de octubre de 2026",
+  effectiveDate: "Actualizada el 24 de noviembre de 2026",
   sections: [
     {
       id: "in-the-app",
@@ -48,10 +48,12 @@ export const deleteAccountEs: LegalDoc = {
       title: "3. Qué se elimina y cuándo",
       content: (
         <>
-          <p>Al eliminar tu cuenta, eliminamos <strong>tu cuenta y los registros que creaste</strong>: tus horas, gastos y compras de materiales, viajes, solicitudes y bitácoras diarias.</p>
+          <p>Al eliminar tu cuenta, eliminas de Stroyka <strong>tu cuenta y tus datos personales</strong>. El trabajo que hiciste para tu empresa se queda con tu empresa.</p>
           <ul>
-            <li><strong>De inmediato:</strong> tus registros desaparecen de la app para todos en tu empresa, en lugar de tu nombre se muestra &ldquo;Deleted user&rdquo; (usuario eliminado) y ya no puedes iniciar sesión.</li>
-            <li><strong>En un plazo de 30 días:</strong> borramos de forma permanente de nuestros servidores tu inicio de sesión, tus datos de contacto, tus tokens de notificaciones push, tus puntos de ubicación al marcar, y tus registros y sus fotos.</li>
+            <li><strong>Se elimina:</strong> tu cuenta y tu inicio de sesión, tus datos de contacto (teléfono), tus tokens de notificaciones push, tu configuración de notificaciones, tu consentimiento de ubicación y los puntos GPS registrados al marcar entrada y salida. En la app ocurre de inmediato: se cierra tu sesión y ya no puedes volver a entrar.</li>
+            <li><strong>Se queda con tu empresa:</strong> los registros de trabajo que creaste para ella: horas, gastos y compras de materiales, recibos, viajes, solicitudes, bitácoras diarias, mensajes de tareas, fotos y videos. Son registros del negocio de tu empresa y se quedan con ella, con tu nombre. Tu empresa es responsable de ellos. Si quieres que se eliminen, pídeselo a tu empresa y la ayudaremos a hacerlo.</li>
+            {/* remove when min app version ≥ 1.0.62 */}
+            <li><strong>Versiones anteriores de la app:</strong> si eliminas tu cuenta desde una versión anterior de la app, esa versión también elimina los registros que creaste. Para que se queden con tu empresa, actualiza la app antes.</li>
           </ul>
         </>
       ),
@@ -69,7 +71,7 @@ export const deleteAccountEs: LegalDoc = {
       content: (
         <ul>
           <li><strong>Copias de seguridad.</strong> Nuestras copias cifradas no se modifican después de hechas. Los datos eliminados salen de ellas a medida que caducan: las copias de la base de datos en un plazo de 6 meses y las de archivos en un plazo de 1 año.</li>
-          <li><strong>Si tu empleador te dio de baja</strong> (en lugar de que eliminaras tu propia cuenta), los registros de trabajo que creaste se quedan con esa empresa como registros de su negocio, con tu nombre, hasta que la empresa los elimine o elimine la empresa. Igualmente puedes pedirnos que eliminemos tu cuenta.</li>
+          <li><strong>Si tu empleador te dio de baja</strong>, los registros de trabajo que creaste se quedan con esa empresa como registros de su negocio, con tu nombre, hasta que la empresa los elimine o elimine la empresa, igual que si eliminas tu propia cuenta. Igualmente puedes pedirnos que eliminemos tu cuenta.</li>
           <li><strong>Los registros de pago</strong> de las suscripciones los conservan Apple o Stripe según sus propias políticas.</li>
           <li><strong>Requisitos legales.</strong> Podemos conservar cierta información por más tiempo si la ley lo exige.</li>
         </ul>

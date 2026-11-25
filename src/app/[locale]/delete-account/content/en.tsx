@@ -11,7 +11,7 @@ const REQUEST = (
 export const deleteAccountEn: LegalDoc = {
   title: "Delete Your Account",
   subtitle: "How to delete your Stroyka account or your company, what gets deleted, and when. You don’t need to sign in to use this page.",
-  effectiveDate: "Last Updated: 26 October 2026",
+  effectiveDate: "Last Updated: 24 November 2026",
   sections: [
     {
       id: "in-the-app",
@@ -48,10 +48,12 @@ export const deleteAccountEn: LegalDoc = {
       title: "3. What Is Deleted, and When",
       content: (
         <>
-          <p>When you delete your account, we delete <strong>your account and the records you created</strong>: your hours, costs and material purchases, trips, requests and daily logs.</p>
+          <p>Deleting your account deletes <strong>you</strong> from Stroyka. The work you did for your company stays with your company.</p>
           <ul>
-            <li><strong>Immediately:</strong> your records disappear from the app for everyone in your company, your name is shown as &ldquo;Deleted user&rdquo;, and you can no longer sign in.</li>
-            <li><strong>Within 30 days:</strong> we permanently delete from our servers your login, your contact details, your push notification tokens, your clock-in location points, and your records and their photos.</li>
+            <li><strong>Deleted:</strong> your account and login, your contact details (phone), your push notification tokens, your notification settings, your location consent, and the GPS points recorded on your clock-ins and clock-outs. In the app this happens at once: you are signed out and can no longer sign in.</li>
+            <li><strong>Kept by your company:</strong> the work records you created for it &mdash; hours, costs and material purchases, receipts, trips, requests, daily logs, task messages, photos and videos. They are your company&rsquo;s business records and stay with it, shown under your name. Your company is responsible for them. To have them deleted, ask your company, and we&rsquo;ll help it do so.</li>
+            {/* remove when min app version ≥ 1.0.62 */}
+            <li><strong>Older app versions:</strong> if you delete your account from an older version of the app, that version still also deletes the records you created. To keep them with your company, update the app first.</li>
           </ul>
         </>
       ),
@@ -69,7 +71,7 @@ export const deleteAccountEn: LegalDoc = {
       content: (
         <ul>
           <li><strong>Backups.</strong> Our encrypted backups are not changed after the fact. Deleted data leaves them as the copies expire: database copies within 6 months, copies of files within 1 year.</li>
-          <li><strong>If your employer removed you</strong> (instead of you deleting your own account), the work records you created stay with that company as its business records, under your name, until the company deletes them or deletes the company. You can still ask us to delete your account.</li>
+          <li><strong>If your employer removed you</strong>, the work records you created stay with that company as its business records, under your name, until the company deletes them or deletes the company &mdash; the same as when you delete your own account. You can still ask us to delete your account.</li>
           <li><strong>Payment records</strong> held by Apple or Stripe for subscriptions are kept by them under their own policies.</li>
           <li><strong>Legal requirements.</strong> We may keep specific information longer if the law requires it.</li>
         </ul>

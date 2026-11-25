@@ -6,7 +6,7 @@ const SUPPORT = <a href="mailto:support@getstroyka.com">support@getstroyka.com</
 export const privacyEn: LegalDoc = {
   title: "Privacy Policy",
   subtitle: "What Stroyka collects, where it goes, how long we keep it, and how to delete it.",
-  effectiveDate: "Effective Date: April 2026 · Last Updated: 26 October 2026",
+  effectiveDate: "Effective Date: April 2026 · Last Updated: 24 November 2026",
   sections: [
     {
       id: "who-we-are",
@@ -157,10 +157,12 @@ export const privacyEn: LegalDoc = {
         <>
           <p>8.1. <strong>While you use Stroyka</strong>, we keep your data for as long as your account and your company exist.</p>
           <p>8.2. <strong>Cancelling a paid plan does not delete anything.</strong> Your company moves to the Free plan and your data stays.</p>
-          <p>8.3. <strong>Deleting your account (workers).</strong> In the app go to Profile &rarr; Privacy and data &rarr; Delete my account, or email {SUPPORT} from your account&rsquo;s email address (see <Link href="/delete-account">getstroyka.com/delete-account</Link>). This deletes your account <strong>and the records you created</strong> &mdash; your hours, costs and material purchases, trips, requests and daily logs. They disappear from the app immediately, and your name is shown as &ldquo;Deleted user&rdquo;. Within 30 days we permanently delete from our servers your login, your contact details, your push tokens, your location points, and your records and their photos.</p>
+          <p>8.3. <strong>Deleting your account (workers).</strong> In the app go to Profile &rarr; Privacy and data &rarr; Delete my account, or email {SUPPORT} from your account&rsquo;s email address (see <Link href="/delete-account">getstroyka.com/delete-account</Link>). This deletes your account and login, your contact details (phone), your push tokens, your notification settings, your location consent, and the GPS points recorded on your clock-ins and clock-outs. In the app this happens at once: you are signed out and can no longer sign in. <strong>The work records you created for your company stay with your company.</strong> Your hours, costs and material purchases, receipts, trips, requests, daily logs, task messages, photos and videos are your company&rsquo;s business records: they stay with the company, shown under your name, the same as when a company removes a worker (8.6). Your company is responsible for them. To have them deleted, ask your company, and we will help it do so.
+            {/* remove when min app version ≥ 1.0.62 */}
+            {" "}If you delete your account from an older version of the app, that version still also deletes the records you created. To keep them with your company, update the app first.</p>
           <p>8.4. <strong>Company owners.</strong> A company owner cannot delete only their own account. The owner deletes the whole company instead (8.5), or contacts us at {SUPPORT}.</p>
           <p>8.5. <strong>Deleting a company.</strong> The owner can delete the company in the app (Profile &rarr; Privacy and data &rarr; Delete my company). Everything is hidden from everyone in the company immediately, and within 30 days we permanently delete all of the company&rsquo;s data and files. Deleting a company does not cancel a subscription; cancel it separately (see our <Link href="/terms">Terms</Link>, section 7).</p>
-          <p>8.6. <strong>If a company removes a worker</strong> (rather than the worker deleting their own account), the work records that worker created stay with the company as its business records, shown under the worker&rsquo;s name, until the company deletes them or deletes the company. The worker can still ask us to delete their account as in 8.3.</p>
+          <p>8.6. <strong>If a company removes a worker</strong>, the work records that worker created stay with the company as its business records, shown under the worker&rsquo;s name, until the company deletes them or deletes the company. The same applies when a worker deletes their own account. The worker can still ask us to delete their account as in 8.3.</p>
           <p>8.7. <strong>Backups.</strong> Deleted data is not removed from existing backups straight away. It leaves them as those copies expire: database copies are kept for up to 6 months, and copies of files for up to 1 year.</p>
           <p>8.8. <strong>Analytics and error data</strong> are kept by PostHog and Sentry for their retention periods. Support emails are kept for as long as we need them to help you and to keep our records.</p>
           <p>8.9. We may keep information longer where the law requires it, or to resolve a dispute or enforce our Terms.</p>
