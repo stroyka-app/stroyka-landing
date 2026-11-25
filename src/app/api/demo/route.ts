@@ -8,8 +8,7 @@ import { buildDemoConfirmation, demoLang } from "@/lib/demoConfirmation";
 /// Escape user-supplied values before interpolating into email HTML. Without
 /// this, a name/company/etc. like `"><a href=...>` would inject markup into
 /// the email that lands in our inbox (HTML injection — email clients sandbox
-/// JS, but link/content injection is still phishing-grade). Mirrors the
-/// escaping already applied on the Telegram path below.
+/// JS, but link/content injection is still phishing-grade).
 function escapeHtml(s: string): string {
   return s
     .replace(/&/g, "&amp;")
@@ -167,34 +166,19 @@ async function sendEmail(data: {
   }
 }
 
-async function sendTelegram(data: {
-  name: string;
-  company: string;
-  crewSize: string;
-  email: string;
-  phone?: string;
-  challenge?: string;
-}): Promise<void> {
+/**
+ * A ping on Telegram that a demo request arrived — and nothing else. The
+ * lead itself (name, company, email, phone, message) goes only to our inbox
+ * by Resend (sendEmail): Telegram receives no personal data, which is what
+ * the Privacy Policy (section 5) and the Sub-processors page say.
+ */
+async function sendTelegramPing(): Promise<void> {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
   if (!token || !chatId) {
     console.warn("Telegram env vars not set — skipping notification");
     return;
   }
-
-  // Escape special Markdown characters in user-provided values
-  const esc = (s: string) => s.replace(/([_*[\]()~`>#+\-=|{}.!\\])/g, "\\$1");
-
-  const message = [
-    "🏗 *New Demo Request*",
-    "",
-    `*Name:* ${esc(data.name)}`,
-    `*Company:* ${esc(data.company)}`,
-    `*Crew Size:* ${esc(data.crewSize)}`,
-    `*Email:* ${esc(data.email)}`,
-    `*Phone:* ${esc(data.phone || "—")}`,
-    data.challenge ? `\n*Challenge:*\n${esc(data.challenge)}` : "",
-  ].join("\n");
 
   const res = await fetch(
     `https://api.telegram.org/bot${token}/sendMessage`,
@@ -203,8 +187,7 @@ async function sendTelegram(data: {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         chat_id: chatId,
-        text: message,
-        parse_mode: "MarkdownV2",
+        text: "New demo request — check email",
       }),
     }
   );
@@ -228,7 +211,7 @@ async function withinIpLimit(ip: string): Promise<boolean> {
 /**
  * One confirmation per address per day. Fails CLOSED: the confirmation is a
  * courtesy, and without the limiter it is a free mail relay to any address.
- * The lead itself still reaches us by email and Telegram.
+ * The lead itself still reaches us by email (Telegram gets only a ping).
  */
 async function mayConfirm(email: string): Promise<boolean> {
   return (await guardTake(ROUTE, "demo_confirm", email)) === "allowed";
@@ -281,7 +264,7 @@ export async function POST(request: Request) {
 
     const [emailResult, telegramResult, confirmationResult] = await Promise.allSettled([
       sendEmail(data),
-      sendTelegram(data),
+      sendTelegramPing(),
       confirm
         ? sendConfirmationEmail({ name: data.name, email: data.email, locale })
         : Promise.resolve(),
