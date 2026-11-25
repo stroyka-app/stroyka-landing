@@ -32,14 +32,14 @@ export const REPRESENTATIVES_INTERIM = {
  * (Terms 15.2, Privacy 15.2). Written out in each language, e.g.
  * "8 January 2027" / "8 de enero de 2027" / "8 января 2027 г.".
  */
-export const NOTICE_EFFECTIVE_EN = "{EFFECTIVE_DATE}";
-export const NOTICE_EFFECTIVE_ES = "{EFFECTIVE_DATE}";
-export const NOTICE_EFFECTIVE_RU = "{EFFECTIVE_DATE}";
+export const NOTICE_EFFECTIVE_EN = "27 December 2026";
+export const NOTICE_EFFECTIVE_ES = "27 de diciembre de 2026";
+export const NOTICE_EFFECTIVE_RU = "27 декабря 2026 г.";
 
 /** The publication date shown as "Last updated". Set it to the deploy date. */
-export const LAST_UPDATED_EN = "24 November 2026";
-export const LAST_UPDATED_ES = "24 de noviembre de 2026";
-export const LAST_UPDATED_RU = "24 ноября 2026 г.";
+export const LAST_UPDATED_EN = "25 November 2026";
+export const LAST_UPDATED_ES = "25 de noviembre de 2026";
+export const LAST_UPDATED_RU = "25 ноября 2026 г.";
 
 /**
  * How long PostHog keeps analytics events and Sentry keeps crash reports.
