@@ -1,15 +1,15 @@
 import Link from "next/link";
 import type { LegalDoc } from "../../privacy/content/types";
 import {
-  EU_REPRESENTATIVE,
   LAST_UPDATED_EN,
   NOTICE_EFFECTIVE_EN,
   POSTAL_ADDRESS,
-  UK_REPRESENTATIVE,
+  REPRESENTATIVES_INTERIM,
 } from "@/lib/legal";
 
 const SUPPORT = <a href="mailto:support@getstroyka.com">support@getstroyka.com</a>;
 const DATE = NOTICE_EFFECTIVE_EN;
+const REPS = REPRESENTATIVES_INTERIM.en;
 const SCC = (
   <a href="https://eur-lex.europa.eu/eli/dec_impl/2021/914/oj" target="_blank" rel="noopener noreferrer">
     Standard Contractual Clauses
@@ -71,9 +71,9 @@ export const dpaEn: LegalDoc = {
         <>
           <p>4.1. Your instructions are these Terms and this DPA, and what you and your users do in the Service: what you enter, the settings you choose, and the actions you take (for example exporting, deleting, sending an invoice). You may give further written instructions to {SUPPORT} if they are consistent with the Terms.</p>
           <p>4.2. <strong>GPS time clock.</strong> You decide whether to turn it on. When it is on, we record a Worker&rsquo;s location only at clock-in and clock-out, and only if that Worker has allowed it in the app and on their phone. A Worker can turn it off at any time and still clock in.</p>
-          <p>4.3. <strong>When a Worker deletes their own account.</strong> You instruct us that we delete the Worker&rsquo;s login, contact details, push tokens, notification settings, location consent, and the locations recorded on their clock-ins and clock-outs. <strong>From {DATE}</strong>, you also instruct us to keep the other records that Worker created in your Company Account &mdash; hours, costs and purchases, receipts, trips, requests, daily logs, task messages, photos and videos &mdash; shown under their name, until you delete them or the Company Account. Until {DATE} (and from app versions older than 1.0.62), the Worker&rsquo;s deletion also deletes those records.</p>
+          <p>4.3. <strong>When a Worker deletes their own account.</strong> You instruct us that we delete the Worker&rsquo;s login, contact details, push tokens, notification settings, location consent, and the locations recorded on their clock-ins and clock-outs. <strong>From {DATE}</strong>, you also instruct us to keep the other records that Worker created in your Company Account &mdash; hours, costs and purchases, receipts, trips, requests, daily logs, task messages, photos and videos &mdash; shown under their name, until you delete them or the Company Account. Until {DATE} (and from app versions older than 1.0.62), the Worker&rsquo;s deletion also deletes, within 31 days, the Worker&rsquo;s hours, costs and purchases, trips, requests and daily logs and the photos attached to them; the Worker&rsquo;s receipts, task messages and their photos and videos, and days off stay in your Company Account.</p>
           <p>4.4. <strong>When you remove a Worker,</strong> you instruct us to keep the records that Worker created in your Company Account until you delete them or the Company Account.</p>
-          <p>4.5. <strong>Reading receipts and lists.</strong> You instruct us to send a receipt photo or list to our AI sub-processor when one of your users chooses to scan and has allowed it in the app.</p>
+          <p>4.5. <strong>Reading receipts and lists.</strong> You instruct us to send a photo of a receipt or shopping list to our AI sub-processor when one of your users chooses to scan and has allowed it in the app.</p>
           <p>4.6. <strong>Deleting your company.</strong> When the owner deletes the Company Account, you instruct us to delete all Customer Personal Data as in section 12.</p>
         </>
       ),
@@ -85,9 +85,9 @@ export const dpaEn: LegalDoc = {
         <>
           <p>We keep technical and organisational measures appropriate to the risk, including:</p>
           <ul>
-            <li>encryption in transit (TLS) and at rest; encrypted local storage on phones (SQLCipher / sqlite3mc, keys in Keychain or Keystore);</li>
+            <li>encryption in transit (TLS) and at rest; an encrypted offline database on phones (SQLCipher / sqlite3mc, keys in Keychain or Keystore);</li>
             <li>separation of every company&rsquo;s data in the database itself (Row Level Security), and role-based access inside each company;</li>
-            <li>our own encrypted backups, stored separately (database copies kept up to 6 months, file copies up to 1 year);</li>
+            <li>our own encrypted backups, stored separately (database copies kept up to 7 months, file copies up to 13 months);</li>
             <li>access to production systems limited to the people who run the Service, with strong authentication;</li>
             <li>rate limiting, input validation and audit logging; and</li>
             <li>a written incident procedure and a record of every security incident.</li>
@@ -102,7 +102,7 @@ export const dpaEn: LegalDoc = {
       content: (
         <>
           <p>6.1. You give us general authorisation to use the sub-processors listed on our <Link href="/subprocessors">Sub-processors</Link> page.</p>
-          <p>6.2. We will email the account owner at least 30 days before we add or replace a sub-processor that processes Customer Personal Data, and update the page. You may object in writing within that time on reasonable data protection grounds. We will then try to find a solution; if we cannot, you may end the affected Service, and we will refund any prepaid website subscription fees for the period after it ends. Purchases made through Apple or Google are cancelled and refunded under their policies.</p>
+          <p>6.2. We will email the account owner at least 30 days before we add or replace a sub-processor that processes Customer Personal Data, and update the page; where a sub-processor must be replaced urgently for security or to keep the Service running, we tell you as soon as we can, and you may object in the same way. You may object in writing within that time on reasonable data protection grounds. We will then try to find a solution; if we cannot, you may end the affected Service, and we will refund any prepaid website subscription fees for the period after it ends. Purchases made through Apple or Google are cancelled and refunded under their policies.</p>
           <p>6.3. We impose on each sub-processor data protection terms that protect Customer Personal Data at least as well as this DPA, and we remain responsible to you for its performance.</p>
         </>
       ),
@@ -119,7 +119,7 @@ export const dpaEn: LegalDoc = {
       title: "8. Security Breaches",
       content: (
         <>
-          <p>8.1. If we become aware of a breach of security that leads to the accidental or unlawful destruction, loss, change, unauthorised disclosure of, or access to, Customer Personal Data, we notify the account owner by email without undue delay, and in any case within 48 hours after we confirm it.</p>
+          <p>8.1. If we become aware of a breach of security that leads to the accidental or unlawful destruction, loss, change, unauthorised disclosure of, or access to, Customer Personal Data, we notify the account owner by email without undue delay, and in any case within 72 hours after we become aware of it.</p>
           <p>8.2. We tell you, as far as we know them: what happened; the kinds and rough number of people and records affected; the likely consequences; what we have done and will do; and a contact. We send updates as we learn more.</p>
           <p>8.3. We help you meet your own duties to notify authorities and people. Notifying you is not an admission of fault.</p>
         </>
@@ -145,7 +145,7 @@ export const dpaEn: LegalDoc = {
       content: (
         <>
           <p>11.1. Customer Personal Data is stored in Frankfurt, Germany. Stroyka is in the United States and some sub-processors are in the United States or elsewhere, so the data is also accessed and processed outside the EEA, the UK and Switzerland.</p>
-          <p>11.2. <strong>EU and EEA.</strong> Where the GDPR applies to a transfer of Customer Personal Data to us, the European Commission&rsquo;s {SCC} (Decision (EU) 2021/914) are incorporated into this DPA by reference: Module Two (controller to processor) where you are a controller, and Module Three (processor to processor) where you are a processor. You are the data exporter and we are the data importer. For the Clauses: Clause 7 (docking) applies; in Clause 9, Option 2 (general authorisation) applies with the notice period in section 6.2; the optional wording in Clause 11 does not apply; in Clause 13, the supervisory authority is the one determined by Clause 13(a) &mdash; where you have no EU establishment, the authority of the member state in which our EU representative is located; Clauses 17 and 18 choose the law and courts of Ireland. Annex I is section 2 of this DPA and the parties&rsquo; details in sections 1 and 15; Annex II is section 5; Annex III is our Sub-processors page.</p>
+          <p>11.2. <strong>EU and EEA.</strong> Where the GDPR applies to a transfer of Customer Personal Data to us, the European Commission&rsquo;s {SCC} (Decision (EU) 2021/914) are incorporated into this DPA by reference: Module Two (controller to processor) where you are a controller, and Module Three (processor to processor) where you are a processor. You are the data exporter and we are the data importer. For the Clauses: Clause 7 (docking) applies; in Clause 9, Option 2 (general authorisation) applies with the notice period in section 6.2; the optional wording in Clause 11 does not apply; in Clause 13, the supervisory authority is the one determined by Clause 13(a): where you have no EU establishment but have appointed a representative under Article 27(1) GDPR, the authority of the member state where your representative is established, and otherwise the authority of one of the member states where the people whose data is transferred are located; Clauses 17 and 18 choose the law and courts of Ireland. Annex I is section 2 of this DPA and the parties&rsquo; details in sections 1 and 15; Annex II is section 5; Annex III is our Sub-processors page.</p>
           <p>11.3. <strong>United Kingdom.</strong> For transfers under UK data protection law, the UK Information Commissioner&rsquo;s {UK_ADDENDUM} to the EU Standard Contractual Clauses (version B1.0) is incorporated by reference. Its Tables 1 to 3 are completed with the information in 11.2 and in this DPA, and either party may end it as its Section 19 allows.</p>
           <p>11.4. <strong>Switzerland.</strong> The Clauses in 11.2 apply with the changes the Swiss Federal Data Protection Act needs: the competent authority is the Federal Data Protection and Information Commissioner, and people in Switzerland can bring claims there.</p>
           <p>11.5. Where a sub-processor is certified under the EU&ndash;US Data Privacy Framework (or its UK Extension or the Swiss&ndash;US framework), we may rely on that certification for onward transfers to it; otherwise we use the Standard Contractual Clauses with it.</p>
@@ -157,7 +157,7 @@ export const dpaEn: LegalDoc = {
       id: "end",
       title: "12. Return and Deletion",
       content: (
-        <p>You can export your data at any time (Terms, Section 4.3) and for 30 days after termination (Terms, Section 17.4). When the Company Account is deleted, we delete Customer Personal Data from the live Service within 30 days. It then leaves our encrypted backups as they expire (database copies within 6 months, file copies within 1 year), and until then it is kept isolated and not used. We confirm deletion in writing if you ask. We keep data longer only where the law requires it.</p>
+        <p>You can export your data at any time (Terms, Section 4.3) and for 30 days after termination (Terms, Section 17.4). When the Company Account is deleted, we delete Customer Personal Data from the live Service within 31 days. It then leaves our encrypted backups as they expire (database copies within 7 months, file copies within 13 months), and until then it is kept isolated and not used. We confirm deletion in writing if you ask. We keep data longer only where the law requires it.</p>
       ),
     },
     {
@@ -182,7 +182,7 @@ export const dpaEn: LegalDoc = {
           <p>15.1. This DPA lasts as long as we process Customer Personal Data for you.</p>
           <p>15.2. Each party&rsquo;s liability under this DPA is subject to the limits in the Terms (Section 13), except where the Standard Contractual Clauses or the law do not allow that.</p>
           <p>15.3. We may update this DPA as the Terms (Section 15) describe, and we will not reduce the protection it gives Customer Personal Data without at least 30 days&rsquo; notice.</p>
-          <p>15.4. Contact: {SUPPORT}, with &ldquo;DPA&rdquo; in the subject line. Our representative in the EU: {EU_REPRESENTATIVE}. In the UK: {UK_REPRESENTATIVE}.</p>
+          <p>15.4. Contact: {SUPPORT}, with &ldquo;DPA&rdquo; in the subject line. {REPS}</p>
         </>
       ),
     },

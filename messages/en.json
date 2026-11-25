@@ -1128,7 +1128,7 @@
   },
   "cookies": {
     "title": "Cookies",
-    "body": "With your OK, we use analytics cookies (PostHog) to see how people use this site and, outside the EU and UK, the Meta pixel to measure our ads. Nothing loads unless you accept. You can change your mind any time under Cookie settings at the bottom of the page.",
+    "body": "With your OK, we use analytics cookies (PostHog) to see how people use this site and, outside the EU and UK, the Meta pixel to measure our ads. Neither loads unless you accept. You can change your mind any time under Cookie settings at the bottom of the page.",
     "learnMore": "Privacy Policy",
     "accept": "Accept",
     "reject": "Reject",

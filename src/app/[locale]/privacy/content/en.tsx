@@ -1,17 +1,17 @@
 import Link from "next/link";
 import type { LegalDoc } from "./types";
 import {
-  EU_REPRESENTATIVE,
   LAST_UPDATED_EN,
   NOTICE_EFFECTIVE_EN,
   POSTAL_ADDRESS,
+  REPRESENTATIVES_INTERIM,
   RETENTION,
-  UK_REPRESENTATIVE,
 } from "@/lib/legal";
 
 const SUPPORT = <a href="mailto:support@getstroyka.com">support@getstroyka.com</a>;
 const DATE = NOTICE_EFFECTIVE_EN;
 const R = RETENTION.en;
+const REPS = REPRESENTATIVES_INTERIM.en;
 
 export const privacyEn: LegalDoc = {
   title: "Privacy Policy",
@@ -29,7 +29,7 @@ export const privacyEn: LegalDoc = {
             <li><strong>Your company decides about its records.</strong> For what a company enters about its workers and its clients &mdash; hours, pay rates, clock-in locations, costs, receipts, photos, messages, client details and invoices &mdash; the company decides what to collect and why. In privacy law it is the &ldquo;controller&rdquo; (in some countries the &ldquo;responsable&rdquo;, &ldquo;operator&rdquo; or &ldquo;data fiduciary&rdquo;). We are its processor: we handle that information only to run the service for it, under our <Link href="/dpa">Data Processing Addendum</Link>. The company is responsible for having the right to store and use it and for telling its people where the law requires.</li>
             <li><strong>We decide about our own data.</strong> For your account and sign-in, billing, usage analytics, crash reports, security logs, our emails to you and our website, Stroyka is the controller.</li>
           </ul>
-          <p><strong>Privacy contact.</strong> Our founder is responsible for privacy at Stroyka. Write to {SUPPORT} with &ldquo;Privacy&rdquo; in the subject line. This is also our Data Protection Officer for the Philippine Data Privacy Act and our person in charge of the protection of personal information under Quebec law. Our representatives in the EU and the UK are listed in section 16.</p>
+          <p><strong>Privacy contact.</strong> Our founder is responsible for privacy at Stroyka. Write to {SUPPORT} with &ldquo;Privacy&rdquo; in the subject line. This is also our Data Protection Officer for the Philippine Data Privacy Act and our person in charge of the protection of personal information under Quebec law. We are appointing representatives in the EU and the UK (section 16).</p>
         </>
       ),
     },
@@ -52,7 +52,7 @@ export const privacyEn: LegalDoc = {
           <ul>
             <li><strong>Device information:</strong> device model, operating system, app version and language.</li>
             <li><strong>Push notification token:</strong> an identifier that lets us send notifications to your device.</li>
-            <li><strong>Usage analytics (PostHog), only if you agree.</strong> From app version 1.0.62 the app asks you once, and analytics stay off until you say yes. You can change your answer any time in Profile &rarr; Privacy and data &rarr; Share usage analytics. Older app versions send usage analytics unless you switch them off in the same place. When on, we receive which screens and features are used, linked to your user ID, your company ID and your role; your IP address is received and an approximate location (city and country) is derived from it.</li>
+            <li><strong>Usage analytics (PostHog), only if you agree.</strong> From app version 1.0.62 the app asks you once, and analytics stay off until you say yes. You can change your answer any time in Profile &rarr; Settings &rarr; Privacy and data &rarr; Share usage analytics. Older app versions send usage analytics unless you switch them off in the same place. When on, we receive which screens and features are used, linked to your user ID, your company ID and your role; your IP address is received and an approximate location (city and country) is derived from it.</li>
             <li><strong>Error and crash reports (Sentry), always on:</strong> error details, device, operating system and app version, linked to your user ID, company ID and role. We need these to find and fix faults and keep the app secure, so they are not switchable.</li>
             <li><strong>Server logs:</strong> IP addresses and request details, as part of normal operation and security.</li>
           </ul>
@@ -63,7 +63,7 @@ export const privacyEn: LegalDoc = {
             <li>Location is captured only at clock-in and clock-out &mdash; never continuously, and never in the background.</li>
             <li>Each captured point (latitude, longitude and accuracy) is stored with that time entry and is visible to your company&rsquo;s managers.</li>
             <li>Your company decides whether to use the GPS time clock, and is responsible for having a lawful reason and for telling you about it.</li>
-            <li>Whatever your company decides, you choose: Stroyka asks you in the app and your phone asks for its permission. You can say no, and you can turn it off at any time in the app (Profile &rarr; Privacy and data &rarr; Location at clock-in) or in your phone&rsquo;s settings. You can still clock in and out; the entry is just recorded without a location. We record when you turned it on and off.</li>
+            <li>Whatever your company decides, you choose: Stroyka asks you in the app and your phone asks for its permission. You can say no, and you can turn it off at any time in the app (Profile &rarr; Settings &rarr; Privacy and data &rarr; Location at clock-in) or in your phone&rsquo;s settings. You can still clock in and out; the entry is just recorded without a location. We record when you turned it on and off.</li>
             <li>We never use your location for advertising or to track you across other apps or websites.</li>
           </ul>
 
@@ -95,7 +95,7 @@ export const privacyEn: LegalDoc = {
           <li><strong>To run the service:</strong> store and sync your company&rsquo;s records, calculate costs and pay, build reports and invoices, and let bosses and workers work together.</li>
           <li><strong>To sign you in</strong> and to give each person the access their role allows.</li>
           <li><strong>To check job-site attendance</strong> when the GPS time clock is on.</li>
-          <li><strong>To read receipts and shopping lists, if you allow it.</strong> From app version 1.0.62, the first time you scan, the app tells you that the photo (or the list text) is sent to our AI provider, Anthropic, and asks your permission. If you say no, nothing is sent and you can enter the items by hand. Older app versions send it when you choose to scan, without that separate notice. Anthropic returns the items and amounts it reads, and you check them before saving. Under its commercial terms, Anthropic does not use this content to train its models, and it deletes it after a limited period.</li>
+          <li><strong>To read receipts and shopping lists, if you allow it.</strong> From app version 1.0.62, the first time you scan, the app tells you that the photo is sent to our AI provider, Anthropic, and asks your permission. If you say no, nothing is sent and you can enter the items by hand. Older app versions send it when you choose to scan, without that separate notice. Anthropic returns the items and amounts it reads, and you check them before saving. Under its commercial terms, Anthropic does not use this content to train its models, and it deletes it after a limited period.</li>
           <li><strong>To send email:</strong> sign-in and password emails, worker invitations, and invoices and payment reminders that a company sends to its own clients through Stroyka. After you sign up we also send a welcome email from our founder, and we may write to you personally about your experience. Reply &ldquo;stop&rdquo; and we will stop.</li>
           <li><strong>To send push notifications</strong> about work in your company. You can turn them off in your phone&rsquo;s settings.</li>
           <li><strong>To improve the service:</strong> usage analytics (if you agree) and error reports help us find bugs and decide what to build.</li>
@@ -112,9 +112,9 @@ export const privacyEn: LegalDoc = {
           <p>For each purpose: the legal basis we rely on (this matters most under EU and UK law) and how long we keep the information.</p>
           <ul>
             <li><strong>Your account and sign-in.</strong> Basis: our contract with you. Kept: while your account exists; deleted when you delete it (section 9).</li>
-            <li><strong>Your company&rsquo;s records</strong> (work records, clients, invoices, clock-in locations). We process these on your company&rsquo;s behalf; your company chooses the legal basis. Kept: as long as your company keeps them, and deleted within 30 days after the company is deleted (plus backup expiry, 9.7).</li>
+            <li><strong>Your company&rsquo;s records</strong> (work records, clients, invoices, clock-in locations). We process these on your company&rsquo;s behalf; your company chooses the legal basis. Kept: as long as your company keeps them, and deleted within 31 days after the company is deleted (plus backup expiry, 9.7).</li>
             <li><strong>Billing and subscriptions.</strong> Basis: our contract; and legal obligations for tax and accounting records. Kept: while the subscription runs, then as long as tax law requires. Apple, Google and Stripe keep their own payment records.</li>
-            <li><strong>Usage analytics (PostHog).</strong> Basis: your consent. Kept: {R.posthog}. You can withdraw consent at any time (section 10).</li>
+            <li><strong>Usage analytics (PostHog).</strong> Basis: your consent. Kept: usage events {R.posthog}; the analytics profile they are linked to (your user ID, company ID and role) until we delete it, which we do when you ask. You can withdraw consent at any time (section 10).</li>
             <li><strong>Crash reports (Sentry).</strong> Basis: our legitimate interest in keeping the app working and secure. Kept: {R.sentry}.</li>
             <li><strong>Security logs and rate limiting.</strong> Basis: our legitimate interest in preventing abuse. Kept: rate-limit hashes 24 hours; server logs no longer than 90 days.</li>
             <li><strong>Welcome and founder follow-up emails.</strong> Basis: our legitimate interest in helping new customers get started. Kept: until you object (reply &ldquo;stop&rdquo;) or delete your account.</li>
@@ -137,7 +137,7 @@ export const privacyEn: LegalDoc = {
           <p><strong>Service providers</strong> that run parts of Stroyka for us, each receiving only what it needs for its job. The full list, with locations, is on our <Link href="/subprocessors">Sub-processors</Link> page:</p>
           <ul>
             <li><strong>Supabase</strong> &mdash; our database, sign-in, file storage and server functions. Hosted on Amazon Web Services in Frankfurt, Germany. Holds all app data and files.</li>
-            <li><strong>Anthropic</strong> (US) &mdash; reads receipt photos and shopping-list photos or text when you use that feature and have allowed it.</li>
+            <li><strong>Anthropic</strong> (US) &mdash; reads photos of receipts and shopping lists when you use that feature and have allowed it.</li>
             <li><strong>PostHog</strong> (US) &mdash; usage analytics for the app and website, only with your consent.</li>
             <li><strong>Sentry</strong> (US) &mdash; error and crash reports.</li>
             <li><strong>Resend</strong> (US) &mdash; sends our emails, including invoices and reminders to a company&rsquo;s clients. It receives the recipient&rsquo;s address and the email content.</li>
@@ -146,11 +146,12 @@ export const privacyEn: LegalDoc = {
             <li><strong>RevenueCat</strong> (US) &mdash; tracks the status of subscriptions bought in the iPhone and Android apps. It receives your company&rsquo;s ID and purchase information from Apple or Google.</li>
             <li><strong>Stripe</strong> (US) &mdash; checkout and billing for subscriptions bought on our website. Stripe receives your payment details directly.</li>
             <li><strong>Cloudflare</strong> &mdash; our domain and DNS, forwarding of email sent to our addresses, and storage for our encrypted backups.</li>
+            <li><strong>GitHub</strong> (Microsoft, US) &mdash; runs our backup jobs. Each night for the database, and each week for uploaded files, the copy is made on a temporary GitHub-hosted machine, encrypted there and stored with Cloudflare; no backup copy is kept on GitHub after the job ends.</li>
             <li><strong>Vercel</strong> (US) &mdash; hosts our website, processes standard web logs including IP addresses, and counts page views without cookies.</li>
-            <li><strong>Telegram</strong> &mdash; notifies our team when someone submits the demo form on our website, including the details in the form.</li>
+            <li><strong>Telegram</strong> &mdash; tells our team that someone submitted the demo form on our website. It receives no personal data: the details of the request reach us only by email.</li>
             <li><strong>Meta</strong> &mdash; the Meta pixel on our website only, as above. It is not in the app. <a href="https://www.facebook.com/privacy/policy" target="_blank" rel="noopener noreferrer">Meta Privacy Policy</a></li>
           </ul>
-          <p>Our service providers may use your information only to provide their service to us, under contract terms that require them to protect it at least as well as this policy does, and none of them may use it for its own advertising. The exceptions act under their own terms and privacy policies: Apple and Google for purchases and sign-in made through them, Meta for the website pixel, and Telegram for demo-form notifications.</p>
+          <p>Our service providers may use your information only to provide their service to us, under contract terms that require them to protect it at least as well as this policy does, and none of them may use it for its own advertising. The exceptions act under their own terms and privacy policies: Apple and Google for purchases and sign-in made through them, and Meta for the website pixel.</p>
           <p>We may also disclose information if the law, a court or a government authority requires it, or if we believe it is necessary to protect the rights, property or safety of Stroyka, our users or the public.</p>
         </>
       ),
@@ -187,11 +188,11 @@ export const privacyEn: LegalDoc = {
       content: (
         <>
           <p>8.1. Data is encrypted in transit (TLS) and encrypted at rest by our hosting provider.</p>
-          <p>8.2. Data the app keeps on your phone for offline use is encrypted (SQLCipher / sqlite3mc), with keys kept in the phone&rsquo;s secure storage (Keychain on iPhone, Keystore on Android).</p>
-          <p>8.3. We make our own backups of the database and of uploaded files. They are encrypted before they leave our systems and are stored with Cloudflare.</p>
+          <p>8.2. The database the app keeps on your phone for offline use is encrypted (SQLCipher / sqlite3mc), with keys kept in the phone&rsquo;s secure storage (Keychain on iPhone, Keystore on Android). Photos and videos waiting to upload are kept as ordinary files until they are sent, protected by your phone&rsquo;s own encryption.</p>
+          <p>8.3. We make our own backups of the database (every night) and of uploaded files (every week). The backup jobs run on GitHub Actions: each copy is made on a temporary GitHub-hosted machine in the US, encrypted there, and stored only in encrypted form with Cloudflare. No backup copy is kept on GitHub after the job ends.</p>
           <p>8.4. We use role-based access, rate limiting, input validation and audit logging.</p>
           <p>8.5. No method of storage or transmission is completely secure, and we cannot guarantee absolute security.</p>
-          <p>8.6. <strong>If something goes wrong.</strong> If we learn of a security breach affecting personal information we hold, we tell the companies affected without undue delay, and within 48 hours of confirming it. We tell affected people and the authorities where the law requires &mdash; for example the data protection authorities within 72 hours where we are the controller under EU or UK law. We keep a record of every security incident.</p>
+          <p>8.6. <strong>If something goes wrong.</strong> If we learn of a security breach affecting personal information we hold, we tell the companies affected without undue delay, and within 72 hours of becoming aware of it. We tell affected people and the authorities where the law requires &mdash; for example the data protection authorities within 72 hours where we are the controller under EU or UK law. We keep a record of every security incident.</p>
         </>
       ),
     },
@@ -202,14 +203,21 @@ export const privacyEn: LegalDoc = {
         <>
           <p>9.1. <strong>While you use Stroyka</strong>, we keep your data for as long as your account and your company exist. Section 4 lists how long we keep each kind of information.</p>
           <p>9.2. <strong>Cancelling a paid plan does not delete anything.</strong> Your company moves to the Free plan and your data stays.</p>
-          <p>9.3. <strong>Deleting your account (workers).</strong> In the app go to Profile &rarr; Privacy and data &rarr; Delete my account, or email {SUPPORT} from your account&rsquo;s email address (see <Link href="/delete-account">getstroyka.com/delete-account</Link>). This deletes your account and login, your contact details (phone), your push tokens, your notification settings, your location consent, and the GPS points recorded on your clock-ins and clock-outs. In the app this happens at once: you are signed out and can no longer sign in.</p>
-          <p><strong>From {DATE}, the work records you created for your company stay with your company.</strong> Your hours, costs and material purchases, receipts, trips, requests, daily logs, task messages, photos and videos are your company&rsquo;s business records: they stay with the company, shown under your name, the same as when a company removes a worker (9.6). Your company is responsible for them; employers often have to keep work and pay records by law. To have them deleted, ask your company: it can delete them in the app, and at its request we will remove them from our servers permanently. <strong>Until then, deleting your account also deletes the records you created</strong>, and they are permanently deleted from our servers within 30 days.
+          <p>9.3. <strong>Deleting your account (workers).</strong> In the app go to Profile &rarr; Settings &rarr; Privacy and data &rarr; Delete my account, or email {SUPPORT} from your account&rsquo;s email address (see <Link href="/delete-account">getstroyka.com/delete-account</Link>). Either way you are signed out and can no longer sign in. What else happens depends on the date.</p>
+          <p><strong>From {DATE}, the work records you created for your company stay with your company.</strong> Your account and login, your contact details (phone), your push tokens, your notification settings, your location consent, and the GPS points recorded on your clock-ins and clock-outs are deleted at once. Your hours, costs and material purchases, receipts, trips, requests, daily logs, task messages, photos and videos are your company&rsquo;s business records: they stay with the company, shown under your name, the same as when a company removes a worker (9.6). Your company is responsible for them; employers often have to keep work and pay records by law. To have them deleted, ask your company: it can delete them in the app, and at its request we will remove them from our servers permanently.</p>
+          <p><strong>Until {DATE}</strong> (in the app or by email):</p>
+          <ul>
+            <li><strong>At once:</strong> your login is removed (your email address and any Apple or Google sign-in), your name is replaced with &ldquo;Deleted user&rdquo;, your phone number and your in-app notifications are deleted, and your hours (with the GPS points recorded on them), costs and material purchases, trips, requests and daily logs disappear from the app.</li>
+            <li><strong>Within 31 days:</strong> those records and the photos attached to them are permanently deleted from our servers, together with your push tokens, notification settings, pay rate and location consent.</li>
+            <li><strong>Not deleted:</strong> receipts and their photos, your task messages and their photos and videos, and your days off. They stay with your company, shown as &ldquo;Deleted user&rdquo;, until the company deletes them or deletes the company. To have them deleted, ask your company, or ask us and we will pass your request to it (section 10).</li>
+          </ul>
+          <p>
             {/* remove when min app version ≥ 1.0.62 */}
-            {" "}An app version older than 1.0.62 also deletes those records, even after {DATE}, until we retire those versions; to keep them with your company, update the app first.</p>
+            An app version older than 1.0.62 deletes as described under &ldquo;Until {DATE}&rdquo;, even after that date, until we retire those versions; to keep your records with your company, update the app first.</p>
           <p>9.4. <strong>Company owners.</strong> A company owner cannot delete only their own account. The owner deletes the whole company instead (9.5), or contacts us at {SUPPORT}.</p>
-          <p>9.5. <strong>Deleting a company.</strong> The owner can delete the company in the app (Profile &rarr; Privacy and data &rarr; Delete my company). Everything is hidden from everyone in the company immediately, and within 30 days we permanently delete all of the company&rsquo;s data and files. Deleting a company does not cancel a subscription; cancel it separately (see our <Link href="/terms">Terms</Link>, section 7).</p>
+          <p>9.5. <strong>Deleting a company.</strong> The owner can delete the company in the app (Profile &rarr; Settings &rarr; Privacy and data &rarr; Delete my company). Everything is hidden from everyone in the company immediately, and within 31 days we permanently delete all of the company&rsquo;s data and files. Deleting a company does not cancel a subscription; cancel it separately (see our <Link href="/terms">Terms</Link>, section 7).</p>
           <p>9.6. <strong>If a company removes a worker</strong>, the work records that worker created stay with the company as its business records, shown under the worker&rsquo;s name, until the company deletes them or deletes the company. From {DATE} the same applies when a worker deletes their own account. A removed worker can still ask us to delete their account as in 9.3.</p>
-          <p>9.7. <strong>Backups.</strong> Deleted data is not removed from existing backups straight away. It leaves them as those copies expire: database copies are kept for up to 6 months, and copies of files for up to 1 year.</p>
+          <p>9.7. <strong>Backups.</strong> Deleted data is not removed from existing backups straight away. It leaves them as those copies expire: database copies are kept for up to 7 months, and copies of files for up to 13 months.</p>
           <p>9.8. <strong>Analytics and error data</strong> are kept for {R.posthog} (PostHog) and {R.sentry} (Sentry). Support emails are kept for as long as we need them to help you and to keep a record of what we agreed.</p>
           <p>9.9. We may keep specific information longer where the law requires it, or to resolve a dispute or enforce our Terms, and only for as long as that need lasts.</p>
         </>
@@ -223,9 +231,9 @@ export const privacyEn: LegalDoc = {
           <h3>Everyone</h3>
           <ul>
             <li><strong>See and correct:</strong> you can view your data in the app and update your details in Profile.</li>
-            <li><strong>Download:</strong> Profile &rarr; Privacy and data &rarr; Download my data gives you a copy of your data. Bosses can also export reports (for example to PDF, CSV or Excel).</li>
+            <li><strong>Download:</strong> Profile &rarr; Settings &rarr; Privacy and data &rarr; Download my data gives you a copy of your data. Bosses can also export reports (for example to PDF, CSV or Excel).</li>
             <li><strong>Delete:</strong> see section 9 and <Link href="/delete-account">getstroyka.com/delete-account</Link>.</li>
-            <li><strong>Analytics:</strong> Profile &rarr; Privacy and data &rarr; Share usage analytics. On the website: Cookie settings at the bottom of any page.</li>
+            <li><strong>Analytics:</strong> Profile &rarr; Settings &rarr; Privacy and data &rarr; Share usage analytics. On the website: Cookie settings at the bottom of any page.</li>
             <li><strong>Location:</strong> turn off Location at clock-in in the same screen, or in your phone&rsquo;s settings.</li>
             <li><strong>Emails from our founder:</strong> reply &ldquo;stop&rdquo;.</li>
           </ul>
@@ -261,8 +269,8 @@ export const privacyEn: LegalDoc = {
       content: (
         <>
           <ul>
-            <li><strong>EU and EEA.</strong> Our EU representative under Article 27 GDPR: {EU_REPRESENTATIVE}. You can complain to the data protection authority where you live or work (<a href="https://www.edpb.europa.eu/about-edpb/about-edpb/members_en" target="_blank" rel="noopener noreferrer">list of authorities</a>).</li>
-            <li><strong>United Kingdom.</strong> Our UK representative: {UK_REPRESENTATIVE}. If you are unhappy with how we handled your information, write to us first: we acknowledge complaints within 30 days and tell you what we will do. You can also complain to the Information Commissioner&rsquo;s Office (<a href="https://ico.org.uk/make-a-complaint/" target="_blank" rel="noopener noreferrer">ico.org.uk</a>).</li>
+            <li><strong>EU and EEA.</strong> {REPS} You can complain to the data protection authority where you live or work (<a href="https://www.edpb.europa.eu/about-edpb/about-edpb/members_en" target="_blank" rel="noopener noreferrer">list of authorities</a>).</li>
+            <li><strong>United Kingdom.</strong> If you are unhappy with how we handled your information, write to us first: we acknowledge complaints within 30 days and tell you what we will do. You can also complain to the Information Commissioner&rsquo;s Office (<a href="https://ico.org.uk/make-a-complaint/" target="_blank" rel="noopener noreferrer">ico.org.uk</a>).</li>
             <li><strong>United States.</strong> We do not sell personal information. If a breach affects you, we notify you as your state&rsquo;s law requires. California rights are in section 10.</li>
             <li><strong>Mexico.</strong> This policy is our full privacy notice (<em>aviso de privacidad integral</em>). You can exercise your ARCO rights (access, rectification, cancellation and opposition) and revoke consent as in section 10; we reply within 20 days and carry out what we decided within 15 days after that. Authority: Secretaría Anticorrupción y Buen Gobierno.</li>
             <li><strong>Philippines.</strong> Our Data Protection Officer is the privacy contact in section 1. You can complain to the National Privacy Commission (<a href="https://privacy.gov.ph" target="_blank" rel="noopener noreferrer">privacy.gov.ph</a>).</li>
@@ -281,7 +289,7 @@ export const privacyEn: LegalDoc = {
       content: (
         <>
           <p>12.1. <strong>The app</strong> contains no advertising and does not track you across other companies&rsquo; apps or websites. Usage analytics in the app need your consent (section 2.2).</p>
-          <p>12.2. <strong>Our website</strong> asks before it sets any optional cookie. Until you choose Accept in the cookie banner, neither PostHog nor the Meta pixel loads. Reject is as easy as Accept, and you can change your choice at any time with Cookie settings at the bottom of every page. If your browser sends a Global Privacy Control signal, we treat it as Reject.</p>
+          <p>12.2. <strong>Our website</strong> asks before it sets any optional cookie. Until you choose Accept in the cookie banner, neither PostHog nor the Meta pixel loads. Reject is as easy as Accept, and you can change your choice at any time with Cookie settings at the bottom of every page. If your browser sends a Global Privacy Control signal, we treat it as Reject unless you choose Accept yourself in Cookie settings.</p>
           <p>12.3. What the website sets:</p>
           <ul>
             <li><strong>sx_consent</strong> (necessary) &mdash; remembers your cookie choice. 180 days.</li>
@@ -315,7 +323,7 @@ export const privacyEn: LegalDoc = {
         <>
           <p>15.1. We may update this policy. For material changes we will notify you by email or in the app at least 30 days before they take effect. If you keep using Stroyka after that date, the updated policy applies.</p>
           <p>15.2. <strong>From {DATE}</strong>, 15.1 is replaced by this rule: changes that reduce your rights or expand how we use your information still take effect at least 30 days after we notify you by email or in the app. Changes that the law requires, that fix a security problem, or that do not reduce your rights can take effect when we publish them; we still tell you about material ones. If you do not agree to a change, you can delete your account before it takes effect.</p>
-          <p>15.3. <strong>This version.</strong> Published {LAST_UPDATED_EN}. It takes effect when published, except two changes that take effect on {DATE}: what deleting a worker account keeps (9.3 and 9.6) and the change-notice rule in 15.2. It adds: a table of legal bases and retention (4), how usage analytics now ask first (2.2), the notice before receipts are read by AI (3), our address and EU/UK representatives (1, 11, 16), international transfers (6), who at Stroyka sees company data (7), breach notice (8.6), response times and complaint routes by country (10, 11), and the website cookie banner (12).</p>
+          <p>15.3. <strong>This version.</strong> Published {LAST_UPDATED_EN}. It takes effect when published, except two changes that take effect on {DATE}: what deleting a worker account keeps (9.3 and 9.6) and the change-notice rule in 15.2. It adds: a table of legal bases and retention (4), how usage analytics now ask first (2.2), the notice before receipts are read by AI (3), our address and how to reach us from the EU and the UK (1, 11, 16), international transfers (6), who at Stroyka sees company data (7), breach notice (8.6), response times and complaint routes by country (10, 11), and the website cookie banner (12).</p>
         </>
       ),
     },
@@ -331,10 +339,7 @@ export const privacyEn: LegalDoc = {
             Email: {SUPPORT} (put &ldquo;Privacy&rdquo; in the subject line)<br />
             Website: <a href="https://getstroyka.com">getstroyka.com</a>
           </p>
-          <p>
-            EU representative: {EU_REPRESENTATIVE}<br />
-            UK representative: {UK_REPRESENTATIVE}
-          </p>
+          <p>{REPS}</p>
         </>
       ),
     },

@@ -1,17 +1,17 @@
 import Link from "next/link";
 import type { LegalDoc } from "./types";
 import {
-  EU_REPRESENTATIVE,
   LAST_UPDATED_ES,
   NOTICE_EFFECTIVE_ES,
   POSTAL_ADDRESS,
+  REPRESENTATIVES_INTERIM,
   RETENTION,
-  UK_REPRESENTATIVE,
 } from "@/lib/legal";
 
 const SUPPORT = <a href="mailto:support@getstroyka.com">support@getstroyka.com</a>;
 const DATE = NOTICE_EFFECTIVE_ES;
 const R = RETENTION.es;
+const REPS = REPRESENTATIVES_INTERIM.es;
 
 export const privacyEs: LegalDoc = {
   title: "Política de Privacidad",
@@ -29,7 +29,7 @@ export const privacyEs: LegalDoc = {
             <li><strong>Tu empresa decide sobre sus registros.</strong> Sobre lo que una empresa ingresa de sus trabajadores y clientes &mdash; horas, tarifas, ubicaciones al marcar, gastos, recibos, fotos, mensajes, datos de clientes y facturas &mdash; la empresa decide qué recopilar y para qué. En las leyes de privacidad es el &ldquo;responsable&rdquo; (en otros países, &ldquo;controller&rdquo;, &ldquo;operador&rdquo; o &ldquo;data fiduciary&rdquo;). Nosotros somos su encargado: tratamos esa información solo para prestarle el servicio, conforme a nuestro <Link href="/es/dpa">Anexo de Tratamiento de Datos</Link>. La empresa es responsable de tener derecho a guardarla y usarla y de informar a su gente cuando la ley lo exija.</li>
             <li><strong>Nosotros decidimos sobre nuestros propios datos.</strong> Para tu cuenta e inicio de sesión, la facturación, la analítica de uso, los informes de fallos, los registros de seguridad, nuestros correos y nuestro sitio web, Stroyka es el responsable.</li>
           </ul>
-          <p><strong>Contacto de privacidad.</strong> Nuestro fundador es el responsable de la privacidad en Stroyka. Escribe a {SUPPORT} con &ldquo;Privacy&rdquo; en el asunto. También es nuestro Oficial de Protección de Datos según la Ley de Privacidad de Datos de Filipinas y la persona a cargo de la protección de la información personal según la ley de Quebec. Nuestros representantes en la UE y el Reino Unido figuran en la sección 16.</p>
+          <p><strong>Contacto de privacidad.</strong> Nuestro fundador es el responsable de la privacidad en Stroyka. Escribe a {SUPPORT} con &ldquo;Privacy&rdquo; en el asunto. También es nuestro Oficial de Protección de Datos según la Ley de Privacidad de Datos de Filipinas y la persona a cargo de la protección de la información personal según la ley de Quebec. Estamos designando representantes en la UE y el Reino Unido (sección 16).</p>
         </>
       ),
     },
@@ -52,7 +52,7 @@ export const privacyEs: LegalDoc = {
           <ul>
             <li><strong>Datos del dispositivo:</strong> modelo, sistema operativo, versión de la app e idioma.</li>
             <li><strong>Token de notificaciones push:</strong> un identificador que nos permite enviar notificaciones a tu dispositivo.</li>
-            <li><strong>Analítica de uso (PostHog), solo si aceptas.</strong> Desde la versión 1.0.62, la app te pregunta una vez y la analítica queda desactivada hasta que digas que sí. Puedes cambiar tu respuesta cuando quieras en Perfil &rarr; Privacidad y datos &rarr; Compartir datos de uso. Las versiones anteriores de la app envían analítica de uso salvo que la desactives en ese mismo lugar. Cuando está activada, recibimos qué pantallas y funciones se usan, vinculadas a tu ID de usuario, el ID de tu empresa y tu rol; recibimos tu dirección IP y a partir de ella se deduce una ubicación aproximada (ciudad y país).</li>
+            <li><strong>Analítica de uso (PostHog), solo si aceptas.</strong> Desde la versión 1.0.62, la app te pregunta una vez y la analítica queda desactivada hasta que digas que sí. Puedes cambiar tu respuesta cuando quieras en Perfil &rarr; Ajustes &rarr; Privacidad y datos &rarr; Compartir datos de uso. Las versiones anteriores de la app envían analítica de uso salvo que la desactives en ese mismo lugar. Cuando está activada, recibimos qué pantallas y funciones se usan, vinculadas a tu ID de usuario, el ID de tu empresa y tu rol; recibimos tu dirección IP y a partir de ella se deduce una ubicación aproximada (ciudad y país).</li>
             <li><strong>Informes de errores y fallos (Sentry), siempre activos:</strong> detalles del error, dispositivo, sistema operativo y versión de la app, vinculados a tu ID de usuario, ID de empresa y rol. Los necesitamos para encontrar y corregir fallos y mantener la app segura, así que no se pueden desactivar.</li>
             <li><strong>Registros del servidor:</strong> direcciones IP y detalles de las solicitudes, como parte del funcionamiento normal y la seguridad.</li>
           </ul>
@@ -63,7 +63,7 @@ export const privacyEs: LegalDoc = {
             <li>La ubicación se toma solo al marcar entrada y salida: nunca de forma continua y nunca en segundo plano.</li>
             <li>Cada punto registrado (latitud, longitud y precisión) se guarda con ese registro de tiempo y lo ven los jefes de tu empresa.</li>
             <li>Tu empresa decide si usa el reloj con GPS y es responsable de tener una razón legal y de informarte.</li>
-            <li>Decida lo que decida tu empresa, tú eliges: Stroyka te pregunta en la app y tu teléfono pide su permiso. Puedes decir que no y desactivarlo cuando quieras en la app (Perfil &rarr; Privacidad y datos &rarr; Ubicación al marcar) o en los ajustes del teléfono. Puedes seguir marcando; el registro simplemente queda sin ubicación. Guardamos cuándo lo activaste y cuándo lo desactivaste.</li>
+            <li>Decida lo que decida tu empresa, tú eliges: Stroyka te pregunta en la app y tu teléfono pide su permiso. Puedes decir que no y desactivarlo cuando quieras en la app (Perfil &rarr; Ajustes &rarr; Privacidad y datos &rarr; Ubicación al marcar) o en los ajustes del teléfono. Puedes seguir marcando; el registro simplemente queda sin ubicación. Guardamos cuándo lo activaste y cuándo lo desactivaste.</li>
             <li>Nunca usamos tu ubicación para publicidad ni para seguirte en otras apps o sitios web.</li>
           </ul>
 
@@ -95,7 +95,7 @@ export const privacyEs: LegalDoc = {
           <li><strong>Para que el servicio funcione:</strong> guardar y sincronizar los registros de tu empresa, calcular costos y pagos, generar informes y facturas, y permitir que jefes y trabajadores colaboren.</li>
           <li><strong>Para iniciar tu sesión</strong> y dar a cada persona el acceso que permite su rol.</li>
           <li><strong>Para comprobar la asistencia en obra</strong> cuando el reloj con GPS está activado.</li>
-          <li><strong>Para leer recibos y listas de compras, si lo permites.</strong> Desde la versión 1.0.62, la primera vez que escaneas, la app te avisa de que la foto (o el texto de la lista) se envía a nuestro proveedor de IA, Anthropic, y te pide permiso. Si dices que no, no se envía nada y puedes ingresar los artículos a mano. Las versiones anteriores de la app la envían cuando eliges escanear, sin ese aviso aparte. Anthropic devuelve los artículos y montos que lee, y tú los revisas antes de guardar. Según sus términos comerciales, Anthropic no usa este contenido para entrenar sus modelos y lo elimina después de un tiempo limitado.</li>
+          <li><strong>Para leer recibos y listas de compras, si lo permites.</strong> Desde la versión 1.0.62, la primera vez que escaneas, la app te avisa de que la foto se envía a nuestro proveedor de IA, Anthropic, y te pide permiso. Si dices que no, no se envía nada y puedes ingresar los artículos a mano. Las versiones anteriores de la app la envían cuando eliges escanear, sin ese aviso aparte. Anthropic devuelve los artículos y montos que lee, y tú los revisas antes de guardar. Según sus términos comerciales, Anthropic no usa este contenido para entrenar sus modelos y lo elimina después de un tiempo limitado.</li>
           <li><strong>Para enviar correos:</strong> correos de inicio de sesión y de contraseña, invitaciones a trabajadores, y facturas y recordatorios de pago que una empresa envía a sus propios clientes a través de Stroyka. Después de registrarte también te enviamos un correo de bienvenida de nuestro fundador, y es posible que te escribamos personalmente sobre tu experiencia. Responde &ldquo;stop&rdquo; y dejaremos de hacerlo.</li>
           <li><strong>Para enviar notificaciones push</strong> sobre el trabajo de tu empresa. Puedes desactivarlas en los ajustes del teléfono.</li>
           <li><strong>Para mejorar el servicio:</strong> la analítica de uso (si aceptas) y los informes de errores nos ayudan a encontrar fallos y decidir qué construir.</li>
@@ -112,9 +112,9 @@ export const privacyEs: LegalDoc = {
           <p>Para cada finalidad: la base legal en la que nos apoyamos (esto importa sobre todo según las leyes de la UE y del Reino Unido) y cuánto tiempo guardamos la información.</p>
           <ul>
             <li><strong>Tu cuenta e inicio de sesión.</strong> Base: nuestro contrato contigo. Plazo: mientras exista tu cuenta; se elimina cuando la eliminas (sección 9).</li>
-            <li><strong>Los registros de tu empresa</strong> (registros de trabajo, clientes, facturas, ubicaciones al marcar). Los tratamos por cuenta de tu empresa; ella elige la base legal. Plazo: mientras tu empresa los conserve, y se eliminan en los 30 días siguientes a la eliminación de la empresa (más la caducidad de las copias de seguridad, 9.7).</li>
+            <li><strong>Los registros de tu empresa</strong> (registros de trabajo, clientes, facturas, ubicaciones al marcar). Los tratamos por cuenta de tu empresa; ella elige la base legal. Plazo: mientras tu empresa los conserve, y se eliminan en los 31 días siguientes a la eliminación de la empresa (más la caducidad de las copias de seguridad, 9.7).</li>
             <li><strong>Facturación y suscripciones.</strong> Base: nuestro contrato, y obligaciones legales de registros fiscales y contables. Plazo: mientras dure la suscripción y después lo que exija la ley fiscal. Apple, Google y Stripe guardan sus propios registros de pago.</li>
-            <li><strong>Analítica de uso (PostHog).</strong> Base: tu consentimiento. Plazo: {R.posthog}. Puedes retirar el consentimiento cuando quieras (sección 10).</li>
+            <li><strong>Analítica de uso (PostHog).</strong> Base: tu consentimiento. Plazo: los eventos de uso, {R.posthog}; el perfil de analítica al que están vinculados (tu ID de usuario, el ID de tu empresa y tu rol), hasta que lo eliminemos, lo que hacemos cuando lo pides. Puedes retirar el consentimiento cuando quieras (sección 10).</li>
             <li><strong>Informes de fallos (Sentry).</strong> Base: nuestro interés legítimo en que la app funcione y sea segura. Plazo: {R.sentry}.</li>
             <li><strong>Registros de seguridad y límite de solicitudes.</strong> Base: nuestro interés legítimo en prevenir abusos. Plazo: hashes del límite de solicitudes, 24 horas; registros del servidor, no más de 90 días.</li>
             <li><strong>Correo de bienvenida y correos del fundador.</strong> Base: nuestro interés legítimo en ayudar a los clientes nuevos a empezar. Plazo: hasta que te opongas (responde &ldquo;stop&rdquo;) o elimines tu cuenta.</li>
@@ -137,7 +137,7 @@ export const privacyEs: LegalDoc = {
           <p><strong>Proveedores de servicios</strong> que hacen funcionar partes de Stroyka por nosotros; cada uno recibe solo lo que necesita para su tarea. La lista completa, con ubicaciones, está en nuestra página de <Link href="/es/subprocessors">Subencargados</Link>:</p>
           <ul>
             <li><strong>Supabase</strong> &mdash; nuestra base de datos, inicio de sesión, almacenamiento de archivos y funciones de servidor. Alojado en Amazon Web Services en Fráncfort, Alemania. Guarda todos los datos y archivos de la app.</li>
-            <li><strong>Anthropic</strong> (EE. UU.) &mdash; lee fotos de recibos y fotos o texto de listas de compras cuando usas esa función y la has permitido.</li>
+            <li><strong>Anthropic</strong> (EE. UU.) &mdash; lee fotos de recibos y de listas de compras cuando usas esa función y la has permitido.</li>
             <li><strong>PostHog</strong> (EE. UU.) &mdash; analítica de uso de la app y del sitio web, solo con tu consentimiento.</li>
             <li><strong>Sentry</strong> (EE. UU.) &mdash; informes de errores y fallos.</li>
             <li><strong>Resend</strong> (EE. UU.) &mdash; envía nuestros correos, incluidas las facturas y recordatorios a los clientes de una empresa. Recibe la dirección del destinatario y el contenido del correo.</li>
@@ -146,11 +146,12 @@ export const privacyEs: LegalDoc = {
             <li><strong>RevenueCat</strong> (EE. UU.) &mdash; lleva el estado de las suscripciones compradas en las apps de iPhone y Android. Recibe el ID de tu empresa y la información de compra de Apple o Google.</li>
             <li><strong>Stripe</strong> (EE. UU.) &mdash; pago y facturación de las suscripciones compradas en nuestro sitio web. Stripe recibe tus datos de pago directamente.</li>
             <li><strong>Cloudflare</strong> &mdash; nuestro dominio y DNS, el reenvío del correo enviado a nuestras direcciones y el almacenamiento de nuestras copias de seguridad cifradas.</li>
+            <li><strong>GitHub</strong> (Microsoft, EE. UU.) &mdash; ejecuta nuestras tareas de copia de seguridad. Cada noche para la base de datos y cada semana para los archivos subidos, la copia se hace en una máquina temporal de GitHub, se cifra allí y se guarda en Cloudflare; al terminar la tarea no queda ninguna copia de seguridad en GitHub.</li>
             <li><strong>Vercel</strong> (EE. UU.) &mdash; aloja nuestro sitio web, procesa registros web estándar con direcciones IP y cuenta visitas sin cookies.</li>
-            <li><strong>Telegram</strong> &mdash; avisa a nuestro equipo cuando alguien envía el formulario de demo de nuestro sitio web, con los datos del formulario.</li>
+            <li><strong>Telegram</strong> &mdash; avisa a nuestro equipo de que alguien envió el formulario de demo de nuestro sitio web. No recibe datos personales: los datos de la solicitud nos llegan solo por correo.</li>
             <li><strong>Meta</strong> &mdash; solo el píxel de Meta en nuestro sitio web, como se indica arriba. No está en la app. <a href="https://www.facebook.com/privacy/policy" target="_blank" rel="noopener noreferrer">Política de privacidad de Meta</a></li>
           </ul>
-          <p>Nuestros proveedores de servicios solo pueden usar tu información para prestarnos su servicio, según contratos que los obligan a protegerla al menos tan bien como esta política, y ninguno puede usarla para su propia publicidad. Las excepciones actúan según sus propios términos y políticas de privacidad: Apple y Google para las compras e inicios de sesión hechos con ellos, Meta para el píxel del sitio web y Telegram para los avisos del formulario de demo.</p>
+          <p>Nuestros proveedores de servicios solo pueden usar tu información para prestarnos su servicio, según contratos que los obligan a protegerla al menos tan bien como esta política, y ninguno puede usarla para su propia publicidad. Las excepciones actúan según sus propios términos y políticas de privacidad: Apple y Google para las compras e inicios de sesión hechos con ellos, y Meta para el píxel del sitio web.</p>
           <p>También podemos revelar información si lo exige la ley, un tribunal o una autoridad, o si creemos que es necesario para proteger los derechos, la propiedad o la seguridad de Stroyka, de nuestros usuarios o del público.</p>
         </>
       ),
@@ -187,11 +188,11 @@ export const privacyEs: LegalDoc = {
       content: (
         <>
           <p>8.1. Los datos se cifran en tránsito (TLS) y en reposo en nuestro proveedor de hosting.</p>
-          <p>8.2. Los datos que la app guarda en tu teléfono para usarla sin conexión están cifrados (SQLCipher / sqlite3mc), con las claves en el almacenamiento seguro del teléfono (Keychain en iPhone, Keystore en Android).</p>
-          <p>8.3. Hacemos nuestras propias copias de seguridad de la base de datos y de los archivos subidos. Se cifran antes de salir de nuestros sistemas y se guardan en Cloudflare.</p>
+          <p>8.2. La base de datos que la app guarda en tu teléfono para usarla sin conexión está cifrada (SQLCipher / sqlite3mc), con las claves en el almacenamiento seguro del teléfono (Keychain en iPhone, Keystore en Android). Las fotos y videos pendientes de subir se guardan como archivos normales hasta que se envían, protegidos por el cifrado propio de tu teléfono.</p>
+          <p>8.3. Hacemos nuestras propias copias de seguridad de la base de datos (cada noche) y de los archivos subidos (cada semana). Las tareas de copia se ejecutan en GitHub Actions: cada copia se hace en una máquina temporal de GitHub en EE. UU., se cifra allí y se guarda solo cifrada en Cloudflare. Al terminar la tarea no queda ninguna copia de seguridad en GitHub.</p>
           <p>8.4. Usamos acceso por roles, límites de solicitudes, validación de datos y registros de auditoría.</p>
           <p>8.5. Ningún método de almacenamiento o transmisión es completamente seguro, y no podemos garantizar una seguridad absoluta.</p>
-          <p>8.6. <strong>Si algo sale mal.</strong> Si sabemos de una brecha de seguridad que afecte a información personal que guardamos, avisamos a las empresas afectadas sin demora indebida y en un máximo de 48 horas desde que la confirmamos. Avisamos a las personas afectadas y a las autoridades cuando la ley lo exige &mdash; por ejemplo, a las autoridades de protección de datos en 72 horas cuando somos responsables según la ley de la UE o del Reino Unido. Llevamos un registro de cada incidente de seguridad.</p>
+          <p>8.6. <strong>Si algo sale mal.</strong> Si sabemos de una brecha de seguridad que afecte a información personal que guardamos, avisamos a las empresas afectadas sin demora indebida y en un máximo de 72 horas desde que tenemos conocimiento de ella. Avisamos a las personas afectadas y a las autoridades cuando la ley lo exige &mdash; por ejemplo, a las autoridades de protección de datos en 72 horas cuando somos responsables según la ley de la UE o del Reino Unido. Llevamos un registro de cada incidente de seguridad.</p>
         </>
       ),
     },
@@ -202,14 +203,21 @@ export const privacyEs: LegalDoc = {
         <>
           <p>9.1. <strong>Mientras uses Stroyka</strong>, guardamos tus datos mientras existan tu cuenta y tu empresa. La sección 4 indica cuánto tiempo guardamos cada tipo de información.</p>
           <p>9.2. <strong>Cancelar un plan de pago no elimina nada.</strong> Tu empresa pasa al plan gratis y tus datos se quedan.</p>
-          <p>9.3. <strong>Eliminar tu cuenta (trabajadores).</strong> En la app ve a Perfil &rarr; Privacidad y datos &rarr; Eliminar mi cuenta, o escribe a {SUPPORT} desde el correo de tu cuenta (ver <Link href="/es/delete-account">getstroyka.com/es/delete-account</Link>). Esto elimina tu cuenta y tu inicio de sesión, tus datos de contacto (teléfono), tus tokens de notificaciones, tu configuración de notificaciones, tu consentimiento de ubicación y los puntos GPS registrados al marcar entrada y salida. En la app ocurre de inmediato: se cierra tu sesión y ya no puedes volver a entrar.</p>
-          <p><strong>A partir del {DATE}, los registros de trabajo que creaste para tu empresa se quedan con tu empresa.</strong> Tus horas, gastos y compras de materiales, recibos, viajes, solicitudes, bitácoras diarias, mensajes de tareas, fotos y videos son registros del negocio de tu empresa: se quedan con ella, con tu nombre, igual que cuando una empresa da de baja a un trabajador (9.6). Tu empresa es responsable de ellos; muchas veces la ley obliga a los empleadores a conservar los registros de trabajo y de pago. Si quieres que se eliminen, pídeselo a tu empresa: puede eliminarlos en la app y, a petición suya, los borraremos de forma permanente de nuestros servidores. <strong>Hasta esa fecha, eliminar tu cuenta también elimina los registros que creaste</strong>, que se borran de forma permanente de nuestros servidores en un plazo de 30 días.
+          <p>9.3. <strong>Eliminar tu cuenta (trabajadores).</strong> En la app ve a Perfil &rarr; Ajustes &rarr; Privacidad y datos &rarr; Eliminar mi cuenta, o escribe a {SUPPORT} desde el correo de tu cuenta (ver <Link href="/es/delete-account">getstroyka.com/es/delete-account</Link>). En ambos casos se cierra tu sesión y ya no puedes volver a entrar. Lo demás depende de la fecha.</p>
+          <p><strong>A partir del {DATE}, los registros de trabajo que creaste para tu empresa se quedan con tu empresa.</strong> Tu cuenta y tu inicio de sesión, tus datos de contacto (teléfono), tus tokens de notificaciones, tu configuración de notificaciones, tu consentimiento de ubicación y los puntos GPS registrados al marcar entrada y salida se eliminan de inmediato. Tus horas, gastos y compras de materiales, recibos, viajes, solicitudes, bitácoras diarias, mensajes de tareas, fotos y videos son registros del negocio de tu empresa: se quedan con ella, con tu nombre, igual que cuando una empresa da de baja a un trabajador (9.6). Tu empresa es responsable de ellos; muchas veces la ley obliga a los empleadores a conservar los registros de trabajo y de pago. Si quieres que se eliminen, pídeselo a tu empresa: puede eliminarlos en la app y, a petición suya, los borraremos de forma permanente de nuestros servidores.</p>
+          <p><strong>Hasta el {DATE}</strong> (en la app o por correo):</p>
+          <ul>
+            <li><strong>De inmediato:</strong> se elimina tu inicio de sesión (tu correo y cualquier inicio de sesión con Apple o Google), tu nombre se sustituye por &ldquo;Deleted user&rdquo;, se eliminan tu teléfono y tus notificaciones en la app, y tus horas (con los puntos GPS registrados en ellas), gastos y compras de materiales, viajes, solicitudes y bitácoras diarias desaparecen de la app.</li>
+            <li><strong>En un plazo de 31 días:</strong> esos registros y las fotos adjuntas se borran de forma permanente de nuestros servidores, junto con tus tokens de notificaciones, tu configuración de notificaciones, tu tarifa de pago y tu consentimiento de ubicación.</li>
+            <li><strong>No se eliminan:</strong> los recibos y sus fotos, tus mensajes de tareas y sus fotos y videos, y tus días libres. Se quedan con tu empresa, como &ldquo;Deleted user&rdquo;, hasta que la empresa los elimine o elimine la empresa. Si quieres que se eliminen, pídeselo a tu empresa, o pídenoslo y le pasaremos tu solicitud (sección 10).</li>
+          </ul>
+          <p>
             {/* remove when min app version ≥ 1.0.62 */}
-            {" "}Una versión de la app anterior a la 1.0.62 también elimina esos registros, incluso después del {DATE}, hasta que dejemos de admitir esas versiones; para que se queden con tu empresa, actualiza la app primero.</p>
+            Una versión de la app anterior a la 1.0.62 elimina como se describe en &ldquo;Hasta el {DATE}&rdquo;, incluso después de esa fecha, hasta que dejemos de admitir esas versiones; para que tus registros se queden con tu empresa, actualiza la app primero.</p>
           <p>9.4. <strong>Dueños de empresa.</strong> El dueño de una empresa no puede eliminar solo su propia cuenta. En su lugar elimina toda la empresa (9.5) o nos escribe a {SUPPORT}.</p>
-          <p>9.5. <strong>Eliminar una empresa.</strong> El dueño puede eliminar la empresa en la app (Perfil &rarr; Privacidad y datos &rarr; Eliminar mi empresa). Todo se oculta de inmediato para todos en la empresa, y en un plazo de 30 días borramos de forma permanente todos los datos y archivos de la empresa. Eliminar la empresa no cancela una suscripción; cancélala por separado (ver nuestros <Link href="/es/terms">Términos</Link>, sección 7).</p>
+          <p>9.5. <strong>Eliminar una empresa.</strong> El dueño puede eliminar la empresa en la app (Perfil &rarr; Ajustes &rarr; Privacidad y datos &rarr; Eliminar mi empresa). Todo se oculta de inmediato para todos en la empresa, y en un plazo de 31 días borramos de forma permanente todos los datos y archivos de la empresa. Eliminar la empresa no cancela una suscripción; cancélala por separado (ver nuestros <Link href="/es/terms">Términos</Link>, sección 7).</p>
           <p>9.6. <strong>Si una empresa da de baja a un trabajador</strong>, los registros de trabajo que creó se quedan con la empresa como registros de su negocio, mostrados con su nombre, hasta que la empresa los elimine o elimine la empresa. A partir del {DATE} ocurre lo mismo cuando el trabajador elimina su propia cuenta. Un trabajador dado de baja puede pedirnos igualmente que eliminemos su cuenta, como en 9.3.</p>
-          <p>9.7. <strong>Copias de seguridad.</strong> Los datos eliminados no salen de inmediato de las copias de seguridad existentes. Salen a medida que esas copias caducan: las copias de la base de datos se guardan hasta 6 meses y las copias de archivos hasta 1 año.</p>
+          <p>9.7. <strong>Copias de seguridad.</strong> Los datos eliminados no salen de inmediato de las copias de seguridad existentes. Salen a medida que esas copias caducan: las copias de la base de datos se guardan hasta 7 meses y las copias de archivos hasta 13 meses.</p>
           <p>9.8. <strong>Los datos de analítica y de errores</strong> se guardan {R.posthog} (PostHog) y {R.sentry} (Sentry). Los correos de soporte se guardan mientras los necesitemos para ayudarte y para dejar constancia de lo acordado.</p>
           <p>9.9. Podemos guardar información concreta por más tiempo cuando la ley lo exige, o para resolver una disputa o hacer cumplir nuestros Términos, y solo mientras dure esa necesidad.</p>
         </>
@@ -223,9 +231,9 @@ export const privacyEs: LegalDoc = {
           <h3>Para todos</h3>
           <ul>
             <li><strong>Ver y corregir:</strong> puedes ver tus datos en la app y actualizar tus datos en Perfil.</li>
-            <li><strong>Descargar:</strong> Perfil &rarr; Privacidad y datos &rarr; Descargar mis datos te da una copia de tus datos. Los jefes también pueden exportar informes (por ejemplo a PDF, CSV o Excel).</li>
+            <li><strong>Descargar:</strong> Perfil &rarr; Ajustes &rarr; Privacidad y datos &rarr; Descargar mis datos te da una copia de tus datos. Los jefes también pueden exportar informes (por ejemplo a PDF, CSV o Excel).</li>
             <li><strong>Eliminar:</strong> ver la sección 9 y <Link href="/es/delete-account">getstroyka.com/es/delete-account</Link>.</li>
-            <li><strong>Analítica:</strong> Perfil &rarr; Privacidad y datos &rarr; Compartir datos de uso. En el sitio web: Configuración de cookies, al pie de cualquier página.</li>
+            <li><strong>Analítica:</strong> Perfil &rarr; Ajustes &rarr; Privacidad y datos &rarr; Compartir datos de uso. En el sitio web: Configuración de cookies, al pie de cualquier página.</li>
             <li><strong>Ubicación:</strong> desactiva Ubicación al marcar en la misma pantalla o en los ajustes del teléfono.</li>
             <li><strong>Correos del fundador:</strong> responde &ldquo;stop&rdquo;.</li>
           </ul>
@@ -261,8 +269,8 @@ export const privacyEs: LegalDoc = {
       content: (
         <>
           <ul>
-            <li><strong>UE y EEE.</strong> Nuestro representante en la UE según el artículo 27 del RGPD: {EU_REPRESENTATIVE}. Puedes presentar una reclamación ante la autoridad de protección de datos del lugar donde vives o trabajas (<a href="https://www.edpb.europa.eu/about-edpb/about-edpb/members_en" target="_blank" rel="noopener noreferrer">lista de autoridades</a>).</li>
-            <li><strong>Reino Unido.</strong> Nuestro representante en el Reino Unido: {UK_REPRESENTATIVE}. Si no estás conforme con cómo tratamos tu información, escríbenos primero: acusamos recibo de las quejas en 30 días y te decimos qué haremos. También puedes reclamar ante la Information Commissioner&rsquo;s Office (<a href="https://ico.org.uk/make-a-complaint/" target="_blank" rel="noopener noreferrer">ico.org.uk</a>).</li>
+            <li><strong>UE y EEE.</strong> {REPS} Puedes presentar una reclamación ante la autoridad de protección de datos del lugar donde vives o trabajas (<a href="https://www.edpb.europa.eu/about-edpb/about-edpb/members_en" target="_blank" rel="noopener noreferrer">lista de autoridades</a>).</li>
+            <li><strong>Reino Unido.</strong> Si no estás conforme con cómo tratamos tu información, escríbenos primero: acusamos recibo de las quejas en 30 días y te decimos qué haremos. También puedes reclamar ante la Information Commissioner&rsquo;s Office (<a href="https://ico.org.uk/make-a-complaint/" target="_blank" rel="noopener noreferrer">ico.org.uk</a>).</li>
             <li><strong>Estados Unidos.</strong> No vendemos información personal. Si una brecha te afecta, te avisamos como exija la ley de tu estado. Los derechos de California están en la sección 10.</li>
             <li><strong>México.</strong> Esta política es nuestro aviso de privacidad integral. Puedes ejercer tus derechos ARCO (acceso, rectificación, cancelación y oposición) y revocar tu consentimiento como se indica en la sección 10; respondemos en 20 días y hacemos efectiva la respuesta en los 15 días siguientes. Autoridad: Secretaría Anticorrupción y Buen Gobierno.</li>
             <li><strong>Filipinas.</strong> Nuestro Oficial de Protección de Datos es el contacto de privacidad de la sección 1. Puedes reclamar ante la National Privacy Commission (<a href="https://privacy.gov.ph" target="_blank" rel="noopener noreferrer">privacy.gov.ph</a>).</li>
@@ -281,7 +289,7 @@ export const privacyEs: LegalDoc = {
       content: (
         <>
           <p>12.1. <strong>La app</strong> no tiene publicidad y no te sigue por las apps o sitios web de otras empresas. La analítica de uso en la app necesita tu consentimiento (sección 2.2).</p>
-          <p>12.2. <strong>Nuestro sitio web</strong> pregunta antes de poner cualquier cookie opcional. Hasta que eliges Aceptar en el banner de cookies, no se cargan ni PostHog ni el píxel de Meta. Rechazar es tan fácil como Aceptar, y puedes cambiar tu elección cuando quieras en Configuración de cookies, al pie de cada página. Si tu navegador envía una señal de Global Privacy Control, la tratamos como Rechazar.</p>
+          <p>12.2. <strong>Nuestro sitio web</strong> pregunta antes de poner cualquier cookie opcional. Hasta que eliges Aceptar en el banner de cookies, no se cargan ni PostHog ni el píxel de Meta. Rechazar es tan fácil como Aceptar, y puedes cambiar tu elección cuando quieras en Configuración de cookies, al pie de cada página. Si tu navegador envía una señal de Global Privacy Control, la tratamos como Rechazar, salvo que tú mismo elijas Aceptar en Configuración de cookies.</p>
           <p>12.3. Lo que pone el sitio web:</p>
           <ul>
             <li><strong>sx_consent</strong> (necesaria) &mdash; recuerda tu elección sobre cookies. 180 días.</li>
@@ -315,7 +323,7 @@ export const privacyEs: LegalDoc = {
         <>
           <p>15.1. Podemos actualizar esta política. Si los cambios son importantes, te avisaremos por correo o en la app al menos 30 días antes de que entren en vigor. Si sigues usando Stroyka después de esa fecha, se aplica la política actualizada.</p>
           <p>15.2. <strong>A partir del {DATE}</strong>, el punto 15.1 se sustituye por esta regla: los cambios que reduzcan tus derechos o amplíen el uso de tu información seguirán entrando en vigor al menos 30 días después de que te avisemos por correo o en la app. Los cambios que exija la ley, que corrijan un problema de seguridad o que no reduzcan tus derechos pueden entrar en vigor al publicarse; aun así te avisaremos de los importantes. Si no estás de acuerdo con un cambio, puedes eliminar tu cuenta antes de que entre en vigor.</p>
-          <p>15.3. <strong>Esta versión.</strong> Publicada el {LAST_UPDATED_ES}. Entra en vigor al publicarse, salvo dos cambios que entran en vigor el {DATE}: lo que se conserva al eliminar la cuenta de un trabajador (9.3 y 9.6) y la regla de aviso de cambios del punto 15.2. Añade: bases legales y plazos de conservación por finalidad (4), la analítica de uso que ahora pide permiso primero (2.2), el aviso antes de que la IA lea los recibos (3), nuestra dirección y representantes en la UE y el Reino Unido (1, 11, 16), las transferencias internacionales (6), quién en Stroyka ve los datos de las empresas (7), el aviso de brechas (8.6), los plazos de respuesta y dónde reclamar según el país (10, 11) y el banner de cookies del sitio web (12).</p>
+          <p>15.3. <strong>Esta versión.</strong> Publicada el {LAST_UPDATED_ES}. Entra en vigor al publicarse, salvo dos cambios que entran en vigor el {DATE}: lo que se conserva al eliminar la cuenta de un trabajador (9.3 y 9.6) y la regla de aviso de cambios del punto 15.2. Añade: bases legales y plazos de conservación por finalidad (4), la analítica de uso que ahora pide permiso primero (2.2), el aviso antes de que la IA lea los recibos (3), nuestra dirección y cómo contactarnos desde la UE y el Reino Unido (1, 11, 16), las transferencias internacionales (6), quién en Stroyka ve los datos de las empresas (7), el aviso de brechas (8.6), los plazos de respuesta y dónde reclamar según el país (10, 11) y el banner de cookies del sitio web (12).</p>
         </>
       ),
     },
@@ -331,10 +339,7 @@ export const privacyEs: LegalDoc = {
             Correo: {SUPPORT} (pon &ldquo;Privacy&rdquo; en el asunto)<br />
             Sitio web: <a href="https://getstroyka.com">getstroyka.com</a>
           </p>
-          <p>
-            Representante en la UE: {EU_REPRESENTATIVE}<br />
-            Representante en el Reino Unido: {UK_REPRESENTATIVE}
-          </p>
+          <p>{REPS}</p>
         </>
       ),
     },

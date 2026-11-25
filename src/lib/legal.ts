@@ -8,10 +8,18 @@
 /** Business address of Dalen Meridian LLC (the PO Box used in our email signature). */
 export const POSTAL_ADDRESS = "PO Box 5203, Round Rock, TX 78683, USA";
 
-/** GDPR Art. 27 representative in the EU: name, postal address, email. Needs a paid representative service. */
-export const EU_REPRESENTATIVE = "{EU_REPRESENTATIVE}";
-/** UK GDPR Art. 27 representative in the UK: name, postal address, email. */
-export const UK_REPRESENTATIVE = "{UK_REPRESENTATIVE}";
+/**
+ * GDPR Art. 27 / UK GDPR Art. 27 representatives: NOT appointed yet (moved to
+ * 1.0.63, Maks 2026-11-24). Until they are, every place that would name them
+ * shows this interim sentence instead (Privacy 1, 11, 16; DPA 15.4). When a
+ * representative is appointed, replace the sentence with its name, postal
+ * address and email, in all three languages.
+ */
+export const REPRESENTATIVES_INTERIM = {
+  en: "We are appointing representatives in the EU and the UK. Until then, write to our privacy contact at support@getstroyka.com with \u201cPrivacy\u201d in the subject line.",
+  es: "Estamos designando representantes en la UE y el Reino Unido. Hasta entonces, escribe a nuestro contacto de privacidad en support@getstroyka.com con \u201cPrivacy\u201d en el asunto.",
+  ru: "Мы назначаем представителей в ЕС и Великобритании. До их назначения пишите нашему контакту по вопросам конфиденциальности на support@getstroyka.com со словом \u00abPrivacy\u00bb в теме письма.",
+} as const;
 
 /**
  * The date the deferred changes take effect: 30 days after the documents are
@@ -34,14 +42,20 @@ export const LAST_UPDATED_ES = "24 de noviembre de 2026";
 export const LAST_UPDATED_RU = "24 ноября 2026 г.";
 
 /**
- * How long PostHog keeps analytics events and Sentry keeps crash reports, as
- * configured in each tool (PostHog: project settings → data retention;
- * Sentry: organization plan). Written in each language, e.g. "12 months".
+ * How long PostHog keeps analytics events and Sentry keeps crash reports.
+ * Verified 2026-11-24 against the vendors' public docs:
+ * - PostHog: our organisation is on the Free plan (billing overview), and
+ *   events are kept 1 year on Free (posthog.com/docs/data/events-retention).
+ *   The person profile the events are linked to is kept until deleted —
+ *   Privacy 4 says so separately. Re-check if the plan is upgraded.
+ * - Sentry: 30 days on Developer, up to 90 days on Team and Business
+ *   (sentry.io/pricing). Our plan tier was not visible from here, so the
+ *   value is the ceiling that is true for both, "up to 90 days".
  */
 export const RETENTION = {
-  en: { posthog: "{POSTHOG_RETENTION}", sentry: "{SENTRY_RETENTION}" },
-  es: { posthog: "{POSTHOG_RETENTION}", sentry: "{SENTRY_RETENTION}" },
-  ru: { posthog: "{POSTHOG_RETENTION}", sentry: "{SENTRY_RETENTION}" },
+  en: { posthog: "1 year", sentry: "up to 90 days" },
+  es: { posthog: "1 año", sentry: "hasta 90 días" },
+  ru: { posthog: "1 год", sentry: "до 90 дней" },
 } as const;
 
 /**
@@ -51,7 +65,7 @@ export const RETENTION = {
  * ("Williamson" / "Уильямсон").
  */
 export const VENUE_COUNTY = {
-  en: "{VENUE_COUNTY}",
-  es: "{VENUE_COUNTY}",
-  ru: "{VENUE_COUNTY}",
+  en: "Williamson County",
+  es: "Williamson",
+  ru: "Уильямсон",
 } as const;

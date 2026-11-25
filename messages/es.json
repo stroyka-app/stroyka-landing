@@ -1131,7 +1131,7 @@
   },
   "cookies": {
     "title": "Cookies",
-    "body": "Si nos das permiso, usamos cookies de analítica (PostHog) para ver cómo se usa este sitio y, fuera de la UE y el Reino Unido, el píxel de Meta para medir nuestros anuncios. No se carga nada si no aceptas. Puedes cambiar de opinión cuando quieras en Configuración de cookies, al pie de la página.",
+    "body": "Si nos das permiso, usamos cookies de analítica (PostHog) para ver cómo se usa este sitio y, fuera de la UE y el Reino Unido, el píxel de Meta para medir nuestros anuncios. Ninguno de los dos se carga si no aceptas. Puedes cambiar de opinión cuando quieras en Configuración de cookies, al pie de la página.",
     "learnMore": "Política de privacidad",
     "accept": "Aceptar",
     "reject": "Rechazar",

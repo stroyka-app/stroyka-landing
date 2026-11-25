@@ -1,15 +1,15 @@
 import Link from "next/link";
 import type { LegalDoc } from "../../privacy/content/types";
 import {
-  EU_REPRESENTATIVE,
   LAST_UPDATED_ES,
   NOTICE_EFFECTIVE_ES,
   POSTAL_ADDRESS,
-  UK_REPRESENTATIVE,
+  REPRESENTATIVES_INTERIM,
 } from "@/lib/legal";
 
 const SUPPORT = <a href="mailto:support@getstroyka.com">support@getstroyka.com</a>;
 const DATE = NOTICE_EFFECTIVE_ES;
+const REPS = REPRESENTATIVES_INTERIM.es;
 const SCC = (
   <a href="https://eur-lex.europa.eu/eli/dec_impl/2021/914/oj" target="_blank" rel="noopener noreferrer">
     Cláusulas Contractuales Tipo
@@ -71,9 +71,9 @@ export const dpaEs: LegalDoc = {
         <>
           <p>4.1. Tus instrucciones son los Términos y este Anexo, y lo que tú y tus usuarios hacen en el Servicio: lo que ingresan, la configuración que eligen y las acciones que realizan (por ejemplo exportar, eliminar, enviar una factura). Puedes dar más instrucciones por escrito a {SUPPORT} si son coherentes con los Términos.</p>
           <p>4.2. <strong>Reloj con GPS.</strong> Tú decides si lo activas. Cuando está activo, registramos la ubicación de un Trabajador solo al marcar entrada y salida, y solo si ese Trabajador lo permitió en la app y en su teléfono. Un Trabajador puede desactivarlo cuando quiera y seguir marcando.</p>
-          <p>4.3. <strong>Cuando un Trabajador elimina su propia cuenta.</strong> Nos indicas que eliminemos el inicio de sesión del Trabajador, sus datos de contacto, tokens de notificaciones, configuración de notificaciones, consentimiento de ubicación y las ubicaciones registradas al marcar entrada y salida. <strong>A partir del {DATE}</strong>, también nos indicas que conservemos en tu Cuenta de Empresa los demás registros que creó ese Trabajador &mdash; horas, gastos y compras, recibos, viajes, solicitudes, bitácoras diarias, mensajes de tareas, fotos y videos &mdash; con su nombre, hasta que los elimines o elimines la Cuenta de Empresa. Hasta el {DATE} (y desde versiones de la app anteriores a la 1.0.62), la eliminación por parte del Trabajador también elimina esos registros.</p>
+          <p>4.3. <strong>Cuando un Trabajador elimina su propia cuenta.</strong> Nos indicas que eliminemos el inicio de sesión del Trabajador, sus datos de contacto, tokens de notificaciones, configuración de notificaciones, consentimiento de ubicación y las ubicaciones registradas al marcar entrada y salida. <strong>A partir del {DATE}</strong>, también nos indicas que conservemos en tu Cuenta de Empresa los demás registros que creó ese Trabajador &mdash; horas, gastos y compras, recibos, viajes, solicitudes, bitácoras diarias, mensajes de tareas, fotos y videos &mdash; con su nombre, hasta que los elimines o elimines la Cuenta de Empresa. Hasta el {DATE} (y desde versiones de la app anteriores a la 1.0.62), la eliminación por parte del Trabajador también borra, en un plazo de 31 días, sus horas, gastos y compras, viajes, solicitudes y bitácoras diarias y las fotos adjuntas; sus recibos, mensajes de tareas con sus fotos y videos, y días libres se quedan en tu Cuenta de Empresa.</p>
           <p>4.4. <strong>Cuando das de baja a un Trabajador,</strong> nos indicas que conservemos en tu Cuenta de Empresa los registros que creó hasta que los elimines o elimines la Cuenta de Empresa.</p>
-          <p>4.5. <strong>Lectura de recibos y listas.</strong> Nos indicas que enviemos la foto de un recibo o una lista a nuestro subencargado de IA cuando uno de tus usuarios elige escanear y lo ha permitido en la app.</p>
+          <p>4.5. <strong>Lectura de recibos y listas.</strong> Nos indicas que enviemos la foto de un recibo o de una lista de compras a nuestro subencargado de IA cuando uno de tus usuarios elige escanear y lo ha permitido en la app.</p>
           <p>4.6. <strong>Eliminación de tu empresa.</strong> Cuando el dueño elimina la Cuenta de Empresa, nos indicas que eliminemos todos los Datos Personales del Cliente como indica la sección 12.</p>
         </>
       ),
@@ -85,9 +85,9 @@ export const dpaEs: LegalDoc = {
         <>
           <p>Mantenemos medidas técnicas y organizativas adecuadas al riesgo, entre ellas:</p>
           <ul>
-            <li>cifrado en tránsito (TLS) y en reposo; almacenamiento local cifrado en los teléfonos (SQLCipher / sqlite3mc, claves en Keychain o Keystore);</li>
+            <li>cifrado en tránsito (TLS) y en reposo; una base de datos sin conexión cifrada en los teléfonos (SQLCipher / sqlite3mc, claves en Keychain o Keystore);</li>
             <li>separación de los datos de cada empresa en la propia base de datos (Row Level Security) y acceso por roles dentro de cada empresa;</li>
-            <li>nuestras propias copias de seguridad cifradas, guardadas por separado (copias de la base de datos hasta 6 meses, copias de archivos hasta 1 año);</li>
+            <li>nuestras propias copias de seguridad cifradas, guardadas por separado (copias de la base de datos hasta 7 meses, copias de archivos hasta 13 meses);</li>
             <li>acceso a los sistemas de producción limitado a quienes hacen funcionar el Servicio, con autenticación robusta;</li>
             <li>límites de solicitudes, validación de datos y registros de auditoría; y</li>
             <li>un procedimiento escrito ante incidentes y un registro de cada incidente de seguridad.</li>
@@ -102,7 +102,7 @@ export const dpaEs: LegalDoc = {
       content: (
         <>
           <p>6.1. Nos das una autorización general para usar los subencargados que figuran en nuestra página de <Link href="/es/subprocessors">Subencargados</Link>.</p>
-          <p>6.2. Escribiremos al titular de la cuenta al menos 30 días antes de añadir o sustituir un subencargado que trate Datos Personales del Cliente, y actualizaremos la página. En ese plazo puedes oponerte por escrito por motivos razonables de protección de datos. Entonces intentaremos encontrar una solución; si no podemos, puedes dar por terminado el Servicio afectado y te reembolsaremos las cuotas prepagadas de la suscripción del sitio web por el periodo posterior. Las compras hechas a través de Apple o Google se cancelan y reembolsan según sus políticas.</p>
+          <p>6.2. Escribiremos al titular de la cuenta al menos 30 días antes de añadir o sustituir un subencargado que trate Datos Personales del Cliente, y actualizaremos la página; si hay que sustituir un subencargado con urgencia por seguridad o para que el Servicio siga funcionando, te avisaremos lo antes posible y podrás oponerte de la misma forma. En ese plazo puedes oponerte por escrito por motivos razonables de protección de datos. Entonces intentaremos encontrar una solución; si no podemos, puedes dar por terminado el Servicio afectado y te reembolsaremos las cuotas prepagadas de la suscripción del sitio web por el periodo posterior. Las compras hechas a través de Apple o Google se cancelan y reembolsan según sus políticas.</p>
           <p>6.3. Imponemos a cada subencargado cláusulas de protección de datos que protegen los Datos Personales del Cliente al menos tan bien como este Anexo, y seguimos siendo responsables ante ti de su cumplimiento.</p>
         </>
       ),
@@ -119,7 +119,7 @@ export const dpaEs: LegalDoc = {
       title: "8. Brechas de seguridad",
       content: (
         <>
-          <p>8.1. Si tenemos conocimiento de una violación de la seguridad que provoque la destrucción, pérdida o alteración accidental o ilícita de Datos Personales del Cliente, o su comunicación o acceso no autorizados, avisamos al titular de la cuenta por correo sin demora indebida y, en cualquier caso, en un máximo de 48 horas desde que la confirmamos.</p>
+          <p>8.1. Si tenemos conocimiento de una violación de la seguridad que provoque la destrucción, pérdida o alteración accidental o ilícita de Datos Personales del Cliente, o su comunicación o acceso no autorizados, avisamos al titular de la cuenta por correo sin demora indebida y, en cualquier caso, en un máximo de 72 horas desde que tenemos conocimiento de ella.</p>
           <p>8.2. Te contamos, en la medida en que lo sepamos: qué pasó; las categorías y el número aproximado de personas y registros afectados; las consecuencias probables; lo que hemos hecho y haremos; y un contacto. Te enviamos novedades a medida que sabemos más.</p>
           <p>8.3. Te ayudamos a cumplir tus propias obligaciones de notificar a las autoridades y a las personas. Avisarte no supone admitir culpa.</p>
         </>
@@ -145,7 +145,7 @@ export const dpaEs: LegalDoc = {
       content: (
         <>
           <p>11.1. Los Datos Personales del Cliente se guardan en Fráncfort, Alemania. Stroyka está en Estados Unidos y algunos subencargados están en Estados Unidos o en otros países, por lo que los datos también se consultan y se tratan fuera del EEE, el Reino Unido y Suiza.</p>
-          <p>11.2. <strong>UE y EEE.</strong> Cuando el RGPD se aplica a una transferencia de Datos Personales del Cliente hacia nosotros, las {SCC} de la Comisión Europea (Decisión (UE) 2021/914) se incorporan a este Anexo por referencia: el Módulo Dos (de responsable a encargado) cuando tú eres responsable, y el Módulo Tres (de encargado a encargado) cuando tú eres encargado. Tú eres el exportador de datos y nosotros el importador. Para las Cláusulas: se aplica la cláusula 7 (cláusula de incorporación); en la cláusula 9 se aplica la Opción 2 (autorización general) con el plazo de aviso del punto 6.2; la redacción opcional de la cláusula 11 no se aplica; en la cláusula 13, la autoridad de control es la que determina la cláusula 13(a) y, si no tienes establecimiento en la UE, la del Estado miembro donde esté nuestro representante en la UE; las cláusulas 17 y 18 eligen la ley y los tribunales de Irlanda. El Anexo I es la sección 2 de este Anexo y los datos de las partes de las secciones 1 y 15; el Anexo II es la sección 5; el Anexo III es nuestra página de Subencargados.</p>
+          <p>11.2. <strong>UE y EEE.</strong> Cuando el RGPD se aplica a una transferencia de Datos Personales del Cliente hacia nosotros, las {SCC} de la Comisión Europea (Decisión (UE) 2021/914) se incorporan a este Anexo por referencia: el Módulo Dos (de responsable a encargado) cuando tú eres responsable, y el Módulo Tres (de encargado a encargado) cuando tú eres encargado. Tú eres el exportador de datos y nosotros el importador. Para las Cláusulas: se aplica la cláusula 7 (cláusula de incorporación); en la cláusula 9 se aplica la Opción 2 (autorización general) con el plazo de aviso del punto 6.2; la redacción opcional de la cláusula 11 no se aplica; en la cláusula 13, la autoridad de control es la que determina la cláusula 13(a): si no tienes establecimiento en la UE pero has designado un representante según el artículo 27(1) del RGPD, la del Estado miembro donde esté tu representante y, si no, la de uno de los Estados miembros donde se encuentren las personas cuyos datos se transfieren; las cláusulas 17 y 18 eligen la ley y los tribunales de Irlanda. El Anexo I es la sección 2 de este Anexo y los datos de las partes de las secciones 1 y 15; el Anexo II es la sección 5; el Anexo III es nuestra página de Subencargados.</p>
           <p>11.3. <strong>Reino Unido.</strong> Para las transferencias sujetas a la ley de protección de datos del Reino Unido, se incorpora por referencia el {UK_ADDENDUM} a las Cláusulas Contractuales Tipo de la UE (versión B1.0) del Information Commissioner del Reino Unido. Sus Tablas 1 a 3 se completan con la información del punto 11.2 y de este Anexo, y cualquiera de las partes puede terminarlo como permite su sección 19.</p>
           <p>11.4. <strong>Suiza.</strong> Las Cláusulas del punto 11.2 se aplican con los cambios que exige la Ley Federal suiza de Protección de Datos: la autoridad competente es el Comisionado Federal de Protección de Datos e Información, y las personas en Suiza pueden reclamar allí.</p>
           <p>11.5. Cuando un subencargado está certificado en el Marco de Privacidad de Datos UE&ndash;EE. UU. (o en su extensión al Reino Unido o en el marco Suiza&ndash;EE. UU.), podemos basarnos en esa certificación para las transferencias posteriores a él; en otro caso usamos con él las Cláusulas Contractuales Tipo.</p>
@@ -157,7 +157,7 @@ export const dpaEs: LegalDoc = {
       id: "end",
       title: "12. Devolución y eliminación",
       content: (
-        <p>Puedes exportar tus datos en cualquier momento (Términos, punto 4.3) y durante los 30 días siguientes a la terminación (Términos, punto 17.4). Cuando se elimina la Cuenta de Empresa, eliminamos los Datos Personales del Cliente del Servicio en funcionamiento en un plazo de 30 días. Después salen de nuestras copias de seguridad cifradas a medida que caducan (copias de la base de datos en 6 meses, copias de archivos en 1 año) y, mientras tanto, se mantienen aislados y no se usan. Te confirmamos la eliminación por escrito si lo pides. Solo conservamos datos más tiempo cuando la ley lo exige.</p>
+        <p>Puedes exportar tus datos en cualquier momento (Términos, punto 4.3) y durante los 30 días siguientes a la terminación (Términos, punto 17.4). Cuando se elimina la Cuenta de Empresa, eliminamos los Datos Personales del Cliente del Servicio en funcionamiento en un plazo de 31 días. Después salen de nuestras copias de seguridad cifradas a medida que caducan (copias de la base de datos en 7 meses, copias de archivos en 13 meses) y, mientras tanto, se mantienen aislados y no se usan. Te confirmamos la eliminación por escrito si lo pides. Solo conservamos datos más tiempo cuando la ley lo exige.</p>
       ),
     },
     {
@@ -182,7 +182,7 @@ export const dpaEs: LegalDoc = {
           <p>15.1. Este Anexo dura mientras tratemos Datos Personales del Cliente por tu cuenta.</p>
           <p>15.2. La responsabilidad de cada parte según este Anexo está sujeta a los límites de los Términos (sección 13), salvo cuando las Cláusulas Contractuales Tipo o la ley no lo permitan.</p>
           <p>15.3. Podemos actualizar este Anexo como describen los Términos (sección 15), y no reduciremos la protección que da a los Datos Personales del Cliente sin avisar con al menos 30 días de antelación.</p>
-          <p>15.4. Contacto: {SUPPORT}, con &ldquo;DPA&rdquo; en el asunto. Nuestro representante en la UE: {EU_REPRESENTATIVE}. En el Reino Unido: {UK_REPRESENTATIVE}.</p>
+          <p>15.4. Contacto: {SUPPORT}, con &ldquo;DPA&rdquo; en el asunto. {REPS}</p>
         </>
       ),
     },
