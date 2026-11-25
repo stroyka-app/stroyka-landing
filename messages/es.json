@@ -15,7 +15,11 @@
     "accessibilityTitle": "Declaración de accesibilidad — Stroyka",
     "accessibilityDescription": "Nuestro compromiso con WCAG 2.1 AA en getstroyka.com: qué corregimos, qué limitaciones quedan y cómo avisarnos de un problema.",
     "deleteAccountTitle": "Eliminar tu cuenta — Stroyka",
-    "deleteAccountDescription": "Cómo eliminar tu cuenta o tu empresa en Stroyka, qué se elimina y cuándo."
+    "deleteAccountDescription": "Cómo eliminar tu cuenta o tu empresa en Stroyka, qué se elimina y cuándo.",
+    "dpaTitle": "Anexo de tratamiento de datos — Stroyka",
+    "dpaDescription": "Cómo trata Stroyka los datos personales por cuenta de las empresas que lo usan: instrucciones, seguridad, subencargados, brechas, transferencias y eliminación.",
+    "subprocessorsTitle": "Subencargados — Stroyka",
+    "subprocessorsDescription": "Los proveedores que tratan datos para Stroyka, qué hace cada uno y dónde."
   },
   "hero": {
     "startFree": "Empieza gratis",
@@ -227,7 +231,8 @@
     "languagesNavLabel": "Idiomas",
     "accessibility": "Accesibilidad",
     "deleteAccount": "Eliminar cuenta",
-    "legalNavLabel": "Legal"
+    "legalNavLabel": "Legal",
+    "cookieSettings": "Configuración de cookies"
   },
   "faq": {
     "eyebrow": "FAQ",
@@ -1123,5 +1128,14 @@
     "contactTitle": "Avísanos de un problema",
     "contactBody": "Si algo de este sitio te resulta difícil o imposible de usar, escríbenos a <email>support@getstroyka.com</email>. Dinos en qué página y qué falló. Respondemos en un plazo de 5 días hábiles y, si no podemos arreglarlo pronto, te ayudamos a conseguir la información o el servicio que necesitas de otra forma.",
     "scope": "Esta declaración cubre el sitio getstroyka.com. Para la accesibilidad de la app móvil de Stroyka, escribe a la misma dirección."
+  },
+  "cookies": {
+    "title": "Cookies",
+    "body": "Si nos das permiso, usamos cookies de analítica (PostHog) para ver cómo se usa este sitio y, fuera de la UE y el Reino Unido, el píxel de Meta para medir nuestros anuncios. No se carga nada si no aceptas. Puedes cambiar de opinión cuando quieras en Configuración de cookies, al pie de la página.",
+    "learnMore": "Política de privacidad",
+    "accept": "Aceptar",
+    "reject": "Rechazar",
+    "statusGranted": "Tu elección actual: aceptadas.",
+    "statusDenied": "Tu elección actual: rechazadas."
   }
 }

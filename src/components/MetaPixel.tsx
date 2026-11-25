@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Script from "next/script";
 import { GEO_COOKIE, consentRequired } from "@/lib/geo";
+import { useConsent } from "@/lib/consent";
 
 /**
  * Meta (Facebook) Pixel.
@@ -26,12 +27,15 @@ import { GEO_COOKIE, consentRequired } from "@/lib/geo";
  * every campaign we run is targeted at the United States, so no EEA visitor
  * was ever attributable traffic.
  *
- * If you ever DO market into the EU, this gate is where a real consent banner
- * hooks in: keep the geo check, and let an explicit opt-in override it.
+ * Since 2026-11 there IS a consent banner (CookieBanner), and the pixel now
+ * needs both: an accepted cookie choice, AND a country outside the EEA/UK.
+ * The geo rule stays as a second lock because every campaign is US-only and
+ * the Privacy Policy (section 12) promises it.
  */
 export default function MetaPixel() {
   const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
   const [allowed, setAllowed] = useState(false);
+  const consent = useConsent();
 
   useEffect(() => {
     // The middleware writes this on every matched request. Reading it in an
@@ -42,7 +46,7 @@ export default function MetaPixel() {
     setAllowed(!consentRequired(match?.[1]));
   }, []);
 
-  if (!pixelId || !allowed) return null;
+  if (!pixelId || !allowed || consent !== "granted") return null;
 
   return (
     <>

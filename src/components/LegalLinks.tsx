@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { openCookieSettings } from "@/lib/consent";
 
 const LINKS = [
   { key: "privacy", href: "/privacy" },
@@ -10,7 +11,7 @@ const LINKS = [
 ] as const;
 
 /**
- * One quiet legal line (Privacy · Terms · Accessibility) for the routes that
+ * One quiet legal line (Privacy · Terms · Accessibility · Cookie settings) for the routes that
  * deliberately skip the full site footer: /get (the ad landing) and /account.
  * Every page that loads analytics must link the privacy policy.
  */
@@ -32,6 +33,16 @@ export default function LegalLinks({ className = "" }: { className?: string }) {
             </Link>
           </li>
         ))}
+        <li className="flex items-center gap-x-3">
+          <span aria-hidden className="h-[3px] w-[3px] rounded-full bg-site-paper/30" />
+          <button
+            type="button"
+            onClick={openCookieSettings}
+            className="rounded-sm uppercase transition-colors duration-200 hover:text-site-vis focus-visible:text-site-vis focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-site-vis focus-visible:ring-offset-4 focus-visible:ring-offset-site-night"
+          >
+            {t("cookieSettings")}
+          </button>
+        </li>
       </ul>
     </nav>
   );
