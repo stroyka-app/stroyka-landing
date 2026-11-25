@@ -172,7 +172,9 @@ async function sendEmail(data: {
  * by Resend (sendEmail): Telegram receives no personal data, which is what
  * the Privacy Policy (section 5) and the Sub-processors page say.
  */
-async function sendTelegramPing(): Promise<void> {
+async function sendTelegramPing(
+  text = "New demo request — check email",
+): Promise<void> {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
   if (!token || !chatId) {
@@ -187,7 +189,7 @@ async function sendTelegramPing(): Promise<void> {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         chat_id: chatId,
-        text: "New demo request — check email",
+        text,
       }),
     }
   );
@@ -262,21 +264,29 @@ export async function POST(request: Request) {
 
     const confirm = await mayConfirm(email);
 
-    const [emailResult, telegramResult, confirmationResult] = await Promise.allSettled([
-      sendEmail(data),
-      sendTelegramPing(),
-      confirm
-        ? sendConfirmationEmail({ name: data.name, email: data.email, locale })
-        : Promise.resolve(),
-    ]);
-
-    if (emailResult.status === "rejected") {
-      console.error("Email send failed:", emailResult.reason);
+    // The lead email goes FIRST. Only once it has reached the inbox do we ping
+    // Telegram and confirm to the visitor — otherwise a failed email meant a
+    // "check email" ping and a confirmation for a lead nobody received.
+    try {
+      await sendEmail(data);
+    } catch (err) {
+      console.error("Email send failed:", err);
+      // No personal data in Telegram (Privacy Policy): just say it failed.
+      await sendTelegramPing(
+        "Demo request arrived but the lead email FAILED — check the Vercel logs for api/demo",
+      ).catch((e) => console.error("Telegram notify failed:", e));
       return NextResponse.json(
         { error: "Failed to send. Please email us directly." },
         { status: 500 }
       );
     }
+
+    const [telegramResult, confirmationResult] = await Promise.allSettled([
+      sendTelegramPing(),
+      confirm
+        ? sendConfirmationEmail({ name: data.name, email: data.email, locale })
+        : Promise.resolve(),
+    ]);
 
     if (telegramResult.status === "rejected") {
       console.error("Telegram notify failed (non-fatal):", telegramResult.reason);
